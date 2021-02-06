@@ -1,0 +1,8 @@
+stages:
+  - build
+
+build_project:
+  stage: build
+  script:
+    - xcodebuild clean -project YoungSt.xcodeproj -scheme YoungSt | xcpretty
+    - xcodebuild test -project YoungSt.xcodeproj -scheme YoungSt -destination 'platform=iOS Simulator,name=iPhone 12,OS=14.3' | xcpretty -s

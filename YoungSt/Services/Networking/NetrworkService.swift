@@ -16,8 +16,8 @@ protocol NetworkServiceProtocol {
 final class NetworkService: NetworkServiceProtocol {
 	
 	func sendDataRequest<RequestModel: SwiftProtobuf.Message, ResponseModel: SwiftProtobuf.Message>(url: String,
-																			method: HTTPMethod,
-																			requestModel: RequestModel) -> AnyPublisher<ResponseModel, Error> {
+																									method: HTTPMethod,
+																									requestModel: RequestModel) -> AnyPublisher<ResponseModel, Error> {
 		var urlRequest = URLRequest(url: URL(string: url)!)
 		urlRequest.httpMethod = method.rawValue
 		urlRequest.addValue("00f098dc-6c8c-4be1-9554-bd61eacd0479_f3c86087-5e28-45ae-98e8-e66badb0bbca", forHTTPHeaderField: "x-api-key")
