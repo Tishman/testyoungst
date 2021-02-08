@@ -7,4 +7,4 @@ build_project:
     - xcodebuild clean -project YoungSt.xcodeproj -scheme YoungSt | xcpretty
     - xcodebuild test -project YoungSt.xcodeproj -scheme YoungSt -destination 'platform=iOS Simulator,name=iPhone 6s,OS=9.2' | xcpretty -s
   tags:
-    - test
+    - gitlab-org-docker
