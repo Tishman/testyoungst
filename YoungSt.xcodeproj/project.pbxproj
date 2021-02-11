@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C34921D2592001900F729C4 /* YoungStApp.swift */; };
 		0C3492202592001900F729C4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C34921F2592001900F729C4 /* MainView.swift */; };
-		0C3492222592001C00F729C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3492212592001C00F729C4 /* Assets.xcassets */; };
 		0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3492242592001C00F729C4 /* Preview Assets.xcassets */; };
 		0C34922F2592008500F729C4 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0C34922E2592008500F729C4 /* ComposableArchitecture */; };
 		0C349234259203CB00F729C4 /* MainViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C349233259203CB00F729C4 /* MainViewModels.swift */; };
@@ -21,6 +20,7 @@
 		0C46219525938ACE006B1701 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C46219425938ACE006B1701 /* DatabaseService.swift */; };
 		0C46219925938B7A006B1701 /* WordDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C46219825938B7A006B1701 /* WordDBModel.swift */; };
 		0C46219C2593A629006B1701 /* DatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C46219B2593A629006B1701 /* DatabaseVersion.swift */; };
+		0C919C6425D5241900BF6A4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C919C6325D5241900BF6A4F /* Assets.xcassets */; };
 		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
 		0CA5EE03259261CE0006F066 /* Translate.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5EE02259261CE0006F066 /* Translate.pb.swift */; };
 		0CA5EE07259262F10006F066 /* ModelsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5EE06259262F10006F066 /* ModelsExtension.swift */; };
@@ -31,7 +31,6 @@
 		0C34921A2592001900F729C4 /* YoungSt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoungSt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C34921D2592001900F729C4 /* YoungStApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoungStApp.swift; sourceTree = "<group>"; };
 		0C34921F2592001900F729C4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		0C3492212592001C00F729C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C3492242592001C00F729C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C3492262592001C00F729C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C349233259203CB00F729C4 /* MainViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModels.swift; sourceTree = "<group>"; };
@@ -42,6 +41,7 @@
 		0C46219425938ACE006B1701 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		0C46219825938B7A006B1701 /* WordDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordDBModel.swift; sourceTree = "<group>"; };
 		0C46219B2593A629006B1701 /* DatabaseVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseVersion.swift; sourceTree = "<group>"; };
+		0C919C6325D5241900BF6A4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		0CA5EE02259261CE0006F066 /* Translate.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Translate.pb.swift; sourceTree = "<group>"; };
 		0CA5EE06259262F10006F066 /* ModelsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsExtension.swift; sourceTree = "<group>"; };
 		0CA5EE0D25926A180006F066 /* Languages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 				0C34923A259241BD00F729C4 /* Services */,
 				0C3492312592032B00F729C4 /* MainScene */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
-				0C3492212592001C00F729C4 /* Assets.xcassets */,
+				0C919C6325D5241900BF6A4F /* Assets.xcassets */,
 				0C3492262592001C00F729C4 /* Info.plist */,
 				0C3492232592001C00F729C4 /* Preview Content */,
 				0CA5EE06259262F10006F066 /* ModelsExtension.swift */,
@@ -231,8 +231,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C919C6425D5241900BF6A4F /* Assets.xcassets in Resources */,
 				0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */,
-				0C3492222592001C00F729C4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,9 +383,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
-				DEVELOPMENT_TEAM = B95726BXS6;
+				DEVELOPMENT_TEAM = TXT5Y2EP72;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = YoungSt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -393,8 +395,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rtishman.YoungSt;
+				PRODUCT_BUNDLE_IDENTIFIER = app.yougst.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Vyoungst App Store";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -405,9 +408,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
-				DEVELOPMENT_TEAM = B95726BXS6;
+				DEVELOPMENT_TEAM = TXT5Y2EP72;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = YoungSt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -415,8 +420,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rtishman.YoungSt;
+				PRODUCT_BUNDLE_IDENTIFIER = app.yougst.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Vyoungst App Store";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
