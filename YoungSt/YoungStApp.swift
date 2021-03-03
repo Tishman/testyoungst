@@ -22,7 +22,7 @@ struct YoungStApp: App {
 	
     var body: some Scene {
         WindowGroup {
-			MainView(store: self.store.scope(state: \.translateState, action: AppAction.translate(state:)))
+			TranslateView(store: self.store.scope(state: \.translateState, action: AppAction.translate(state:)))
         }
     }
 }

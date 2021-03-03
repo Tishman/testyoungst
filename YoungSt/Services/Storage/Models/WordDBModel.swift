@@ -15,7 +15,7 @@ struct WordDBModel: DatabaseModelProtocol {
 	
 	init(viewModel: TranslateState.Word) {
 		self.id = viewModel.id
-		self.sourceText = viewModel.fromText
-		self.destinationText = viewModel.toText
+		self.sourceText = viewModel.sourceText
+		self.destinationText = viewModel.destinationText
 	}
 }
