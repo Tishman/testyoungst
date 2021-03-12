@@ -26,11 +26,11 @@
 		0C46219C2593A629006B1701 /* DatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C46219B2593A629006B1701 /* DatabaseVersion.swift */; };
 		0C4A9E1625E4128C00FB92F1 /* SwitchButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A9E1525E4128C00FB92F1 /* SwitchButtonView.swift */; };
 		0C4A9E1925E41A1A00FB92F1 /* TranslationResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A9E1825E41A1A00FB92F1 /* TranslationResultView.swift */; };
-		0C919C6425D5241900BF6A4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C919C6325D5241900BF6A4F /* Assets.xcassets */; };
 		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
 		0CA5EE07259262F10006F066 /* ModelsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5EE06259262F10006F066 /* ModelsExtension.swift */; };
 		0CA5EE0E25926A180006F066 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5EE0D25926A180006F066 /* Languages.swift */; };
 		0CE4FCBE25DAF1490007AC29 /* TranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4FCBD25DAF1490007AC29 /* TranslationView.swift */; };
+		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,10 +53,11 @@
 		0C46219B2593A629006B1701 /* DatabaseVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseVersion.swift; sourceTree = "<group>"; };
 		0C4A9E1525E4128C00FB92F1 /* SwitchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchButtonView.swift; sourceTree = "<group>"; };
 		0C4A9E1825E41A1A00FB92F1 /* TranslationResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationResultView.swift; sourceTree = "<group>"; };
-		0C919C6325D5241900BF6A4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		0CA5EE06259262F10006F066 /* ModelsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsExtension.swift; sourceTree = "<group>"; };
 		0CA5EE0D25926A180006F066 /* Languages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
 		0CE4FCBD25DAF1490007AC29 /* TranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationView.swift; sourceTree = "<group>"; };
+		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
+		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +87,7 @@
 		0C3492112592001900F729C4 = {
 			isa = PBXGroup;
 			children = (
+				4783769825FB90A9000B11B7 /* Core */,
 				0C34921C2592001900F729C4 /* YoungSt */,
 				0C34921B2592001900F729C4 /* Products */,
 			);
@@ -107,11 +109,11 @@
 				0CA5EE01259261CE0006F066 /* Protobuf */,
 				0C34923A259241BD00F729C4 /* Services */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
-				0C919C6325D5241900BF6A4F /* Assets.xcassets */,
 				0C3492262592001C00F729C4 /* Info.plist */,
 				0C3492232592001C00F729C4 /* Preview Content */,
 				0CA5EE06259262F10006F066 /* ModelsExtension.swift */,
 				0C22285325EF90450017CFAC /* Localizable.strings */,
+				4783769A25FB9183000B11B7 /* Assets.xcassets */,
 			);
 			path = YoungSt;
 			sourceTree = "<group>";
@@ -257,8 +259,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C919C6425D5241900BF6A4F /* Assets.xcassets in Resources */,
 				0C22285425EF90450017CFAC /* Localizable.strings in Resources */,
+				4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */,
 				0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
