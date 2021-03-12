@@ -8,12 +8,13 @@
 import Foundation
 import Combine
 import ComposableArchitecture
+import Resources
 
 struct TranslateState: Equatable {
     var sourceLanguage: Languages = .english
     var destinationLanguage: Languages = .russian
-    var value: String = "Enter word"
-    var translationResult: String = "Result here"
+    var value: String = Localizable.inputTranslationPlacholder
+    var translationResult: String = Localizable.outputTranslationPlacholder
     var wasWordTranslated: Bool = false
     var wordList: [Word] = []
     

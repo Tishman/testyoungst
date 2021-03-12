@@ -49,6 +49,8 @@ enum ExternalDependecy {
 
 let package = Package(
     name: "Core",
+    defaultLocalization: "en",
+    platforms: [.iOS(.v14), .macOS(.v11)],
     products: CorePackage.allCases.map(\.library),
     dependencies: [],
     targets: [

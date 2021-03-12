@@ -1,0 +1,20 @@
+strings:
+  inputs:
+    - YoungSt/Core/Sources/Common/Resources/Files/en.lproj
+  outputs:
+    - templateName: flat-swift5
+      params:
+        enumName: Localizable
+        publicAccess: 1
+      output: YoungSt/Core/Sources/Common/Resources/Strings+Generated.swift
+
+xcassets:
+  inputs:
+    - YoungSt/Core/Sources/Common/Resources/Files/Images.xcassets
+    - YoungSt/Core/Sources/Common/Resources/Files/Colors.xcassets
+  outputs:
+    - templateName: swift5
+      params:
+        forceProvidesNamespaces: false
+        publicAccess: 1
+      output: YoungSt/Core/Sources/Common/Resources/XCAssets+Generated.swift
