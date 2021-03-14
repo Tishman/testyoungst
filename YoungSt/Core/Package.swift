@@ -31,18 +31,27 @@ enum CorePackage: String, CaseIterable {
     }
     
     var testName: String {
-        rawValue + "Test"
+        rawValue + "Tests"
     }
 }
 
 enum ExternalDependecy {
     // Added for example
     case grdb
+    case grpc
+    case diTranquillity
+    case combineExpect
     
     var product: Target.Dependency {
         switch self {
         case .grdb:
             return .product(name: "GRDB", package: "GRDB")
+        case .grpc:
+            return .product(name: "GRPC", package: "grpc-swift")
+        case .diTranquillity:
+            return .product(name: "DITranquillity", package: "DITranquillity")
+        case .combineExpect:
+            return "CombineExpectations"
         }
     }
 }
@@ -52,7 +61,11 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.iOS(.v14), .macOS(.v11)],
     products: CorePackage.allCases.map(\.library),
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
+        .package(url: "https://github.com/ivlevAstef/DITranquillity.git", from: "4.1.7"),
+        .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
+    ],
     targets: [
         .target(
             name: CorePackage.models.rawValue,
@@ -68,9 +81,22 @@ let package = Package(
         ),
         .target(
             name: CorePackage.networkService.rawValue,
-            dependencies: [CorePackage.protocols.dependency],
+            dependencies: [
+                CorePackage.protocols.dependency,
+                CorePackage.models.dependency,
+                CorePackage.utilities.dependency,
+                ExternalDependecy.grpc.product,
+            ],
             path: CorePackage.networkService.path
         ),
+        .testTarget(name: CorePackage.networkService.testName,
+                    dependencies: [
+                        CorePackage.networkService.dependency,
+                        CorePackage.models.dependency,
+                        ExternalDependecy.grpc.product,
+                        ExternalDependecy.diTranquillity.product,
+                        ExternalDependecy.combineExpect.product,
+                    ]),
         .target(
             name: CorePackage.resources.rawValue,
             path: CorePackage.resources.path
@@ -79,6 +105,10 @@ let package = Package(
             name: CorePackage.utilities.rawValue,
             path: CorePackage.utilities.path
         ),
+        .testTarget(name: CorePackage.utilities.testName,
+                    dependencies: [
+                        CorePackage.utilities.dependency,
+                    ]),
     ]
 )
 

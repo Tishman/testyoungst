@@ -31,6 +31,13 @@
 		0CE4FCBE25DAF1490007AC29 /* TranslationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4FCBD25DAF1490007AC29 /* TranslationView.swift */; };
 		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
 		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
+		FD10AC4225FE31D4001FFF11 /* TranslateClientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD10AC4125FE31D4001FFF11 /* TranslateClientFactory.swift */; };
+		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
+		FD10AC4725FE31FD001FFF11 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4625FE31FD001FFF11 /* Models */; };
+		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
+		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
+		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
+		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +64,7 @@
 		0CE4FCBD25DAF1490007AC29 /* TranslationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationView.swift; sourceTree = "<group>"; };
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FD10AC4125FE31D4001FFF11 /* TranslateClientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateClientFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,9 +72,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD10AC4725FE31FD001FFF11 /* Models in Frameworks */,
+				FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */,
+				FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */,
 				477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */,
+				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
+				FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */,
 				0C46219125938835006B1701 /* GRDB in Frameworks */,
 				0C34922F2592008500F729C4 /* ComposableArchitecture in Frameworks */,
+				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
 				0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,6 +152,7 @@
 		0C34923F25924A0800F729C4 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				FD10AC4125FE31D4001FFF11 /* TranslateClientFactory.swift */,
 				0C34924025924A1100F729C4 /* Models */,
 				0C34924A25924AFE00F729C4 /* URL.swift */,
 				0C34923B259241DD00F729C4 /* NetrworkService.swift */,
@@ -220,6 +235,12 @@
 				0CA5EDFE2592617E0006F066 /* SwiftProtobuf */,
 				0C46219025938835006B1701 /* GRDB */,
 				477CD6AA25FBB58B00BB45B8 /* Resources */,
+				FD10AC4425FE31FD001FFF11 /* Mocks */,
+				FD10AC4625FE31FD001FFF11 /* Models */,
+				FD10AC4825FE31FD001FFF11 /* NetworkService */,
+				FD10AC4A25FE31FD001FFF11 /* Protocols */,
+				FD10AC4C25FE31FD001FFF11 /* Utilities */,
+				FD10AC5125FE3276001FFF11 /* DITranquillity */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -252,6 +273,7 @@
 				0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 				0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */,
 			);
 			productRefGroup = 0C34921B2592001900F729C4 /* Products */;
 			projectDirPath = "";
@@ -282,6 +304,7 @@
 				0C34924525924A4100F729C4 /* NetworkError.swift in Sources */,
 				0C22284825EF83AD0017CFAC /* TranslateView.swift in Sources */,
 				0CA5EE07259262F10006F066 /* ModelsExtension.swift in Sources */,
+				FD10AC4225FE31D4001FFF11 /* TranslateClientFactory.swift in Sources */,
 				0C46219925938B7A006B1701 /* WordDBModel.swift in Sources */,
 				0C34924B25924AFE00F729C4 /* URL.swift in Sources */,
 				0C22283B25EF7D650017CFAC /* user-dictionary.pb.swift in Sources */,
@@ -517,6 +540,14 @@
 				minimumVersion = 1.14.0;
 			};
 		};
+		FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivlevAstef/DITranquillity.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -538,6 +569,31 @@
 		477CD6AA25FBB58B00BB45B8 /* Resources */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Resources;
+		};
+		FD10AC4425FE31FD001FFF11 /* Mocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Mocks;
+		};
+		FD10AC4625FE31FD001FFF11 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+		FD10AC4825FE31FD001FFF11 /* NetworkService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkService;
+		};
+		FD10AC4A25FE31FD001FFF11 /* Protocols */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Protocols;
+		};
+		FD10AC4C25FE31FD001FFF11 /* Utilities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Utilities;
+		};
+		FD10AC5125FE3276001FFF11 /* DITranquillity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */;
+			productName = DITranquillity;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

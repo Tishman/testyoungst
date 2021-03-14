@@ -35,3 +35,6 @@ DerivedData/
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
+
+*.grpc.swift
+*.pb.swift

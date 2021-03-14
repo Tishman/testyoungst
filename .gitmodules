@@ -1,0 +1,3 @@
+[submodule "YoungSt/Core/backend-endpoints"]
+	path = YoungSt/Core/backend-endpoints
+	url = ssh://git@git.jetbrains.space/vyoungst/vyoungst/backend-endpoints.git

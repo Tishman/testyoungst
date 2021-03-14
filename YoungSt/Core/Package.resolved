@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "combine-schedulers",
-        "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
-        "state": {
-          "branch": null,
-          "revision": "ff42ec9061d864de7982162011321d3df5080c10",
-          "version": "0.1.2"
-        }
-      },
-      {
         "package": "CombineExpectations",
         "repositoryURL": "https://github.com/groue/CombineExpectations.git",
         "state": {
@@ -24,17 +15,8 @@
         "repositoryURL": "https://github.com/ivlevAstef/DITranquillity.git",
         "state": {
           "branch": null,
-          "revision": "e0129f38113e897e1e287a0098c0b536c493efa8",
-          "version": "4.2.0"
-        }
-      },
-      {
-        "package": "GRDB",
-        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
-        "state": {
-          "branch": null,
-          "revision": "2a917823ed2511ec5cb21a83f8a4f389e45d7038",
-          "version": "5.2.0"
+          "revision": "85d075694e6db5de32b8771bd653fc35a605e24f",
+          "version": "4.1.7"
         }
       },
       {
@@ -44,24 +26,6 @@
           "branch": null,
           "revision": "9e464a75079928366aa7041769a271fac89271bf",
           "version": "1.0.0"
-        }
-      },
-      {
-        "package": "swift-case-paths",
-        "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
-        "state": {
-          "branch": null,
-          "revision": "ed1838ab4fa5d47db8aa640736dd5b7672548873",
-          "version": "0.1.2"
-        }
-      },
-      {
-        "package": "swift-composable-architecture",
-        "repositoryURL": "https://github.com/pointfreeco/swift-composable-architecture",
-        "state": {
-          "branch": null,
-          "revision": "b67569f69813140cd9c984db33ee959d9711a008",
-          "version": "0.9.0"
         }
       },
       {
@@ -123,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-protobuf.git",
         "state": {
           "branch": null,
-          "revision": "da9a52be9cd36c63993291ce3f1b65dafcd1e826",
-          "version": "1.14.0"
+          "revision": "e1904bf5a5f79cb7e0ff68a427a53a93b652fcd1",
+          "version": "1.15.0"
         }
       },
       {
