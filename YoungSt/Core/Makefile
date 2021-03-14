@@ -4,4 +4,5 @@ install-protoc:
 generate-networking:
 	protoc  --grpc-swift_out=Client=true,Server=false:. --grpc-swift_opt=Visibility=Public backend-endpoints/*.proto \
 		&& protoc --swift_out=. --swift_opt=Visibility=Public backend-endpoints/*.proto \
+		&& mkdir -p Sources/Service/NetworkService/generated \
 		&& mv -f backend-endpoints/*.swift Sources/Service/NetworkService/generated
