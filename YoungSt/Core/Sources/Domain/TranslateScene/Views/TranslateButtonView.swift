@@ -8,10 +8,10 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TranslateButtonView: View {
+public struct TranslateButtonView: View {
     let store: Store<TranslateState, TranslateAction>
     
-    var body: some View {
+    public var body: some View {
         WithViewStore(store) { viewStore in
             Button(action: {
                 viewStore.send(.translateButtonTapped)

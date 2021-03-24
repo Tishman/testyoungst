@@ -8,6 +8,9 @@
 import SwiftUI
 import ComposableArchitecture
 import GRDB
+import NetworkService
+import DITranquillity
+import TranslateScene
 
 @main
 struct YoungStApp: App {
@@ -16,8 +19,7 @@ struct YoungStApp: App {
 												environment: environment)
 	
 	static var environment: AppEnviroment {
-		AppEnviroment(networkService: AppLogic.createNetworkService(),
-					  databaseService: AppLogic.createDatabaseService())
+		AppEnviroment()
 	}
 	
     var body: some Scene {
@@ -27,20 +29,7 @@ struct YoungStApp: App {
     }
 }
 
-private struct AppLogic {
-	static func createDatabaseService() -> DatabaseServiceProtocol {
-		let databaseUrl = try! FileManager.default
-			.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-			.appendingPathComponent("db.sqlite")
-		let dbQueue = try! DatabaseQueue(path: databaseUrl.path)
-		let databaseService = try! DatabaseService(dbQueue)
-		return databaseService
-	}
-	
-	static func createNetworkService() -> NetworkServiceProtocol {
-		return NetworkService()
-	}
-}
+private struct AppLogic {}
 
 struct AppState: Equatable {
 	var translateState: TranslateState = TranslateState()
@@ -51,12 +40,12 @@ enum AppAction: Equatable {
 }
 
 struct AppEnviroment {
-	let networkService: NetworkServiceProtocol
-	let databaseService: DatabaseServiceProtocol
 	
 	var translationEnv: TranslateEnviroment {
-		.init(networkService: networkService,
-			  databaseService: databaseService)
+        .init(client: TranslateClientFactory(connectionProvider: ApplicationDI.container.resolve(),
+                                             callOptionsProvider: ApplicationDI.container.resolve(),
+                                             interceptors: TranslatorInjectionInterceptorFactory())
+                .create())
 	}
 }
 

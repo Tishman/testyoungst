@@ -9,58 +9,68 @@ import Foundation
 import Combine
 import ComposableArchitecture
 import Resources
+import NetworkService
 
-struct TranslateState: Equatable {
-    var sourceLanguage: Languages = .english
-    var destinationLanguage: Languages = .russian
-    var value: String = Localizable.inputTranslationPlacholder
-    var translationResult: String = Localizable.outputTranslationPlacholder
-    var wasWordTranslated: Bool = false
-    var wordList: [Word] = []
+public struct TranslateState: Equatable {
+    var sourceLanguage: Languages
+    var destinationLanguage: Languages
+    var value: String
+    var translationResult: String
+    var wasWordTranslated: Bool
+    var wordList: [Word]
     
-    struct Word: Identifiable, Equatable {
-        var id: UUID = .init()
+    public struct Word: Identifiable, Equatable {
+        public var id: UUID = .init()
         var sourceText: String = ""
         var destinationText: String = ""
         
-        static func ==(lhs: Word, rhs: Word) -> Bool {
+        public static func ==(lhs: Word, rhs: Word) -> Bool {
             return lhs.id == rhs.id && lhs.sourceText == rhs.sourceText && lhs.destinationText == rhs.destinationText
         }
     }
 }
 
-enum TranslateAction: Equatable {
+public extension TranslateState {
+    init() {
+        self.sourceLanguage = .english
+        self.destinationLanguage = .russian
+        self.value = Localizable.inputTranslationPlacholder
+        self.translationResult = Localizable.outputTranslationPlacholder
+        self.wasWordTranslated = false
+        self.wordList = []
+    }
+}
+
+public enum TranslateAction: Equatable {
     case translateButtonTapped
     case switchButtonTapped
     case outputTextChanged(String)
     case inputTextChanged(String)
-    case didRecievTranslation(Result<TranslationResponse, EquatableError>)
+    case didRecievTranslation(Result<Translator_TranslationResponse, EquatableError>)
     case addWordButtonTapped
     case clearButtonTapped
     case didSaveWord(TranslateState.Word)
     case didClearWords
 }
 
-struct EquatableError: Error, Equatable {
+public struct EquatableError: Error, Equatable {
     let value: Error
     
-    static func ==(lhs: Self, rhs: Self) -> Bool {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
         true
     }
 }
 
 
-struct TranslateEnviroment {
-    let networkService: NetworkServiceProtocol
-    let databaseService: DatabaseServiceProtocol
+public struct TranslateEnviroment {
+    let client: Translator_TranslatorClient
+    
+    public init(client: Translator_TranslatorClient) {
+        self.client = client
+    }
 }
 
 private struct TranslateLogic {
-    static func fetchTrans(networkService: NetworkServiceProtocol, requestModel: TranslationRequest) -> AnyPublisher<TranslationResponse, Error> {
-        return networkService.sendDataRequest(url: "http://52.56.193.36/translate",
-                                              method: .post,
-                                              requestModel: requestModel)
-    }
     
     static func addWordFabric(sourceLanguage: Languages,
                               destinationLanguage: Languages,
@@ -84,7 +94,7 @@ private struct TranslateLogic {
     }
 }
 
-let translateReducer = Reducer<TranslateState, TranslateAction, TranslateEnviroment> { state, action, env in
+public let translateReducer = Reducer<TranslateState, TranslateAction, TranslateEnviroment> { state, action, env in
     switch action {
     case .switchButtonTapped:
         let newSource = state.destinationLanguage
@@ -93,11 +103,20 @@ let translateReducer = Reducer<TranslateState, TranslateAction, TranslateEnvirom
         state.destinationLanguage = newDestination
         
     case .translateButtonTapped:
-        return TranslateLogic.fetchTrans(networkService: env.networkService, requestModel: TranslationRequest(state: state))
+        let requestData = Translator_TranslationRequest.with({
+            $0.value = state.value
+            $0.destinationLang = state.destinationLanguage.rawValue
+            $0.sourceLang = state.sourceLanguage.rawValue
+        })
+        let translate = env.client.translate(requestData)
+        return translate
+            .response
+            .publisher
             .receive(on: DispatchQueue.main)
             .mapError(EquatableError.init)
             .catchToEffect()
             .map({ TranslateAction.didRecievTranslation($0) })
+            
         
     case .outputTextChanged(let value):
         state.translationResult = value
@@ -108,7 +127,7 @@ let translateReducer = Reducer<TranslateState, TranslateAction, TranslateEnvirom
     case .didRecievTranslation(let result):
         switch result {
         case .success(let response):
-            state.translationResult = response.result
+            state.translationResult = response.translations.first(where: { $0.value != "" })?.value ?? ""
             state.wasWordTranslated = true
             
         case .failure(let error):
@@ -116,24 +135,10 @@ let translateReducer = Reducer<TranslateState, TranslateAction, TranslateEnvirom
         }
         
     case .addWordButtonTapped:
-        guard state.wasWordTranslated,
-              !state.value.isEmpty,
-              let word = TranslateLogic.addWordFabric(sourceLanguage: state.sourceLanguage,
-                                                      destinationLanguage: state.destinationLanguage,
-                                                      sourceText: state.value,
-                                                      destinationText: state.translationResult) else { return .none }
-        
-        return env.databaseService.save(WordDBModel(viewModel: word))
-            .receive(on: DispatchQueue.main)
-            .catchToEffect()
-            .map({ _ in TranslateAction.didSaveWord(word) })
+        return .none
         
     case .clearButtonTapped:
-        guard !state.wordList.isEmpty else { return .none }
-        return env.databaseService.deleteAll(WordDBModel.self)
-            .receive(on: DispatchQueue.main)
-            .catchToEffect()
-            .map({ _ in TranslateAction.didClearWords })
+        return .none
         
     case .didSaveWord(let word):
         state.wordList.append(word)

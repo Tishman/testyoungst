@@ -8,9 +8,9 @@
 import DITranquillity
 import Models
 
-final class NetworkDIFramework: DIFramework {
+public final class NetworkDIFramework: DIFramework {
     
-    static func load(container: DIContainer) {
+    public static func load(container: DIContainer) {
         container.register(AppCallOptionConfigurator.init)
             .as(check: CallOptionConfigurator.self) {$0}
         

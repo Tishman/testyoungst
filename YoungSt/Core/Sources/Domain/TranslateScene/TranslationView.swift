@@ -22,7 +22,7 @@ struct TranslationView: View {
                         .fixedSize()
 				}
                 .padding()
-                .border(Color.black)
+                
 				TextEditor(text: viewStore.binding(get: \.value, send: TranslateAction.inputTextChanged))
 			}
             .border(Color.black)

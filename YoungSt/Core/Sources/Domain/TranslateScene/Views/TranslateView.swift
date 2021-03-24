@@ -8,10 +8,14 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct TranslateView: View {
+public struct TranslateView: View {
     let store: Store<TranslateState, TranslateAction>
     
-    var body: some View {
+    public init(store: Store<TranslateState, TranslateAction>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         ScrollView {
             TranslationView(store: store)
                 .padding()
@@ -23,10 +27,10 @@ struct TranslateView: View {
     }
 }
 
-struct TitleView: View {
+public struct TitleView: View {
     var text: String
 
-    var body: some View {
+    public var body: some View {
         Text(text)
             .font(.title)
             .lineLimit(nil)

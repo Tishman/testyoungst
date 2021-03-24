@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Languages: String {
+public enum Languages: String {
 	case english = "en"
 	case russian = "ru"
 	
