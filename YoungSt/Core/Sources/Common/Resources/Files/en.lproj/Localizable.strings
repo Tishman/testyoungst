@@ -1,2 +1,4 @@
 "inputTranslationPlacholder" = "Enter word";
 "outputTranslationPlacholder" = "Result here";
+"emailPlaceholder" = "E-mail";
+"passwordPlaceholder" = "Password";

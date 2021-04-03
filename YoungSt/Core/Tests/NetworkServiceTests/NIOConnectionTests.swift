@@ -69,6 +69,50 @@ final class NIOConnectionTests: XCTestCase {
         XCTAssertEqual(result, "Привет")
     }
     
+    func testLoginConnection() throws {
+        let connectorFactory: Provider1<NetworkConnector, ServerConfiguration> = container.resolve()
+        let connectionProvider = connectorFactory.value(.local)
+        let result = try makeAuthTestConnection(connectionProvider: connectionProvider)
+        XCTAssertEqual(result, true)
+    }
+    
+    private func makeAuthTestConnection(connectionProvider: NetworkConnector) throws -> Bool {
+        let connection = connectionProvider.getConnection()
+        let headers = HPACKHeaders([("x-api-key", "00f098dc-6c8c-4be1-9554-bd61eacd0479_f3c86087-5e28-45ae-98e8-e66badb0bbca")])
+        let options = CallOptions(customMetadata: headers, timeLimit: .timeout(.seconds(NIOConnectionTests.timeLimit)))
+        let client = Authorization_AuthorizationClient(channel: connection,
+                                                       defaultCallOptions: options,
+                                                       interceptors: nil)
+        let requestData = Authorization_LoginRequest.with {
+            $0.email = "test@mail.ru"
+            $0.password = "123456789"
+        }
+        
+        let login = client.login(requestData)
+        
+        let exp = expectation(description: #function)
+        var result = false
+        
+        login.response.whenComplete { serverResponse in
+            switch serverResponse {
+            case .success:
+                result = true
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+            exp.fulfill()
+        }
+        
+        let waitResult = XCTWaiter.wait(for: [exp], timeout: TimeInterval(Self.timeLimit * 2))
+        switch waitResult {
+        case .completed:
+            return result
+        default:
+            XCTFail("error with wair result \(waitResult)")
+            return false
+        }
+    }
+    
     private func makeTestConection(connectionProvider: NetworkConnector) throws -> String? {
         let connection = connectionProvider.getConnection()
         let headers = HPACKHeaders([("x-api-key", "00f098dc-6c8c-4be1-9554-bd61eacd0479_f3c86087-5e28-45ae-98e8-e66badb0bbca")])

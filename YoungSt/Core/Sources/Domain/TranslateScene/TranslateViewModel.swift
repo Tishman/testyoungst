@@ -10,6 +10,7 @@ import Combine
 import ComposableArchitecture
 import Resources
 import NetworkService
+import Utilities
 
 public struct TranslateState: Equatable {
     var sourceLanguage: Languages
@@ -51,14 +52,6 @@ public enum TranslateAction: Equatable {
     case clearButtonTapped
     case didSaveWord(TranslateState.Word)
     case didClearWords
-}
-
-public struct EquatableError: Error, Equatable {
-    let value: Error
-    
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        true
-    }
 }
 
 

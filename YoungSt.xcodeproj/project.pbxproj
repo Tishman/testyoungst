@@ -16,6 +16,8 @@
 		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
 		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
 		47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */; };
+		47AE1A92261896C700402C03 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AE1A91261896C700402C03 /* LoginView.swift */; };
+		47AE1A96261896D500402C03 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AE1A95261896D500402C03 /* LoginViewModel.swift */; };
 		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
 		FD10AC4725FE31FD001FFF11 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4625FE31FD001FFF11 /* Models */; };
 		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
@@ -33,6 +35,8 @@
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDI.swift; sourceTree = "<group>"; };
+		47AE1A91261896C700402C03 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		47AE1A95261896D500402C03 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,7 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
+				47AE1A90261896B100402C03 /* Login */,
 				47516CB0260BB01000B7C7C7 /* Networking */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
@@ -116,6 +121,15 @@
 				47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		47AE1A90261896B100402C03 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				47AE1A91261896C700402C03 /* LoginView.swift */,
+				47AE1A95261896D500402C03 /* LoginViewModel.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +221,8 @@
 			files = (
 				47516CAE260BB00500B7C7C7 /* TranslateClientFactory.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
+				47AE1A92261896C700402C03 /* LoginView.swift in Sources */,
+				47AE1A96261896D500402C03 /* LoginViewModel.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

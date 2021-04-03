@@ -1,2 +1,4 @@
 "inputTranslationPlacholder" = "Введите слово";
 "outputTranslationPlacholder" = "Результат";
+"emailPlaceholder" = "E-mail";
+"passwordPlaceholder" = "Пароль";

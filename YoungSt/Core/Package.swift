@@ -122,7 +122,8 @@ let package = Package(
             dependencies: [
                 CorePackage.networkService.dependency,
                 ExternalDependecy.composableArchitecture.product,
-                CorePackage.resources.dependency
+                CorePackage.resources.dependency,
+                CorePackage.utilities.dependency
             ],
             path: CorePackage.translateScene.path
         )

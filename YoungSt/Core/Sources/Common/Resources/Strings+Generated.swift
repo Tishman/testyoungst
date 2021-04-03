@@ -9,10 +9,14 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Localizable {
+  /// E-mail
+  public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
   /// Result here
   public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
+  /// Password
+  public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
