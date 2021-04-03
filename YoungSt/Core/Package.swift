@@ -11,6 +11,7 @@ enum CorePackage: String, CaseIterable {
     case mocks = "Mocks"
     case networkService = "NetworkService"
     case translateScene = "TranslateScene"
+    case coordinator = "Coordinator"
     
     var library: Product {
         .library(name: rawValue, targets: [rawValue])
@@ -24,7 +25,7 @@ enum CorePackage: String, CaseIterable {
         switch self {
         case .protocols, .models, .mocks:
             return "Sources/API/" + rawValue
-        case .utilities, .resources:
+        case .utilities, .resources, .coordinator:
             return "Sources/Common/" + rawValue
         case .networkService:
             return "Sources/Service/" + rawValue
@@ -74,6 +75,8 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0")
     ],
     targets: [
+        .target(name: CorePackage.coordinator.rawValue,
+                path: CorePackage.coordinator.path),
         .target(
             name: CorePackage.models.rawValue,
             path: CorePackage.models.path

@@ -24,6 +24,7 @@
 		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
 		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
 		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
+		FD5111362618ADC500A90101 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* Coordinator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 				47516CA6260BADB900B7C7C7 /* TranslateScene in Frameworks */,
 				0C46219125938835006B1701 /* GRDB in Frameworks */,
 				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
+				FD5111362618ADC500A90101 /* Coordinator in Frameworks */,
 				0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -159,6 +161,7 @@
 				FD10AC4C25FE31FD001FFF11 /* Utilities */,
 				FD10AC5125FE3276001FFF11 /* DITranquillity */,
 				47516CA5260BADB900B7C7C7 /* TranslateScene */,
+				FD5111352618ADC500A90101 /* Coordinator */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -497,6 +500,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */;
 			productName = DITranquillity;
+		};
+		FD5111352618ADC500A90101 /* Coordinator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Coordinator;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
