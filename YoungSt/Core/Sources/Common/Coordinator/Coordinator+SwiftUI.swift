@@ -8,17 +8,6 @@
 import Foundation
 import SwiftUI
 
-public enum ModuleLink: Hashable {
-    case authorization(AuthorizationInput)
-}
-
-public enum AuthorizationInput: Identifiable, Hashable {
-    case signIn
-    case signUp
-    
-    public var id: Self { self }
-}
-
 private struct CoordinatorEnvironmentKey: EnvironmentKey {
     static var defaultValue: Coordinator = EmptyViewCoordinator()
 }

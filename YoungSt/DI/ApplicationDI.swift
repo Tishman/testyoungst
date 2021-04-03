@@ -18,6 +18,7 @@ final class ApplicationDI: DIFramework {
         let container = DIContainer()
         container.append(framework: ApplicationDI.self)
         container.append(framework: NetworkDIFramework.self)
+        container.append(framework: CoordinatorDIFramework.self)
         
         #if DEBUG
         if !container.makeGraph().checkIsValid(checkGraphCycles: true) {

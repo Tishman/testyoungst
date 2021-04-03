@@ -14,5 +14,4 @@ public final class CoordinatorDIFramework: DIFramework {
         container.register(AppCoordinator.init)
             .as(check: Coordinator.self) {$0}
     }
-    
 }
