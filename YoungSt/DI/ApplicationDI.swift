@@ -8,6 +8,7 @@
 import Foundation
 import DITranquillity
 import NetworkService
+import Coordinator
 
 final class ApplicationDI: DIFramework {
     static func load(container: DIContainer) {

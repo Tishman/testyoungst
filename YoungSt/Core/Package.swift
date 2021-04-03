@@ -79,6 +79,10 @@ let package = Package(
     ],
     targets: [
         .target(name: CorePackage.coordinator.rawValue,
+                dependencies: [
+                    CorePackage.protocols.dependency,
+                    ExternalDependecy.diTranquillity.product
+                ],
                 path: CorePackage.coordinator.path),
         .target(
             name: CorePackage.models.rawValue,
@@ -139,10 +143,11 @@ let package = Package(
                 ExternalDependecy.composableArchitecture.product,
                 CorePackage.networkService.dependency,
                 CorePackage.resources.dependency,
-                CorePackage.utilities.dependency
+                CorePackage.utilities.dependency,
+                CorePackage.coordinator.dependency
             ],
             path: CorePackage.authorization.path
-            )
+        )
     ]
 )
 

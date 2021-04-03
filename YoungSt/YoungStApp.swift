@@ -11,12 +11,23 @@ import GRDB
 import NetworkService
 import DITranquillity
 import TranslateScene
+import Coordinator
 
 @main
 struct YoungStApp: App {
+    private let container: DIContainer
+    private let coordinator: Coordinator
+    
 	let store = Store<AppState, AppAction>.init(initialState: AppState(),
 												reducer: appReducer,
 												environment: environment)
+    
+    init() {
+        let container = ApplicationDI.container
+        
+        self.container = container
+        self.coordinator = container.resolve()
+    }
 	
 	static var environment: AppEnviroment {
 		AppEnviroment()
@@ -25,6 +36,7 @@ struct YoungStApp: App {
     var body: some Scene {
         WindowGroup {
 			TranslateView(store: self.store.scope(state: \.translateState, action: AppAction.translate(state:)))
+                .environment(\.coordinator, coordinator)
         }
     }
 }
