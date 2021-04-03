@@ -12,35 +12,27 @@ import Utilities
 import Resources
 
 public struct LoginState: Equatable {
-    public init() {
+    init() {
         self.email = ""
         self.password = ""
-        self.emailPlaceholder = Localizable.emailPlaceholder
-        self.passwordPlaceholder = Localizable.passwordPlaceholder
     }
     
-    public var email: String
-    public var password: String
-    public let emailPlaceholder: String
-    public let passwordPlaceholder: String
+    var email: String
+    var password: String
 }
 
-public enum LoginAction: Equatable {
+enum LoginAction: Equatable {
     case didEmailChanged(String)
     case didPasswordChanged(String)
     case logInButtonTapped
     case successLogIn
 }
 
-public struct LoginEnviroment {
-    public init(client: Authorization_AuthorizationClient?) {
-        self.client = client
-    }
-    
-    public let client: Authorization_AuthorizationClient?
+struct LoginEnviroment {
+    let client: Authorization_AuthorizationClient
 }
 
-internal let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
+let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
     switch action {
     case let .didEmailChanged(value):
         state.email = value
@@ -49,13 +41,12 @@ internal let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { 
         state.password = value
         
     case .logInButtonTapped:
-        guard let client = enviroment.client else { return .none }
         let requestData = Authorization_LoginRequest.with {
             $0.email = state.email
             $0.password = state.password
         }
         
-        let login = client.login(requestData)
+        let login = enviroment.client.login(requestData)
         
         return login
             .response
