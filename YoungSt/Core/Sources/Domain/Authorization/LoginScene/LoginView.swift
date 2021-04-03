@@ -7,22 +7,29 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Resources
+
+extension LoginView {
+    enum Constants {
+        static let emailPlaceholder = Localizable.emailPlaceholder
+        static let passwordPlaceholder = Localizable.passwordPlaceholder
+    }
+}
 
 struct LoginView: View {
     let store: Store<LoginState, LoginAction>
     
     var body: some View {
         WithViewStore(store) { viewStore in
-            
             VStack {
-                TextEditingView(placholder: viewStore.emailPlaceholder,
+                TextEditingView(placholder: Constants.emailPlaceholder,
                                 text: viewStore.binding(get: \.email, send: LoginAction.didEmailChanged))
                 
-                TextEditingView(placholder: viewStore.passwordPlaceholder,
+                TextEditingView(placholder: Constants.passwordPlaceholder,
                                 text: viewStore.binding(get: \.password, send: LoginAction.didPasswordChanged))
             }
-            .lineSpacing(24)
-            .padding(.horizontal, 12)
+            .lineSpacing(.spacing(.ultraBig))
+            .padding(.horizontal, .spacing(.medium))
         }
     }
 }
@@ -35,7 +42,7 @@ struct TextEditingView: View {
         TextField(placholder, text: $text)
             .padding()
             .overlay(
-                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
                     .stroke(Color.gray, lineWidth: 1)
             )
     }
@@ -43,6 +50,6 @@ struct TextEditingView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(store: Store<LoginState, LoginAction>(initialState: .init(), reducer: loginReducer, environment: LoginEnviroment(client: nil)))
+        LoginView(store: .init(initialState: .init(), reducer: .empty, environment: ()))
     }
 }
