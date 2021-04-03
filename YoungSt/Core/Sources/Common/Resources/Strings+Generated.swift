@@ -13,6 +13,8 @@ public enum Localizable {
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
+  /// Nickname
+  public static let nicknamePlaceholder = Localizable.tr("Localizable", "nicknamePlaceholder")
   /// Result here
   public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
   /// Password
