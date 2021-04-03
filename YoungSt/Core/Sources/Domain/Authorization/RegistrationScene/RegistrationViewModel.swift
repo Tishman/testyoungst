@@ -11,27 +11,21 @@ import NetworkService
 import Resources
 import Utilities
 
-public struct RegistrationState: Equatable {
-    public init(email: String,
-                nickname: String,
-                password: String) {
-        self.email = email
-        self.nickname = nickname
-        self.password = password
-        self.emailPlaceholder = Localizable.emailPlaceholder
-        self.nicknamePlaceholder = Localizable.nicknamePlaceholder
-        self.passwordPlaceholder = Localizable.passwordPlaceholder
-    }
-    
+struct RegistrationState: Equatable {
     var email: String
     var nickname: String
     var password: String
-    let emailPlaceholder: String
-    let nicknamePlaceholder: String
-    let passwordPlaceholder: String
 }
 
-public enum RegistrationAction: Equatable {
+extension RegistrationState {
+    init() {
+        self.email = ""
+        self.nickname = ""
+        self.password = ""
+    }
+}
+
+enum RegistrationAction: Equatable {
     case didEmailChanged(String)
     case didNicknameChange(String)
     case didPasswordChanged(String)
@@ -39,11 +33,11 @@ public enum RegistrationAction: Equatable {
     case didRecieveRegistartionResult(Result<Authorization_RegistrationResponse, EquatableError>)
 }
 
-public struct RegistrationEnviroment {
-    let client: Authorization_AuthorizationClient?
+struct RegistrationEnviroment {
+    let client: Authorization_AuthorizationClient
 }
 
-internal let reducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
+let reducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
     switch action {
     case let .didEmailChanged(value):
         state.email = value
@@ -63,14 +57,14 @@ internal let reducer = Reducer<RegistrationState, RegistrationAction, Registrati
         }
         
     case .registrationButtonTapped:
-        guard let client = enviroment.client, !state.email.isEmpty, !state.password.isEmpty, !state.nickname.isEmpty else { return .none }
+        guard !state.email.isEmpty, !state.password.isEmpty, !state.nickname.isEmpty else { return .none }
         let requestData = Authorization_RegistrationRequest.with {
             $0.email = state.email
             $0.nickname = state.email
             $0.password = state.password
         }
         
-        let registration = client.register(requestData)
+        let registration = enviroment.client.register(requestData)
         
         return registration
             .response
