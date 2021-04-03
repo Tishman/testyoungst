@@ -23,10 +23,10 @@ struct LoginView: View {
         WithViewStore(store) { viewStore in
             VStack {
                 TextEditingView(placholder: Constants.emailPlaceholder,
-                                text: viewStore.binding(get: \.email, send: LoginAction.didEmailChanged))
+                                text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
                 
                 TextEditingView(placholder: Constants.passwordPlaceholder,
-                                text: viewStore.binding(get: \.password, send: LoginAction.didPasswordChanged))
+                                text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged))
             }
             .lineSpacing(.spacing(.ultraBig))
             .padding(.horizontal, .spacing(.medium))

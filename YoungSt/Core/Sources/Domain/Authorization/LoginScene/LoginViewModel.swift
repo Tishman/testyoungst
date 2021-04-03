@@ -12,52 +12,48 @@ import Utilities
 import Resources
 
 public struct LoginState: Equatable {
-    init() {
-        self.email = ""
-        self.password = ""
-    }
-    
-    var email: String
-    var password: String
+    var email: String = ""
+    var password: String = ""
+    var resetPasswordOpened = false
+    var loginError: String?
 }
 
 enum LoginAction: Equatable {
-    case didEmailChanged(String)
-    case didPasswordChanged(String)
-    case logInButtonTapped
-    case successLogIn
+    case emailChanged(String)
+    case passwordChanged(String)
+    case loginTapped
+    case forgotPasswordTapped
+    case handleLogin(Result<Authorization_LoginResponse, LoginError>)
 }
 
 struct LoginEnviroment {
-    let client: Authorization_AuthorizationClient
+    let service: AuthorizationService
 }
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
     switch action {
-    case let .didEmailChanged(value):
+    case let .emailChanged(value):
         state.email = value
         
-    case let .didPasswordChanged(value):
+    case let .passwordChanged(value):
         state.password = value
         
-    case .logInButtonTapped:
+    case .loginTapped:
         let requestData = Authorization_LoginRequest.with {
             $0.email = state.email
             $0.password = state.password
         }
         
-        let login = enviroment.client.login(requestData)
-        
-        return login
-            .response
-            .publisher
+        return enviroment.service.login(request: requestData)
             .receive(on: DispatchQueue.main)
-            .mapError(EquatableError.init)
             .catchToEffect()
-            .map({ _ in LoginAction.successLogIn })
+            .map(LoginAction.handleLogin)
         
-    case .successLogIn:
-        return .none
+    case let .handleLogin(result):
+        break
+        
+    case .forgotPasswordTapped:
+        break
     }
     return .none
 }

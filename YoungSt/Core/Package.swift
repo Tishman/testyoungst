@@ -49,6 +49,7 @@ enum ExternalDependecy {
     case diTranquillity
     case combineExpect
     case composableArchitecture
+    case keychain
     
     var product: Target.Dependency {
         switch self {
@@ -62,6 +63,8 @@ enum ExternalDependecy {
             return "CombineExpectations"
         case .composableArchitecture:
             return .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        case .keychain:
+            return .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
         }
     }
 }
@@ -75,7 +78,8 @@ let package = Package(
         .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
         .package(url: "https://github.com/ivlevAstef/DITranquillity.git", from: "4.1.7"),
         .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0")
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),
+        .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
     ],
     targets: [
         .target(name: CorePackage.coordinator.rawValue,
@@ -141,10 +145,12 @@ let package = Package(
             name: CorePackage.authorization.rawValue,
             dependencies: [
                 ExternalDependecy.composableArchitecture.product,
+                ExternalDependecy.grpc.product,
+                ExternalDependecy.keychain.product,
                 CorePackage.networkService.dependency,
                 CorePackage.resources.dependency,
                 CorePackage.utilities.dependency,
-                CorePackage.coordinator.dependency
+                CorePackage.coordinator.dependency,
             ],
             path: CorePackage.authorization.path
         )
