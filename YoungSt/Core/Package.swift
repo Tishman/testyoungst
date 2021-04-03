@@ -12,6 +12,7 @@ enum CorePackage: String, CaseIterable {
     case networkService = "NetworkService"
     case translateScene = "TranslateScene"
     case coordinator = "Coordinator"
+    case loginScene = "LoginScene"
     
     var library: Product {
         .library(name: rawValue, targets: [rawValue])
@@ -31,6 +32,8 @@ enum CorePackage: String, CaseIterable {
             return "Sources/Service/" + rawValue
         case .translateScene:
             return "Sources/Domain/" + rawValue
+        case .loginScene:
+            return "Sources/Domain/Authorization/" + rawValue
         }
     }
     
@@ -129,7 +132,17 @@ let package = Package(
                 CorePackage.utilities.dependency
             ],
             path: CorePackage.translateScene.path
-        )
+        ),
+        .target(
+            name: CorePackage.loginScene.rawValue,
+            dependencies: [
+                ExternalDependecy.composableArchitecture.product,
+                CorePackage.networkService.dependency,
+                CorePackage.resources.dependency,
+                CorePackage.utilities.dependency
+            ],
+            path: CorePackage.loginScene.path
+            )
     ]
 )
 

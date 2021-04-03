@@ -11,32 +11,36 @@ import NetworkService
 import Utilities
 import Resources
 
-struct LoginState: Equatable {
-    internal init() {
+public struct LoginState: Equatable {
+    public init() {
         self.email = ""
         self.password = ""
         self.emailPlaceholder = Localizable.emailPlaceholder
         self.passwordPlaceholder = Localizable.passwordPlaceholder
     }
     
-    var email: String
-    var password: String
-    let emailPlaceholder: String
-    let passwordPlaceholder: String
+    public var email: String
+    public var password: String
+    public let emailPlaceholder: String
+    public let passwordPlaceholder: String
 }
 
-enum LoginAction: Equatable {
+public enum LoginAction: Equatable {
     case didEmailChanged(String)
     case didPasswordChanged(String)
     case logInButtonTapped
     case successLogIn
 }
 
-struct LoginEnviroment {
-    let client: Authorization_AuthorizationClient?
+public struct LoginEnviroment {
+    public init(client: Authorization_AuthorizationClient?) {
+        self.client = client
+    }
+    
+    public let client: Authorization_AuthorizationClient?
 }
 
-let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
+internal let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
     switch action {
     case let .didEmailChanged(value):
         state.email = value
