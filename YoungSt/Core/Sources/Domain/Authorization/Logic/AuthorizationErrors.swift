@@ -32,6 +32,7 @@ enum RegistrationError: String, Error, GRPCInitable {
 enum LoginError: String, Error, GRPCInitable {
     case unknown
     case couldNotExtractSid
+    case errVerificationNotConfirmedRegID
 }
 
 protocol GRPCInitable: RawRepresentable where RawValue == String {

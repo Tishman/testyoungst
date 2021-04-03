@@ -44,8 +44,6 @@ final class AuthorizationServiceImpl: AuthorizationService {
     }
     
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError> {
-        // TODO: Handle userId setting
-        
         return client.register(request).response.publisher
             .map(\.userID)
             .tryMap(UUID.from)
@@ -54,6 +52,7 @@ final class AuthorizationServiceImpl: AuthorizationService {
     }
     
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError> {
+        // TODO: Handle LoginError.errVerificationNotConfirmedRegID and extract user id for code confirming in metadata
         
         let call = client.login(request)
         let loginAndSaveSid = call.initialMetadata.publisher
