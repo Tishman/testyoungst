@@ -12,10 +12,10 @@
 		0C46219125938835006B1701 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* GRDB */; };
 		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
 		47516CA6260BADB900B7C7C7 /* TranslateScene in Frameworks */ = {isa = PBXBuildFile; productRef = 47516CA5260BADB900B7C7C7 /* TranslateScene */; };
-		47516CAE260BB00500B7C7C7 /* TranslateClientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47516CAD260BB00500B7C7C7 /* TranslateClientFactory.swift */; };
 		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
 		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
 		47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */; };
+		47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* Authorization */; };
 		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
 		FD10AC4725FE31FD001FFF11 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4625FE31FD001FFF11 /* Models */; };
 		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
@@ -30,7 +30,6 @@
 		0C34921D2592001900F729C4 /* YoungStApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoungStApp.swift; sourceTree = "<group>"; };
 		0C3492242592001C00F729C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C3492262592001C00F729C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		47516CAD260BB00500B7C7C7 /* TranslateClientFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslateClientFactory.swift; sourceTree = "<group>"; };
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDI.swift; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 				0C46219125938835006B1701 /* GRDB in Frameworks */,
 				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
 				FD5111362618ADC500A90101 /* Coordinator in Frameworks */,
+				47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */,
 				0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,7 +100,6 @@
 		47516CB0260BB01000B7C7C7 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				47516CAD260BB00500B7C7C7 /* TranslateClientFactory.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -148,6 +147,7 @@
 				FD10AC5125FE3276001FFF11 /* DITranquillity */,
 				47516CA5260BADB900B7C7C7 /* TranslateScene */,
 				FD5111352618ADC500A90101 /* Coordinator */,
+				47BF2A8B2618C52D008FDB1F /* Authorization */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -208,7 +208,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47516CAE260BB00500B7C7C7 /* TranslateClientFactory.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
 			);
@@ -459,6 +458,10 @@
 		477CD6AA25FBB58B00BB45B8 /* Resources */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Resources;
+		};
+		47BF2A8B2618C52D008FDB1F /* Authorization */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Authorization;
 		};
 		FD10AC4425FE31FD001FFF11 /* Mocks */ = {
 			isa = XCSwiftPackageProductDependency;

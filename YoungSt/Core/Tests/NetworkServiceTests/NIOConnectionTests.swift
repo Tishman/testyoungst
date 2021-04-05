@@ -71,7 +71,7 @@ final class NIOConnectionTests: XCTestCase {
     
     func testLoginConnection() throws {
         let connectorFactory: Provider1<NetworkConnector, ServerConfiguration> = container.resolve()
-        let connectionProvider = connectorFactory.value(.local)
+        let connectionProvider = connectorFactory.value(.stage)
         let result = try makeAuthTestConnection(connectionProvider: connectionProvider)
         XCTAssertEqual(result, true)
     }

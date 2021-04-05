@@ -14,27 +14,27 @@ import ComposableArchitecture
 
 final class ModuleDelaration: DIPart, ModuleStoreProvider {
     
-    private let environment: LoginEnviroment
+    private let environment: RegistrationEnviroment
     private let input: AuthorizationInput
     
-    private init(environment: LoginEnviroment, input: AuthorizationInput) {
+    private init(environment: RegistrationEnviroment, input: AuthorizationInput) {
         self.environment = environment
         self.input = input
     }
     
     static func load(container: DIContainer) {
-        container.register(LoginEnviroment.init)
+        container.register(RegistrationEnviroment.init)
         
         container.register { env in { input in
             ViewHolder(storeProvider: ModuleDelaration(environment: env, input: input)) { store in
-                LoginView(store: store)
+                RegistrationView(store: store)
             }
             .erased
         }
         }
     }
     
-    func createInitialModuleStore() -> Store<LoginState, LoginAction> {
-        .init(initialState: .init(), reducer: loginReducer, environment: environment)
+    func createInitialModuleStore() -> Store<RegistrationState, RegistrationAction> {
+        .init(initialState: .init(), reducer: registrationReducer, environment: environment)
     }
 }

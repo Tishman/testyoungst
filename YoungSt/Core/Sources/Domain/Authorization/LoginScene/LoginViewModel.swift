@@ -9,7 +9,6 @@ import Foundation
 import ComposableArchitecture
 import NetworkService
 import Utilities
-import Resources
 
 public struct LoginState: Equatable {
     var email: String = ""

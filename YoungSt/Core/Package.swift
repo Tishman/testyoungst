@@ -121,7 +121,8 @@ let package = Package(
                     ]),
         .target(
             name: CorePackage.resources.rawValue,
-            path: CorePackage.resources.path
+            path: CorePackage.resources.path,
+            resources: [.copy("Sources/Common/Resources")]
         ),
         .target(
             name: CorePackage.utilities.rawValue,
@@ -144,15 +145,16 @@ let package = Package(
         .target(
             name: CorePackage.authorization.rawValue,
             dependencies: [
+                CorePackage.resources.dependency,
                 ExternalDependecy.composableArchitecture.product,
                 ExternalDependecy.grpc.product,
                 ExternalDependecy.keychain.product,
                 CorePackage.networkService.dependency,
-                CorePackage.resources.dependency,
                 CorePackage.utilities.dependency,
                 CorePackage.coordinator.dependency,
             ],
-            path: CorePackage.authorization.path
+            path: CorePackage.authorization.path,
+            resources: [.copy("Sources/Common/Resources")]
         )
     ]
 )

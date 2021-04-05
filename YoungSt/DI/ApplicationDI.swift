@@ -9,6 +9,7 @@ import Foundation
 import DITranquillity
 import NetworkService
 import Coordinator
+import Authorization
 
 final class ApplicationDI: DIFramework {
     static func load(container: DIContainer) {
@@ -19,6 +20,7 @@ final class ApplicationDI: DIFramework {
         let container = DIContainer()
         container.append(framework: ApplicationDI.self)
         container.append(framework: NetworkDIFramework.self)
+        container.append(framework: AuthorizationDIFramework.self)
         container.append(framework: CoordinatorDIFramework.self)
         
         #if DEBUG

@@ -12,6 +12,7 @@ import NetworkService
 import DITranquillity
 import TranslateScene
 import Coordinator
+import Authorization
 
 @main
 struct YoungStApp: App {
@@ -35,8 +36,7 @@ struct YoungStApp: App {
 	
     var body: some Scene {
         WindowGroup {
-			TranslateView(store: self.store.scope(state: \.translateState, action: AppAction.translate(state:)))
-                .environment(\.coordinator, coordinator)
+            coordinator.view(for: .authorization(.default))
         }
     }
 }

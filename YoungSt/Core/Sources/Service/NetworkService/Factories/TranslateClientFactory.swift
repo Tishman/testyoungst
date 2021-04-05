@@ -6,16 +6,23 @@
 //
 
 import Foundation
-import NetworkService
 import GRPC
 import NIO
 
-struct TranslateClientFactory: NetworkClientFactory {
-    let connectionProvider: NetworkConnector
-    let callOptionsProvider: CallOptionConfigurator
-    let interceptors: Translator_TranslatorClientInterceptorFactoryProtocol?
+public struct TranslateClientFactory: NetworkClientFactory {
+    public init(connectionProvider: NetworkConnector,
+                callOptionsProvider: CallOptionConfigurator,
+                interceptors: Translator_TranslatorClientInterceptorFactoryProtocol?) {
+        self.connectionProvider = connectionProvider
+        self.callOptionsProvider = callOptionsProvider
+        self.interceptors = interceptors
+    }
     
-    func create() -> Translator_TranslatorClient {
+    public let connectionProvider: NetworkConnector
+    public let callOptionsProvider: CallOptionConfigurator
+    public let interceptors: Translator_TranslatorClientInterceptorFactoryProtocol?
+    
+    public func create() -> Translator_TranslatorClient {
         Translator_TranslatorClient(channel: connectionProvider.getConnection(),
                                     defaultCallOptions: callOptionsProvider.createDefaultCallOptions(),
                                     interceptors: interceptors)
@@ -23,8 +30,10 @@ struct TranslateClientFactory: NetworkClientFactory {
 }
 
 
-struct TranslatorInjectionInterceptorFactory: Translator_TranslatorClientInterceptorFactoryProtocol {
-    func makeTranslateInterceptors() -> [ClientInterceptor<Translator_TranslationRequest, Translator_TranslationResponse>] {
+public struct TranslatorInjectionInterceptorFactory: Translator_TranslatorClientInterceptorFactoryProtocol {
+    public init() {}
+    
+    public func makeTranslateInterceptors() -> [ClientInterceptor<Translator_TranslationRequest, Translator_TranslationResponse>] {
         [TranslationAPIKeyInjectorInterceptor()]
     }
 }
