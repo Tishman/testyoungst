@@ -79,7 +79,6 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
-				47516CB0260BB01000B7C7C7 /* Networking */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
 				0C3492262592001C00F729C4 /* Info.plist */,
@@ -95,13 +94,6 @@
 				0C3492242592001C00F729C4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		47516CB0260BB01000B7C7C7 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 		477CD6A925FBB58B00BB45B8 /* Frameworks */ = {

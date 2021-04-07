@@ -9,16 +9,32 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Localizable {
+  /// Confrim password
+  public static let confrimPasswordPlaceholder = Localizable.tr("Localizable", "confrimPasswordPlaceholder")
   /// E-mail
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
-  /// Nickname
-  public static let nicknamePlaceholder = Localizable.tr("Localizable", "nicknamePlaceholder")
+  /// Log In
+  public static let loginButtonTitle = Localizable.tr("Localizable", "loginButtonTitle")
+  /// Log in to your account to return to our ranks!
+  public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
   /// Result here
   public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
   /// Password
   public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
+  /// I agree to the terms of use and accept the Privacy Policy.
+  public static let privacyPolicyTitle = Localizable.tr("Localizable", "privacyPolicyTitle")
+  /// Register to get started.
+  public static let registerToStartTitle = Localizable.tr("Localizable", "registerToStartTitle")
+  /// Registration
+  public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
+  /// Username
+  public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
+  /// Welcome back
+  public static let welcomeBackTitle = Localizable.tr("Localizable", "welcomeBackTitle")
+  /// Welcome
+  public static let welcomeTitle = Localizable.tr("Localizable", "welcomeTitle")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
@@ -26,19 +42,7 @@ public enum Localizable {
 
 extension Localizable {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = BundleToken.bundle.localizedString(forKey: key, value: nil, table: table)
+    let format = Bundle.coreModule.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
-
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle(for: BundleToken.self)
-    #endif
-  }()
-}
-// swiftlint:enable convenience_type

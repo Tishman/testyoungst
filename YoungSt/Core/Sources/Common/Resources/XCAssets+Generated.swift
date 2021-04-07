@@ -22,9 +22,12 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum Asset {
   public enum Colors {
+    public static let greenDark = ColorAsset(name: "greenDark")
+    public static let greenLightly = ColorAsset(name: "greenLightly")
     public static let white = ColorAsset(name: "white")
   }
   public enum Images {
+    public static let eye = ImageAsset(name: "eye")
     public static let pokemon = ImageAsset(name: "pokemon")
   }
 }
@@ -57,7 +60,7 @@ public final class ColorAsset {
 public extension ColorAsset.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
   convenience init?(asset: ColorAsset) {
-    let bundle = BundleToken.bundle
+    let bundle = Bundle.coreModule
     #if os(iOS) || os(tvOS)
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
@@ -78,7 +81,7 @@ public struct ImageAsset {
   #endif
 
   public var image: Image {
-    let bundle = BundleToken.bundle
+    let bundle = Bundle.coreModule
     #if os(iOS) || os(tvOS)
     let image = Image(named: name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
@@ -99,7 +102,7 @@ public extension ImageAsset.Image {
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init?(asset: ImageAsset) {
     #if os(iOS) || os(tvOS)
-    let bundle = BundleToken.bundle
+    let bundle = Bundle.coreModule
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
     self.init(named: NSImage.Name(asset.name))
@@ -108,15 +111,3 @@ public extension ImageAsset.Image {
     #endif
   }
 }
-
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle(for: BundleToken.self)
-    #endif
-  }()
-}
-// swiftlint:enable convenience_type

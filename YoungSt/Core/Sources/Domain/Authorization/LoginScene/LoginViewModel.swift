@@ -10,11 +10,12 @@ import ComposableArchitecture
 import NetworkService
 import Utilities
 
-public struct LoginState: Equatable {
+struct LoginState: Equatable {
     var email: String = ""
     var password: String = ""
     var resetPasswordOpened = false
     var loginError: String?
+    var showPassword: Bool = false
 }
 
 enum LoginAction: Equatable {
@@ -22,6 +23,8 @@ enum LoginAction: Equatable {
     case passwordChanged(String)
     case loginTapped
     case forgotPasswordTapped
+    case registerButtonTapped
+    case showPasswordButtonTapped
     case handleLogin(Result<Authorization_LoginResponse, LoginError>)
 }
 
@@ -53,6 +56,12 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         
     case .forgotPasswordTapped:
         break
+        
+    case .registerButtonTapped:
+        break
+        
+    case .showPasswordButtonTapped:
+        state.showPassword.toggle()
     }
     return .none
 }

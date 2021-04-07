@@ -16,6 +16,7 @@ struct Bubble: ViewModifier {
             .background(
                 RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
                     .stroke(color, lineWidth: lineWidth)
+                    .background(color)
             )
     }
 }

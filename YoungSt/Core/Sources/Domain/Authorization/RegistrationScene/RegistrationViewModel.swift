@@ -14,7 +14,7 @@ struct RegistrationState: Equatable {
     var email: String
     var nickname: String
     var password: String
-    let placeholder: String
+    var confrimPassword: String
 }
 
 extension RegistrationState {
@@ -22,7 +22,7 @@ extension RegistrationState {
         self.email = ""
         self.nickname = ""
         self.password = ""
-        self.placeholder = "E-mail"
+        self.confrimPassword = ""
     }
 }
 
@@ -30,6 +30,7 @@ enum RegistrationAction: Equatable {
     case didEmailChanged(String)
     case didNicknameChange(String)
     case didPasswordChanged(String)
+    case didConfrimPasswordChanged(String)
     case registrationButtonTapped
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
 }
@@ -48,6 +49,9 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
         
     case let .didPasswordChanged(value):
         state.password = value
+        
+    case let .didConfrimPasswordChanged(value):
+        state.confrimPassword = value
         
     case let .didRecieveRegistartionResult(result):
         switch result {
