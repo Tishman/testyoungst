@@ -32,65 +32,24 @@ struct LoginView: View {
                 
                 VStack(spacing: .spacing(.ultraBig)) {
                     TextEditingView(placholder: Constants.emailPlaceholder,
-                                    color: Color(Asset.Colors.greenLightly.color),
-                                    showPassword: true,
                                     text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
                     
-                    ZStack(alignment: .trailing) {
-                        TextEditingView(placholder: Constants.passwordPlaceholder,
-                                        color: Color(Asset.Colors.greenLightly.color),
-                                        showPassword: viewStore.showPassword,
-                                    text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged))
-                        Button(action: { viewStore.send(.showPasswordButtonTapped) }, label: {
-                            Image(uiImage: Asset.Images.eye.image)
-                        })
-                        .offset(x: -21, y: 0)
-                    }
+                    SecureView(placholder: Constants.passwordPlaceholder,
+                               text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                               showPassword: viewStore.showPassword,
+                               clouser: { viewStore.send(.showPasswordButtonTapped) })
                 }
                 .padding(.horizontal, .spacing(.ultraBig))
                 .padding(.top, .spacing(.extraSize))
+                
                 Spacer()
                 
                 VStack {
-                    Button(action: { viewStore.send(.loginTapped) }, label: {
-                        Text(Constants.loginButtonTitle)
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Asset.Colors.greenDark.color.swiftuiColor)
-                            .cornerRadius(.corner(.small))
-                    })
-                    
-                    Button(action: { viewStore.send(.registerButtonTapped) }, label: {
-                        Text(Constants.registrationButtonTitle)
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Asset.Colors.greenDark.color.swiftuiColor)
-                            .cornerRadius(.corner(.small))
-                    })
+                    ButtonView(text: Constants.loginButtonTitle, clouser: { viewStore.send(.loginTapped) })
+                    ButtonView(text: Constants.registrationButtonTitle, clouser: { viewStore.send(.registerButtonTapped) })
                 }
                 .padding(.bottom, .spacing(.ultraBig))
             }
-        }
-    }
-}
-
-struct TextEditingView: View {
-    let placholder: String
-    let color: Color
-    let showPassword: Bool
-    @Binding var text: String
-    
-    var body: some View {
-        if showPassword {
-            TextField(placholder, text: $text)
-                .padding()
-                .bubble(color: color, lineWidth: 1)
-                .cornerRadius(.corner(.big))
-        } else {
-            SecureField(placholder, text: $text)
-                .padding()
-                .bubble(color: color, lineWidth: 1)
-                .cornerRadius(.corner(.big))
         }
     }
 }

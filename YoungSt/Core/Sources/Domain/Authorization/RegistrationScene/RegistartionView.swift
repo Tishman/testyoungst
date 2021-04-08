@@ -31,34 +31,21 @@ struct RegistrationView: View {
                 .padding(.top, .spacing(.big))
                 
                 VStack(spacing: 20) {
-                    TextEditingView.init(placholder: Constants.emailPlaceholder,
-                                         color: Asset.Colors.greenLightly.color.swiftuiColor,
-                                         showPassword: true,
-                                          text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
-                    TextEditingView.init(placholder: Constants.usernamePlaceholder,
-                                         color: Asset.Colors.greenLightly.color.swiftuiColor,
-                                         showPassword: true,
-                                         text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange))
-                    TextEditingView.init(placholder: Constants.passwordPlaceholder,
-                                         color: Asset.Colors.greenLightly.color.swiftuiColor,
-                                         showPassword: true,
-                                         text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged))
+                    TextEditingView(placholder: Constants.emailPlaceholder,
+                                    text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
+                    TextEditingView(placholder: Constants.usernamePlaceholder,
+                                    text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange))
+                    TextEditingView(placholder: Constants.passwordPlaceholder,
+                                    text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged))
                     TextEditingView(placholder: Constants.confrimPasswordPlaceholder,
-                                    color: Asset.Colors.greenLightly.color.swiftuiColor,
-                                    showPassword: true,
                                     text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged))
                 }
                 .padding(.horizontal, .spacing(.ultraBig))
                 .padding(.top, .spacing(.extraSize))
+                
                 Spacer()
                 
-                Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
-                    Text(Constants.registrationButtonTitle)
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Asset.Colors.greenDark.color.swiftuiColor)
-                        .cornerRadius(8)
-                })
+                ButtonView(text: Constants.registrationButtonTitle, clouser: { viewStore.send(.registrationButtonTapped) })
                 .padding(.bottom, .spacing(.ultraBig))
             }
         }
