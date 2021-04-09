@@ -6,6 +6,7 @@ strings:
       params:
         enumName: Localizable
         publicAccess: 1
+        bundle: Bundle.coreModule
       output: YoungSt/Core/Sources/Common/Resources/Strings+Generated.swift
 
 xcassets:
@@ -17,4 +18,5 @@ xcassets:
       params:
         forceProvidesNamespaces: false
         publicAccess: 1
+        bundle: Bundle.coreModule
       output: YoungSt/Core/Sources/Common/Resources/XCAssets+Generated.swift

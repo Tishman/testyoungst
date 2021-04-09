@@ -1,2 +1,13 @@
 "inputTranslationPlacholder" = "Введите слово";
 "outputTranslationPlacholder" = "Результат";
+"emailPlaceholder" = "E-mail";
+"passwordPlaceholder" = "Пароль";
+"usernamePlaceholder" = "Имя пользователя";
+"confrimPasswordPlaceholder" = "Подтверждение пароля";
+"welcomeTitle" = "Добро пожаловать";
+"registerToStartTitle" = "Зарегестрируйтесь, чтобы начать.";
+"registrationButtonTitle" = "Регистрация";
+"privacyPolicyTitle" = "Я соглашаюсь с правилами пользования и принимаю Политику Конфиденциальности.";
+"welcomeBackTitle" = "С возвращением";
+"loginToReturnTitle" = "Войдите в свой аккаунт, чтобы вернуться в наши ряды!";
+"loginButtonTitle" = "Войти";

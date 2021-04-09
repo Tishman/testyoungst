@@ -10,6 +10,9 @@ enum CorePackage: String, CaseIterable {
     case protocols = "Protocols"
     case mocks = "Mocks"
     case networkService = "NetworkService"
+    case translateScene = "TranslateScene"
+    case coordinator = "Coordinator"
+    case authorization = "Authorization"
     
     var library: Product {
         .library(name: rawValue, targets: [rawValue])
@@ -23,10 +26,14 @@ enum CorePackage: String, CaseIterable {
         switch self {
         case .protocols, .models, .mocks:
             return "Sources/API/" + rawValue
-        case .utilities, .resources:
+        case .utilities, .resources, .coordinator:
             return "Sources/Common/" + rawValue
         case .networkService:
             return "Sources/Service/" + rawValue
+        case .translateScene:
+            return "Sources/Domain/" + rawValue
+        case .authorization:
+            return "Sources/Domain/" + rawValue
         }
     }
     
@@ -41,6 +48,8 @@ enum ExternalDependecy {
     case grpc
     case diTranquillity
     case combineExpect
+    case composableArchitecture
+    case keychain
     
     var product: Target.Dependency {
         switch self {
@@ -52,6 +61,10 @@ enum ExternalDependecy {
             return .product(name: "DITranquillity", package: "DITranquillity")
         case .combineExpect:
             return "CombineExpectations"
+        case .composableArchitecture:
+            return .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        case .keychain:
+            return .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
         }
     }
 }
@@ -65,8 +78,16 @@ let package = Package(
         .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
         .package(url: "https://github.com/ivlevAstef/DITranquillity.git", from: "4.1.7"),
         .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),
+        .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
     ],
     targets: [
+        .target(name: CorePackage.coordinator.rawValue,
+                dependencies: [
+                    CorePackage.protocols.dependency,
+                    ExternalDependecy.diTranquillity.product
+                ],
+                path: CorePackage.coordinator.path),
         .target(
             name: CorePackage.models.rawValue,
             path: CorePackage.models.path
@@ -86,6 +107,7 @@ let package = Package(
                 CorePackage.models.dependency,
                 CorePackage.utilities.dependency,
                 ExternalDependecy.grpc.product,
+                ExternalDependecy.diTranquillity.product
             ],
             path: CorePackage.networkService.path
         ),
@@ -99,7 +121,8 @@ let package = Package(
                     ]),
         .target(
             name: CorePackage.resources.rawValue,
-            path: CorePackage.resources.path
+            path: CorePackage.resources.path,
+            resources: [.copy("Sources/Common/Resources")]
         ),
         .target(
             name: CorePackage.utilities.rawValue,
@@ -109,6 +132,30 @@ let package = Package(
                     dependencies: [
                         CorePackage.utilities.dependency,
                     ]),
+        .target(
+            name: CorePackage.translateScene.rawValue,
+            dependencies: [
+                CorePackage.networkService.dependency,
+                ExternalDependecy.composableArchitecture.product,
+                CorePackage.resources.dependency,
+                CorePackage.utilities.dependency
+            ],
+            path: CorePackage.translateScene.path
+        ),
+        .target(
+            name: CorePackage.authorization.rawValue,
+            dependencies: [
+                CorePackage.resources.dependency,
+                ExternalDependecy.composableArchitecture.product,
+                ExternalDependecy.grpc.product,
+                ExternalDependecy.keychain.product,
+                CorePackage.networkService.dependency,
+                CorePackage.utilities.dependency,
+                CorePackage.coordinator.dependency,
+            ],
+            path: CorePackage.authorization.path,
+            resources: [.copy("Sources/Common/Resources")]
+        )
     ]
 )
 

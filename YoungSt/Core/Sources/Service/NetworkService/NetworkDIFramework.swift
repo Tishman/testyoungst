@@ -8,9 +8,9 @@
 import DITranquillity
 import Models
 
-final class NetworkDIFramework: DIFramework {
+public final class NetworkDIFramework: DIFramework {
     
-    static func load(container: DIContainer) {
+    public static func load(container: DIContainer) {
         container.register(AppCallOptionConfigurator.init)
             .as(check: CallOptionConfigurator.self) {$0}
         
@@ -25,6 +25,18 @@ final class NetworkDIFramework: DIFramework {
         container.register(GrpcConnector.init)
             .as(check: NetworkConnector.self) {$0}
             .lifetime(.perContainer(.strong))
+        
+        container.register(AuthorizationInjectionInterceptorFactory.init)
+            .as(check: Authorization_AuthorizationClientInterceptorFactoryProtocol.self) {$0}
+        
+        container.register { AuthorizationClientFactory(connectionProvider: $0,
+                                                        callOptionsProvider: $1,
+                                                        interceptors: $2).create() }
+            .as(check: Authorization_AuthorizationClientProtocol.self) {$0}
+//            .as(check: NetworkClientFactory.self)
+        
+//        container.register(Authorization_AuthorizationClient.init)
+//            .as(check: Authorization_AuthorizationClientProtocol.self) {$0}
     }
     
 }

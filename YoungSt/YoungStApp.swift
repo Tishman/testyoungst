@@ -8,70 +8,55 @@
 import SwiftUI
 import ComposableArchitecture
 import GRDB
+import NetworkService
+import DITranquillity
+import TranslateScene
+import Coordinator
+import Authorization
 
 @main
 struct YoungStApp: App {
+    private let container: DIContainer
+    private let coordinator: Coordinator
+    
 	let store = Store<AppState, AppAction>.init(initialState: AppState(),
 												reducer: appReducer,
 												environment: environment)
+    
+    init() {
+        let container = ApplicationDI.container
+        
+        self.container = container
+        self.coordinator = container.resolve()
+    }
 	
 	static var environment: AppEnviroment {
-		AppEnviroment(networkService: AppLogic.createNetworkService(),
-					  databaseService: AppLogic.createDatabaseService())
+		AppEnviroment()
 	}
 	
     var body: some Scene {
         WindowGroup {
-			TranslateView(store: self.store.scope(state: \.translateState, action: AppAction.translate(state:)))
+            coordinator.view(for: .authorization(.default))
         }
     }
 }
 
-private struct AppLogic {
-	static func createDatabaseService() -> DatabaseServiceProtocol {
-		let databaseUrl = try! FileManager.default
-			.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-			.appendingPathComponent("db.sqlite")
-		let dbQueue = try! DatabaseQueue(path: databaseUrl.path)
-		let databaseService = try! DatabaseService(dbQueue)
-		return databaseService
-	}
-	
-	static func createNetworkService() -> NetworkServiceProtocol {
-		return NetworkService()
-	}
-}
+private struct AppLogic {}
 
 struct AppState: Equatable {
-	var translateState: TranslateState = TranslateState()
+	
 }
 
 enum AppAction: Equatable {
-	case translate(state: TranslateAction)
+    case `default`
 }
 
 struct AppEnviroment {
-	let networkService: NetworkServiceProtocol
-	let databaseService: DatabaseServiceProtocol
-	
-	var translationEnv: TranslateEnviroment {
-		.init(networkService: networkService,
-			  databaseService: databaseService)
-	}
+    
 }
 
-let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine(
-	translateReducer.pullback(state: \.translateState,
-							  action: /AppAction.translate,
-							  environment: \.translationEnv),
-	
-	Reducer { state, action, env in
-		switch action {
-		case .translate:
-			return .none
-		}
-	}
-
-)
+let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
+    return .none
+}
 
  

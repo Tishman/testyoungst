@@ -12,7 +12,7 @@ public struct ServerConfiguration {
     
     public var connectivityTimeout: Int = 20
     
-    public static let local = Self(transferProtocol: "grpc", host: "localhost", port: 8080)
+    public static let local = Self(transferProtocol: "grpc", host: "192.168.10.142", port: 8080)
     public static let stage = Self(transferProtocol: "grpcs", host: "vyoungst.com", port: 443)
     public static let production = Self(transferProtocol: "grpcs", host: "youngst.app", port: 443)
     

@@ -1,2 +1,14 @@
 "inputTranslationPlacholder" = "Enter word";
 "outputTranslationPlacholder" = "Result here";
+"emailPlaceholder" = "E-mail";
+"passwordPlaceholder" = "Password";
+"usernamePlaceholder" = "Username";
+"confrimPasswordPlaceholder" = "Confrim password";
+"welcomeTitle" = "Welcome";
+"registerToStartTitle" = "Register to get started.";
+"registrationButtonTitle" = "Registration";
+"privacyPolicyTitle" = "I agree to the terms of use and accept the Privacy Policy.";
+"welcomeBackTitle" = "Welcome back";
+"loginToReturnTitle" = "Log in to your account to return to our ranks!";
+"loginButtonTitle" = "Log In";
+ 
