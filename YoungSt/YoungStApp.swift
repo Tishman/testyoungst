@@ -48,7 +48,7 @@ struct AppState: Equatable {
 }
 
 enum AppAction: Equatable {
-	
+    case `default`
 }
 
 struct AppEnviroment {
@@ -56,24 +56,7 @@ struct AppEnviroment {
 }
 
 let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
-    switch action {
-    default:
-        return .none
-    }
+    return .none
 }
-
-//let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine(
-//	translateReducer.pullback(state: \.translateState,
-//							  action: /AppAction.translate,
-//							  environment: \.translationEnv),
-//
-//	Reducer { state, action, env in
-//		switch action {
-//		case .translate:
-//			return .none
-//		}
-//	}
-//
-//)
 
  

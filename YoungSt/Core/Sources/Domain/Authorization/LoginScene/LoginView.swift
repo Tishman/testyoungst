@@ -49,6 +49,7 @@ struct LoginView: View {
                         Text(Constants.loginButtonTitle)
                     })
                     .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
+                    
                     Button(action: { viewStore.send(.registerButtonTapped) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })

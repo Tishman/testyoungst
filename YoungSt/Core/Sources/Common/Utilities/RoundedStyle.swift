@@ -17,7 +17,7 @@ public struct RoundedStyle: ButtonStyle {
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding()
-            .foregroundColor(.white)
+            .foregroundColor(configuration.isPressed ? Color.white.opacity(0.4) : .white)
             .background(color)
             .cornerRadius(.corner(.small))
     }
