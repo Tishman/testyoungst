@@ -9,7 +9,7 @@ import SwiftUI
 import Resources
 import ComposableArchitecture
 
-struct SecureView: View {
+struct ToggableSecureField: View {
     let placholder: String
     @Binding var text: String
     let showPassword: Bool
@@ -22,7 +22,7 @@ struct SecureView: View {
             ZStack(alignment: .trailing) {
                 SecureField(placholder, text: $text)
                     .padding()
-                    .bubble(color: Asset.Colors.greenLightly.color.swiftuiColor, lineWidth: 1)
+                    .bubbled(color: Asset.Colors.greenLightly.color.swiftuiColor, lineWidth: 1)
                     .cornerRadius(.corner(.big))
                 Button(action: { clouser() }, label: {
                     Image(uiImage: Asset.Images.eye.image)
@@ -33,8 +33,8 @@ struct SecureView: View {
     }
 }
 
-struct SecureView_Previews: PreviewProvider {
+struct ToggableSecureField_Previews: PreviewProvider {
     static var previews: some View {
-        SecureView(placholder: "Password", text: .constant(""), showPassword: false, clouser: {})
+        ToggableSecureField(placholder: "Password", text: .constant(""), showPassword: false, clouser: {})
     }
 }

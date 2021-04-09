@@ -30,7 +30,7 @@ struct RegistrationView: View {
                 WelcomeView(title: Constants.welcomeTitle, subtitle: Constants.registerToStartTitle)
                 .padding(.top, .spacing(.big))
                 
-                VStack(spacing: 20) {
+                VStack(spacing: .spacing(.big)) {
                     TextEditingView(placholder: Constants.emailPlaceholder,
                                     text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
                     TextEditingView(placholder: Constants.usernamePlaceholder,
@@ -45,7 +45,10 @@ struct RegistrationView: View {
                 
                 Spacer()
                 
-                ButtonView(text: Constants.registrationButtonTitle, clouser: { viewStore.send(.registrationButtonTapped) })
+                Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
+                    Text(Constants.registrationButtonTitle)
+                })
+                .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
                 .padding(.bottom, .spacing(.ultraBig))
             }
         }

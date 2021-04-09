@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Bubble: ViewModifier {
+struct BubbleModifier: ViewModifier {
     let color: Color
     let lineWidth: CGFloat
     
@@ -22,7 +22,7 @@ struct Bubble: ViewModifier {
 }
 
 public extension View {
-    func bubble(color: Color, lineWidth: CGFloat) -> some View {
-        self.modifier(Bubble(color: color, lineWidth: lineWidth))
+    func bubbled(color: Color, lineWidth: CGFloat) -> some View {
+        self.modifier(BubbleModifier(color: color, lineWidth: lineWidth))
     }
 }

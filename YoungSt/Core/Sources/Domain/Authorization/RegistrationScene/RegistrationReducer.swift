@@ -10,35 +10,6 @@ import ComposableArchitecture
 import NetworkService
 import Utilities
 
-struct RegistrationState: Equatable {
-    var email: String
-    var nickname: String
-    var password: String
-    var confrimPassword: String
-}
-
-extension RegistrationState {
-    init() {
-        self.email = ""
-        self.nickname = ""
-        self.password = ""
-        self.confrimPassword = ""
-    }
-}
-
-enum RegistrationAction: Equatable {
-    case didEmailChanged(String)
-    case didNicknameChange(String)
-    case didPasswordChanged(String)
-    case didConfrimPasswordChanged(String)
-    case registrationButtonTapped
-    case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
-}
-
-struct RegistrationEnviroment {
-    let authorizationService: AuthorizationService?
-}
-
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
     switch action {
     case let .didEmailChanged(value):

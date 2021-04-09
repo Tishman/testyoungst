@@ -8,10 +8,10 @@
 import SwiftUI
 import ComposableArchitecture
 
-public struct TranslationResultView: View {
+struct TranslationResultView: View {
 	let store: Store<TranslateState, TranslateAction>
 	
-    public var body: some View {
+    var body: some View {
 		WithViewStore(store) { viewStore in
 			TextEditor(text: viewStore.binding(get: \.translationResult, send: TranslateAction.outputTextChanged))
                 .border(Color.black)

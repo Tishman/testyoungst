@@ -15,7 +15,7 @@ struct TextEditingView: View {
     var body: some View {
         TextField(placholder, text: $text)
             .padding()
-            .bubble(color: Asset.Colors.greenLightly.color.swiftuiColor, lineWidth: 1)
+            .bubbled(color: Asset.Colors.greenLightly.color.swiftuiColor, lineWidth: 1)
             .cornerRadius(.corner(.big))
     }
 }

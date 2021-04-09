@@ -44,35 +44,36 @@ struct YoungStApp: App {
 private struct AppLogic {}
 
 struct AppState: Equatable {
-	var translateState: TranslateState = TranslateState()
+	
 }
 
 enum AppAction: Equatable {
-	case translate(state: TranslateAction)
+	
 }
 
 struct AppEnviroment {
-	
-	var translationEnv: TranslateEnviroment {
-        .init(client: TranslateClientFactory(connectionProvider: ApplicationDI.container.resolve(),
-                                             callOptionsProvider: ApplicationDI.container.resolve(),
-                                             interceptors: TranslatorInjectionInterceptorFactory())
-                .create())
-	}
+    
 }
 
-let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine(
-	translateReducer.pullback(state: \.translateState,
-							  action: /AppAction.translate,
-							  environment: \.translationEnv),
-	
-	Reducer { state, action, env in
-		switch action {
-		case .translate:
-			return .none
-		}
-	}
+let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
+    switch action {
+    default:
+        return .none
+    }
+}
 
-)
+//let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine(
+//	translateReducer.pullback(state: \.translateState,
+//							  action: /AppAction.translate,
+//							  environment: \.translationEnv),
+//
+//	Reducer { state, action, env in
+//		switch action {
+//		case .translate:
+//			return .none
+//		}
+//	}
+//
+//)
 
  

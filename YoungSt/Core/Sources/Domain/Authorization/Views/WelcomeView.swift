@@ -7,28 +7,23 @@
 
 import SwiftUI
 
-public struct WelcomeView: View {
-    public init(title: String, subtitle: String) {
-        self.title = title
-        self.subtitle = subtitle
-    }
+struct WelcomeView: View {
+    let title: String
+    let subtitle: String
     
-    public let title: String
-    public let subtitle: String
-    
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .center) {
             Text(title)
-                .font(.system(size: 28))
+                .font(.title)
                 .bold()
             
             Text(subtitle)
-                .font(.system(size: 16))
+                .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
                 .padding(.top, .spacing(.regular))
-                .padding(.horizontal, 100)
         }
+        .padding(.horizontal)
     }
 }
 

@@ -34,10 +34,10 @@ struct LoginView: View {
                     TextEditingView(placholder: Constants.emailPlaceholder,
                                     text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
                     
-                    SecureView(placholder: Constants.passwordPlaceholder,
-                               text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
-                               showPassword: viewStore.showPassword,
-                               clouser: { viewStore.send(.showPasswordButtonTapped) })
+                    ToggableSecureField(placholder: Constants.passwordPlaceholder,
+                                        text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                                        showPassword: viewStore.showPassword,
+                                        clouser: { viewStore.send(.showPasswordButtonTapped) })
                 }
                 .padding(.horizontal, .spacing(.ultraBig))
                 .padding(.top, .spacing(.extraSize))
@@ -45,8 +45,14 @@ struct LoginView: View {
                 Spacer()
                 
                 VStack {
-                    ButtonView(text: Constants.loginButtonTitle, clouser: { viewStore.send(.loginTapped) })
-                    ButtonView(text: Constants.registrationButtonTitle, clouser: { viewStore.send(.registerButtonTapped) })
+                    Button(action: { viewStore.send(.loginTapped) }, label: {
+                        Text(Constants.loginButtonTitle)
+                    })
+                    .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
+                    Button(action: { viewStore.send(.registerButtonTapped) }, label: {
+                        Text(Constants.registrationButtonTitle)
+                    })
+                    .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
                 }
                 .padding(.bottom, .spacing(.ultraBig))
             }
