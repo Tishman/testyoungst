@@ -11,4 +11,11 @@
 "welcomeBackTitle" = "Welcome back";
 "loginToReturnTitle" = "Log in to your account to return to our ranks!";
 "loginButtonTitle" = "Log In";
+"closeTitle" = "Close";
+"loginOrRegisterAccountSubtitle" = "Login or create an account to get started.";
+"incorrectDataTitle" = "Incorrect data";
+"fillAllFields" = "Please fill all fields.";
+"passwordConfrimation" = "Password mismatch.";
+"ok" = "OK";
+"accountCreated" = "Your account successfully created %";
  

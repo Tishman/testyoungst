@@ -12,4 +12,6 @@ struct RegistrationState: Equatable {
     var nickname: String = ""
     var password: String = ""
     var confrimPassword: String = ""
+	var isAlertPresent: Bool = false
+	var alertMessage = ""
 }

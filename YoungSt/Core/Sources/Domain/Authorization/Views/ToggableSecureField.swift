@@ -22,7 +22,9 @@ struct ToggableSecureField: View {
             ZStack(alignment: .trailing) {
                 SecureField(placholder, text: $text)
                     .padding()
-                    .bubbled(color: Asset.Colors.greenLightly.color.swiftuiColor, lineWidth: 1)
+                    .bubbled(borderColor: Asset.Colors.greenLightly.color.swiftuiColor,
+                             foregroundColor: Asset.Colors.greenLightly.color.swiftuiColor,
+                             lineWidth: 1)
                     .cornerRadius(.corner(.big))
                 Button(action: { clouser() }, label: {
                     Image(uiImage: Asset.Images.eye.image)

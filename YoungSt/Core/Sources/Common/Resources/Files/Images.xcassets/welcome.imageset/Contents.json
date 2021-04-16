@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "vector-creator (9) 1welcome.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

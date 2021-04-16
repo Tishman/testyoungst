@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WelcomeView: View {
+struct HeaderDescriptionView: View {
     let title: String
     let subtitle: String
     
@@ -21,14 +21,15 @@ struct WelcomeView: View {
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
-                .padding(.top, .spacing(.regular))
+                .padding(.top, .spacing(.medium))
+                .padding(.horizontal, .spacing(.superBig))
         }
         .padding(.horizontal)
     }
 }
 
-struct WelcomeView_Previews: PreviewProvider {
+struct HeaderDescription_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(title: "Welcome!", subtitle: "Let's start!")
+        HeaderDescriptionView(title: "Welcome!", subtitle: "Let's start!")
     }
 }

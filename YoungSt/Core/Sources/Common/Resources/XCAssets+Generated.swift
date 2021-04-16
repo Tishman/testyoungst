@@ -29,6 +29,7 @@ public enum Asset {
   public enum Images {
     public static let eye = ImageAsset(name: "eye")
     public static let pokemon = ImageAsset(name: "pokemon")
+    public static let welcome = ImageAsset(name: "welcome")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

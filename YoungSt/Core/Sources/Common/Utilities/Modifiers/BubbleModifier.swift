@@ -8,21 +8,30 @@
 import SwiftUI
 
 struct BubbleModifier: ViewModifier {
-    let color: Color
+    let borderColor: Color
+    let foregroundColor: Color
     let lineWidth: CGFloat
     
     func body(content: Content) -> some View {
         content
             .background(
-                RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
-                    .stroke(color, lineWidth: lineWidth)
-                    .background(color)
+                bubble
+                    .foregroundColor(foregroundColor)
             )
+            .overlay(
+                bubble
+                    .stroke(borderColor, lineWidth: lineWidth)
+            )
+    }
+    
+    private var bubble: some Shape {
+        RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
     }
 }
 
 public extension View {
-    func bubbled(color: Color, lineWidth: CGFloat) -> some View {
-        self.modifier(BubbleModifier(color: color, lineWidth: lineWidth))
+    func bubbled(borderColor: Color, foregroundColor: Color, lineWidth: CGFloat) -> some View {
+        self.modifier(BubbleModifier(borderColor: borderColor, foregroundColor: foregroundColor, lineWidth: lineWidth))
     }
 }
+

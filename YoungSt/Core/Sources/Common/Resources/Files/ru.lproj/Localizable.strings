@@ -11,3 +11,10 @@
 "welcomeBackTitle" = "С возвращением";
 "loginToReturnTitle" = "Войдите в свой аккаунт, чтобы вернуться в наши ряды!";
 "loginButtonTitle" = "Войти";
+"closeTitle" = "Закрыть";
+"loginOrRegisterAccountSubtitle" = "Войди или создай аккаунт, чтобы начать.";
+"incorrectDataTitle" = "Неверные данные";
+"fillAllFields" = "Пожалуйста заполните все поля.";
+"passwordConfrimation" = "Пароли не совпадают.";
+"ok" = "ОК";
+"accountCreated" = "Ваша учетная запись успешно создана %";

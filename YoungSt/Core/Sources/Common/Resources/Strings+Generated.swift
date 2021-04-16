@@ -9,18 +9,32 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Localizable {
+  /// Your account successfully created %
+  public static let accountCreated = Localizable.tr("Localizable", "accountCreated")
+  /// Close
+  public static let closeTitle = Localizable.tr("Localizable", "closeTitle")
   /// Confrim password
   public static let confrimPasswordPlaceholder = Localizable.tr("Localizable", "confrimPasswordPlaceholder")
   /// E-mail
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
+  /// Please fill all fields.
+  public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
+  /// Incorrect data
+  public static let incorrectDataTitle = Localizable.tr("Localizable", "incorrectDataTitle")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
   /// Log In
   public static let loginButtonTitle = Localizable.tr("Localizable", "loginButtonTitle")
+  /// Login or create an account to get started.
+  public static let loginOrRegisterAccountSubtitle = Localizable.tr("Localizable", "loginOrRegisterAccountSubtitle")
   /// Log in to your account to return to our ranks!
   public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
+  /// OK
+  public static let ok = Localizable.tr("Localizable", "ok")
   /// Result here
   public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
+  /// Password mismatch.
+  public static let passwordConfrimation = Localizable.tr("Localizable", "passwordConfrimation")
   /// Password
   public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
   /// I agree to the terms of use and accept the Privacy Policy.

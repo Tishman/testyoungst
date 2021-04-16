@@ -15,4 +15,6 @@ enum RegistrationAction: Equatable {
     case didConfrimPasswordChanged(String)
     case registrationButtonTapped
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
+	case failedValidtion(String)
+	case alertPresented
 }

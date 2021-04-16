@@ -19,15 +19,19 @@ extension RegistrationView {
         static let registrationButtonTitle = Localizable.registrationButtonTitle
         static let welcomeTitle = Localizable.welcomeTitle
         static let registerToStartTitle = Localizable.registerToStartTitle
+        static let closeTitle = Localizable.closeTitle
+		static let incorrectData = Localizable.incorrectDataTitle
+		static let ok = Localizable.ok
     }
 }
 
 struct RegistrationView: View {
     let store: Store<RegistrationState, RegistrationAction>
+    
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                WelcomeView(title: Constants.welcomeTitle, subtitle: Constants.registerToStartTitle)
+                HeaderDescriptionView(title: Constants.welcomeTitle, subtitle: Constants.registerToStartTitle)
                 .padding(.top, .spacing(.big))
                 
                 VStack(spacing: .spacing(.big)) {
@@ -45,12 +49,17 @@ struct RegistrationView: View {
                 
                 Spacer()
                 
-                Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
-                    Text(Constants.registrationButtonTitle)
-                })
-                .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
+                VStack {
+                    Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
+                        Text(Constants.registrationButtonTitle)
+                    })
+                    .buttonStyle(RoundedStyle(style: .filled))
+                }
                 .padding(.bottom, .spacing(.ultraBig))
             }
+			.alert(isPresented: viewStore.binding(get: \.isAlertPresent, send: RegistrationAction.alertPresented), content: {
+				Alert(title: Text(Constants.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.ok)))
+			})
         }
     }
 }

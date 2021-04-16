@@ -13,7 +13,8 @@ enum LoginAction: Equatable {
     case passwordChanged(String)
     case loginTapped
     case forgotPasswordTapped
-    case registerButtonTapped
     case showPasswordButtonTapped
     case handleLogin(Result<Authorization_LoginResponse, LoginError>)
+	case alertPresented
+	case failedValidtion(String)
 }

@@ -126,6 +126,7 @@ let package = Package(
         ),
         .target(
             name: CorePackage.utilities.rawValue,
+            dependencies: [CorePackage.resources.dependency],
             path: CorePackage.utilities.path
         ),
         .testTarget(name: CorePackage.utilities.testName,

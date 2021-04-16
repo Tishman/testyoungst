@@ -11,6 +11,7 @@ struct LoginState: Equatable {
     var email: String = ""
     var password: String = ""
     var resetPasswordOpened = false
-    var loginError: String?
     var showPassword: Bool = false
+	var isAlerPresent: Bool = false
+	var alertMessage: String = ""
 }

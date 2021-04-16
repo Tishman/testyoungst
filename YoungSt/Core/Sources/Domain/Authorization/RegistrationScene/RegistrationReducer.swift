@@ -9,6 +9,7 @@ import Foundation
 import ComposableArchitecture
 import NetworkService
 import Utilities
+import Resources
 
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
     switch action {
@@ -27,24 +28,36 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
     case let .didRecieveRegistartionResult(result):
         switch result {
         case let .success(response):
-            return .none
+			state.alertMessage = "Your account successfully created with ID: \(response.uuid)"
+			state.isAlertPresent = true
+			
         case let .failure(error):
-            return .none
+			state.alertMessage = error.localizedDescription
+			state.isAlertPresent = true
         }
         
+	case let .failedValidtion(value):
+		state.alertMessage = value
+		state.isAlertPresent = true
+		
+	case .alertPresented:
+		state.alertMessage = ""
+		state.isAlertPresent = false
+		
     case .registrationButtonTapped:
-        guard let authorizationService = enviroment.authorizationService, !state.email.isEmpty, !state.password.isEmpty, !state.nickname.isEmpty else { return .none }
-        
+		guard let authorizationService = enviroment.authorizationService, !state.email.isEmpty, !state.password.isEmpty, !state.nickname.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
+		guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
+		
         let requestData = Authorization_RegistrationRequest.with {
             $0.email = state.email
-            $0.nickname = state.email
+            $0.nickname = state.nickname
             $0.password = state.password
         }
         
         return authorizationService.register(request: requestData)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
-            .map({ RegistrationAction.didRecieveRegistartionResult($0) })
+            .map(RegistrationAction.didRecieveRegistartionResult)
     }
     return .none
 }

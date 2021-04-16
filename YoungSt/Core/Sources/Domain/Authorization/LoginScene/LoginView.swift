@@ -18,6 +18,8 @@ extension LoginView {
         static let loginToReturnTitle = Localizable.loginToReturnTitle
         static let loginButtonTitle = Localizable.loginButtonTitle
         static let registrationButtonTitle = Localizable.registrationButtonTitle
+		static let incorrectData = Localizable.incorrectDataTitle
+		static let ok = Localizable.ok
     }
 }
 
@@ -27,7 +29,7 @@ struct LoginView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                WelcomeView(title: Constants.welcomeBackTitle, subtitle: Constants.loginToReturnTitle)
+                HeaderDescriptionView(title: Constants.welcomeBackTitle, subtitle: Constants.loginToReturnTitle)
                     .padding(.top, .spacing(.big))
                 
                 VStack(spacing: .spacing(.ultraBig)) {
@@ -44,19 +46,15 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                VStack {
-                    Button(action: { viewStore.send(.loginTapped) }, label: {
-                        Text(Constants.loginButtonTitle)
-                    })
-                    .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
-                    
-                    Button(action: { viewStore.send(.registerButtonTapped) }, label: {
-                        Text(Constants.registrationButtonTitle)
-                    })
-                    .buttonStyle(RoundedStyle(color: Asset.Colors.greenDark.color.swiftuiColor))
-                }
+                Button(action: { viewStore.send(.loginTapped) }, label: {
+                    Text(Constants.loginButtonTitle)
+                })
+                .buttonStyle(RoundedStyle(style: .filled))
                 .padding(.bottom, .spacing(.ultraBig))
             }
+			.alert(isPresented: viewStore.binding(get: \.isAlerPresent, send: LoginAction.alertPresented), content: {
+				Alert(title: Text(Constants.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.ok)))
+			})
         }
     }
 }
