@@ -20,7 +20,8 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         state.password = value
         
     case .loginTapped:
-		guard !state.email.isEmpty, !state.password.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
+		guard !state.email.isEmpty &&
+				!state.password.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
         let requestData = Authorization_LoginRequest.with {
             $0.email = state.email
             $0.password = state.password

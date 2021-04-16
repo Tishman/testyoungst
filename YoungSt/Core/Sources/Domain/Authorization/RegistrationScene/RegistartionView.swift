@@ -53,7 +53,7 @@ struct RegistrationView: View {
                     Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
-                    .buttonStyle(RoundedStyle(style: .filled))
+                    .buttonStyle(RoundedButtonStyle(style: .filled))
                 }
                 .padding(.bottom, .spacing(.ultraBig))
             }

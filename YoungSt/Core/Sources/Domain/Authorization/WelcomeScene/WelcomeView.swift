@@ -41,7 +41,7 @@ struct WelcomeView: View {
 									Text(Constants.login)
 								}
 							})
-							.buttonStyle(RoundedStyle(style: .filled))
+							.buttonStyle(RoundedButtonStyle(style: .filled))
 						}
 					
 					Button(action: {}, label: {
@@ -51,7 +51,7 @@ struct WelcomeView: View {
 								Text(Constants.registration)
 							})
 					})
-					.buttonStyle(RoundedStyle(style: .empty))
+					.buttonStyle(RoundedButtonStyle(style: .empty))
 					.padding(.bottom, .spacing(.ultraBig))
 				}
 				.navigationBarTitle(Constants.welcomeTitle, displayMode: .inline)

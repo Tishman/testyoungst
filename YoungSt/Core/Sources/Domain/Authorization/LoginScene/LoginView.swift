@@ -49,7 +49,7 @@ struct LoginView: View {
                 Button(action: { viewStore.send(.loginTapped) }, label: {
                     Text(Constants.loginButtonTitle)
                 })
-                .buttonStyle(RoundedStyle(style: .filled))
+                .buttonStyle(RoundedButtonStyle(style: .filled))
                 .padding(.bottom, .spacing(.ultraBig))
             }
 			.alert(isPresented: viewStore.binding(get: \.isAlerPresent, send: LoginAction.alertPresented), content: {

@@ -8,8 +8,8 @@
 import SwiftUI
 import Resources
 
-public struct RoundedStyle: ButtonStyle {
-    public init(style: RoundedStyle.StyleType) {
+public struct RoundedButtonStyle: ButtonStyle {
+    public init(style: RoundedButtonStyle.StyleType) {
         self.style = style
     }
     
@@ -53,12 +53,12 @@ struct RoundedStyle_Previews: PreviewProvider {
             Button(action: {}, label: {
                 Text("Button")
             })
-            .buttonStyle(RoundedStyle(style: .filled))
+            .buttonStyle(RoundedButtonStyle(style: .filled))
             
             Button(action: {}, label: {
                 Text("Button")
             })
-            .buttonStyle(RoundedStyle(style: .empty))
+            .buttonStyle(RoundedButtonStyle(style: .empty))
         }
     }
 }
