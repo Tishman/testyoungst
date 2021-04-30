@@ -10,7 +10,7 @@ import Foundation
 private class CurrentBundleFinder {}
 
 extension Foundation.Bundle {
-    static var coreModule: Bundle = {
+    public static var coreModule: Bundle = {
         /* The name of your local package, prepended by "LocalPackages_" */
         let bundleNameIOS = "Core_Resources"
         let candidates = [

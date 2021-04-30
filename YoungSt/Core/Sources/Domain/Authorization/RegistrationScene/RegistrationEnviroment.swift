@@ -9,5 +9,5 @@ import Foundation
 import NetworkService
 
 struct RegistrationEnviroment {
-    let authorizationService: AuthorizationService?
+    let authorizationService: AuthorizationService
 }

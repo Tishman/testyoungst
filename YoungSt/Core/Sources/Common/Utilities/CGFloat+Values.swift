@@ -50,6 +50,7 @@ public extension CGFloat {
         case small
         case medium
         case big
+        case ultraBig
     }
     
     static func corner(_ level: CornerLevel) -> CGFloat {
@@ -64,6 +65,8 @@ public extension CGFloat {
             return 12
         case .big:
             return 16
+        case .ultraBig:
+            return 20
         }
     }
     

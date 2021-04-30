@@ -17,12 +17,12 @@
 		47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */; };
 		47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* Authorization */; };
 		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
-		FD10AC4725FE31FD001FFF11 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4625FE31FD001FFF11 /* Models */; };
 		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
 		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
 		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
 		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
 		FD5111362618ADC500A90101 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* Coordinator */; };
+		FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,8 +40,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD10AC4725FE31FD001FFF11 /* Models in Frameworks */,
 				FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */,
+				FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */,
 				FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */,
 				477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */,
 				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
@@ -132,7 +132,6 @@
 				0C46219025938835006B1701 /* GRDB */,
 				477CD6AA25FBB58B00BB45B8 /* Resources */,
 				FD10AC4425FE31FD001FFF11 /* Mocks */,
-				FD10AC4625FE31FD001FFF11 /* Models */,
 				FD10AC4825FE31FD001FFF11 /* NetworkService */,
 				FD10AC4A25FE31FD001FFF11 /* Protocols */,
 				FD10AC4C25FE31FD001FFF11 /* Utilities */,
@@ -140,6 +139,7 @@
 				47516CA5260BADB900B7C7C7 /* TranslateScene */,
 				FD5111352618ADC500A90101 /* Coordinator */,
 				47BF2A8B2618C52D008FDB1F /* Authorization */,
+				FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -459,10 +459,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Mocks;
 		};
-		FD10AC4625FE31FD001FFF11 /* Models */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Models;
-		};
 		FD10AC4825FE31FD001FFF11 /* NetworkService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkService;
@@ -483,6 +479,10 @@
 		FD5111352618ADC500A90101 /* Coordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Coordinator;
+		};
+		FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Dictionaries;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

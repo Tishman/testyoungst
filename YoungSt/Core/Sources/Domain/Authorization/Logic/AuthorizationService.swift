@@ -11,6 +11,8 @@ import Combine
 import GRPC
 import SwiftKeychainWrapper
 import NIOHPACK
+import Utilities
+import Protocols
 
 protocol AuthorizationService: AnyObject {
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError>
@@ -20,27 +22,17 @@ protocol AuthorizationService: AnyObject {
     func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<Void, InitResetPasswordError>
     func checkResetPassword(request: Authorization_ResetPasswordCheckRequest) -> AnyPublisher<Bool, CheckResetPasswordError>
     func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<Void, ResetPasswordError>
-    
-    func getCurrentSid() -> UUID?
 }
-
-func toVoid<T>(_ any: T) -> Void {}
 
 final class AuthorizationServiceImpl: AuthorizationService {
     
     private let client: Authorization_AuthorizationClient
-    private let keychain: KeychainWrapper = .standard
+    private let credentialsService: CredentialsService
     private let sessionKey = "session"
     
-    init(client: Authorization_AuthorizationClient) {
+    init(client: Authorization_AuthorizationClient, credentialsService: CredentialsService) {
         self.client = client
-    }
-    
-    func getCurrentSid() -> UUID? {
-        guard let stringSid = keychain.string(forKey: sessionKey),
-            let id = UUID(uuidString: stringSid)
-        else { return nil }
-        return id
+        self.credentialsService = credentialsService
     }
     
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError> {
@@ -60,12 +52,19 @@ final class AuthorizationServiceImpl: AuthorizationService {
             .handleEvents(receiveOutput: saveSession(id:))
             .eraseToAnyPublisher()
         let extractResponse = call.response.publisher
+            .tryMap(saveUserID)
         
         return loginAndSaveSid
             .map(toVoid)
             .flatMap { extractResponse }
             .mapError(LoginError.init(error:))
             .eraseToAnyPublisher()
+    }
+    
+    private func saveUserID(response: Authorization_LoginResponse) throws -> Authorization_LoginResponse {
+        let user = try UUID.from(string: response.user.id)
+        credentialsService.save(userID: user)
+        return response
     }
     
     private func extractSession(headers: HPACKHeaders) -> AnyPublisher<UUID, Error> {
@@ -78,12 +77,13 @@ final class AuthorizationServiceImpl: AuthorizationService {
     }
     
     private func saveSession(id: UUID) {
-        keychain.set(id.uuidString, forKey: sessionKey)
+        credentialsService.save(session: id)
     }
     
     func logout() -> AnyPublisher<Void, Error> {
         return client.logout(.init()).response.publisher
             .map(toVoid)
+            .handleEvents(receiveOutput: credentialsService.clearCredentials)
             .eraseToAnyPublisher()
     }
     

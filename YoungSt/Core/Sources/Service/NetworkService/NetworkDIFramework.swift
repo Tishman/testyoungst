@@ -6,7 +6,7 @@
 //
 
 import DITranquillity
-import Models
+import GRPC
 
 public final class NetworkDIFramework: DIFramework {
     
@@ -22,6 +22,8 @@ public final class NetworkDIFramework: DIFramework {
             #endif
         }
         
+        container.register(CommonInterceptorDependencies.init)
+        
         container.register(GrpcConnector.init)
             .as(check: NetworkConnector.self) {$0}
             .lifetime(.perContainer(.strong))
@@ -29,10 +31,37 @@ public final class NetworkDIFramework: DIFramework {
         container.register(AuthorizationInjectionInterceptorFactory.init)
             .as(check: Authorization_AuthorizationClientInterceptorFactoryProtocol.self) {$0}
         
-        container.register { AuthorizationClientFactory(connectionProvider: $0,
-                                                        callOptionsProvider: $1,
-                                                        interceptors: $2).create() }
-            .as(check: Authorization_AuthorizationClientProtocol.self) {$0}
+        container.register(DictionariesInjectionInterceptorFactory.init)
+            .as(check: Dictionary_UserDictionaryClientInterceptorFactoryProtocol.self) {$0}
+        
+        container.register(TranslatorInjectionInterceptorFactory.init)
+            .as(check: Translator_TranslatorClientInterceptorFactoryProtocol.self) {$0}
+        
+        container.register {
+            ($0 as NetworkConnector).getConnection()
+        }
+        container.register {
+            Authorization_AuthorizationClient(channel: $0 as ClientConnection,
+                                              defaultCallOptions: ($1 as CallOptionConfigurator).createDefaultCallOptions(),
+                                              interceptors: $2 as Authorization_AuthorizationClientInterceptorFactoryProtocol)
+        }
+        .as(check: Authorization_AuthorizationClientProtocol.self) {$0}
+        
+        container.register {
+            Translator_TranslatorClient(channel: $0 as ClientConnection,
+                                        defaultCallOptions: ($1 as CallOptionConfigurator).createDefaultCallOptions(),
+                                        interceptors: $2 as Translator_TranslatorClientInterceptorFactoryProtocol)
+        }
+        .as(check: Translator_TranslatorClientProtocol.self) {$0}
+        
+        container.register {
+            Dictionary_UserDictionaryClient(channel: $0 as ClientConnection,
+                                            defaultCallOptions: ($1 as CallOptionConfigurator).createDefaultCallOptions(),
+                                            interceptors: $2 as Dictionary_UserDictionaryClientInterceptorFactoryProtocol)
+        }
+        .as(check: Dictionary_UserDictionaryClientProtocol.self) {$0}
+        
+            
 //            .as(check: NetworkClientFactory.self)
         
 //        container.register(Authorization_AuthorizationClient.init)

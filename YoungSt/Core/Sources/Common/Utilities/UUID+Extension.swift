@@ -11,7 +11,7 @@ public extension UUID {
     
     static func from(string: String) throws -> UUID {
         guard let id = UUID(uuidString: string) else {
-            throw NSError(domain: "ParseErrorDomain", code: 0, userInfo: nil)
+            throw CommonError.parseError("incorrect uuid")
         }
         return id
     }

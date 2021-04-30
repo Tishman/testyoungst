@@ -42,8 +42,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.isAlertPresent = false
 		
 	case .registrationButtonTapped:
-		guard let authorizationService = enviroment.authorizationService &&
-				!state.email.isEmpty, !state.password.isEmpty &&
+		guard !state.email.isEmpty, !state.password.isEmpty &&
 					!state.nickname.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
 		guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
 		
@@ -53,7 +52,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 			$0.password = state.password
 		}
 		
-		return authorizationService.register(request: requestData)
+        return enviroment.authorizationService.register(request: requestData)
 			.receive(on: DispatchQueue.main)
 			.catchToEffect()
 			.map(RegistrationAction.didRecieveRegistartionResult)

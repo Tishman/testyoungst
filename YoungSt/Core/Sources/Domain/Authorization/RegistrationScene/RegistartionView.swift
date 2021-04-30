@@ -66,6 +66,6 @@ struct RegistrationView: View {
 
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView(store: .init(initialState: .init(), reducer: registrationReducer, environment: RegistrationEnviroment(authorizationService: nil)))
+        RegistrationView(store: .init(initialState: .init(), reducer: .empty, environment: ()))
     }
 }

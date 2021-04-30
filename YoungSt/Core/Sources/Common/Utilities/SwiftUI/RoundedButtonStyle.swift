@@ -41,7 +41,8 @@ public struct RoundedButtonStyle: ButtonStyle {
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding()
-            .font(.body)
+            .frame(minWidth: 200, minHeight: 64)
+            .font(.body.weight(.semibold))
             .foregroundColor(configuration.isPressed ? Color.white.opacity(0.4) : style.textColor)
             .bubbled(borderColor: style.textColor, foregroundColor: style.foregroundColor, lineWidth: 2)
     }

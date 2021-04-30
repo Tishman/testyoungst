@@ -13,3 +13,9 @@ public extension ColorAsset.Color {
         return Color(self)
     }
 }
+
+public extension ImageAsset {
+    var swiftUI: SwiftUI.Image {
+        SwiftUI.Image(name, bundle: .coreModule)
+    }
+}

@@ -7,6 +7,7 @@
 
 import Foundation
 import Resources
+import Protocols
 
 struct TranslateState: Equatable {
     var sourceLanguage: Languages = .english

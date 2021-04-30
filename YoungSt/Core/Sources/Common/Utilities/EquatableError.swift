@@ -17,4 +17,8 @@ public struct EquatableError: Error, Equatable {
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         true
     }
+    
+    public var description: String {
+        return value.localizedDescription
+    }
 }

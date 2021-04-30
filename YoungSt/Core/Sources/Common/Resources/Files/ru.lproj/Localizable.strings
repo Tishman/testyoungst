@@ -18,3 +18,21 @@
 "passwordConfrimation" = "Пароли не совпадают.";
 "ok" = "ОК";
 "accountCreated" = "Ваша учетная запись успешно создана %";
+"unknownError" = "Неизвестная ошибка";
+
+// AddWord
+"addWordTitle" = "Добавление слова";
+"word" = "Слово";
+"wordDescription" = "Описание слова";
+"recent" = "Недавние";
+"addWordAction" = "Добавить слово";
+"typeText" = "Введите текст";
+"youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
+
+// Languages
+"en" = "Английский";
+"ru" = "Русский";
+
+// Dictionaries
+"dictionaries" = "Словари";
+"words" = "Слова";

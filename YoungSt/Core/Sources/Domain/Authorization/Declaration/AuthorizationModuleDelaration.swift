@@ -12,7 +12,7 @@ import SwiftUI
 import Utilities
 import ComposableArchitecture
 
-final class ModuleDelaration: DIPart, ModuleStoreProvider {
+final class AuthorizationModuleDelaration: DIPart, ModuleStoreProvider {
     
     private let environment: WelcomeEnviroment
     private let input: AuthorizationInput
@@ -26,7 +26,7 @@ final class ModuleDelaration: DIPart, ModuleStoreProvider {
         container.register(WelcomeEnviroment.init)
         
         container.register { env in { input in
-            ViewHolder(storeProvider: ModuleDelaration(environment: env, input: input)) { store in
+            ViewHolder(storeProvider: AuthorizationModuleDelaration(environment: env, input: input)) { store in
                 WelcomeView(store: store)
             }
             .erased

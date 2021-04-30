@@ -18,4 +18,21 @@
 "passwordConfrimation" = "Password mismatch.";
 "ok" = "OK";
 "accountCreated" = "Your account successfully created %";
- 
+"unknownError" = "Unknown error";
+
+// AddWord
+"addWordTitle" = "Add word";
+"word" = "Word";
+"wordDescription" = "Description";
+"recent" = "Recent";
+"addWordAction" = "Add word";
+"typeText" = "Type text here";
+"youShouldTypeText" = "Cant add empty word. Type something in first field";
+
+// Languages
+"en" = "English";
+"ru" = "Russian";
+
+// Dictionaries
+"dictionaries" = "Dictionaries";
+"words" = "Words";
