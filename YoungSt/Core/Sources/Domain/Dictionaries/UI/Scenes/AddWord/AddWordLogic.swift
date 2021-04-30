@@ -54,7 +54,6 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
             break
         }
         
-        state.isLoading = true
         let request = Dictionary_AddWordRequest.with {
             $0.groupID = state.selectedGroupID?.uuidString ?? ""
             $0.item = .with {
@@ -62,11 +61,19 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
                 $0.destination = state.descriptionText
             }
         }
-        return env.wordService.addWord(request: request)
-            .mapError(EquatableError.init)
-            .receive(on: DispatchQueue.main)
-            .catchToEffect()
-            .map(AddWordAction.gotWordAddition)
+        
+        switch state.semantic {
+        case .addToServer:
+            state.isLoading = true
+            return env.wordService.addWord(request: request)
+                .mapError(EquatableError.init)
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map(AddWordAction.gotWordAddition)
+            
+        case .addLater:
+            return .init(value: .addLaterTriggered(request))
+        }
         
     case let .groupsOpened(opened):
         state.groupsOpened = opened
@@ -83,7 +90,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
         }
         state.isLoading = false
         
-    case .closeSceneTriggered:
+    case .closeSceneTriggered, .addLaterTriggered:
         break
     }
     

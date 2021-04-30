@@ -24,7 +24,7 @@ public struct GrowingArcIndicatorView: View {
             .easeInOut(duration: 2)
             .repeatForever(autoreverses: false)
         
-        return GrowingArc(p: animatableParameter)
+        return GrowingArc(percent: animatableParameter)
             .stroke(color, lineWidth: 3)
             .padding()
             .background(BlurEffect(style: .systemThickMaterial))
@@ -50,16 +50,16 @@ struct GrowingArc: Shape {
 
     var maxLength = 2 * Double.pi - 0.7
     var lag = 0.35
-    var p: Double
+    var percent: Double
 
     var animatableData: Double {
-        get { return p }
-        set { p = newValue }
+        get { return percent }
+        set { percent = newValue }
     }
 
     func path(in rect: CGRect) -> Path {
 
-        let h = p * 2
+        let h = percent * 2
         var length = h * maxLength
         if h > 1 && h < lag + 1 {
             length = maxLength
@@ -80,12 +80,12 @@ struct GrowingArc: Shape {
 
         let start = end + length
 
-        var p = Path()
-        p.addArc(center: CGPoint(x: rect.size.width/2, y: rect.size.width/2),
-                 radius: rect.size.width/2,
-                 startAngle: Angle(radians: start),
-                 endAngle: Angle(radians: end),
-                 clockwise: true)
-        return p
+        var path = Path()
+        path.addArc(center: CGPoint(x: rect.size.width/2, y: rect.size.width/2),
+                    radius: rect.size.width/2,
+                    startAngle: Angle(radians: start),
+                    endAngle: Angle(radians: end),
+                    clockwise: true)
+        return path
     }
 }

@@ -23,10 +23,12 @@ struct DictGroupView: View {
             
             Spacer()
             
-            Text(state.subtitle)
-                .lineLimit(1)
-                .fixedSize(horizontal: true, vertical: true)
-                .font(.caption)
+            if !state.subtitle.isEmpty {
+                Text(state.subtitle)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: true)
+                    .font(.caption)
+            }
         }
         .padding()
         .foregroundColor(.white)

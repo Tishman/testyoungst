@@ -21,7 +21,7 @@ struct AddWordScene: View {
     var body: some View {
         NavigationView {
             GeometryReader { globalProxy in
-                VStack {
+                ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         VStack {
                             WithViewStore(store) { viewStore in
@@ -57,7 +57,11 @@ struct AddWordScene: View {
                             }
                             .padding(.top)
                         }
-                        .padding([.horizontal, .top])
+                        .padding()
+                        .padding(.bottom, RoundedButtonStyle.minHeight)
+                    }
+                    .introspectScrollView {
+                        $0.keyboardDismissMode = .onDrag
                     }
                     
                     WithViewStore(store.stateless) { viewStore in
@@ -67,6 +71,8 @@ struct AddWordScene: View {
                         .buttonStyle(RoundedButtonStyle(style: .filled))
                     }
                     .padding(.bottom)
+                    .greedy(aligningContentTo: .bottom)
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                 }
                 .overlay(
                     TopHeaderView(width: globalProxy.size.width,
@@ -75,24 +81,9 @@ struct AddWordScene: View {
                 )
             }
             .alert(store.scope(state: \.alertError), dismiss: AddWordAction.alertClosePressed)
-            .onChange(of: contentOffset) { newOffset in
-                if newOffset > 0 && dividerHidden {
-                    withAnimation(.linear(duration: 0.2)) {
-                        dividerHidden = false
-                    }
-                } else if newOffset <= 0 && !dividerHidden {
-                    withAnimation(.linear(duration: 0.15)) {
-                        dividerHidden = true
-                    }
-                }
-            }
+            .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
             .navigationTitle(Localizable.addWordTitle)
             .navigationBarTitleDisplayMode(.inline)
-            .introspectNavigationController {
-                $0.navigationBar.backgroundColor = .clear
-                $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
-                $0.navigationBar.shadowImage = UIImage()
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     closeButton

@@ -41,7 +41,7 @@ struct AddWordInputView: View {
     private var placeholder: some View {
         Text(currentText.isEmpty ? Localizable.typeText : "")
             .foregroundColor(.secondary)
-            .greedy(.topLeading)
+            .greedy(aligningContentTo: .topLeading)
     }
 }
 

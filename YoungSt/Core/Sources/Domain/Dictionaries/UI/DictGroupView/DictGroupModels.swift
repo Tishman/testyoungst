@@ -8,11 +8,17 @@
 import Foundation
 import Utilities
 
-struct DictGroupState: Identifiable, Equatable, Previwable {
+struct DictGroupItem: Identifiable, Equatable, Previwable {
     let id: UUID
     let alias: String?
+    let state: DictGroupState
+    
+    static let preview: DictGroupItem = .init(id: .init(), alias: nil, state: .preview)
+}
+
+struct DictGroupState: Equatable, Previwable {
     let title: String
     let subtitle: String
     
-    static let preview: DictGroupState = .init(id: .init(), alias: nil, title: "Lesson 1", subtitle: "12 words")
+    static let preview: DictGroupState = .init(title: "Lesson 1", subtitle: "12 words")
 }

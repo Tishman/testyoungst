@@ -9,8 +9,17 @@ import Foundation
 import Utilities
 import ComposableArchitecture
 import Protocols
+import NetworkService
+import Combine
 
 struct AddWordState: Equatable, Previwable {
+    
+    enum Semantic: Equatable {
+        case addToServer
+        case addLater
+    }
+    
+    let semantic: Semantic
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
@@ -26,7 +35,6 @@ struct AddWordState: Equatable, Previwable {
     
     var selectedGroupID: UUID?
     
-    
     var currentSource: Languages {
         leftToRight ? sourceLanguage : destinationLanguage
     }
@@ -35,7 +43,8 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(sourceLanguage: .russian,
+    static let preview: AddWordState = .init(semantic: .addToServer,
+                                             sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",
                                              descriptionText: "")
@@ -55,6 +64,8 @@ enum AddWordAction: Equatable {
     
     case groupsOpened(Bool)
     case closeSceneTriggered
+    
+    case addLaterTriggered(Dictionary_AddWordRequest)
 }
 
 struct AddWordEnvironment {

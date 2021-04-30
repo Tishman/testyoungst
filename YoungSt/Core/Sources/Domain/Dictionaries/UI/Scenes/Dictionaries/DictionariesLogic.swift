@@ -13,14 +13,19 @@ import Utilities
 import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
-    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWord),
+    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
+    addGroupReducer.optional().pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
     Reducer { state, action, env in
         switch action {
+        case .addGroup(.closeScene):
+            state.addGroupState = nil
+            return Effect(value: .silentRefreshList)
+        
         case .addWord(.closeSceneTriggered):
             state.addWordState = nil
             return Effect(value: .silentRefreshList)
             
-        case .addWord:
+        case .addWord, .addGroup:
             break
         
         case .refreshList:
@@ -68,9 +73,17 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .addWordOpened(isOpened):
             if isOpened {
-                state.addWordState = .init(sourceLanguage: .russian, destinationLanguage: .english)
+                state.addWordState = .init(semantic: .addToServer,
+                                           sourceLanguage: .russian,
+                                           destinationLanguage: .english)
             } else {
                 state.addWordState = nil
+            }
+        case let .addGroupOpened(isOpened):
+            if isOpened {
+                state.addGroupState = .init(userID: nil)
+            } else {
+                state.addGroupState = nil
             }
         }
         return .none
@@ -82,15 +95,15 @@ private struct DictionariesLogic {
     
     static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
         let words = try words.items.map {
-            try DictWordState(id: .from(string: $0.id),
-                              text: $0.source,
-                              info: $0.destination)
+            try DictWordItem(id: .from(string: $0.id),
+                             state: .init(text: $0.source,
+                                          info: $0.destination))
         }
         let groups = try groups.groups.map {
-            try DictGroupState(id: .from(string: $0.id),
-                               alias: $0.alias.isEmpty ? nil : $0.alias,
-                               title: $0.name,
-                               subtitle: "12 words")
+            try DictGroupItem(id: .from(string: $0.id),
+                              alias: $0.alias.isEmpty ? nil : $0.alias,
+                              state: .init(title: $0.name,
+                                           subtitle: "12 words"))
         }
         
         return .init(groups: groups,

@@ -20,7 +20,7 @@ public struct GreedyModifier: ViewModifier {
 
 public extension View {
     
-    func greedy(_ alignment: Alignment) -> some View {
+    func greedy(aligningContentTo alignment: Alignment) -> some View {
         modifier(GreedyModifier(alignment: alignment))
     }
     

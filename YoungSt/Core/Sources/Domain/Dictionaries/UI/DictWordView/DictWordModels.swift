@@ -8,10 +8,16 @@
 import Foundation
 import Utilities
 
-struct DictWordState: Identifiable, Equatable, Previwable {
+struct DictWordItem: Identifiable, Equatable, Previwable {
     let id: UUID
+    let state: DictWordState
+    
+    static let preview: DictWordItem = .init(id: .init(), state: .preview)
+}
+
+struct DictWordState: Equatable, Previwable {
     let text: String
     let info: String
     
-    static var preview: DictWordState = .init(id: UUID(), text: "Word", info: "Note to the word")
+    static var preview: DictWordState = .init(text: "Word", info: "Note to the word")
 }

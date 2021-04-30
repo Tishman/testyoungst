@@ -11,6 +11,10 @@ import Foundation
 public enum Localizable {
   /// Your account successfully created %
   public static let accountCreated = Localizable.tr("Localizable", "accountCreated")
+  /// Add group
+  public static let addGroupAction = Localizable.tr("Localizable", "addGroupAction")
+  /// New dictionary
+  public static let addGroupTitle = Localizable.tr("Localizable", "addGroupTitle")
   /// Add word
   public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
   /// Add word
@@ -37,6 +41,8 @@ public enum Localizable {
   public static let loginOrRegisterAccountSubtitle = Localizable.tr("Localizable", "loginOrRegisterAccountSubtitle")
   /// Log in to your account to return to our ranks!
   public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
+  /// Name
+  public static let name = Localizable.tr("Localizable", "name")
   /// OK
   public static let ok = Localizable.tr("Localizable", "ok")
   /// Result here
@@ -59,6 +65,8 @@ public enum Localizable {
   public static let typeText = Localizable.tr("Localizable", "typeText")
   /// Unknown error
   public static let unknownError = Localizable.tr("Localizable", "unknownError")
+  /// Unnamed
+  public static let unnamed = Localizable.tr("Localizable", "unnamed")
   /// Username
   public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
   /// Welcome back

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Resources
+import Introspect
 
 public struct TopHeaderView: View {
     
@@ -34,3 +35,30 @@ public struct TopHeaderView: View {
     }
 }
 
+
+public extension View {
+    
+    /// Use TrackableScrollView for getting content offset and topHidden bool variable to determine top navigation visibility
+    /// - Parameters:
+    ///   - contentOffset: scrollView content offset
+    ///   - topHidden: boolean flag for opaque determination
+    func makeCustomBarManagement(offset contentOffset: CGFloat, topHidden: Binding<Bool>) -> some View {
+        self.onChange(of: contentOffset) { newOffset in
+            if newOffset > 0 && topHidden.wrappedValue {
+                withAnimation(.linear(duration: 0.2)) {
+                    topHidden.wrappedValue = false
+                }
+            } else if newOffset <= 0 && !topHidden.wrappedValue {
+                withAnimation(.linear(duration: 0.15)) {
+                    topHidden.wrappedValue = true
+                }
+            }
+        }
+        .introspectNavigationController {
+            $0.navigationBar.backgroundColor = .clear
+            $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            $0.navigationBar.shadowImage = UIImage()
+        }
+    }
+    
+}
