@@ -8,6 +8,6 @@
 import Foundation
 
 struct WelcomeState: Equatable {
-	var loginState: LoginState = .init()
-	var registrationState: RegistrationState = .init()
+	var loginState: LoginState?
+	var registrationState: RegistrationState?
 }

@@ -36,27 +36,41 @@ struct WelcomeView: View {
 					Spacer()
 					
 					VStack(spacing: .spacing(.big)) {
-							Button(action: {}, label: {
-								NavigationLink(destination: LoginView(store: self.store.scope(state: \.loginState, action: WelcomeAction.login(action:)))) {
-									Text(Constants.login)
-								}
+						WithViewStore(store.stateless) { viewStore in
+							Button(action: { viewStore.send(.loginOpenned(true)) }, label: {
+								Text(Constants.login)
 							})
-							.buttonStyle(RoundedButtonStyle(style: .filled))
 						}
-					
-					Button(action: {}, label: {
-						NavigationLink(
-							destination: RegistrationView(store: self.store.scope(state: \.registrationState, action: WelcomeAction.registration(action:))),
-							label: {
+						.buttonStyle(RoundedButtonStyle(style: .filled))
+						
+						WithViewStore(store.stateless) { viewStore in
+							Button(action: { viewStore.send(.registrationOppend(true)) }, label: {
 								Text(Constants.registration)
 							})
-					})
-					.buttonStyle(RoundedButtonStyle(style: .empty))
-					.padding(.bottom, .spacing(.ultraBig))
+						}
+						.buttonStyle(RoundedButtonStyle(style: .empty))
+						.padding(.bottom, .spacing(.ultraBig))
+					}
 				}
-				.navigationBarTitle(Constants.welcomeTitle, displayMode: .inline)
+				.background(
+					WithViewStore(store.scope(state: \.registrationState)) { viewStore in
+						NavigationLink(destination: IfLetStore(store.scope(state: \.registrationState, action: WelcomeAction.registration),
+															   then: RegistrationView.init(store:)),
+									   isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.registrationOppend),
+									   label: {})
+					}
+				)
+				.background(
+					WithViewStore(store.scope(state: \.loginState)) { viewStore in
+						NavigationLink(destination: IfLetStore(store.scope(state: \.loginState,
+																		   action: WelcomeAction.login),
+															   then: LoginView.init(store:)),
+									   isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.loginOpenned),
+									   label: {})
+					}
+				)
+				.navigationBarTitle(Constants.welcomeTitle)
 			}
-			.navigationBarTitle(Constants.welcomeTitle, displayMode: .inline)
 		}
 	}
 }

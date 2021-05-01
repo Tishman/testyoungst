@@ -27,6 +27,8 @@ public enum Asset {
     public static let white = ColorAsset(name: "white")
   }
   public enum Images {
+    public static let cross = ImageAsset(name: "cross")
+    public static let emptyEye = ImageAsset(name: "emptyEye")
     public static let eye = ImageAsset(name: "eye")
     public static let pokemon = ImageAsset(name: "pokemon")
     public static let welcome = ImageAsset(name: "welcome")

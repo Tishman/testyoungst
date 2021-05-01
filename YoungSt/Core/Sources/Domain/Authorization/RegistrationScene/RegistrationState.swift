@@ -13,5 +13,10 @@ struct RegistrationState: Equatable {
     var password: String = ""
     var confrimPassword: String = ""
 	var isAlertPresent: Bool = false
-	var alertMessage = ""
+	var alertMessage: String = ""
+	var confrimCodeState: ConfrimCodeState?
+	var isRegistrationSuccess: Bool = false
+	var isCodeConfrimed: Bool?
+	var isPasswordShowed = false
+	var isConfrimPasswordShowed = false
 }

@@ -16,7 +16,7 @@ protocol AuthorizationService: AnyObject {
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError>
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError>
     func logout() -> AnyPublisher<Void, Error>
-    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, Error>
+    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError>
     func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<Void, InitResetPasswordError>
     func checkResetPassword(request: Authorization_ResetPasswordCheckRequest) -> AnyPublisher<Bool, CheckResetPasswordError>
     func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<Void, ResetPasswordError>
@@ -87,9 +87,10 @@ final class AuthorizationServiceImpl: AuthorizationService {
             .eraseToAnyPublisher()
     }
     
-    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, Error> {
+    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError> {
         return client.confirmCode(request).response.publisher
             .map(\.isConfirmed)
+			.mapError(ConfrimCodeError.init(error:))
             .eraseToAnyPublisher()
     }
     

@@ -8,6 +8,8 @@
 import Foundation
 
 enum WelcomeAction: Equatable {
-    case login(action: LoginAction)
-    case registration(action: RegistrationAction)
+    case login(LoginAction)
+    case registration(RegistrationAction)
+	case loginOpenned(Bool)
+	case registrationOppend(Bool)
 }

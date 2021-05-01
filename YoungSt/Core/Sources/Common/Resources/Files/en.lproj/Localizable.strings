@@ -18,4 +18,7 @@
 "passwordConfrimation" = "Password mismatch.";
 "ok" = "OK";
 "accountCreated" = "Your account successfully created %";
- 
+"verify" = "Verify";
+"emailSendedToConfrim" = "We have sent a confirmation code to your email. Enter the code in the box below to verify your account.";
+"verification" = "Verification";
+"enterCode" = "Enter code";

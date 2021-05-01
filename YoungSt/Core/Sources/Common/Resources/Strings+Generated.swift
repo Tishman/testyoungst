@@ -17,6 +17,10 @@ public enum Localizable {
   public static let confrimPasswordPlaceholder = Localizable.tr("Localizable", "confrimPasswordPlaceholder")
   /// E-mail
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
+  /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
+  public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
+  /// Enter code
+  public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// Please fill all fields.
   public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
   /// Incorrect data
@@ -45,6 +49,10 @@ public enum Localizable {
   public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
   /// Username
   public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
+  /// Verification
+  public static let verification = Localizable.tr("Localizable", "verification")
+  /// Verify
+  public static let verify = Localizable.tr("Localizable", "verify")
   /// Welcome back
   public static let welcomeBackTitle = Localizable.tr("Localizable", "welcomeBackTitle")
   /// Welcome
