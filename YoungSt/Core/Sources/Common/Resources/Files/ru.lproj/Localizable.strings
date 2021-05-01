@@ -22,3 +22,27 @@
 "emailSendedToConfrim" = "Мы отправили код с потверждением на вашу почту. Введите код в поле ниже, чтобы подтвердить вашу учетную запись.";
 "verification" = "Потверждение";
 "enterCode" = "Введите код";
+"unknownError" = "Неизвестная ошибка";
+
+// AddWord
+"addWordTitle" = "Добавление слова";
+"word" = "Слово";
+"wordDescription" = "Описание слова";
+"recent" = "Недавние";
+"addWordAction" = "Добавить слово";
+"typeText" = "Введите текст";
+"youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
+
+// Add group
+"addGroupTitle" = "Новый словарь";
+"addGroupAction" = "Добавить словарь";
+"name" = "Название";
+"unnamed" = "Безымянный";
+
+// Languages
+"en" = "Английский";
+"ru" = "Русский";
+
+// Dictionaries
+"dictionaries" = "Словари";
+"words" = "Слова";

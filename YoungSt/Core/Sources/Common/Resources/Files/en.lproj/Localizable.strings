@@ -22,3 +22,27 @@
 "emailSendedToConfrim" = "We have sent a confirmation code to your email. Enter the code in the box below to verify your account.";
 "verification" = "Verification";
 "enterCode" = "Enter code";
+"unknownError" = "Unknown error";
+
+// AddWord
+"addWordTitle" = "Add word";
+"word" = "Word";
+"wordDescription" = "Description";
+"recent" = "Recent";
+"addWordAction" = "Add word";
+"typeText" = "Type text here";
+"youShouldTypeText" = "Cant add empty word. Type something in first field";
+
+// Add group
+"addGroupTitle" = "New dictionary";
+"addGroupAction" = "Add group";
+"name" = "Name";
+"unnamed" = "Unnamed";
+
+// Languages
+"en" = "English";
+"ru" = "Russian";
+
+// Dictionaries
+"dictionaries" = "Dictionaries";
+"words" = "Words";

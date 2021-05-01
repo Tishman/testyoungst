@@ -6,13 +6,13 @@ import PackageDescription
 enum CorePackage: String, CaseIterable {
     case utilities = "Utilities"
     case resources = "Resources"
-    case models = "Models"
     case protocols = "Protocols"
     case mocks = "Mocks"
     case networkService = "NetworkService"
     case translateScene = "TranslateScene"
     case coordinator = "Coordinator"
     case authorization = "Authorization"
+    case dictionaries = "Dictionaries"
     
     var library: Product {
         .library(name: rawValue, targets: [rawValue])
@@ -24,15 +24,13 @@ enum CorePackage: String, CaseIterable {
     
     var path: String {
         switch self {
-        case .protocols, .models, .mocks:
+        case .protocols, .mocks:
             return "Sources/API/" + rawValue
         case .utilities, .resources, .coordinator:
             return "Sources/Common/" + rawValue
         case .networkService:
             return "Sources/Service/" + rawValue
-        case .translateScene:
-            return "Sources/Domain/" + rawValue
-        case .authorization:
+        case .translateScene, .authorization, .dictionaries:
             return "Sources/Domain/" + rawValue
         }
     }
@@ -50,6 +48,7 @@ enum ExternalDependecy {
     case combineExpect
     case composableArchitecture
     case keychain
+    case introspect
     
     var product: Target.Dependency {
         switch self {
@@ -65,6 +64,8 @@ enum ExternalDependecy {
             return .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
         case .keychain:
             return .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
+        case .introspect:
+            return "Introspect"
         }
     }
 }
@@ -79,19 +80,26 @@ let package = Package(
         .package(url: "https://github.com/ivlevAstef/DITranquillity.git", from: "4.1.7"),
         .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),
-        .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
+        .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
+        .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3")
     ],
     targets: [
+        .target(name: CorePackage.dictionaries.rawValue,
+                dependencies: [
+                    CorePackage.protocols.dependency,
+                    CorePackage.networkService.dependency,
+                    CorePackage.coordinator.dependency,
+                    ExternalDependecy.diTranquillity.product,
+                    ExternalDependecy.composableArchitecture.product,
+                    ExternalDependecy.introspect.product,
+                ],
+                path: CorePackage.dictionaries.path),
         .target(name: CorePackage.coordinator.rawValue,
                 dependencies: [
                     CorePackage.protocols.dependency,
                     ExternalDependecy.diTranquillity.product
                 ],
                 path: CorePackage.coordinator.path),
-        .target(
-            name: CorePackage.models.rawValue,
-            path: CorePackage.models.path
-        ),
         .target(
             name: CorePackage.protocols.rawValue,
             path: CorePackage.protocols.path
@@ -104,7 +112,6 @@ let package = Package(
             name: CorePackage.networkService.rawValue,
             dependencies: [
                 CorePackage.protocols.dependency,
-                CorePackage.models.dependency,
                 CorePackage.utilities.dependency,
                 ExternalDependecy.grpc.product,
                 ExternalDependecy.diTranquillity.product
@@ -114,7 +121,6 @@ let package = Package(
         .testTarget(name: CorePackage.networkService.testName,
                     dependencies: [
                         CorePackage.networkService.dependency,
-                        CorePackage.models.dependency,
                         ExternalDependecy.grpc.product,
                         ExternalDependecy.diTranquillity.product,
                         ExternalDependecy.combineExpect.product,
@@ -126,7 +132,8 @@ let package = Package(
         ),
         .target(
             name: CorePackage.utilities.rawValue,
-            dependencies: [CorePackage.resources.dependency],
+            dependencies: [CorePackage.resources.dependency,
+                           CorePackage.protocols.dependency],
             path: CorePackage.utilities.path
         ),
         .testTarget(name: CorePackage.utilities.testName,

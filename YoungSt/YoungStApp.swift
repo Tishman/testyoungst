@@ -13,6 +13,8 @@ import DITranquillity
 import TranslateScene
 import Coordinator
 import Authorization
+import Utilities
+import Resources
 
 @main
 struct YoungStApp: App {
@@ -36,7 +38,8 @@ struct YoungStApp: App {
 	
     var body: some Scene {
         WindowGroup {
-            coordinator.view(for: .authorization(.default))
+            coordinator.view(for: .dictionaries(.init(userID: nil)))
+                .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
     }
 }

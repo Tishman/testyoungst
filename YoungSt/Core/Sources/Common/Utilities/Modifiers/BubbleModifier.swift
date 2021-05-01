@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
+import Resources
 
-struct BubbleModifier: ViewModifier {
+struct StrokedBubbleModifier: ViewModifier {
     let borderColor: Color
     let foregroundColor: Color
     let lineWidth: CGFloat
@@ -29,9 +30,26 @@ struct BubbleModifier: ViewModifier {
     }
 }
 
+struct BubbleModifier: ViewModifier {
+    
+    let color: Color
+    
+    func body(content: Content) -> some View {
+        content
+            .background(
+                RoundedRectangle(cornerRadius: .corner(.big))
+                    .foregroundColor(color)
+            )
+    }
+}
+
 public extension View {
     func bubbled(borderColor: Color, foregroundColor: Color, lineWidth: CGFloat) -> some View {
-        self.modifier(BubbleModifier(borderColor: borderColor, foregroundColor: foregroundColor, lineWidth: lineWidth))
+        modifier(StrokedBubbleModifier(borderColor: borderColor, foregroundColor: foregroundColor, lineWidth: lineWidth))
+    }
+    
+    func bubbled(color: Color = Asset.Colors.greenLightly.color.swiftuiColor) -> some View {
+        modifier(BubbleModifier(color: color))
     }
 }
 

@@ -7,6 +7,8 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Protocols
+import Utilities
 
 struct TranslationView: View {
 	let store: Store<TranslateState, TranslateAction>
@@ -15,10 +17,10 @@ struct TranslationView: View {
 		WithViewStore(store) { viewStore in
 			VStack {
 				HStack(spacing: 40) {
-					TitleView(text: viewStore.sourceLanguage.viewModelValue)
+                    TitleView(text: viewStore.sourceLanguage.title)
                         .fixedSize()
 					SwitchButtonView(store: store)
-					TitleView(text: viewStore.destinationLanguage.viewModelValue)
+					TitleView(text: viewStore.destinationLanguage.title)
                         .fixedSize()
 				}
                 .padding()

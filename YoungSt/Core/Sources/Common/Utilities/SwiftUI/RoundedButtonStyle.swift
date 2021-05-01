@@ -9,6 +9,9 @@ import SwiftUI
 import Resources
 
 public struct RoundedButtonStyle: ButtonStyle {
+    
+    public static let minHeight: CGFloat = 64
+    
     public init(style: RoundedButtonStyle.StyleType) {
         self.style = style
     }
@@ -41,7 +44,8 @@ public struct RoundedButtonStyle: ButtonStyle {
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding()
-            .font(.body)
+            .frame(minWidth: 200, minHeight: RoundedButtonStyle.minHeight)
+            .font(.body.weight(.semibold))
             .foregroundColor(configuration.isPressed ? Color.white.opacity(0.4) : style.textColor)
             .bubbled(borderColor: style.textColor, foregroundColor: style.foregroundColor, lineWidth: 2)
     }

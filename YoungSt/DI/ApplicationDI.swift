@@ -10,6 +10,8 @@ import DITranquillity
 import NetworkService
 import Coordinator
 import Authorization
+import Dictionaries
+import Protocols
 
 final class ApplicationDI: DIFramework {
     static func load(container: DIContainer) {
@@ -22,6 +24,10 @@ final class ApplicationDI: DIFramework {
         container.append(framework: NetworkDIFramework.self)
         container.append(framework: AuthorizationDIFramework.self)
         container.append(framework: CoordinatorDIFramework.self)
+        container.append(framework: DictionaryDIFramework.self)
+        
+        container.register(MockLangProvider.init)
+            .as(check: LanguagePairProvider.self) {$0}
         
         #if DEBUG
         if !container.makeGraph().checkIsValid(checkGraphCycles: true) {
