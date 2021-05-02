@@ -16,5 +16,14 @@ enum RegistrationAction: Equatable {
     case registrationButtonTapped
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
 	case failedValidtion(String)
-	case alertPresented
+	case alertClosed
+	case confrimCode(ConfrimCodeAction)
+	case confrimCodeClosed
+	case showPasswordButtonTapped(SecureFieldType)
+    case finishRegistration
+	
+	enum SecureFieldType {
+		case password
+		case confrimPassword
+	}
 }

@@ -18,7 +18,7 @@ protocol AuthorizationService: AnyObject {
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError>
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError>
     func logout() -> AnyPublisher<Void, Error>
-    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, Error>
+    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError>
     func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<Void, InitResetPasswordError>
     func checkResetPassword(request: Authorization_ResetPasswordCheckRequest) -> AnyPublisher<Bool, CheckResetPasswordError>
     func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<Void, ResetPasswordError>
@@ -47,24 +47,23 @@ final class AuthorizationServiceImpl: AuthorizationService {
         // TODO: Handle LoginError.errVerificationNotConfirmedRegID and extract user id for code confirming in metadata
         
         let call = client.login(request)
-        let loginAndSaveSid = call.initialMetadata.publisher
-            .flatMap(extractSession)
-            .handleEvents(receiveOutput: saveSession(id:))
-            .eraseToAnyPublisher()
-        let extractResponse = call.response.publisher
-            .tryMap(saveUserID)
         
-        return loginAndSaveSid
-            .map(toVoid)
-            .flatMap { extractResponse }
+        return call.initialMetadata.publisher
+            .flatMap(extractSession)
+            .flatMap { sessionID in
+                call.response.publisher
+                    .tryMap {
+                        try (sessionID: sessionID,
+                             userID: UUID.from(string: $0.user.id),
+                             response: $0)
+                    }
+            }
+            .handleEvents(receiveOutput: { [credentialsService] (sessionID, userID, _) in
+                credentialsService.save(credentials: .init(userID: userID, sessionID: sessionID))
+            })
+            .map { $0.response }
             .mapError(LoginError.init(error:))
             .eraseToAnyPublisher()
-    }
-    
-    private func saveUserID(response: Authorization_LoginResponse) throws -> Authorization_LoginResponse {
-        let user = try UUID.from(string: response.user.id)
-        credentialsService.save(userID: user)
-        return response
     }
     
     private func extractSession(headers: HPACKHeaders) -> AnyPublisher<UUID, Error> {
@@ -76,10 +75,6 @@ final class AuthorizationServiceImpl: AuthorizationService {
         return Result.success(sessionId).publisher.eraseToAnyPublisher()
     }
     
-    private func saveSession(id: UUID) {
-        credentialsService.save(session: id)
-    }
-    
     func logout() -> AnyPublisher<Void, Error> {
         return client.logout(.init()).response.publisher
             .map(toVoid)
@@ -87,9 +82,10 @@ final class AuthorizationServiceImpl: AuthorizationService {
             .eraseToAnyPublisher()
     }
     
-    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, Error> {
+    func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError> {
         return client.confirmCode(request).response.publisher
             .map(\.isConfirmed)
+			.mapError(ConfrimCodeError.init(error:))
             .eraseToAnyPublisher()
     }
     

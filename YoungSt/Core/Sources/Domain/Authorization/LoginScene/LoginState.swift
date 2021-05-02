@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import ComposableArchitecture
 
 struct LoginState: Equatable {
     var email: String = ""
     var password: String = ""
     var resetPasswordOpened = false
     var showPassword: Bool = false
-	var isAlerPresent: Bool = false
-	var alertMessage: String = ""
+    var isLoading = false
+    
+    var alertState: AlertState<LoginAction>?
 }

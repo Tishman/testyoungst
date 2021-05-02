@@ -9,19 +9,31 @@ import Foundation
 import ComposableArchitecture
 
 let welcomeReducer = Reducer<WelcomeState, WelcomeAction, WelcomeEnviroment>.combine(
-    loginReducer.pullback(state: \.loginState,
-                          action: /WelcomeAction.login(action:),
+	loginReducer.optional().pullback(state: \.loginState,
+                          action: /WelcomeAction.login,
                           environment: { LoginEnviroment(service: $0.authorizationService) }),
-    registrationReducer.pullback(state: \.registrationState,
-                                 action: /WelcomeAction.registration(action:),
+	registrationReducer.optional().pullback(state: \.registrationState,
+                                 action: /WelcomeAction.registration,
                                  environment: { RegistrationEnviroment(authorizationService: $0.authorizationService) }),
     Reducer { state, action, enviroment in
         switch action {
-        case let .login(action: action):
-            break
-        case let .registration(action: action):
-            break
-        }
+
+		case .loginOpenned(let isOpen):
+			state.loginState = isOpen ? .init() : nil
+			
+		case .registrationOppend(let isOpen):
+			state.registrationState = isOpen ? .init() : nil
+            
+        case .viewsClosed:
+            state.loginState = nil
+            state.registrationState = nil
+			
+        case .registration(.finishRegistration):
+			state.registrationState = nil
+			
+		case .login, .registration:
+			break
+		}
         return .none
     }
 )

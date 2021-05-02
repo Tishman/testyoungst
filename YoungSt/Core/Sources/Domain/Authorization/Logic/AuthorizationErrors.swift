@@ -35,6 +35,11 @@ enum LoginError: String, Error, GRPCInitable {
     case errVerificationNotConfirmedRegID
 }
 
+enum ConfrimCodeError: String, Error, GRPCInitable {
+	case unknown
+	case errIncorrectConfirmationCode
+}
+
 protocol GRPCInitable: RawRepresentable where RawValue == String {
     init(error: Error)
     

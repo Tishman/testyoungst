@@ -16,23 +16,23 @@ struct ToggableSecureField: View {
     let clouser: () -> Void
     
     var body: some View {
-        if showPassword {
-            TextEditingView(placholder: placholder, text: $text)
-        } else {
-            ZStack(alignment: .trailing) {
-                SecureField(placholder, text: $text)
-                    .padding()
-                    .bubbled(borderColor: Asset.Colors.greenLightly.color.swiftuiColor,
-                             foregroundColor: Asset.Colors.greenLightly.color.swiftuiColor,
-                             lineWidth: 1)
-                    .cornerRadius(.corner(.big))
-                Button(action: { clouser() }, label: {
-                    Image(uiImage: Asset.Images.eye.image)
-                })
-                .offset(x: -.spacing(.big), y: .spacing(.none))
-            }
-        }
-    }
+		ZStack(alignment: .trailing) {
+			if showPassword {
+				TextEditingView(placholder: placholder, text: $text)
+			} else {
+				SecureField(placholder, text: $text)
+					.padding()
+					.bubbled(borderColor: Asset.Colors.greenLightly.color.swiftuiColor,
+							 foregroundColor: Asset.Colors.greenLightly.color.swiftuiColor,
+							 lineWidth: 1)
+					.cornerRadius(.corner(.big))
+			}
+			Button(action: { clouser() }, label: {
+				Image(uiImage: showPassword ? Asset.Images.eye.image : Asset.Images.emptyEye.image)
+			})
+			.offset(x: -.spacing(.big), y: .spacing(.none))
+		}
+	}
 }
 
 struct ToggableSecureField_Previews: PreviewProvider {

@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
         "state": {
           "branch": null,
-          "revision": "f1250faa1c1436ca83950ce676a4fe97a309a457",
-          "version": "0.4.1"
+          "revision": "c37e5ae8012fb654af776cc556ff8ae64398c841",
+          "version": "0.5.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/ivlevAstef/DITranquillity.git",
         "state": {
           "branch": null,
-          "revision": "e0129f38113e897e1e287a0098c0b536c493efa8",
-          "version": "4.2.0"
+          "revision": "753ee2cc08a0338f7ddde379b6775e0f1c24c8c2",
+          "version": "4.2.3"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/groue/GRDB.swift.git",
         "state": {
           "branch": null,
-          "revision": "2a917823ed2511ec5cb21a83f8a4f389e45d7038",
-          "version": "5.2.0"
+          "revision": "31e2b01c10243399882eaf8cc6b5c974af93d21e",
+          "version": "5.7.4"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
         "state": {
           "branch": null,
-          "revision": "1aa1bf7c4069d9ba2f7edd36dbfc96ff1c58cbff",
-          "version": "0.1.3"
+          "revision": "a313f0cc10e07bb5ce7e2ff5da600cce7efa8e8a",
+          "version": "0.2.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-composable-architecture",
         "state": {
           "branch": null,
-          "revision": "84b9a004384eb8dcd2fd817a5bc61d0152a47422",
-          "version": "0.17.0"
+          "revision": "0f026d395d414efab5cfdf8d697ec0ae766dd021",
+          "version": "0.18.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "6d3ca7e54e06a69d0f2612c2ce8bb8b7319085a4",
-          "version": "2.26.0"
+          "revision": "21782f3bdc9581148d38d0ccaab6ec952ccda56b",
+          "version": "2.28.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-http2.git",
         "state": {
           "branch": null,
-          "revision": "f4736a3b78a2bbe3feb7fc0f33f6683a8c27974c",
-          "version": "1.16.3"
+          "revision": "e3e9024a632b40695ad5d3a85f9776a9b27a4bc6",
+          "version": "1.17.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
         "state": {
           "branch": null,
-          "revision": "bbb38fbcbbe9dc4665b2c638dfa5681b01079bfb",
-          "version": "2.10.4"
+          "revision": "3d576964a1ace80d2a3f8bab96cab03e5ee074dc",
+          "version": "2.12.0"
         }
       },
       {
@@ -114,8 +114,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-transport-services.git",
         "state": {
           "branch": null,
-          "revision": "1d28d48e071727f4558a8a4bb1894472abc47a58",
-          "version": "1.9.2"
+          "revision": "657537c2cf1845f8d5201ecc4e48f21f21841128",
+          "version": "1.10.0"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/apple/swift-protobuf.git",
         "state": {
           "branch": null,
-          "revision": "da9a52be9cd36c63993291ce3f1b65dafcd1e826",
-          "version": "1.14.0"
+          "revision": "bfe4255ff60f22a41cafa113059668571ed5d461",
+          "version": "1.16.0"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/ivlevAstef/SwiftLazy.git",
         "state": {
           "branch": null,
-          "revision": "70f0b50542d97212b8bad18075a500537c244abc",
-          "version": "1.1.8"
+          "revision": "8a6b79b5295516459aff0404a517c7f47badae3f",
+          "version": "1.1.9"
         }
       },
       {

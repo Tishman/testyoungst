@@ -21,6 +21,10 @@
 		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
 		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
 		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
+		FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337CC263E9EFB00FA6DCE /* AppScene.swift */; };
+		FD4337CF263EA21900FA6DCE /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* Profile */; };
+		FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D2263EA4FB00FA6DCE /* AppModels.swift */; };
+		FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D4263EA50F00FA6DCE /* AppLogic.swift */; };
 		FD5111362618ADC500A90101 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* Coordinator */; };
 		FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */; };
 /* End PBXBuildFile section */
@@ -33,6 +37,9 @@
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDI.swift; sourceTree = "<group>"; };
+		FD4337CC263E9EFB00FA6DCE /* AppScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScene.swift; sourceTree = "<group>"; };
+		FD4337D2263EA4FB00FA6DCE /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
+		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +50,7 @@
 				FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */,
 				FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */,
 				FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */,
+				FD4337CF263EA21900FA6DCE /* Profile in Frameworks */,
 				477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */,
 				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
 				FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */,
@@ -79,6 +87,7 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
+				FD4337CB263E9EDC00FA6DCE /* AppScene */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
 				0C3492262592001C00F729C4 /* Info.plist */,
@@ -111,6 +120,16 @@
 			path = DI;
 			sourceTree = "<group>";
 		};
+		FD4337CB263E9EDC00FA6DCE /* AppScene */ = {
+			isa = PBXGroup;
+			children = (
+				FD4337CC263E9EFB00FA6DCE /* AppScene.swift */,
+				FD4337D2263EA4FB00FA6DCE /* AppModels.swift */,
+				FD4337D4263EA50F00FA6DCE /* AppLogic.swift */,
+			);
+			path = AppScene;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -140,6 +159,7 @@
 				FD5111352618ADC500A90101 /* Coordinator */,
 				47BF2A8B2618C52D008FDB1F /* Authorization */,
 				FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */,
+				FD4337CE263EA21900FA6DCE /* Profile */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -200,8 +220,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */,
+				FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
+				FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +498,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */;
 			productName = DITranquillity;
+		};
+		FD4337CE263EA21900FA6DCE /* Profile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Profile;
 		};
 		FD5111352618ADC500A90101 /* Coordinator */ = {
 			isa = XCSwiftPackageProductDependency;

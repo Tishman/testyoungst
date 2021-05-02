@@ -22,5 +22,6 @@ public final class AuthorizationDIFramework: DIFramework {
             .as(check: CredentialsService.self) {$0}
             .as(check: SessionProvider.self) {$0}
             .as(check: UserProvider.self) {$0}
+            .lifetime(.perContainer(.strong))
     }
 }

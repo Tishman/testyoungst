@@ -64,7 +64,7 @@ struct AddGroupScene: View {
                     .padding(.bottom)
                 }
                 .introspectScrollView {
-                    $0.keyboardDismissMode = .onDrag
+                    $0.keyboardDismissMode = .interactive
                 }
                 
                 WithViewStore(store.stateless) { viewStore in

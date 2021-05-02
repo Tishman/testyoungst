@@ -8,11 +8,16 @@
 import Foundation
 import SwiftUI
 import Introspect
+import UIKit
 
 public extension View {
     
     var erased: AnyView {
         AnyView(self)
+    }
+    
+    var uiKitHosted: UIHostingController<Self> {
+        .init(rootView: self)
     }
     
     func addRefreshToScrollView(handler: @escaping () -> Void) -> some View {

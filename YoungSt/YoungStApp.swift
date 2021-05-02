@@ -21,9 +21,9 @@ struct YoungStApp: App {
     private let container: DIContainer
     private let coordinator: Coordinator
     
-	let store = Store<AppState, AppAction>.init(initialState: AppState(),
-												reducer: appReducer,
-												environment: environment)
+    let store = Store<AppState, AppAction>.init(initialState: AppState(),
+                                                reducer: appReducer,
+                                                environment: environment)
     
     init() {
         let container = ApplicationDI.container
@@ -31,11 +31,12 @@ struct YoungStApp: App {
         self.container = container
         self.coordinator = container.resolve()
     }
-	
-	static var environment: AppEnviroment {
-		AppEnviroment()
-	}
-	
+    
+    static var environment: AppEnviroment {
+        AppEnviroment(userProvider: ApplicationDI.container.resolve(),
+                      credentialsService: ApplicationDI.container.resolve())
+    }
+    
     var body: some Scene {
         WindowGroup {
             coordinator.view(for: .dictionaries(.init(userID: nil)))
@@ -43,23 +44,4 @@ struct YoungStApp: App {
         }
     }
 }
-
-private struct AppLogic {}
-
-struct AppState: Equatable {
-	
-}
-
-enum AppAction: Equatable {
-    case `default`
-}
-
-struct AppEnviroment {
-    
-}
-
-let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
-    return .none
-}
-
  

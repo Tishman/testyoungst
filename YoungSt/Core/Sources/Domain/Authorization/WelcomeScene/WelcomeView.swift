@@ -11,58 +11,77 @@ import Utilities
 import ComposableArchitecture
 
 extension WelcomeView {
-	enum Constants {
-		static let welcomeTitle = Localizable.welcomeTitle
-		static let loginOrCreateAccountSubtitle = Localizable.loginOrRegisterAccountSubtitle
-		static let login = Localizable.loginButtonTitle
-		static let registration = Localizable.registrationButtonTitle
-	}
+    enum Constants {
+        static let welcomeTitle = Localizable.welcomeTitle
+        static let loginOrCreateAccountSubtitle = Localizable.loginOrRegisterAccountSubtitle
+        static let login = Localizable.loginButtonTitle
+        static let registration = Localizable.registrationButtonTitle
+    }
 }
 
 struct WelcomeView: View {
-	let store: Store<WelcomeState, WelcomeAction>
-	
-	var body: some View {
-		WithViewStore(store) { viewStore in
-			NavigationView {
-				VStack {
-					HeaderDescriptionView(title: Constants.welcomeTitle,
-										  subtitle: Constants.loginOrCreateAccountSubtitle)
-						.padding(.top, .spacing(.big))
-					Spacer()
-					
-					Image(uiImage: Asset.Images.welcome.image)
-					
-					Spacer()
-					
-					VStack(spacing: .spacing(.big)) {
-							Button(action: {}, label: {
-								NavigationLink(destination: LoginView(store: self.store.scope(state: \.loginState, action: WelcomeAction.login(action:)))) {
-									Text(Constants.login)
-								}
-							})
-							.buttonStyle(RoundedButtonStyle(style: .filled))
-						}
-					
-					Button(action: {}, label: {
-						NavigationLink(
-							destination: RegistrationView(store: self.store.scope(state: \.registrationState, action: WelcomeAction.registration(action:))),
-							label: {
-								Text(Constants.registration)
-							})
-					})
-					.buttonStyle(RoundedButtonStyle(style: .empty))
-					.padding(.bottom, .spacing(.ultraBig))
-				}
-				.navigationBarTitle(Constants.welcomeTitle, displayMode: .inline)
-			}
-			.navigationBarTitle(Constants.welcomeTitle, displayMode: .inline)
-		}
-	}
+    let store: Store<WelcomeState, WelcomeAction>
+    
+    var body: some View {
+        NavigationView {
+            WithViewStore(store) { viewStore in
+                VStack {
+                    HeaderDescriptionView(title: Constants.welcomeTitle,
+                                          subtitle: Constants.loginOrCreateAccountSubtitle)
+                        .padding(.top, .spacing(.big))
+                    Spacer()
+                    
+                    Image(uiImage: Asset.Images.welcome.image)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: .spacing(.big)) {
+                        WithViewStore(store.stateless) { viewStore in
+                            Button(action: { viewStore.send(.loginOpenned(true)) }, label: {
+                                Text(Constants.login)
+                            })
+                        }
+                        .buttonStyle(RoundedButtonStyle(style: .filled))
+                        
+                        WithViewStore(store.stateless) { viewStore in
+                            Button(action: { viewStore.send(.registrationOppend(true)) }, label: {
+                                Text(Constants.registration)
+                            })
+                        }
+                        .buttonStyle(RoundedButtonStyle(style: .empty))
+                        .padding(.bottom, .spacing(.ultraBig))
+                    }
+                }
+            }
+            .background(registrationLink)
+            .background(loginLink)
+            .navigationBarTitleDisplayMode(.inline)
+            .makeDefaultNavigationBarTransparent()
+        }
+    }
+    
+    private var registrationLink: some View {
+        WithViewStore(store.scope(state: \.registrationState)) { viewStore in
+            NavigationLink(destination: IfLetStore(store.scope(state: \.registrationState, action: WelcomeAction.registration),
+                                                   then: RegistrationView.init(store:)),
+                           isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.registrationOppend),
+                           label: {})
+        }
+    }
+    
+    private var loginLink: some View {
+        WithViewStore(store.scope(state: \.loginState)) { viewStore in
+            NavigationLink(destination: IfLetStore(store.scope(state: \.loginState,
+                                                               action: WelcomeAction.login),
+                                                   then: LoginView.init(store:)),
+                           isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.loginOpenned),
+                           label: {})
+        }
+    }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-		WelcomeView(store: .init(initialState: .init(), reducer: .empty, environment: ()))
+        WelcomeView(store: .init(initialState: .init(), reducer: .empty, environment: ()))
     }
 }

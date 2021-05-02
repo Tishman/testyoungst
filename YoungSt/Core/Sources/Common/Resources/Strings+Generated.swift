@@ -29,12 +29,18 @@ public enum Localizable {
   public static let delete = Localizable.tr("Localizable", "delete")
   /// Dictionaries
   public static let dictionaries = Localizable.tr("Localizable", "dictionaries")
+  /// Dictionary
+  public static let dictionary = Localizable.tr("Localizable", "dictionary")
   /// Plural format key: "%#@VARIABLE@"
   public static func dWords(_ p1: Int) -> String {
     return Localizable.tr("Localizable", "dWords", p1)
   }
   /// E-mail
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
+  /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
+  public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
+  /// Enter code
+  public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// English
   public static let en = Localizable.tr("Localizable", "en")
   /// Please fill all fields.
@@ -63,6 +69,8 @@ public enum Localizable {
   public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
   /// I agree to the terms of use and accept the Privacy Policy.
   public static let privacyPolicyTitle = Localizable.tr("Localizable", "privacyPolicyTitle")
+  /// Profile
+  public static let profile = Localizable.tr("Localizable", "profile")
   /// Recent
   public static let recent = Localizable.tr("Localizable", "recent")
   /// Register to get started.
@@ -81,6 +89,10 @@ public enum Localizable {
   public static let unnamed = Localizable.tr("Localizable", "unnamed")
   /// Username
   public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
+  /// Verification
+  public static let verification = Localizable.tr("Localizable", "verification")
+  /// Verify
+  public static let verify = Localizable.tr("Localizable", "verify")
   /// Welcome back
   public static let welcomeBackTitle = Localizable.tr("Localizable", "welcomeBackTitle")
   /// Welcome

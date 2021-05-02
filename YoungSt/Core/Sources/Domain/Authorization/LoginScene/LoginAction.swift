@@ -15,6 +15,6 @@ enum LoginAction: Equatable {
     case forgotPasswordTapped
     case showPasswordButtonTapped
     case handleLogin(Result<Authorization_LoginResponse, LoginError>)
-	case alertPresented
+	case alertClosed
 	case failedValidtion(String)
 }

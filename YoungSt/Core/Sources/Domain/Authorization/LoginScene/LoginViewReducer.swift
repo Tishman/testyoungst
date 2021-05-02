@@ -20,8 +20,10 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         state.password = value
         
     case .loginTapped:
-		guard !state.email.isEmpty &&
-				!state.password.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
+		guard !state.email.isEmpty && !state.password.isEmpty else {
+            return .init(value: .failedValidtion(Localizable.fillAllFields))
+        }
+        state.isLoading = true
         let requestData = Authorization_LoginRequest.with {
             $0.email = state.email
             $0.password = state.password
@@ -35,21 +37,19 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
     case let .handleLogin(result):
 		switch result {
 		case let .success(response):
-			state.isAlerPresent = true
-			state.alertMessage = Localizable.accountCreated
+            // Should be handled by main application
+            break
 			
 		case let .failure(error):
-			state.isAlerPresent = true
-			state.alertMessage = error.localizedDescription
+            state.isLoading = false
+            state.alertState = .init(title: TextState(error.localizedDescription))
 		}
 		
 	case let .failedValidtion(value):
-		state.alertMessage = value
-		state.isAlerPresent = true
+        state.alertState = .init(title: TextState(value))
 		
-	case .alertPresented:
-		state.alertMessage = ""
-		state.isAlerPresent = false
+	case .alertClosed:
+        state.alertState = nil
         
     case .forgotPasswordTapped:
         break

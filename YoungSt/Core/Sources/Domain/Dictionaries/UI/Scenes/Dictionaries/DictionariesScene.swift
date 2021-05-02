@@ -70,7 +70,6 @@ struct DictionariesScene: View {
                     TopHeaderView(width: globalProxy.size.width,
                                   topSafeAreaInset: globalProxy.safeAreaInsets.top)
                         .opacity(dividerHidden ? 0 : 1)
-                    
                 )
                 .onAppear { viewStore.send(.viewLoaded) }
                 .addRefreshToScrollView { viewStore.send(.refreshList) }
