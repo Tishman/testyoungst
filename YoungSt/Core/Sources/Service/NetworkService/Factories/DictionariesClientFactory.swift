@@ -47,4 +47,12 @@ struct DictionariesInjectionInterceptorFactory: Dictionary_UserDictionaryClientI
     func makeEditWordInterceptors() -> [ClientInterceptor<Dictionary_EditWordRequest, Dictionary_EditWordResponse>] {
         [CommonInterceptor(dependencies)]
     }
+    
+    func makeEditGroupInterceptors() -> [ClientInterceptor<Dictionary_EditGroupRequest, Dictionary_EditGroupResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
+    
+    func makeGetGroupInfoInterceptors() -> [ClientInterceptor<Dictionary_GetGroupInfoRequest, Dictionary_GetGroupInfoResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
 }

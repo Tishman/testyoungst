@@ -19,6 +19,8 @@
 "ok" = "OK";
 "accountCreated" = "Your account successfully created %";
 "unknownError" = "Unknown error";
+"cancel" = "Cancel";
+"delete" = "Delete";
 
 // AddWord
 "addWordTitle" = "Add word";
@@ -42,3 +44,7 @@
 // Dictionaries
 "dictionaries" = "Dictionaries";
 "words" = "Words";
+"lastUpdateTime" = "Updated";
+
+// GroupInfo
+"shouldDeleteGroup" = "Do you want to delete group? This cannot be undone.";

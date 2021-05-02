@@ -10,6 +10,25 @@ import Utilities
 
 struct DictGroupView: View {
     
+    enum Size {
+        case small
+        case medium
+        case big
+        
+        var value: CGFloat {
+            switch self {
+            case .small:
+                return 130
+            case .medium:
+                return 150
+            case .big:
+                return 180
+            }
+        }
+    }
+    
+    let id: UUID
+    let size: Size
     let state: DictGroupState
     
     var body: some View {
@@ -32,17 +51,18 @@ struct DictGroupView: View {
         }
         .padding()
         .foregroundColor(.white)
-        .frame(minWidth: 120, maxWidth: 150, minHeight: 120, maxHeight: 150)
+        .frame(width: size.value, height: size.value)
         .background(
             RoundedRectangle(cornerRadius: .corner(.ultraBig))
-                .foregroundColor(.blue)
+                .fill(
+                    LinearGradient(gradient: Gradients(id).swiftUI, startPoint: .topLeading, endPoint: .bottomTrailing)
+                )
         )
-
     }
 }
 
 struct DictGroupView_Previews: PreviewProvider {
     static var previews: some View {
-        DictGroupView(state: .preview)
+        DictGroupView(id: .init(), size: .medium, state: .preview)
     }
 }

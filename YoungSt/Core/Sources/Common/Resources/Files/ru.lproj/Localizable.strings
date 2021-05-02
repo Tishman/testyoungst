@@ -19,6 +19,8 @@
 "ok" = "ОК";
 "accountCreated" = "Ваша учетная запись успешно создана %";
 "unknownError" = "Неизвестная ошибка";
+"cancel" = "Отмена";
+"delete" = "Удалить";
 
 // AddWord
 "addWordTitle" = "Добавление слова";
@@ -42,3 +44,7 @@
 // Dictionaries
 "dictionaries" = "Словари";
 "words" = "Слова";
+"lastUpdateTime" = "Обновлено";
+
+// GroupInfo
+"shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";
