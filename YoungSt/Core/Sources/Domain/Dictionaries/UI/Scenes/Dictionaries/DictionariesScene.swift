@@ -76,6 +76,7 @@ struct DictionariesScene: View {
             }
         }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .fixNavigationLinkForIOS14_5()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 addGroupButton

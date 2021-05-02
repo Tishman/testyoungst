@@ -35,6 +35,15 @@ public extension View {
             }
         }
     }
+    
+    func fixNavigationLinkForIOS14_5() -> some View {
+        self
+            .background(
+                NavigationLink(destination: EmptyView()) {
+                    EmptyView()
+                }
+            )
+    }
 }
 
 public extension Color {
