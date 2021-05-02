@@ -53,10 +53,23 @@ struct WelcomeView: View {
                     }
                 }
             }
-            .background(registrationLink)
-            .background(loginLink)
+            .background(genericLink)
             .navigationBarTitleDisplayMode(.inline)
             .makeDefaultNavigationBarTransparent()
+        }
+    }
+    
+    private var genericLink: some View {
+        WithViewStore(store) { viewStore in
+            NavigationLink(destination: link,
+                           isActive: viewStore.binding(get: { $0.loginState != nil || $0.registrationState != nil }, send: WelcomeAction.viewsClosed),
+                           label: {})
+        }
+    }
+    
+    private var link: some View {
+        IfLetStore(store.scope(state: \.loginState, action: WelcomeAction.login), then: LoginView.init) {
+            IfLetStore(store.scope(state: \.registrationState, action: WelcomeAction.registration), then: RegistrationView.init)
         }
     }
     

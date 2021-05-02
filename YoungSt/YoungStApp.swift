@@ -39,7 +39,9 @@ struct YoungStApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.view(for: .dictionaries(.init(userID: nil)))
+            AppScene.init(coordinator: coordinator, store: store)
+                .edgesIgnoringSafeArea(.all)
+//            coordinator.view(for: .dictionaries(.init(userID: nil)))
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
     }
