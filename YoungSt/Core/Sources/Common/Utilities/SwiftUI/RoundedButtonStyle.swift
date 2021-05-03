@@ -45,7 +45,7 @@ public struct RoundedButtonStyle: ButtonStyle {
         configuration.label
             .padding()
             .frame(minWidth: 200, minHeight: RoundedButtonStyle.minHeight)
-            .font(.body.weight(.semibold))
+			.font(Font.body.weight(.semibold))
             .foregroundColor(configuration.isPressed ? Color.white.opacity(0.4) : style.textColor)
             .bubbled(borderColor: style.textColor, foregroundColor: style.foregroundColor, lineWidth: 2)
     }
