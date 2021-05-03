@@ -28,21 +28,27 @@ struct DictionariesScene: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                             
-                            ScrollView(.horizontal) {
-                                LazyHStack {
-                                    WithViewStore(store.scope(state: \.groups)) { viewStore in
-                                        ForEach(viewStore.state) {
-                                            DictGroupView(state: $0.state)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal)
-                            }
+                            groupsList
                             
                             Text(Localizable.words)
                                 .font(.title2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
+                                .padding([.horizontal, .top])
+                            
+                            WithViewStore(store.scope(state: \.lastUpdate)) { viewStore in
+                                if let lastUpdate = viewStore.state {
+                                    HStack {
+                                        Spacer()
+                                        Text(Localizable.lastUpdateTime)
+                                        Text(lastUpdate)
+                                            .padding(.spacing(.ultraSmall))
+                                            .padding(.horizontal, .spacing(.ultraSmall))
+                                            .bubbled()
+                                    }
+                                    .font(.caption)
+                                    .padding(.horizontal)
+                                }
+                            }
                             
                             LazyVStack {
                                 WithViewStore(store.scope(state: \.words)) { viewStore in
@@ -66,38 +72,48 @@ struct DictionariesScene: View {
                         .opacity(dividerHidden ? 0 : 1)
                 )
                 .onAppear { viewStore.send(.viewLoaded) }
-                .introspectScrollView { scrollView in
-                    guard UIDevice.current.userInterfaceIdiom != .mac else { return }
-                    let refresh: UIRefreshControl
-                    if let existed = scrollView.refreshControl {
-                        refresh = existed
-                    } else {
-                        refresh = UIRefreshControl(frame: .zero, primaryAction: .init(handler: { [weak scrollView] _ in
-                            viewStore.send(.refreshList)
-                            scrollView?.refreshControl?.endRefreshing()
-                        }))
-                        scrollView.refreshControl = refresh
-                    }
-                }
+                .addRefreshToScrollView { viewStore.send(.refreshList) }
             }
         }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .fixNavigationLinkForIOS14_5()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 addGroupButton
             }
         }
-        .background(
-            WithViewStore(store.scope(state: \.addGroupState)) { viewStore in
-                NavigationLink(destination: IfLetStore(store.scope(state: \.addGroupState, action: DictionariesAction.addGroup),
-                                                       then: AddGroupScene.init),
-                               isActive: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addGroupOpened),
-                               label: {})
-            }
-        )
+        .background(addGroupLink)
         .alert(store.scope(state: \.errorAlert), dismiss: .alertClosed)
         .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var groupsList: some View {
+        ScrollView(.horizontal) {
+            LazyHStack {
+                WithViewStore(store) { viewStore in
+                    ForEach(viewStore.groups) { element in
+                        NavigationLink(
+                            destination: IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
+                                                    then: GroupInfoScene.init),
+                            tag: element.id,
+                            selection: viewStore.binding(get: { $0.groupInfoState?.id }, send: DictionariesAction.openGroup)) {
+                            DictGroupView(id: element.id, size: .small, state: element.state)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+    
+    private var addGroupLink: some View {
+        WithViewStore(store.scope(state: \.addGroupState)) { viewStore in
+            NavigationLink(destination: IfLetStore(store.scope(state: \.addGroupState, action: DictionariesAction.addGroup),
+                                                   then: AddGroupScene.init),
+                           isActive: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addGroupOpened),
+                           label: {})
+        }
     }
     
     private var addGroupButton: some View {

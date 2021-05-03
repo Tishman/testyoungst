@@ -23,6 +23,8 @@
 "verification" = "Verification";
 "enterCode" = "Enter code";
 "unknownError" = "Unknown error";
+"cancel" = "Cancel";
+"delete" = "Delete";
 
 // AddWord
 "addWordTitle" = "Add word";
@@ -46,3 +48,11 @@
 // Dictionaries
 "dictionaries" = "Dictionaries";
 "words" = "Words";
+"lastUpdateTime" = "Updated";
+
+// GroupInfo
+"shouldDeleteGroup" = "Do you want to delete group? This cannot be undone.";
+
+// AppScene
+"dictionary" = "Dictionary";
+"profile" = "Profile";

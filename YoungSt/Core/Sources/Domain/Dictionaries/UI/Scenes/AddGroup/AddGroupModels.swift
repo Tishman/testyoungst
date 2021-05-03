@@ -14,6 +14,7 @@ import Protocols
 struct AddGroupState: Equatable, Previwable {
     let userID: UUID?
     
+    let tmpID = UUID()
     var addWordState: AddWordState?
     var title: String = ""
     var isLoading = false
@@ -49,7 +50,7 @@ enum AddGroupAction: Equatable {
     case showAlert(String)
     case addWord(AddWordAction)
     
-    case closeScene
+    case closeSceneTriggered
 }
 
 struct AddGroupEnvironment {

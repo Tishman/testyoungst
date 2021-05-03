@@ -23,9 +23,10 @@ struct AddGroupScene: View {
                 TrackableScrollView(contentOffset: $contentOffset) {
                     VStack(spacing: .spacing(.big)) {
                         WithViewStore(store) { viewStore in
-                            DictGroupView(state: .init(title: viewStore.title.isEmpty ? Localizable.unnamed : viewStore.title,
+                            DictGroupView(id: viewStore.tmpID,
+                                          size: .big,
+                                          state: .init(title: viewStore.title.isEmpty ? Localizable.unnamed : viewStore.title,
                                                        subtitle: ""))
-                                .frame(width: 150, height: 150)
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
                         
@@ -63,7 +64,7 @@ struct AddGroupScene: View {
                     .padding(.bottom)
                 }
                 .introspectScrollView {
-                    $0.keyboardDismissMode = .onDrag
+                    $0.keyboardDismissMode = .interactive
                 }
                 
                 WithViewStore(store.stateless) { viewStore in

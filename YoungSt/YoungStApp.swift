@@ -21,45 +21,24 @@ struct YoungStApp: App {
     private let container: DIContainer
     private let coordinator: Coordinator
     
-	let store = Store<AppState, AppAction>.init(initialState: AppState(),
-												reducer: appReducer,
-												environment: environment)
+    let store: Store<AppState, AppAction>
     
     init() {
         let container = ApplicationDI.container
         
         self.container = container
         self.coordinator = container.resolve()
+        self.store = .init(initialState: .init(),
+                           reducer: appReducer,
+                           environment: container.resolve())
     }
-	
-	static var environment: AppEnviroment {
-		AppEnviroment()
-	}
-	
+    
     var body: some Scene {
         WindowGroup {
-            coordinator.view(for: .dictionaries(.init(userID: nil)))
+            AppScene.init(coordinator: coordinator, store: store)
+                .edgesIgnoringSafeArea(.all)
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
     }
 }
-
-private struct AppLogic {}
-
-struct AppState: Equatable {
-	
-}
-
-enum AppAction: Equatable {
-    case `default`
-}
-
-struct AppEnviroment {
-    
-}
-
-let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
-    return .none
-}
-
  

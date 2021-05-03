@@ -23,6 +23,8 @@
 "verification" = "Потверждение";
 "enterCode" = "Введите код";
 "unknownError" = "Неизвестная ошибка";
+"cancel" = "Отмена";
+"delete" = "Удалить";
 
 // AddWord
 "addWordTitle" = "Добавление слова";
@@ -46,3 +48,11 @@
 // Dictionaries
 "dictionaries" = "Словари";
 "words" = "Слова";
+"lastUpdateTime" = "Обновлено";
+
+// GroupInfo
+"shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";
+
+// AppScene
+"dictionary" = "Словарь";
+"profile" = "Профиль";

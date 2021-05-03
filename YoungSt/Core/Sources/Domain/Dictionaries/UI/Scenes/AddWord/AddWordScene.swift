@@ -61,7 +61,7 @@ struct AddWordScene: View {
                         .padding(.bottom, RoundedButtonStyle.minHeight)
                     }
                     .introspectScrollView {
-                        $0.keyboardDismissMode = .onDrag
+                        $0.keyboardDismissMode = .interactive
                     }
                     
                     WithViewStore(store.stateless) { viewStore in

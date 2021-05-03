@@ -23,8 +23,12 @@ let welcomeReducer = Reducer<WelcomeState, WelcomeAction, WelcomeEnviroment>.com
 			
 		case .registrationOppend(let isOpen):
 			state.registrationState = isOpen ? .init() : nil
+            
+        case .viewsClosed:
+            state.loginState = nil
+            state.registrationState = nil
 			
-		case .registration(.confrimCode(.finishRegistartion)):
+        case .registration(.finishRegistration):
 			state.registrationState = nil
 			
 		case .login, .registration:

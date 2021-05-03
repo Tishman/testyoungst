@@ -11,6 +11,7 @@ import NetworkService
 import Coordinator
 import Authorization
 import Dictionaries
+import Profile
 import Protocols
 
 final class ApplicationDI: DIFramework {
@@ -25,9 +26,12 @@ final class ApplicationDI: DIFramework {
         container.append(framework: AuthorizationDIFramework.self)
         container.append(framework: CoordinatorDIFramework.self)
         container.append(framework: DictionaryDIFramework.self)
+        container.append(framework: ProfileDIFramework.self)
         
         container.register(MockLangProvider.init)
             .as(check: LanguagePairProvider.self) {$0}
+        
+        container.register(AppEnviroment.init)
         
         #if DEBUG
         if !container.makeGraph().checkIsValid(checkGraphCycles: true) {

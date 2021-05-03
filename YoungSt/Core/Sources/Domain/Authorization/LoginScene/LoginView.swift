@@ -18,44 +18,66 @@ extension LoginView {
         static let loginToReturnTitle = Localizable.loginToReturnTitle
         static let loginButtonTitle = Localizable.loginButtonTitle
         static let registrationButtonTitle = Localizable.registrationButtonTitle
-		static let incorrectData = Localizable.incorrectDataTitle
-		static let ok = Localizable.ok
+        static let incorrectData = Localizable.incorrectDataTitle
+        static let ok = Localizable.ok
     }
 }
 
 struct LoginView: View {
     let store: Store<LoginState, LoginAction>
     
+    @State private var contentOffset: CGFloat = 0
+    @State private var dividerHidden: Bool = true
+    
     var body: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                HeaderDescriptionView(title: Constants.welcomeBackTitle, subtitle: Constants.loginToReturnTitle)
-                    .padding(.top, .spacing(.big))
-                
-                VStack(spacing: .spacing(.ultraBig)) {
-                    TextEditingView(placholder: Constants.emailPlaceholder,
-                                    text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
-                    
-                    ToggableSecureField(placholder: Constants.passwordPlaceholder,
-                                        text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
-                                        showPassword: viewStore.showPassword,
-                                        clouser: { viewStore.send(.showPasswordButtonTapped) })
+        GeometryReader { globalProxy in
+            ZStack {
+                TrackableScrollView(contentOffset: $contentOffset) {
+                    VStack {
+                        HeaderDescriptionView(title: Constants.welcomeBackTitle, subtitle: Constants.loginToReturnTitle)
+                            .padding(.top, .spacing(.big))
+                        
+                        WithViewStore(store) { viewStore in
+                            VStack(spacing: .spacing(.ultraBig)) {
+                                TextEditingView(placholder: Constants.emailPlaceholder,
+                                                text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
+                                
+                                ToggableSecureField(placholder: Constants.passwordPlaceholder,
+                                                    text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                                                    showPassword: viewStore.showPassword,
+                                                    clouser: { viewStore.send(.showPasswordButtonTapped) })
+                            }
+                        }
+                        .padding(.horizontal, .spacing(.ultraBig))
+                        .padding(.top, .spacing(.extraSize))
+                    }
                 }
-                .padding(.horizontal, .spacing(.ultraBig))
-                .padding(.top, .spacing(.extraSize))
+                .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 
-                Spacer()
+                WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+                    if viewStore.state {
+                        IndicatorView()
+                    }
+                }
                 
-                Button(action: { viewStore.send(.loginTapped) }, label: {
-                    Text(Constants.loginButtonTitle)
-                })
+                WithViewStore(store.stateless) { viewStore in
+                    Button(action: { viewStore.send(.loginTapped) }, label: {
+                        Text(Constants.loginButtonTitle)
+                    })
+                }
                 .buttonStyle(RoundedButtonStyle(style: .filled))
-                .padding(.bottom, .spacing(.ultraBig))
+                .padding(.bottom)
+                .greedy(aligningContentTo: .bottom)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-			.alert(isPresented: viewStore.binding(get: \.isAlerPresent, send: LoginAction.alertPresented), content: {
-				Alert(title: Text(Constants.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.ok)))
-			})
+            .overlay(
+                TopHeaderView(width: globalProxy.size.width,
+                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                    .opacity(dividerHidden ? 0 : 1)
+            )
         }
+        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .alert(store.scope(state: \.alertState), dismiss: .alertClosed)
     }
 }
 

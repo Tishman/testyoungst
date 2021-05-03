@@ -20,54 +20,77 @@ extension RegistrationView {
         static let welcomeTitle = Localizable.welcomeTitle
         static let registerToStartTitle = Localizable.registerToStartTitle
         static let closeTitle = Localizable.closeTitle
-		static let incorrectData = Localizable.incorrectDataTitle
-		static let ok = Localizable.ok
+        static let incorrectData = Localizable.incorrectDataTitle
+        static let ok = Localizable.ok
     }
 }
 
 struct RegistrationView: View {
     let store: Store<RegistrationState, RegistrationAction>
     
+    @State private var contentOffset: CGFloat = 0
+    @State private var dividerHidden: Bool = true
+    
     var body: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                HeaderDescriptionView(title: Constants.welcomeTitle, subtitle: Constants.registerToStartTitle)
-                .padding(.top, .spacing(.big))
-                
-                VStack(spacing: .spacing(.big)) {
-					ToggableTextEditingView(placholder: Constants.emailPlaceholder,
-											text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
-					ToggableTextEditingView(placholder: Constants.usernamePlaceholder,
-											text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange))
-					ToggableSecureField(placholder: Constants.passwordPlaceholder,
-										text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-										showPassword: viewStore.isPasswordShowed,
-										clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
-					ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
-										text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
-										showPassword: viewStore.isConfrimPasswordShowed,
-										clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
+        GeometryReader { globalProxy in
+            ZStack {
+                TrackableScrollView(contentOffset: $contentOffset) {
+                    VStack {
+                        HeaderDescriptionView(title: Constants.welcomeTitle, subtitle: Constants.registerToStartTitle)
+                            .padding(.top, .spacing(.big))
+                        
+                        WithViewStore(store) { viewStore in
+                            VStack(spacing: .spacing(.big)) {
+                                ToggableTextEditingView(placholder: Constants.emailPlaceholder,
+                                                        text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
+                                
+                                ToggableTextEditingView(placholder: Constants.usernamePlaceholder,
+                                                        text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange))
+                                
+                                ToggableSecureField(placholder: Constants.passwordPlaceholder,
+                                                    text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
+                                                    showPassword: viewStore.isPasswordShowed,
+                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
+                                
+                                ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
+                                                    text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+                                                    showPassword: viewStore.isConfrimPasswordShowed,
+                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
+                            }
+                        }
+                        .padding(.horizontal, .spacing(.ultraBig))
+                        .padding(.top, .spacing(.extraSize))
+                    }
                 }
-                .padding(.horizontal, .spacing(.ultraBig))
-                .padding(.top, .spacing(.extraSize))
+                .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 
-                Spacer()
-				
-                VStack {
-					Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
-						Text(Constants.registrationButtonTitle)
-					})
-                    .buttonStyle(RoundedButtonStyle(style: .filled))
-					.navigate(using: viewStore.binding(get: \.isCodeConfrimed, send: RegistrationAction.confrimCodeOpenned),
-							  destination: IfLetStore(store.scope(state: \.confrimCodeState, action: RegistrationAction.confrimCode),
-													  then: ConfrimCodeView.init(store:)))
+                WithViewStore(store.stateless) { viewStore in
+                    Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
+                        Text(Constants.registrationButtonTitle)
+                    })
                 }
-                .padding(.bottom, .spacing(.ultraBig))
+                .buttonStyle(RoundedButtonStyle(style: .filled))
+                .padding(.bottom)
+                .greedy(aligningContentTo: .bottom)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-			.alert(isPresented: viewStore.binding(get: \.isAlertPresent, send: RegistrationAction.alertPresented), content: {
-				Alert(title: Text(Constants.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.ok)))
-			})
-			.navigationBarTitle("Registration", displayMode: .inline)
+            .overlay(
+                TopHeaderView(width: globalProxy.size.width,
+                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                    .opacity(dividerHidden ? 0 : 1)
+            )
+            .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        }
+        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .background(confirmCodeLink)
+    }
+    
+    private var confirmCodeLink: some View {
+        WithViewStore(store.scope(state: \.confrimCodeState)) { viewStore in
+            NavigationLink.init(destination: IfLetStore(store.scope(state: \.confrimCodeState, action: RegistrationAction.confrimCode),
+                                                        then: ConfrimCodeView.init),
+                                isActive: viewStore.binding(get: { $0 != nil }, send: RegistrationAction.confrimCodeClosed),
+                                label: {})
         }
     }
 }

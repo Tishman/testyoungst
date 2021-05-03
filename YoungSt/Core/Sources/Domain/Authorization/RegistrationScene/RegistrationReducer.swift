@@ -16,10 +16,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 								environment: { ConfrimCodeEnviroment(authorizationService: $0.authorizationService) }),
 	Reducer { state, action, enviroment in
 		switch action {
-		case let .showPasswordButtonTapped(.password):
+		case .showPasswordButtonTapped(.password):
 			state.isPasswordShowed.toggle()
 			
-		case let .showPasswordButtonTapped(.confrimPassword):
+		case .showPasswordButtonTapped(.confrimPassword):
 			state.isConfrimPasswordShowed.toggle()
 		
 		case let .didEmailChanged(value):
@@ -36,43 +36,43 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 			
 		case let .didRecieveRegistartionResult(.success(value)):
 			state.confrimCodeState = .init(userId: value.uuidString)
-			state.isCodeConfrimed = true
 			
 		case let .didRecieveRegistartionResult(.failure(value)):
-			state.alertMessage = value.localizedDescription
-			state.isAlertPresent = true
+            state.alert = .init(title: TextState(value.localizedDescription))
 			
 		case let .failedValidtion(value):
-			state.alertMessage = value
-			state.isAlertPresent = true
+            state.alert = .init(title: TextState(value))
 			
-		case .alertPresented:
-			state.alertMessage = ""
-			state.isAlertPresent = false
+		case .alertClosed:
+            state.alert = nil
 			
-		case .registrationButtonTapped:
-			guard let authorizationService = enviroment.authorizationService,
-					!state.email.isEmpty, !state.password.isEmpty &&
-						!state.nickname.isEmpty else { return .init(value: .failedValidtion(Localizable.fillAllFields)) }
-			guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
-			
-			let requestData = Authorization_RegistrationRequest.with {
+        case .registrationButtonTapped:
+            guard !state.email.isEmpty && !state.password.isEmpty && !state.nickname.isEmpty else {
+                return .init(value: .failedValidtion(Localizable.fillAllFields))
+            }
+            guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
+            
+            let requestData = Authorization_RegistrationRequest.with {
 				$0.email = state.email
 				$0.nickname = state.nickname
 				$0.password = state.password
 			}
 			
-			return authorizationService.register(request: requestData)
+			return enviroment.authorizationService.register(request: requestData)
 				.receive(on: DispatchQueue.main)
 				.catchToEffect()
 				.map(RegistrationAction.didRecieveRegistartionResult)
-			
-		case .confrimCode(action: let action):
-			state.isRegistrationSuccess = false
-			break
-		case .confrimCodeOpenned:
-			break
-		}
+            
+        case .confrimCodeClosed:
+            state.confrimCodeState = nil
+            
+        case .confrimCode(.finishRegistartion):
+            state.confrimCodeState = nil
+            return .init(value: .finishRegistration)
+            
+        case .finishRegistration, .confrimCode:
+            break
+        }
 		
 		return .none
 	}

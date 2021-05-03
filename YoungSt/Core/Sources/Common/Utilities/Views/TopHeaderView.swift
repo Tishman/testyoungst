@@ -54,11 +54,15 @@ public extension View {
                 }
             }
         }
-        .introspectNavigationController {
-            $0.navigationBar.backgroundColor = .clear
-            $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            $0.navigationBar.shadowImage = UIImage()
-        }
+        .makeDefaultNavigationBarTransparent()
+    }
+    
+    func makeDefaultNavigationBarTransparent() -> some View {
+        self.introspectNavigationController {
+                $0.navigationBar.backgroundColor = .clear
+                $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
+                $0.navigationBar.shadowImage = UIImage()
+            }
     }
     
 }

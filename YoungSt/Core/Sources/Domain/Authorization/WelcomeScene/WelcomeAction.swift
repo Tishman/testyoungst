@@ -12,4 +12,6 @@ enum WelcomeAction: Equatable {
     case registration(RegistrationAction)
 	case loginOpenned(Bool)
 	case registrationOppend(Bool)
+    
+    case viewsClosed
 }

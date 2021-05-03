@@ -22,7 +22,7 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
         case let .gotAddGroup(response):
             switch response {
             case .success:
-                return .init(value: .closeScene)
+                return .init(value: .closeSceneTriggered)
             case let .failure(error):
                 state.alertError = .init(title: TextState(error.description))
             }
@@ -68,7 +68,10 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.items.append(.init(id: .init(), item: item.item))
             state.addWordState = nil
             
-        case .addWord, .closeScene:
+        case .addWord(.closeSceneTriggered):
+            state.addWordState = nil
+            
+        case .addWord, .closeSceneTriggered:
             break
         }
         

@@ -8,7 +8,7 @@
 import Foundation
 import DITranquillity
 
-public class DictionaryDIFramework: DIFramework {
+public final class DictionaryDIFramework: DIFramework {
     
     public static func load(container: DIContainer) {
         container.append(part: DictionaryModuleDeclaration.self)
