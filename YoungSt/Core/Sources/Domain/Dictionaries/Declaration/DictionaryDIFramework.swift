@@ -7,11 +7,13 @@
 
 import Foundation
 import DITranquillity
+import Protocols
 
 public final class DictionaryDIFramework: DIFramework {
     
     public static func load(container: DIContainer) {
         container.append(part: DictionaryModuleDeclaration.self)
+        container.append(part: AddWordModuleDeclaration.self)
         
         container.register(GroupsServiceImpl.init)
             .as(check: GroupsService.self) {$0}
@@ -21,6 +23,10 @@ public final class DictionaryDIFramework: DIFramework {
         
         container.register(TranslateServiceImpl.init)
             .as(check: TranslateService.self) {$0}
+        
+        container.register(DictionaryEventPublisherImpl.init)
+            .as(check: DictionaryEventPublisher.self) {$0}
+            .lifetime(.perContainer(.weak))
     }
     
 }

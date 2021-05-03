@@ -39,10 +39,14 @@ public enum Localizable {
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
   public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
-  /// Enter code
-  public static let enterCode = Localizable.tr("Localizable", "enterCode")
+  /// You don't have any dictionary.\nTap 'plus' to add
+  public static let emptyGroupsPlaceholder = Localizable.tr("Localizable", "emptyGroupsPlaceholder")
+  /// You don't have any word.\nTap 'plus' to add
+  public static let emptyWordsPlaceholder = Localizable.tr("Localizable", "emptyWordsPlaceholder")
   /// English
   public static let en = Localizable.tr("Localizable", "en")
+  /// Enter code
+  public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// Please fill all fields.
   public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
   /// Incorrect data

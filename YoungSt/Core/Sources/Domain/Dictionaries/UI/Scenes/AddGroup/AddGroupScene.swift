@@ -75,7 +75,6 @@ struct AddGroupScene: View {
                 }
                 .padding(.bottom)
                 .greedy(aligningContentTo: .bottom)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,

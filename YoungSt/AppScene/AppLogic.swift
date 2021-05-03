@@ -9,27 +9,34 @@ import Foundation
 import ComposableArchitecture
 import Protocols
 
-let appReducer = Reducer<AppState, AppAction, AppEnviroment> { state, action, env in
-    switch action {
-    case .appLaunched:
-        let credentialsObserver = env.credentialsService.credentialsUpdated
-            .receive(on: DispatchQueue.main)
-            .eraseToEffect()
-            .map(AppLogic.mapCredentialsToAction)
-        let currentCredentials = AppLogic.mapCurrentUserIdToAction(userID: env.userProvider.currentUserID)
+let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine (
+    tabReducer.optional().pullback(state: \.authorizedState, action: /AppAction.tab, environment: { _ in ()}),
+    Reducer { state, action, env in
+        switch action {
+        case .appLaunched:
+            let credentialsObserver = env.credentialsService.credentialsUpdated
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
+                .map(AppLogic.mapCredentialsToAction)
+            let currentCredentials = AppLogic.mapCurrentUserIdToAction(userID: env.userProvider.currentUserID)
+            
+            return .merge(
+                credentialsObserver,
+                Effect(value: currentCredentials)
+            )
+            
+        case .unauthorized:
+            state.authorizedState = nil
+        case let .authorized(userID):
+            state.authorizedState = .init(userID: userID)
+            
+        case .tab:
+            break
+        }
         
-        return .merge(
-            credentialsObserver,
-            Effect(value: currentCredentials)
-        )
-        
-    case .unauthorized:
-        state.authorizedState = nil
-    case let .authorized(userID):
-        state.authorizedState = .init(userID: userID)
+        return .none
     }
-    return .none
-}
+)
 
 private struct AppLogic {
     

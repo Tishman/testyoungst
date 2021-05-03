@@ -25,9 +25,11 @@ public protocol WordsService: AnyObject {
 final class WordsServiceImpl: WordsService {
     
     private let client: Dictionary_UserDictionaryClientProtocol
+    private let dictEventPublisher: DictionaryEventPublisherImpl
     
-    init(client: Dictionary_UserDictionaryClientProtocol) {
+    init(client: Dictionary_UserDictionaryClientProtocol, dictEventPublisher: DictionaryEventPublisherImpl) {
         self.client = client
+        self.dictEventPublisher = dictEventPublisher
     }
     
     func getUserWords(request: Dictionary_GetUserWordsRequest) -> AnyPublisher<Dictionary_GetUserWordsResponse, Error> {
@@ -35,11 +37,16 @@ final class WordsServiceImpl: WordsService {
     }
     
     func addWord(request: Dictionary_AddWordRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.addWord(request).response.publisher.map(toEmpty).eraseToAnyPublisher()
+        client.addWord(request).response.publisher
+            .map(toEmpty)
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func addWordList(request: Dictionary_AddWordListRequest) -> AnyPublisher<Dictionary_AddWordListResponse, Error> {
-        client.addWordList(request).response.publisher.eraseToAnyPublisher()
+        client.addWordList(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func removeWordList(request: Dictionary_RemoveWordListRequest) -> AnyPublisher<EmptyResponse, Error> {
@@ -47,6 +54,8 @@ final class WordsServiceImpl: WordsService {
     }
     
     func editWord(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {
-        client.editWord(request).response.publisher.eraseToAnyPublisher()
+        client.editWord(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .eraseToAnyPublisher()
     }
 }

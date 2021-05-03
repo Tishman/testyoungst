@@ -10,21 +10,8 @@ import Protocols
 
 struct AppState: Equatable {
     
-    var authorizedState: AuthorizedState?
+    var authorizedState: TabState?
     
-}
-
-extension AppState {
-    
-    struct AuthorizedState: Equatable {
-        let userID: UUID
-        var selectedTab: SelectedTab = .dictionaries
-        
-        enum SelectedTab:Equatable {
-            case dictionaries
-            case profile
-        }
-    }
 }
 
 
@@ -32,6 +19,8 @@ enum AppAction: Equatable {
     case appLaunched
     case authorized(userID: UUID)
     case unauthorized
+    
+    case tab(TabAction)
 }
 
 struct AppEnviroment {

@@ -9,6 +9,8 @@ import Foundation
 import Utilities
 
 struct DictGroupItem: Identifiable, Equatable, Previwable {
+    static let rootAlias = "root"
+    
     let id: UUID
     let alias: String?
     let state: DictGroupState

@@ -49,6 +49,8 @@
 "dictionaries" = "Dictionaries";
 "words" = "Words";
 "lastUpdateTime" = "Updated";
+"emptyGroupsPlaceholder" = "You don't have any dictionary.\nTap 'plus' to add";
+"emptyWordsPlaceholder" = "You don't have any word.\nTap 'plus' to add";
 
 // GroupInfo
 "shouldDeleteGroup" = "Do you want to delete group? This cannot be undone.";

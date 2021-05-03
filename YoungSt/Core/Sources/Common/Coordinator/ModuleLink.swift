@@ -7,10 +7,11 @@
 
 import Foundation
 
-public enum ModuleLink: Hashable {
+public enum ModuleLink {
     case authorization(AuthorizationInput)
     case dictionaries(DictionariesInput)
     case profile(ProfileInput)
+    case addWord(AddWordInput)
 }
 
 public enum AuthorizationInput: Identifiable, Hashable {
@@ -25,6 +26,14 @@ public struct DictionariesInput: Hashable {
     public init(userID: UUID?) {
         self.userID = userID
     }
+}
+
+public struct AddWordInput {
+    public init(closeHandler: @escaping () -> Void) {
+        self.closeHandler = closeHandler
+    }
+    
+    public let closeHandler: () -> Void
 }
 
 public struct ProfileInput: Hashable {

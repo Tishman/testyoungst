@@ -15,8 +15,16 @@ import Combine
 struct AddWordState: Equatable, Previwable {
     
     enum Semantic: Equatable {
-        case addToServer
+        case addToServer(closeHandler: (() -> Void)?)
         case addLater
+        
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.addToServer, .addToServer): return true
+            case (.addLater, .addLater): return true
+            default: return false
+            }
+        }
     }
     
     let semantic: Semantic
@@ -43,7 +51,7 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(semantic: .addToServer,
+    static let preview: AddWordState = .init(semantic: .addToServer(closeHandler: nil),
                                              sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",

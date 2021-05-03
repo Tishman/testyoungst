@@ -91,6 +91,12 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
         state.isLoading = false
         
     case .closeSceneTriggered, .addLaterTriggered:
+        switch state.semantic {
+        case let .addToServer(customCloseHandler) where customCloseHandler != nil:
+            customCloseHandler!()
+        default:
+            break
+        }
         break
     }
     

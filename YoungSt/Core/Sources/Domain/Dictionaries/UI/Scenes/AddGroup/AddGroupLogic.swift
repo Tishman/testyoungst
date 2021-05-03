@@ -77,5 +77,4 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
         
         return .none
     }
-    
 )

@@ -25,17 +25,23 @@ public protocol GroupsService: AnyObject {
 final class GroupsServiceImpl: GroupsService {
     
     private let client: Dictionary_UserDictionaryClientProtocol
+    private let dictEventPublisher: DictionaryEventPublisherImpl
     
-    init(client: Dictionary_UserDictionaryClientProtocol) {
+    init(client: Dictionary_UserDictionaryClientProtocol, dictEventPublisher: DictionaryEventPublisherImpl) {
         self.client = client
+        self.dictEventPublisher = dictEventPublisher
     }
     
     func addGroup(request: Dictionary_AddGroupRequest) -> AnyPublisher<Dictionary_AddGroupResponse, Error> {
-        client.addGroup(request).response.publisher.eraseToAnyPublisher()
+        client.addGroup(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .groupListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func removeGroup(request: Dictionary_RemoveGroupRequest) -> AnyPublisher<Dictionary_RemoveGroupResponse, Error> {
-        client.removeGroup(request).response.publisher.eraseToAnyPublisher()
+        client.removeGroup(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .groupListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func getUserGroups(request: Dictionary_GetUserGroupsRequest) -> AnyPublisher<Dictionary_GetUserGroupsResponse, Error> {
@@ -43,7 +49,9 @@ final class GroupsServiceImpl: GroupsService {
     }
     
     func editGroup(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {
-        client.editWord(request).response.publisher.eraseToAnyPublisher()
+        client.editWord(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .groupListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func getGroupInfo(request: Dictionary_GetGroupInfoRequest) -> AnyPublisher<Dictionary_GetGroupInfoResponse, Error> {

@@ -13,6 +13,7 @@ struct AppCoordinator: Coordinator {
     let authorizationProvider: (AuthorizationInput) -> AnyView
     let dictionariesProvider: (DictionariesInput) -> AnyView
     let profileProvider: (ProfileInput) -> AnyView
+    let addWordProvider: (AddWordInput) -> AnyView
     
     func view(for link: ModuleLink) -> AnyView {
         switch link {
@@ -22,6 +23,8 @@ struct AppCoordinator: Coordinator {
             return dictionariesProvider(input)
         case let .profile(input):
             return profileProvider(input)
+        case let .addWord(input):
+            return addWordProvider(input)
         }
     }
 }

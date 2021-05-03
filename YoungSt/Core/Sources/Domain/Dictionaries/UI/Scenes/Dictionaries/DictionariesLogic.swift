@@ -55,14 +55,37 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .map(DictionariesAction.itemsUpdated)
             
         case .viewLoaded:
-            return .init(value: .refreshList)
+            
+            // TODO: Cancel Cancellable on view dismissing!
+            struct CancelID: Hashable {}
+            let dictChangedPublisher = env.dictionaryEventPublisher.dictionaryEventPublisher
+                .eraseToEffect()
+                .map { _ in DictionariesAction.silentRefreshList }
+                .cancellable(id: CancelID())
+            
+            return .merge(
+                .init(value: .refreshList),
+                dictChangedPublisher
+            )
             
         case let .itemsUpdated(response):
             switch response {
             case let .success(result):
-                state.groups = result.groups
                 state.words = result.words
                 state.lastUpdate = env.timeFormatter.string(from: Date())
+                
+                // rootGroupIndex should be 0, but we double check here :D
+                if let rootGroupIndex = result.groups.firstIndex(where: { $0.alias == DictGroupItem.rootAlias }) {
+                    state.rootGroupId = result.groups[rootGroupIndex].id
+                    
+                    var groups = result.groups
+                    groups.remove(at: rootGroupIndex)
+                    state.groups = groups
+                    
+                } else {
+                    state.groups = result.groups
+                }
+                
             case let .failure(error):
                 state.errorAlert = .init(title: TextState(error.description))
             }
@@ -76,7 +99,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .addWordOpened(isOpened):
             if isOpened {
-                state.addWordState = .init(semantic: .addToServer,
+                state.addWordState = .init(semantic: .addToServer(closeHandler: nil),
                                            sourceLanguage: .russian,
                                            destinationLanguage: .english)
             } else {
@@ -99,7 +122,6 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
         }
         return .none
     }
-    .debug()
 )
 
 private struct DictionariesLogic {

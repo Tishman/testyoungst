@@ -21,6 +21,10 @@
 		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
 		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
 		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
+		FD275011263FEE5E00B12EDB /* TabScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275010263FEE5E00B12EDB /* TabScene.swift */; };
+		FD275013263FEE8F00B12EDB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275012263FEE8F00B12EDB /* TabBarView.swift */; };
+		FD275015263FF5B000B12EDB /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275014263FF5B000B12EDB /* TabState.swift */; };
+		FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275016263FFC5700B12EDB /* TabLogic.swift */; };
 		FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337CC263E9EFB00FA6DCE /* AppScene.swift */; };
 		FD4337CF263EA21900FA6DCE /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* Profile */; };
 		FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D2263EA4FB00FA6DCE /* AppModels.swift */; };
@@ -37,6 +41,10 @@
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDI.swift; sourceTree = "<group>"; };
+		FD275010263FEE5E00B12EDB /* TabScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabScene.swift; sourceTree = "<group>"; };
+		FD275012263FEE8F00B12EDB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		FD275014263FF5B000B12EDB /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
+		FD275016263FFC5700B12EDB /* TabLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabLogic.swift; sourceTree = "<group>"; };
 		FD4337CC263E9EFB00FA6DCE /* AppScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScene.swift; sourceTree = "<group>"; };
 		FD4337D2263EA4FB00FA6DCE /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
 		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
@@ -87,6 +95,7 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
+				FD27500F263FEE3E00B12EDB /* TabScene */,
 				FD4337CB263E9EDC00FA6DCE /* AppScene */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
@@ -118,6 +127,17 @@
 				47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		FD27500F263FEE3E00B12EDB /* TabScene */ = {
+			isa = PBXGroup;
+			children = (
+				FD275010263FEE5E00B12EDB /* TabScene.swift */,
+				FD275014263FF5B000B12EDB /* TabState.swift */,
+				FD275012263FEE8F00B12EDB /* TabBarView.swift */,
+				FD275016263FFC5700B12EDB /* TabLogic.swift */,
+			);
+			path = TabScene;
 			sourceTree = "<group>";
 		};
 		FD4337CB263E9EDC00FA6DCE /* AppScene */ = {
@@ -221,7 +241,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */,
+				FD275015263FF5B000B12EDB /* TabState.swift in Sources */,
 				FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */,
+				FD275013263FEE8F00B12EDB /* TabBarView.swift in Sources */,
+				FD275011263FEE5E00B12EDB /* TabScene.swift in Sources */,
+				FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
 				FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */,

@@ -20,6 +20,7 @@ struct DictionariesState: Equatable, Previwable {
     let userID: UUID?
     
     var groups: [DictGroupItem] = []
+    var rootGroupId: UUID?
     var words: [DictWordItem] = []
     var lastUpdate: String?
     
@@ -59,6 +60,7 @@ struct DictionariesEnvironment {
     let userProvider: UserProvider
     let translateService: TranslateService
     let languageProvider: LanguagePairProvider
+    let dictionaryEventPublisher: DictionaryEventPublisher
     
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
