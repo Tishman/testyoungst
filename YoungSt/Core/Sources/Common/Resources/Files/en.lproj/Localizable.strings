@@ -1,5 +1,7 @@
 "inputTranslationPlacholder" = "Enter word";
 "outputTranslationPlacholder" = "Result here";
+
+// Authorization
 "emailPlaceholder" = "E-mail";
 "passwordPlaceholder" = "Password";
 "usernamePlaceholder" = "Username";
@@ -25,6 +27,7 @@
 "unknownError" = "Unknown error";
 "cancel" = "Cancel";
 "delete" = "Delete";
+"incorrectEmail" = "Incorrect e-mail";
 
 // AddWord
 "addWordTitle" = "Add word";

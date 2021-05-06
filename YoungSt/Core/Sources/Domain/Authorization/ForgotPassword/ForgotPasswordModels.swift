@@ -11,13 +11,18 @@ import Utilities
 
 struct ForgotPasswordState: Equatable {
 	var email = ""
+	var code = ""
+	var confrimCode = ""
+	var userMessage = ""
 }
 
 enum ForgotPasswordAction {
 	case didEmailEditing(String)
+	case didCodeEditing(String)
 	case clearEmail
-	case didSendEmailButtonTapped
-	case handleEmailSend(Result<EmptyResponse, ResetPasswordError>)
+	case didSendCodeButtonTapped
+	case didConfrimButtonTapped
+	case handleEmailSend(Result<EmptyResponse, InitResetPasswordError>)
 }
 
 struct ForgotPasswordEnviroment {

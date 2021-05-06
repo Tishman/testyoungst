@@ -23,15 +23,17 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 public enum Asset {
   public enum Colors {
     public static let greenDark = ColorAsset(name: "greenDark")
+    public static let greenLight = ColorAsset(name: "greenLight")
     public static let greenLightly = ColorAsset(name: "greenLightly")
     public static let loaderContent = ColorAsset(name: "loaderContent")
     public static let navigationBackground = ColorAsset(name: "navigationBackground")
+    public static let pink = ColorAsset(name: "pink")
     public static let white = ColorAsset(name: "white")
   }
   public enum Images {
+    public static let arrowsSwap = ImageAsset(name: "arrows.swap")
     public static let cross = ImageAsset(name: "cross")
     public static let emptyEye = ImageAsset(name: "emptyEye")
-    public static let arrowsSwap = ImageAsset(name: "arrows.swap")
     public static let eye = ImageAsset(name: "eye")
     public static let pokemon = ImageAsset(name: "pokemon")
     public static let welcome = ImageAsset(name: "welcome")

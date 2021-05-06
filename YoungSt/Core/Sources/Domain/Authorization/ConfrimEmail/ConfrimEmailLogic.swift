@@ -10,7 +10,7 @@ import ComposableArchitecture
 import NetworkService
 import Resources
 
-let confrimCodeReducer = Reducer<ConfrimCodeState, ConfrimCodeAction, ConfrimCodeEnviroment> { state, action, enviroment in
+let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, ConfrimEmailEnviroment> { state, action, enviroment in
 	switch action {
 	case let .failedValidation(value):
 		state.alertMessage = value
@@ -45,7 +45,7 @@ let confrimCodeReducer = Reducer<ConfrimCodeState, ConfrimCodeAction, ConfrimCod
 		return service.confirmCode(request: requestData)
 			.receive(on: DispatchQueue.main)
 			.catchToEffect()
-			.map(ConfrimCodeAction.handleConfrimation)
+			.map(ConfrimEmailAction.handleConfrimation)
 		
 	case .finishRegistartion:
 		break

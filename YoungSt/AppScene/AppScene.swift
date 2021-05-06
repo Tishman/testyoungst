@@ -62,10 +62,10 @@ final class AppViewController: UIViewController {
     
     private func setAuthorizedState(userID: UUID) {
         let dictionariesView = coordinator.view(for: .dictionaries(.init(userID: userID))).uiKitHosted
-        dictionariesView.tabBarItem = .init(title: Localizable.dictionary, image: .init(systemName: "rectangle.stack"), tag: 0)
+		dictionariesView.tabBarItem = .init(title: Localizable.dictionary, image: UIImage(systemName: "rectangle.stack"), tag: 0)
         
         let profileView = coordinator.view(for: .profile(.init(userID: userID))).uiKitHosted
-        profileView.tabBarItem = .init(title: Localizable.profile, image: .init(systemName: "person.crop.circle"), tag: 1)
+		profileView.tabBarItem = .init(title: Localizable.profile, image: UIImage(systemName: "person.crop.circle"), tag: 1)
         
         ViewEmbedder.embed(child: dictionariesView, to: self)
     }

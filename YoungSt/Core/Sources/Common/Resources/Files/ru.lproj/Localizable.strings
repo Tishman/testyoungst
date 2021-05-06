@@ -1,5 +1,7 @@
 "inputTranslationPlacholder" = "Введите слово";
 "outputTranslationPlacholder" = "Результат";
+
+// Authorization
 "emailPlaceholder" = "E-mail";
 "passwordPlaceholder" = "Пароль";
 "usernamePlaceholder" = "Имя пользователя";
@@ -25,6 +27,7 @@
 "unknownError" = "Неизвестная ошибка";
 "cancel" = "Отмена";
 "delete" = "Удалить";
+"incorrectEmail" = "Неправильный e-mail";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

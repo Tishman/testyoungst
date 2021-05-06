@@ -14,7 +14,7 @@ struct RegistrationState: Equatable {
     var password: String = ""
     var confrimPassword: String = ""
     var alert: AlertState<RegistrationAction>?
-	var confrimCodeState: ConfrimCodeState?
+	var confrimCodeState: ConfrimEmailState?
 	var isPasswordShowed = false
 	var isConfrimPasswordShowed = false
 }

@@ -11,9 +11,9 @@ import NetworkService
 import Utilities
 import Resources
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment>.combine(
-	confrimCodeReducer.optional().pullback(state: \.confrimCodeState,
+	confrimEmailReducer.optional().pullback(state: \.confrimCodeState,
 								action: /RegistrationAction.confrimCode,
-								environment: { ConfrimCodeEnviroment(authorizationService: $0.authorizationService) }),
+								environment: { ConfrimEmailEnviroment(authorizationService: $0.authorizationService) }),
 	Reducer { state, action, enviroment in
 		switch action {
 		case .showPasswordButtonTapped(.password):

@@ -40,10 +40,12 @@ struct LoginView: View {
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.ultraBig)) {
                                 TextEditingView(placholder: Constants.emailPlaceholder,
-                                                text: viewStore.binding(get: \.email, send: LoginAction.emailChanged))
+												text: viewStore.binding(get: \.email, send: LoginAction.emailChanged),
+												status: .default)
                                 
                                 ToggableSecureField(placholder: Constants.passwordPlaceholder,
-                                                    text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+													text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+													status: .default,
                                                     showPassword: viewStore.showPassword,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped) })
                             }

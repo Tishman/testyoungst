@@ -39,14 +39,16 @@ public enum Localizable {
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
   public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
-  /// Enter code
-  public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// English
   public static let en = Localizable.tr("Localizable", "en")
+  /// Enter code
+  public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// Please fill all fields.
   public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
   /// Incorrect data
   public static let incorrectDataTitle = Localizable.tr("Localizable", "incorrectDataTitle")
+  /// Incorrect e-mail
+  public static let incorrectEmail = Localizable.tr("Localizable", "incorrectEmail")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
   /// Updated
