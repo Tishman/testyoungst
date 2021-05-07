@@ -9,7 +9,7 @@ enum CorePackage: String, CaseIterable {
     case protocols = "Protocols"
     case mocks = "Mocks"
     case networkService = "NetworkService"
-    case translateScene = "TranslateScene"
+    case translation = "Translation"
     case coordinator = "Coordinator"
     case authorization = "Authorization"
     case dictionaries = "Dictionaries"
@@ -31,7 +31,7 @@ enum CorePackage: String, CaseIterable {
             return "Sources/Common/" + rawValue
         case .networkService:
             return "Sources/Service/" + rawValue
-        case .translateScene, .authorization, .dictionaries, .profile:
+        case .translation, .authorization, .dictionaries, .profile:
             return "Sources/Domain/" + rawValue
         }
     }
@@ -50,6 +50,7 @@ enum ExternalDependecy {
     case composableArchitecture
     case keychain
     case introspect
+    case liquid
     
     var product: Target.Dependency {
         switch self {
@@ -67,6 +68,8 @@ enum ExternalDependecy {
             return .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
         case .introspect:
             return "Introspect"
+        case .liquid:
+            return "Liquid"
         }
     }
 }
@@ -82,7 +85,8 @@ let package = Package(
         .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),
         .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
-        .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3")
+        .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3"),
+        .package(name: "Liquid", url: "https://github.com/Nekitosss/liquid.git", from: "0.0.2"),
     ],
     targets: [
         .target(name: CorePackage.dictionaries.rawValue,
@@ -93,6 +97,7 @@ let package = Package(
                     ExternalDependecy.diTranquillity.product,
                     ExternalDependecy.composableArchitecture.product,
                     ExternalDependecy.introspect.product,
+                    ExternalDependecy.liquid.product,
                 ],
                 path: CorePackage.dictionaries.path),
         .target(name: CorePackage.profile.rawValue,
@@ -152,14 +157,16 @@ let package = Package(
                         CorePackage.utilities.dependency,
                     ]),
         .target(
-            name: CorePackage.translateScene.rawValue,
+            name: CorePackage.translation.rawValue,
             dependencies: [
+                CorePackage.protocols.dependency,
                 CorePackage.networkService.dependency,
+                CorePackage.coordinator.dependency,
+                ExternalDependecy.diTranquillity.product,
                 ExternalDependecy.composableArchitecture.product,
-                CorePackage.resources.dependency,
-                CorePackage.utilities.dependency
+                ExternalDependecy.introspect.product,
             ],
-            path: CorePackage.translateScene.path
+            path: CorePackage.translation.path
         ),
         .target(
             name: CorePackage.authorization.rawValue,

@@ -103,7 +103,7 @@ final class TabController: UIViewController {
             self?.viewStore.send(.addWordOpened(false))
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
-        }))).uiKitHosted
+        }, semantic: .addToServer))).uiKitHosted
         box.value = addWordVC
         addWordVC.modalPresentationStyle = .automatic
         self.present(addWordVC, animated: true) {

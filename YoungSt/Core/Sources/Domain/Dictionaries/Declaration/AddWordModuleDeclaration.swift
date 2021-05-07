@@ -39,7 +39,7 @@ final class AddWordModuleDeclaration: DIPart, ModuleStoreProvider {
     }
     
     func createInitialModuleStore() -> Store<AddWordState, AddWordAction> {
-        .init(initialState: .init(semantic: .addToServer(closeHandler: input.closeHandler), sourceLanguage: languagePairProvider.sourceLanguage, destinationLanguage: languagePairProvider.destinationLanguage),
+        .init(initialState: .init(input: input, sourceLanguage: languagePairProvider.sourceLanguage, destinationLanguage: languagePairProvider.destinationLanguage),
               reducer: addWordReducer,
               environment: environment)
     }

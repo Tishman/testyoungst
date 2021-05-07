@@ -57,7 +57,7 @@ struct TabBarView: View {
     var body: some View {
         VStack(spacing: 0) {
             Divider()
-            HStack {
+            HStack(spacing: 0) {
                 Spacer()
                 itemView(for: leftItem)
                 Spacer()
@@ -86,6 +86,7 @@ struct TabBarView: View {
             }
         }
         .foregroundColor(item.id == selectedTab ? Asset.Colors.greenDark.color.swiftuiColor : Color(UIColor.systemGray2))
+        .frame(maxWidth: .infinity)
     }
     
     private var mainButton: some View {

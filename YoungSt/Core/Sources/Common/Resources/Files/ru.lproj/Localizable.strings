@@ -50,7 +50,7 @@
 "words" = "Слова";
 "lastUpdateTime" = "Обновлено";
 "emptyGroupsPlaceholder" = "У вас еще нет словарей. Нажмите\nна плюс, чтобы добавить";
-"emptyWordsPlaceholder" = "У вас еще нет слов. Нажмите\nна плюс, чтобы добавить";
+"emptyWordsPlaceholder" = "У вас еще нет слов. Нажмите на\nплюс в меню, чтобы добавить.";
 
 // GroupInfo
 "shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";

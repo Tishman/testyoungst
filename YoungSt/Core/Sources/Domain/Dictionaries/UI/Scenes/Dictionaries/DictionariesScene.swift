@@ -9,6 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 import Resources
 import Utilities
+import Coordinator
 
 struct DictionariesScene: View {
     
@@ -16,6 +17,7 @@ struct DictionariesScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
+    @Environment(\.coordinator) private var coordinator
     
     var body: some View {
         GeometryReader { globalProxy in
@@ -101,6 +103,7 @@ struct DictionariesScene: View {
                                 selection: viewStore.binding(get: { $0.groupInfoState?.id }, send: DictionariesAction.openGroup)) {
                                 DictGroupView(id: element.id, size: .small, state: element.state)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     .padding(.horizontal)
@@ -113,9 +116,14 @@ struct DictionariesScene: View {
     private var wordsList: some View {
         WithViewStore(store.scope(state: \.words)) { viewStore in
             if viewStore.state.isEmpty {
-                emptyPlaceholder(text: Localizable.emptyWordsPlaceholder) {
-                    viewStore.send(.addWordOpened(true))
-                }
+                Text(Localizable.emptyWordsPlaceholder)
+                    .multilineTextAlignment(.center)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .fixedSize()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, .spacing(.regular))
+                
             } else {
                 LazyVStack {
                     ForEach(viewStore.state) {
@@ -167,11 +175,12 @@ struct DictionariesScene: View {
     }
     
     private var addWordLink: some View {
-        WithViewStore(store.scope(state: \.addWordState)) { viewStore in
-            Color.clear.sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addWordOpened)) {
-                IfLetStore(store.scope(state: \.addWordState, action: DictionariesAction.addWord),
-                           then: AddWordScene.init)
-            }
+        WithViewStore(store.scope(state: \.addWordOpened)) { viewStore in
+            Color.clear
+                .sheet(isPresented: viewStore.binding(send: DictionariesAction.addWordOpened)) {
+                    coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
+                                                         semantic: .addToServer)))
+                }
         }
     }
     

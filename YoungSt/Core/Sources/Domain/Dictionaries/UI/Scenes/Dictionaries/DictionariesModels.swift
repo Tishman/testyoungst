@@ -12,9 +12,9 @@ import Protocols
 
 struct DictionariesState: Equatable, Previwable {
     
-    var addWordState: AddWordState?
     var addGroupState: AddGroupState?
     var groupInfoState: GroupInfoState?
+    var addWordOpened = false
     
     // nil for current user dictionaries
     let userID: UUID?
@@ -50,7 +50,6 @@ enum DictionariesAction: Equatable {
     case openGroup(UUID?)
     
     case groupInfo(GroupInfoAction)
-    case addWord(AddWordAction)
     case addGroup(AddGroupAction)
 }
 
@@ -58,7 +57,6 @@ struct DictionariesEnvironment {
     let wordsService: WordsService
     let groupsService: GroupsService
     let userProvider: UserProvider
-    let translateService: TranslateService
     let languageProvider: LanguagePairProvider
     let dictionaryEventPublisher: DictionaryEventPublisher
     
@@ -69,13 +67,8 @@ struct DictionariesEnvironment {
         return formatter
     }()
     
-    var addWordEnv: AddWordEnvironment {
-        .init(translateService: translateService, wordService: wordsService)
-    }
-    
     var addGroupEnv: AddGroupEnvironment {
-        .init(translateService: translateService,
-              wordsService: wordsService,
+        .init(wordsService: wordsService,
               groupsService: groupsService,
               userProvider: userProvider,
               languageProvider: languageProvider)

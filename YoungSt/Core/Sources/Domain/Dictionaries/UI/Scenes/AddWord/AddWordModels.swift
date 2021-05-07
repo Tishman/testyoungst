@@ -11,27 +11,16 @@ import ComposableArchitecture
 import Protocols
 import NetworkService
 import Combine
+import Coordinator
 
 struct AddWordState: Equatable, Previwable {
     
-    enum Semantic: Equatable {
-        case addToServer(closeHandler: (() -> Void)?)
-        case addLater
-        
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            switch (lhs, rhs) {
-            case (.addToServer, .addToServer): return true
-            case (.addLater, .addLater): return true
-            default: return false
-            }
-        }
-    }
-    
-    let semantic: Semantic
+    let input: AddWordInput
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
     var leftToRight = true
+    var localTranslationDownloading = false
     
     var isLoading = false
     var isTranslateLoading = false
@@ -51,7 +40,7 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(semantic: .addToServer(closeHandler: nil),
+    static let preview: AddWordState = .init(input: .init(closeHandler: {}, semantic: .addToServer),
                                              sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",
@@ -64,7 +53,9 @@ enum AddWordAction: Equatable {
     case selectedGroupChanged(UUID?)
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
+    case translationDownloaded(Result<EmptyResponse, EquatableError>)
     
+    case viewAppeared
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed
@@ -72,11 +63,10 @@ enum AddWordAction: Equatable {
     
     case groupsOpened(Bool)
     case closeSceneTriggered
-    
-    case addLaterTriggered(Dictionary_AddWordRequest)
 }
 
 struct AddWordEnvironment {
-    let translateService: TranslateService
+    let translationService: TranslationService
+    let localTranslator: LocalTranslator
     let wordService: WordsService
 }

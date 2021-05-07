@@ -9,6 +9,8 @@ import SwiftUI
 import Resources
 import Utilities
 import ComposableArchitecture
+import Liquid
+import Coordinator
 
 struct AddGroupScene: View {
     
@@ -17,18 +19,15 @@ struct AddGroupScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     
+    @Environment(\.coordinator) private var coordinator
+    
     var body: some View {
         GeometryReader { globalProxy in
             ZStack {
                 TrackableScrollView(contentOffset: $contentOffset) {
                     VStack(spacing: .spacing(.big)) {
-                        WithViewStore(store) { viewStore in
-                            DictGroupView(id: viewStore.tmpID,
-                                          size: .big,
-                                          state: .init(title: viewStore.title.isEmpty ? Localizable.unnamed : viewStore.title,
-                                                       subtitle: ""))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        topGroupPreview
+                            .frame(maxWidth: .infinity, alignment: .center)
                         
                         WithViewStore(store.scope(state: \.title)) { viewStore in
                             TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
@@ -92,11 +91,11 @@ struct AddGroupScene: View {
         }
         .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
         .background(
-            WithViewStore(store.scope(state: \.addWordState)) { viewStore in
+            WithViewStore(store.scope(state: \.addWordOpened)) { viewStore in
                 Color.clear
-                    .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: AddGroupAction.addWordOpened)) {
-                        IfLetStore(store.scope(state: \.addWordState, action: AddGroupAction.addWord),
-                                   then: AddWordScene.init)
+                    .sheet(isPresented: viewStore.binding(send: AddGroupAction.addWordOpened)) {
+                        coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
+                                                             semantic: .addLater(handler: { viewStore.send(.wordAdded($0)) }))))
                     }
             }
         )
@@ -104,6 +103,24 @@ struct AddGroupScene: View {
         .navigationTitle(Localizable.addGroupTitle)
         .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
+    }
+    
+    private var topGroupPreview: some View {
+        WithViewStore(store.scope(state: \.title)) { viewStore in
+            Text(viewStore.state)
+        }
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .lineLimit(3)
+        .font(.title3)
+        .frame(width: DictGroupView.Size.big.value, height: DictGroupView.Size.big.value)
+        .background(
+            MeshGradientView(samples: 5, period: 3)
+        )
+        .clipShape(
+            RoundedRectangle(cornerRadius: .corner(.big))
+        )
+        .shadow(color: .black.opacity(0.5), radius: 6, x: 0, y: 0)
     }
 }
 

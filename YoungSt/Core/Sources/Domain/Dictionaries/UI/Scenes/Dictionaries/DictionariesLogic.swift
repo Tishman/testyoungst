@@ -13,17 +13,12 @@ import Utilities
 import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
-    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
     addGroupReducer.optional().pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
     groupInfoReducer.optional().pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
     Reducer { state, action, env in
         switch action {
         case .addGroup(.closeSceneTriggered):
             state.addGroupState = nil
-            return Effect(value: .silentRefreshList)
-        
-        case .addWord(.closeSceneTriggered):
-            state.addWordState = nil
             return Effect(value: .silentRefreshList)
             
         case .groupInfo(.closeSceneTriggered):
@@ -98,13 +93,8 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             state.errorAlert = .init(title: TextState(errorText))
             
         case let .addWordOpened(isOpened):
-            if isOpened {
-                state.addWordState = .init(semantic: .addToServer(closeHandler: nil),
-                                           sourceLanguage: .russian,
-                                           destinationLanguage: .english)
-            } else {
-                state.addWordState = nil
-            }
+            state.addWordOpened = isOpened
+            
         case let .addGroupOpened(isOpened):
             if isOpened {
                 state.addGroupState = .init(userID: nil)
@@ -117,7 +107,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             } else {
                 state.groupInfoState = nil
             }
-        case .addWord, .addGroup, .groupInfo:
+        case .addGroup, .groupInfo:
             break
         }
         return .none

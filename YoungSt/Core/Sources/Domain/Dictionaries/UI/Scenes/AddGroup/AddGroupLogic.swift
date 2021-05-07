@@ -13,7 +13,6 @@ import NetworkService
 import Resources
 
 let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment>.combine(
-    addWordReducer.optional().pullback(state: \.addWordState, action: /AddGroupAction.addWord, environment: \.addWordEnv),
     Reducer { state, action, env in
         switch action {
         case let .titleChanged(newText):
@@ -56,22 +55,16 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.alertError = .init(title: TextState(error))
             
         case let .addWordOpened(isOpened):
-            if isOpened {
-                state.addWordState = .init(semantic: .addLater,
-                                           sourceLanguage: env.languageProvider.sourceLanguage,
-                                           destinationLanguage: env.languageProvider.destinationLanguage)
-            } else {
-                state.addWordState = nil
+            state.addWordOpened = isOpened
+            
+        case let .wordAdded(request):
+            let item = Dictionary_AddWordItem.with {
+                $0.source = request.sourceText
+                $0.destination = request.destinationText
             }
+            state.items.append(.init(id: .init(), item: item))
             
-        case let .addWord(.addLaterTriggered(item)):
-            state.items.append(.init(id: .init(), item: item.item))
-            state.addWordState = nil
-            
-        case .addWord(.closeSceneTriggered):
-            state.addWordState = nil
-            
-        case .addWord, .closeSceneTriggered:
+        case .closeSceneTriggered:
             break
         }
         

@@ -10,13 +10,15 @@ import ComposableArchitecture
 import Utilities
 import NetworkService
 import Protocols
+import Coordinator
 
 struct AddGroupState: Equatable, Previwable {
     let userID: UUID?
     
-    let tmpID = UUID()
-    var addWordState: AddWordState?
     var title: String = ""
+    var addWordOpened = false
+    var titleError: String?
+    
     var isLoading = false
     var alertError: AlertState<AddGroupAction>?
     
@@ -46,22 +48,17 @@ enum AddGroupAction: Equatable {
     case addGroupPressed
     case alertClosePressed
     case addWordOpened(Bool)
+    case wordAdded(AddWordInput.AddLaterRequest)
     
     case showAlert(String)
-    case addWord(AddWordAction)
     
     case closeSceneTriggered
 }
 
 struct AddGroupEnvironment {
-    let translateService: TranslateService
     let wordsService: WordsService
     let groupsService: GroupsService
     let userProvider: UserProvider
     
     let languageProvider: LanguagePairProvider
-    
-    var addWordEnv: AddWordEnvironment {
-        .init(translateService: translateService, wordService: wordsService)
-    }
 }

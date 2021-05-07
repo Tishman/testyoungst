@@ -28,12 +28,44 @@ public struct DictionariesInput: Hashable {
     }
 }
 
-public struct AddWordInput {
-    public init(closeHandler: @escaping () -> Void) {
+public struct AddWordInput: Equatable {
+    
+    public static func == (lhs: AddWordInput, rhs: AddWordInput) -> Bool {
+        true
+    }
+    
+    public struct AddLaterRequest: Equatable {
+        public init(sourceText: String, translationText: String, destinationText: String) {
+            self.sourceText = sourceText
+            self.translationText = translationText
+            self.destinationText = destinationText
+        }
+        
+        public let sourceText: String
+        public let translationText: String
+        public let destinationText: String
+    }
+    
+    public enum Semantic: Equatable {
+        case addToServer
+        case addLater(handler: (AddLaterRequest) -> Void)
+        
+        public static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.addToServer, .addToServer): return true
+            case (.addLater, .addLater): return true
+            default: return false
+            }
+        }
+    }
+    
+    public init(closeHandler: @escaping () -> Void, semantic: Semantic) {
         self.closeHandler = closeHandler
+        self.semantic = semantic
     }
     
     public let closeHandler: () -> Void
+    public let semantic: Semantic
 }
 
 public struct ProfileInput: Hashable {

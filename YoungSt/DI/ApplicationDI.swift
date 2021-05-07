@@ -13,6 +13,7 @@ import Authorization
 import Dictionaries
 import Profile
 import Protocols
+import Translation
 
 final class ApplicationDI: DIFramework {
     static func load(container: DIContainer) {
@@ -27,9 +28,13 @@ final class ApplicationDI: DIFramework {
         container.append(framework: CoordinatorDIFramework.self)
         container.append(framework: DictionaryDIFramework.self)
         container.append(framework: ProfileDIFramework.self)
+        container.append(framework: TranslationServiceDIFramework.self)
         
         container.register(MockLangProvider.init)
             .as(check: LanguagePairProvider.self) {$0}
+        
+        container.register(LocalTranslationImpl.init)
+            .as(check: LocalTranslator.self) {$0}
         
         container.register(AppEnviroment.init)
         

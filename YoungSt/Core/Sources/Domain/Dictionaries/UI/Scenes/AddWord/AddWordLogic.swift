@@ -13,6 +13,20 @@ import Resources
 
 let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { state, action, env in
     switch action {
+    case .viewAppeared:
+        guard !env.localTranslator.isModelExistsForTranslation(from: state.sourceLanguage, to: state.destinationLanguage) else {
+            break
+        }
+        struct DownloadTranslationID: Hashable {}
+        
+        return env.localTranslator.downloadModels(sourceLanguage: state.sourceLanguage,
+                                                  destinationLanguage: state.destinationLanguage)
+            .mapError(EquatableError.init)
+            .map(toEmpty)
+            .catchToEffect()
+            .map(AddWordAction.translationDownloaded)
+            .cancellable(id: DownloadTranslationID())
+    
     case let .sourceChanged(source):
         state.sourceText = source
         
@@ -34,19 +48,19 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
     case .swapLanguagesPressed:
         state.leftToRight.toggle()
         
-    case .translatePressed:
-        state.isTranslateLoading = true
+    case let .translationDownloaded(result):
+        state.localTranslationDownloading = false
         
-        let request = Translator_TranslationRequest.with {
-            $0.value = state.sourceText
-            $0.destinationLang = state.sourceLanguage.rawValue
-            $0.sourceLang = state.sourceLanguage.rawValue
-        }
-        return env.translateService.translate(request: request)
+    case .translatePressed:
+        struct TranslationID: Hashable {}
+        
+        state.isTranslateLoading = true
+        return env.translationService.translate(text: state.sourceText, from: state.sourceLanguage, to: state.destinationLanguage)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(AddWordAction.gotTranslation)
+            .cancellable(id: TranslationID())
         
     case .addPressed:
         if state.sourceText.isEmpty {
@@ -62,7 +76,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
             }
         }
         
-        switch state.semantic {
+        switch state.input.semantic {
         case .addToServer:
             state.isLoading = true
             return env.wordService.addWord(request: request)
@@ -71,8 +85,11 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
                 .catchToEffect()
                 .map(AddWordAction.gotWordAddition)
             
-        case .addLater:
-            return .init(value: .addLaterTriggered(request))
+        case let .addLater(handler):
+            handler(.init(sourceText: state.sourceText,
+                          translationText: "",
+                          destinationText: state.descriptionText))
+            return .init(value: .closeSceneTriggered)
         }
         
     case let .groupsOpened(opened):
@@ -90,14 +107,8 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
         }
         state.isLoading = false
         
-    case .closeSceneTriggered, .addLaterTriggered:
-        switch state.semantic {
-        case let .addToServer(customCloseHandler) where customCloseHandler != nil:
-            customCloseHandler!()
-        default:
-            break
-        }
-        break
+    case .closeSceneTriggered:
+        state.input.closeHandler()
     }
     
     return .none

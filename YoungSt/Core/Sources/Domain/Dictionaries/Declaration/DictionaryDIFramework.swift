@@ -21,9 +21,6 @@ public final class DictionaryDIFramework: DIFramework {
         container.register(WordsServiceImpl.init)
             .as(check: WordsService.self) {$0}
         
-        container.register(TranslateServiceImpl.init)
-            .as(check: TranslateService.self) {$0}
-        
         container.register(DictionaryEventPublisherImpl.init)
             .as(check: DictionaryEventPublisher.self) {$0}
             .lifetime(.perContainer(.weak))

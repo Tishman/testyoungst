@@ -10,7 +10,6 @@ import ComposableArchitecture
 import GRDB
 import NetworkService
 import DITranquillity
-import TranslateScene
 import Coordinator
 import Authorization
 import Utilities
@@ -38,6 +37,7 @@ struct YoungStApp: App {
             AppScene.init(coordinator: coordinator, store: store)
                 .edgesIgnoringSafeArea(.all)
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
+                .environment(\.coordinator, container.resolve())
         }
     }
 }

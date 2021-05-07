@@ -37,6 +37,18 @@ struct AddWordScene: View {
                                                  currentText: viewStore.binding(send: AddWordAction.sourceChanged))
                             }
                             
+                            WithViewStore(store.scope(state: \.localTranslationDownloading)) { viewStore in
+                                if viewStore.state {
+                                    HStack {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle())
+                                        Text("Downloading local translations")
+                                            .foregroundColor(.secondary)
+                                            .font(.caption)
+                                    }
+                                }
+                            }
+                            
                             WithViewStore(store.scope(state: \.descriptionText)) { viewStore in
                                 AddWordInputView(subtitle: Localizable.wordDescription,
                                                  currentText: viewStore.binding(send: AddWordAction.descriptionChanged))
@@ -79,6 +91,12 @@ struct AddWordScene: View {
                         .opacity(dividerHidden ? 0 : 1)
                 )
             }
+            .background(
+                WithViewStore(store.stateless) { viewStore in
+                    Color.clear
+                        .onAppear { viewStore.send(.viewAppeared) }
+                }
+            )
             .alert(store.scope(state: \.alertError), dismiss: AddWordAction.alertClosePressed)
             .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
             .navigationTitle(Localizable.addWordTitle)
