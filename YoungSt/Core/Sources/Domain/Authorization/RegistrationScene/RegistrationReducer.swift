@@ -54,7 +54,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
             
             let requestData = Authorization_RegistrationRequest.with {
 				$0.email = state.email
-				$0.nickname = state.nickname
+				$0.login = state.nickname
 				$0.password = state.password
 			}
 			

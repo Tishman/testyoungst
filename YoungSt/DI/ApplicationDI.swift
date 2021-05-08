@@ -33,9 +33,6 @@ final class ApplicationDI: DIFramework {
         container.register(MockLangProvider.init)
             .as(check: LanguagePairProvider.self) {$0}
         
-        container.register(LocalTranslationImpl.init)
-            .as(check: LocalTranslator.self) {$0}
-        
         container.register(AppEnviroment.init)
         
         #if DEBUG

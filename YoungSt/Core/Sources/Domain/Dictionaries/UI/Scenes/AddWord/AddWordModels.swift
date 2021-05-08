@@ -67,6 +67,5 @@ enum AddWordAction: Equatable {
 
 struct AddWordEnvironment {
     let translationService: TranslationService
-    let localTranslator: LocalTranslator
     let wordService: WordsService
 }

@@ -9,30 +9,28 @@
 /* Begin PBXBuildFile section */
 		0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C34921D2592001900F729C4 /* YoungStApp.swift */; };
 		0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3492242592001C00F729C4 /* Preview Assets.xcassets */; };
-		0C46219125938835006B1701 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* SwiftPackageProductDependency */; };
-		0CA5EDFF2592617E0006F066 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */; };
-		477CD6AB25FBB58B00BB45B8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */; };
+		0C46219125938835006B1701 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* GRDB */; };
+		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
+		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
 		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
 		47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */; };
-		47BF2A8C2618C52D008FDB1F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */; };
-		72EF82B25C7518643A309E19 /* Pods_YoungSt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD57D1B01A0B8487AE7FDA0 /* Pods_YoungSt.framework */; };
-		FD10AC4525FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */; };
-		FD10AC4925FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */; };
-		FD10AC4B25FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */; };
-		FD10AC4D25FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */; };
-		FD10AC5225FE3276001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */; };
+		47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* Authorization */; };
+		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
+		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
+		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
+		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
+		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
 		FD275011263FEE5E00B12EDB /* TabScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275010263FEE5E00B12EDB /* TabScene.swift */; };
 		FD275013263FEE8F00B12EDB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275012263FEE8F00B12EDB /* TabBarView.swift */; };
 		FD275015263FF5B000B12EDB /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275014263FF5B000B12EDB /* TabState.swift */; };
 		FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275016263FFC5700B12EDB /* TabLogic.swift */; };
 		FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337CC263E9EFB00FA6DCE /* AppScene.swift */; };
-		FD4337CF263EA21900FA6DCE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */; };
+		FD4337CF263EA21900FA6DCE /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* Profile */; };
 		FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D2263EA4FB00FA6DCE /* AppModels.swift */; };
 		FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D4263EA50F00FA6DCE /* AppLogic.swift */; };
-		FD5111362618ADC500A90101 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* SwiftPackageProductDependency */; };
-		FD51C9B626440C1A00047726 /* LocalTranslationImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD51C9B526440C1900047726 /* LocalTranslationImpl.swift */; };
-		FD51C9B826440C8900047726 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD51C9B726440C8900047726 /* SwiftPackageProductDependency */; };
-		FD8D2AD3263AF7A4002C0DD2 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */; };
+		FD5111362618ADC500A90101 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* Coordinator */; };
+		FD51C9B826440C8900047726 /* Translation in Frameworks */ = {isa = PBXBuildFile; productRef = FD51C9B726440C8900047726 /* Translation */; };
+		FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,9 +41,6 @@
 		4783769825FB90A9000B11B7 /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = YoungSt/Core; sourceTree = "<group>"; };
 		4783769A25FB9183000B11B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDI.swift; sourceTree = "<group>"; };
-		9DD57D1B01A0B8487AE7FDA0 /* Pods_YoungSt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YoungSt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A022F1E4D0B5D3490D722CA2 /* Pods-YoungSt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoungSt.debug.xcconfig"; path = "Target Support Files/Pods-YoungSt/Pods-YoungSt.debug.xcconfig"; sourceTree = "<group>"; };
-		CBF7CB8698207DA4C357EC54 /* Pods-YoungSt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoungSt.release.xcconfig"; path = "Target Support Files/Pods-YoungSt/Pods-YoungSt.release.xcconfig"; sourceTree = "<group>"; };
 		FD275010263FEE5E00B12EDB /* TabScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabScene.swift; sourceTree = "<group>"; };
 		FD275012263FEE8F00B12EDB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		FD275014263FF5B000B12EDB /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -53,7 +48,6 @@
 		FD4337CC263E9EFB00FA6DCE /* AppScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScene.swift; sourceTree = "<group>"; };
 		FD4337D2263EA4FB00FA6DCE /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
 		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
-		FD51C9B526440C1900047726 /* LocalTranslationImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalTranslationImpl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,43 +55,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD10AC4925FE31FD001FFF11 /* BuildFile in Frameworks */,
-				FD8D2AD3263AF7A4002C0DD2 /* BuildFile in Frameworks */,
-				FD10AC4525FE31FD001FFF11 /* BuildFile in Frameworks */,
-				FD4337CF263EA21900FA6DCE /* BuildFile in Frameworks */,
-				477CD6AB25FBB58B00BB45B8 /* BuildFile in Frameworks */,
-				FD10AC4D25FE31FD001FFF11 /* BuildFile in Frameworks */,
-				FD51C9B826440C8900047726 /* BuildFile in Frameworks */,
-				FD10AC5225FE3276001FFF11 /* BuildFile in Frameworks */,
-				0C46219125938835006B1701 /* BuildFile in Frameworks */,
-				FD10AC4B25FE31FD001FFF11 /* BuildFile in Frameworks */,
-				FD5111362618ADC500A90101 /* BuildFile in Frameworks */,
-				47BF2A8C2618C52D008FDB1F /* BuildFile in Frameworks */,
-				0CA5EDFF2592617E0006F066 /* BuildFile in Frameworks */,
-				72EF82B25C7518643A309E19 /* Pods_YoungSt.framework in Frameworks */,
+				FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */,
+				FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */,
+				FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */,
+				FD4337CF263EA21900FA6DCE /* Profile in Frameworks */,
+				477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */,
+				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
+				FD51C9B826440C8900047726 /* Translation in Frameworks */,
+				FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */,
+				0C46219125938835006B1701 /* GRDB in Frameworks */,
+				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
+				FD5111362618ADC500A90101 /* Coordinator in Frameworks */,
+				47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */,
+				0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0994D40DCE3B0162F51BFA28 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A022F1E4D0B5D3490D722CA2 /* Pods-YoungSt.debug.xcconfig */,
-				CBF7CB8698207DA4C357EC54 /* Pods-YoungSt.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		0C3492112592001900F729C4 = {
 			isa = PBXGroup;
 			children = (
 				4783769825FB90A9000B11B7 /* Core */,
 				0C34921C2592001900F729C4 /* YoungSt */,
 				0C34921B2592001900F729C4 /* Products */,
-				0994D40DCE3B0162F51BFA28 /* Pods */,
-				7CC8DEB0FDE0CA2708314A71 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,7 +94,6 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
-				FD51C9B426440C0C00047726 /* Service */,
 				FD27500F263FEE3E00B12EDB /* TabScene */,
 				FD4337CB263E9EDC00FA6DCE /* AppScene */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
@@ -140,14 +121,6 @@
 			path = DI;
 			sourceTree = "<group>";
 		};
-		7CC8DEB0FDE0CA2708314A71 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9DD57D1B01A0B8487AE7FDA0 /* Pods_YoungSt.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		FD27500F263FEE3E00B12EDB /* TabScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,14 +142,6 @@
 			path = AppScene;
 			sourceTree = "<group>";
 		};
-		FD51C9B426440C0C00047726 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				FD51C9B526440C1900047726 /* LocalTranslationImpl.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -184,12 +149,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C3492292592001C00F729C4 /* Build configuration list for PBXNativeTarget "YoungSt" */;
 			buildPhases = (
-				7EEBDF4E64315CD048596B2E /* [CP] Check Pods Manifest.lock */,
 				0C3492162592001900F729C4 /* Sources */,
 				0C3492172592001900F729C4 /* Frameworks */,
 				0C3492182592001900F729C4 /* Resources */,
-				C22D97C8E7AFC14DCEFF76FD /* [CP] Embed Pods Frameworks */,
-				29D051F8D4244E6D44625F73 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -197,19 +159,19 @@
 			);
 			name = YoungSt;
 			packageProductDependencies = (
-				0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */,
-				0C46219025938835006B1701 /* SwiftPackageProductDependency */,
-				477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */,
-				FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */,
-				FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */,
-				FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */,
-				FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */,
-				FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */,
-				FD5111352618ADC500A90101 /* SwiftPackageProductDependency */,
-				47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */,
-				FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */,
-				FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */,
-				FD51C9B726440C8900047726 /* SwiftPackageProductDependency */,
+				0CA5EDFE2592617E0006F066 /* SwiftProtobuf */,
+				0C46219025938835006B1701 /* GRDB */,
+				477CD6AA25FBB58B00BB45B8 /* Resources */,
+				FD10AC4425FE31FD001FFF11 /* Mocks */,
+				FD10AC4825FE31FD001FFF11 /* NetworkService */,
+				FD10AC4A25FE31FD001FFF11 /* Protocols */,
+				FD10AC4C25FE31FD001FFF11 /* Utilities */,
+				FD10AC5125FE3276001FFF11 /* DITranquillity */,
+				FD5111352618ADC500A90101 /* Coordinator */,
+				47BF2A8B2618C52D008FDB1F /* Authorization */,
+				FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */,
+				FD4337CE263EA21900FA6DCE /* Profile */,
+				FD51C9B726440C8900047726 /* Translation */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -239,10 +201,10 @@
 			);
 			mainGroup = 0C3492112592001900F729C4;
 			packageReferences = (
-				0C34922D2592008500F729C4 /* RemoteSwiftPackageReference */,
-				0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */,
-				0C46218F25938835006B1701 /* RemoteSwiftPackageReference */,
-				FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */,
+				0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
+				0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */,
 			);
 			productRefGroup = 0C34921B2592001900F729C4 /* Products */;
 			projectDirPath = "";
@@ -265,65 +227,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		29D051F8D4244E6D44625F73 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7EEBDF4E64315CD048596B2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-YoungSt-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C22D97C8E7AFC14DCEFF76FD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		0C3492162592001900F729C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -336,7 +239,6 @@
 				FD275011263FEE5E00B12EDB /* TabScene.swift in Sources */,
 				FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
-				FD51C9B626440C1A00047726 /* LocalTranslationImpl.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
 				FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */,
 			);
@@ -463,7 +365,6 @@
 		};
 		0C34922A2592001C00F729C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A022F1E4D0B5D3490D722CA2 /* Pods-YoungSt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -489,7 +390,6 @@
 		};
 		0C34922B2592001C00F729C4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBF7CB8698207DA4C357EC54 /* Pods-YoungSt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -537,7 +437,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0C34922D2592008500F729C4 /* RemoteSwiftPackageReference */ = {
+		0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
@@ -545,7 +445,7 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		0C46218F25938835006B1701 /* RemoteSwiftPackageReference */ = {
+		0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/GRDB.swift.git";
 			requirement = {
@@ -553,7 +453,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */ = {
+		0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf.git";
 			requirement = {
@@ -561,7 +461,7 @@
 				minimumVersion = 1.14.0;
 			};
 		};
-		FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */ = {
+		FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivlevAstef/DITranquillity.git";
 			requirement = {
@@ -572,58 +472,58 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C46219025938835006B1701 /* SwiftPackageProductDependency */ = {
+		0C46219025938835006B1701 /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0C46218F25938835006B1701 /* RemoteSwiftPackageReference */;
+			package = 0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
 		};
-		0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */ = {
+		0CA5EDFE2592617E0006F066 /* SwiftProtobuf */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */;
+			package = 0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
 			productName = SwiftProtobuf;
 		};
-		477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */ = {
+		477CD6AA25FBB58B00BB45B8 /* Resources */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Resources;
 		};
-		47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */ = {
+		47BF2A8B2618C52D008FDB1F /* Authorization */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Authorization;
 		};
-		FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
+		FD10AC4425FE31FD001FFF11 /* Mocks */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Mocks;
 		};
-		FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
+		FD10AC4825FE31FD001FFF11 /* NetworkService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkService;
 		};
-		FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
+		FD10AC4A25FE31FD001FFF11 /* Protocols */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Protocols;
 		};
-		FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
+		FD10AC4C25FE31FD001FFF11 /* Utilities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Utilities;
 		};
-		FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */ = {
+		FD10AC5125FE3276001FFF11 /* DITranquillity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */;
+			package = FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */;
 			productName = DITranquillity;
 		};
-		FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */ = {
+		FD4337CE263EA21900FA6DCE /* Profile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Profile;
 		};
-		FD5111352618ADC500A90101 /* SwiftPackageProductDependency */ = {
+		FD5111352618ADC500A90101 /* Coordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Coordinator;
 		};
-		FD51C9B726440C8900047726 /* SwiftPackageProductDependency */ = {
+		FD51C9B726440C8900047726 /* Translation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Translation;
 		};
-		FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */ = {
+		FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Dictionaries;
 		};

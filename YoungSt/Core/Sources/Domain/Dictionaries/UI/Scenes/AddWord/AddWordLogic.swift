@@ -14,18 +14,7 @@ import Resources
 let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { state, action, env in
     switch action {
     case .viewAppeared:
-        guard !env.localTranslator.isModelExistsForTranslation(from: state.sourceLanguage, to: state.destinationLanguage) else {
-            break
-        }
-        struct DownloadTranslationID: Hashable {}
-        
-        return env.localTranslator.downloadModels(sourceLanguage: state.sourceLanguage,
-                                                  destinationLanguage: state.destinationLanguage)
-            .mapError(EquatableError.init)
-            .map(toEmpty)
-            .catchToEffect()
-            .map(AddWordAction.translationDownloaded)
-            .cancellable(id: DownloadTranslationID())
+        break
     
     case let .sourceChanged(source):
         state.sourceText = source
