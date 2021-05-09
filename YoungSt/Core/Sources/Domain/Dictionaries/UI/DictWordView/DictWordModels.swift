@@ -17,7 +17,8 @@ struct DictWordItem: Identifiable, Equatable, Previwable {
 
 struct DictWordState: Equatable, Previwable {
     let text: String
+    let translation: String
     let info: String
     
-    static var preview: DictWordState = .init(text: "Word", info: "Note to the word")
+    static var preview: DictWordState = .init(text: "Слово", translation: "Word", info: "Note to the word")
 }

@@ -32,14 +32,10 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
                 return .init(value: .showAlert(Localizable.fillAllFields))
             }
             
-            guard let userID = state.userID ?? env.userProvider.currentUserID else {
-                return .init(value: .showAlert(Localizable.unknownError))
-            }
-            
             let request = Dictionary_AddGroupRequest.with {
                 $0.name = state.title
                 $0.items = state.items.map(\.item)
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
             }
             state.isLoading = true
             return env.groupsService.addGroup(request: request)

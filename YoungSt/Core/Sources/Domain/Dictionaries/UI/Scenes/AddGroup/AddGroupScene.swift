@@ -53,7 +53,8 @@ struct AddGroupScene: View {
                             WithViewStore(store.scope(state: \.items)) { viewStore in
                                 ForEach(viewStore.state) {
                                     DictWordView(state: .init(text: $0.item.source,
-                                                              info: $0.item.destination))
+                                                              translation: $0.item.destination,
+                                                              info: $0.item.description_p))
                                 }
                             }
                         }
@@ -91,11 +92,13 @@ struct AddGroupScene: View {
         }
         .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
         .background(
-            WithViewStore(store.scope(state: \.addWordOpened)) { viewStore in
+            WithViewStore(store) { viewStore in
                 Color.clear
-                    .sheet(isPresented: viewStore.binding(send: AddGroupAction.addWordOpened)) {
+                    .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: AddGroupAction.addWordOpened)) {
                         coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
-                                                             semantic: .addLater(handler: { viewStore.send(.wordAdded($0)) }))))
+                                                             semantic: .addLater(handler: { viewStore.send(.wordAdded($0)) }),
+                                                             userID: viewStore.userID,
+                                                             attachToGroupVisible: false)))
                     }
             }
         )

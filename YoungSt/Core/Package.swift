@@ -149,7 +149,9 @@ let package = Package(
         .target(
             name: CorePackage.utilities.rawValue,
             dependencies: [CorePackage.resources.dependency,
-                           CorePackage.protocols.dependency],
+                           CorePackage.protocols.dependency,
+                           ExternalDependecy.introspect.product,
+            ],
             path: CorePackage.utilities.path
         ),
         .testTarget(name: CorePackage.utilities.testName,

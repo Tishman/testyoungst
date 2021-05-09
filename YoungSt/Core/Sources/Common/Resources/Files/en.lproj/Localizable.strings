@@ -34,6 +34,8 @@
 "addWordAction" = "Add word";
 "typeText" = "Type text here";
 "youShouldTypeText" = "Cant add empty word. Type something in first field";
+"translation" = "Translation";
+"noTranslation" = "No translation";
 
 // Add group
 "addGroupTitle" = "New dictionary";
@@ -58,3 +60,6 @@
 // AppScene
 "dictionary" = "Dictionary";
 "profile" = "Profile";
+
+// Groups list
+"addToDictionary" = "Add to dictionary";

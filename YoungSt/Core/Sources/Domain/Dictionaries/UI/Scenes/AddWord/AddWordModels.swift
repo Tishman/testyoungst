@@ -19,16 +19,19 @@ struct AddWordState: Equatable, Previwable {
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
+    var groupsListState: GroupsListState?
+    
     var leftToRight = true
     var localTranslationDownloading = false
     
     var isLoading = false
     var isTranslateLoading = false
-    var groupsOpened = false
     
     var sourceText: String = ""
+    var translationText: String = ""
     var descriptionText: String = ""
     var alertError: AlertState<AddWordAction>?
+    
     
     var selectedGroupID: UUID?
     
@@ -40,14 +43,17 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(input: .init(closeHandler: {}, semantic: .addToServer),
+    static let preview: AddWordState = .init(input: .init(closeHandler: {}, semantic: .addToServer, userID: .init(), attachToGroupVisible: true),
                                              sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",
+                                             translationText: "Привет",
                                              descriptionText: "")
 }
 
 enum AddWordAction: Equatable {
+    case groupsList(GroupsListAction)
+    
     case sourceChanged(String)
     case descriptionChanged(String)
     case selectedGroupChanged(UUID?)
@@ -68,4 +74,9 @@ enum AddWordAction: Equatable {
 struct AddWordEnvironment {
     let translationService: TranslationService
     let wordService: WordsService
+    let groupsService: GroupsService
+    
+    var groupsListEnv: GroupsListEnvironment {
+        .init(groupsService: groupsService)
+    }
 }

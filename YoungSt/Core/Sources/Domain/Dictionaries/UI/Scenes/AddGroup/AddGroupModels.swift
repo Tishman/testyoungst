@@ -13,7 +13,7 @@ import Protocols
 import Coordinator
 
 struct AddGroupState: Equatable, Previwable {
-    let userID: UUID?
+    let userID: UUID
     
     var title: String = ""
     var addWordOpened = false
@@ -24,7 +24,7 @@ struct AddGroupState: Equatable, Previwable {
     
     var items: [IdentifiedItem<Dictionary_AddWordItem>] = []
     
-    static var preview: AddGroupState = .init(userID: nil,
+    static var preview: AddGroupState = .init(userID: .init(),
                                               title: "Test name",
                                               items: [Dictionary_AddWordItem](repeating: wordItemPreview, count: 10).map {
                                                 .init(id: .init(), item: $0)

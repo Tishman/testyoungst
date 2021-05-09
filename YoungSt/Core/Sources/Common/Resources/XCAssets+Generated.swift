@@ -26,6 +26,8 @@ public enum Asset {
     public static let greenLightly = ColorAsset(name: "greenLightly")
     public static let loaderContent = ColorAsset(name: "loaderContent")
     public static let navigationBackground = ColorAsset(name: "navigationBackground")
+    public static let secondaryAccentBackground = ColorAsset(name: "secondaryAccentBackground")
+    public static let secondaryAccentContent = ColorAsset(name: "secondaryAccentContent")
     public static let white = ColorAsset(name: "white")
   }
   public enum Images {

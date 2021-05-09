@@ -15,6 +15,8 @@ public enum Localizable {
   public static let addGroupAction = Localizable.tr("Localizable", "addGroupAction")
   /// New dictionary
   public static let addGroupTitle = Localizable.tr("Localizable", "addGroupTitle")
+  /// To dictionary
+  public static let addToDictionary = Localizable.tr("Localizable", "addToDictionary")
   /// Add word
   public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
   /// Add word
@@ -39,9 +41,9 @@ public enum Localizable {
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
   public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
-  /// You don't have any dictionary.\nTap 'plus' to add
+  /// You don't yet have any dictionary.\nTap 'plus' to add
   public static let emptyGroupsPlaceholder = Localizable.tr("Localizable", "emptyGroupsPlaceholder")
-  /// You don't have any word.\nTap 'plus' to add
+  /// You don't have any words yet.\nTap 'plus' in menu to add
   public static let emptyWordsPlaceholder = Localizable.tr("Localizable", "emptyWordsPlaceholder")
   /// English
   public static let en = Localizable.tr("Localizable", "en")
@@ -63,6 +65,8 @@ public enum Localizable {
   public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
   /// Name
   public static let name = Localizable.tr("Localizable", "name")
+  /// No translation
+  public static let noTranslation = Localizable.tr("Localizable", "noTranslation")
   /// OK
   public static let ok = Localizable.tr("Localizable", "ok")
   /// Result here
@@ -85,6 +89,8 @@ public enum Localizable {
   public static let ru = Localizable.tr("Localizable", "ru")
   /// Do you want to delete group? This cannot be undone.
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
+  /// Translation
+  public static let translation = Localizable.tr("Localizable", "translation")
   /// Type text here
   public static let typeText = Localizable.tr("Localizable", "typeText")
   /// Unknown error

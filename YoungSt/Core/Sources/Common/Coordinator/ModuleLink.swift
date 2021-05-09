@@ -21,9 +21,9 @@ public enum AuthorizationInput: Identifiable, Hashable {
 }
 
 public struct DictionariesInput: Hashable {
-    public let userID: UUID?
+    public let userID: UUID
     
-    public init(userID: UUID?) {
+    public init(userID: UUID) {
         self.userID = userID
     }
 }
@@ -59,13 +59,17 @@ public struct AddWordInput: Equatable {
         }
     }
     
-    public init(closeHandler: @escaping () -> Void, semantic: Semantic) {
+    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, attachToGroupVisible: Bool) {
         self.closeHandler = closeHandler
         self.semantic = semantic
+        self.userID = userID
+        self.attachToGroupVisible = attachToGroupVisible
     }
     
     public let closeHandler: () -> Void
     public let semantic: Semantic
+    public let userID: UUID
+    public let attachToGroupVisible: Bool
 }
 
 public struct ProfileInput: Hashable {

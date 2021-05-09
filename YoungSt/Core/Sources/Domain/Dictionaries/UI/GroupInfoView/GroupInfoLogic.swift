@@ -82,7 +82,8 @@ private struct GroupInfoLogic {
         let words = try response.words.map {
             try DictWordItem(id: .from(string: $0.id),
                              state: .init(text: $0.source,
-                                          info: $0.destination))
+                                          translation: $0.destination,
+                                          info: $0.description_p))
         }
         let group = try DictGroupItem(id: .from(string: response.group.id),
                                       alias: response.group.alias,

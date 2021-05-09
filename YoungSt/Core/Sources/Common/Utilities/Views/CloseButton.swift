@@ -20,9 +20,10 @@ public struct CloseButton: View {
         Button(action: action) {
             CloseShape()
                 .stroke(style: .init(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Asset.Colors.secondaryAccentContent.color.swiftuiColor)
                 .padding(10)
                 .background(
-                    BlurEffect(style: .systemThickMaterial)
+                    Asset.Colors.secondaryAccentBackground.color.swiftuiColor
                 )
                 .clipShape(Circle())
         }

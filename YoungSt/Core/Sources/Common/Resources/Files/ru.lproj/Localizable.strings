@@ -34,6 +34,8 @@
 "addWordAction" = "Добавить слово";
 "typeText" = "Введите текст";
 "youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
+"translation" = "Перевод";
+"noTranslation" = "Нет перевода";
 
 // Add group
 "addGroupTitle" = "Новый словарь";
@@ -58,3 +60,6 @@
 // AppScene
 "dictionary" = "Словарь";
 "profile" = "Профиль";
+
+// Groups list
+"addToDictionary" = "Добавить в словарь";

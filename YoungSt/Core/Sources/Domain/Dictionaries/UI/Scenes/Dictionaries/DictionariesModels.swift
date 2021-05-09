@@ -16,8 +16,7 @@ struct DictionariesState: Equatable, Previwable {
     var groupInfoState: GroupInfoState?
     var addWordOpened = false
     
-    // nil for current user dictionaries
-    let userID: UUID?
+    let userID: UUID
     
     var groups: [DictGroupItem] = []
     var rootGroupId: UUID?
@@ -27,7 +26,7 @@ struct DictionariesState: Equatable, Previwable {
     var isLoading = false
     var errorAlert: AlertState<DictionariesAction>?
     
-    static var preview: DictionariesState = .init(userID: nil,
+    static var preview: DictionariesState = .init(userID: .init(),
                                                   groups: [DictGroupItem.preview],
                                                   words: [DictWordItem.preview])
 }

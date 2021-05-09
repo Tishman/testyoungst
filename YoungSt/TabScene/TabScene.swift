@@ -80,10 +80,10 @@ final class TabController: UIViewController {
             blurView.topAnchor.constraint(equalTo: tabBarView.view.topAnchor)
         ])
         
-        viewStore.publisher.map(\.addWordOpened)
-            .sink { [weak self] isOpened in
-                if isOpened {
-                    self?.showAddWordScene()
+        viewStore.publisher
+            .sink { [weak self] state in
+                if state.addWordOpened {
+                    self?.showAddWordScene(userID: state.userID)
                 }
             }
             .store(in: &cancellable)
@@ -96,14 +96,14 @@ final class TabController: UIViewController {
         updateSelectedTab(tab: .dictionaries)
     }
     
-    private func showAddWordScene() {
+    private func showAddWordScene(userID: UUID) {
         let box = Box<UIViewController>()
         let addWordVC = self.coordinator.view(for: .addWord(.init(closeHandler: { [weak self] in
             box.value?.dismiss(animated: true, completion: nil)
             self?.viewStore.send(.addWordOpened(false))
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
-        }, semantic: .addToServer))).uiKitHosted
+        }, semantic: .addToServer, userID: userID, attachToGroupVisible: true))).uiKitHosted
         box.value = addWordVC
         addWordVC.modalPresentationStyle = .automatic
         self.present(addWordVC, animated: true) {

@@ -175,11 +175,13 @@ struct DictionariesScene: View {
     }
     
     private var addWordLink: some View {
-        WithViewStore(store.scope(state: \.addWordOpened)) { viewStore in
+        WithViewStore(store) { viewStore in
             Color.clear
-                .sheet(isPresented: viewStore.binding(send: DictionariesAction.addWordOpened)) {
+                .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: DictionariesAction.addWordOpened)) {
                     coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
-                                                         semantic: .addToServer)))
+                                                         semantic: .addToServer,
+                                                         userID: viewStore.userID,
+                                                         attachToGroupVisible: true)))
                 }
         }
     }

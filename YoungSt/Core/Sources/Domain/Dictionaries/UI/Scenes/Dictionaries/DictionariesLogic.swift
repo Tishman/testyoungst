@@ -30,15 +30,13 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             return .init(value: .silentRefreshList)
             
         case .silentRefreshList:
-            guard let userID = state.userID ?? env.userProvider.currentUserID else {
-                return .init(value: .showAlert(Localizable.unknownError))
-            }
             let wordsRequest = Dictionary_GetUserWordsRequest.with {
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
                 $0.groupID = ""
             }
             let groupsRequest = Dictionary_GetUserGroupsRequest.with {
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
+                $0.order = .position
             }
             
             return env.wordsService.getUserWords(request: wordsRequest)
@@ -97,7 +95,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .addGroupOpened(isOpened):
             if isOpened {
-                state.addGroupState = .init(userID: nil)
+                state.addGroupState = .init(userID: state.userID)
             } else {
                 state.addGroupState = nil
             }
@@ -114,23 +112,26 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
     }
 )
 
-private struct DictionariesLogic {
+struct DictionariesLogic {
     
-    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
-        let words = try words.items.map {
-            try DictWordItem(id: .from(string: $0.id),
-                             state: .init(text: $0.source,
-                                          info: $0.destination))
-        }
-        let groups = try groups.groups.map {
+    static func createGroupsItems(groups: Dictionary_GetUserGroupsResponse) throws -> [DictGroupItem] {
+        try groups.groups.map {
             try DictGroupItem(id: .from(string: $0.id),
                               alias: $0.alias.isEmpty ? nil : $0.alias,
                               state: .init(title: $0.name,
                                            subtitle: Localizable.dWords(Int($0.wordCount))))
         }
+    }
+    
+    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
+        let words = try words.items.map {
+            try DictWordItem(id: .from(string: $0.id),
+                             state: .init(text: $0.source,
+                                          translation: $0.destination,
+                                          info: $0.description_p))
+        }
         
-        return .init(groups: groups,
-                     words: words)
+        return try .init(groups: createGroupsItems(groups: groups), words: words)
     }
     
 }
