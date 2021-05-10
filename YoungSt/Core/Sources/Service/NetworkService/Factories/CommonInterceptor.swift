@@ -13,6 +13,7 @@ import Protocols
 struct CommonInterceptorDependencies {
     let sessionProvider: SessionProvider
     let langProvider: LanguagePairProvider
+    let credentialsService: CredentialsService
 }
 
 final class CommonInterceptor<Request, Response>: ClientInterceptor<Request, Response> {
@@ -40,5 +41,16 @@ final class CommonInterceptor<Request, Response>: ClientInterceptor<Request, Res
         default:
             context.send(part, promise: promise)
         }
+    }
+    
+    override func receive(_ part: GRPCClientResponsePart<Response>, context: ClientInterceptorContext<Request, Response>) {
+        switch part {
+        case let .end(status, _) where status.code == .unauthenticated:
+            dependencies.credentialsService.clearCredentials()
+        default:
+            break
+        }
+        
+        context.receive(part)
     }
 }

@@ -28,10 +28,12 @@
 
 // AddWord
 "addWordTitle" = "Add word";
+"editWordTitle" = "Edit word";
 "word" = "Word";
 "wordDescription" = "Description";
 "recent" = "Recent";
 "addWordAction" = "Add word";
+"editWordAction" = "Edit word";
 "typeText" = "Type text here";
 "youShouldTypeText" = "Cant add empty word. Type something in first field";
 "translation" = "Translation";

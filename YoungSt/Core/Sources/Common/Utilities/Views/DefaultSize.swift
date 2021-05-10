@@ -10,5 +10,6 @@ import CoreGraphics
 public enum DefaultSize {
     
     public static let navigationBarButton: CGFloat = 30
+    public static let smallButton: CGFloat = 22
     
 }

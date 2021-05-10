@@ -28,10 +28,12 @@
 
 // AddWord
 "addWordTitle" = "Добавление слова";
+"editWordTitle" = "Редактирование слова";
 "word" = "Слово";
 "wordDescription" = "Описание слова";
 "recent" = "Недавние";
 "addWordAction" = "Добавить слово";
+"editWordAction" = "Отредактировать слово";
 "typeText" = "Введите текст";
 "youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
 "translation" = "Перевод";

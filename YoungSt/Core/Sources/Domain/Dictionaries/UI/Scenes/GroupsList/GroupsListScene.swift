@@ -17,62 +17,51 @@ struct GroupsListScene: View {
     @State private var dividerHidden: Bool = true
     
     var body: some View {
-        NavigationView {
-            GeometryReader { globalProxy in
-                WithViewStore(store) { viewStore in
-                    ZStack {
-                        TrackableScrollView(contentOffset: $contentOffset) {
-                            LazyVStack(spacing: .spacing(.medium)) {
-                                ForEach(viewStore.groups) { group in
-                                    Button { viewStore.send(.groupSelected(group.id)) } label: {
-                                        HStack {
-                                            DictGroupView(id: group.id,
-                                                          size: .small,
-                                                          state: .init(title: group.state.title,
-                                                                       subtitle: ""))
+        GeometryReader { globalProxy in
+            WithViewStore(store) { viewStore in
+                ZStack {
+                    TrackableScrollView(contentOffset: $contentOffset) {
+                        LazyVStack(spacing: .spacing(.medium)) {
+                            ForEach(viewStore.groups) { group in
+                                Button { viewStore.send(.groupSelected(group)) } label: {
+                                    HStack(spacing: .spacing(.regular)) {
+                                        DictGroupView(id: group.id,
+                                                      size: .small,
+                                                      state: .init(title: group.state.title,
+                                                                   subtitle: ""))
+                                        
+                                        VStack(alignment: .leading, spacing: .spacing(.medium)) {
+                                            Text(group.state.title)
+                                                .foregroundColor(.primary)
                                             
-                                            VStack(spacing: .spacing(.medium)) {
-                                                Text(group.state.title)
-                                                    .foregroundColor(.primary)
-                                                
-                                                Text(group.state.subtitle)
-                                                    .foregroundColor(.secondary)
-                                            }
+                                            Text(group.state.subtitle)
+                                                .foregroundColor(.secondary)
                                         }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
-                            .buttonStyle(PlainButtonStyle())
-                            .padding()
                         }
-                        
-                        if viewStore.isLoading {
-                            IndicatorView()
-                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .padding()
+                    }
+                    
+                    if viewStore.isLoading {
+                        IndicatorView()
                     }
                 }
-                .overlay(
-                    TopHeaderView(width: globalProxy.size.width,
-                                  topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                        .opacity(dividerHidden ? 0 : 1)
-                )
+                .onAppear { viewStore.send(.viewAppeared) }
             }
-            .background(
-                WithViewStore(store.stateless) { viewStore in
-                    Color.clear.onAppear { viewStore.send(.viewAppeared) }
-                }
+            .overlay(
+                TopHeaderView(width: globalProxy.size.width,
+                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                    .opacity(dividerHidden ? 0 : 1)
             )
-            .alert(store.scope(state: \.alertError), dismiss: GroupsListAction.closeSceneTriggered)
-            .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
-            .navigationTitle(Localizable.addToDictionary)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    closeButton
-                }
-            }
         }
+        .alert(store.scope(state: \.alertError), dismiss: GroupsListAction.closeSceneTriggered)
+        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .navigationTitle(Localizable.addToDictionary)
+        .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
     }
     

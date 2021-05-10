@@ -23,6 +23,7 @@ let groupsListReducer = Reducer<GroupsListState, GroupsListAction, GroupsListEnv
             $0.order = .lastUsage
         }
         return env.groupsService.getUserGroups(request: request)
+            .map(\.groups)
             .tryMap(DictionariesLogic.createGroupsItems)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)

@@ -14,12 +14,11 @@ struct DictionariesState: Equatable, Previwable {
     
     var addGroupState: AddGroupState?
     var groupInfoState: GroupInfoState?
-    var addWordOpened = false
+    var addWordState: AddWordState?
     
     let userID: UUID
     
     var groups: [DictGroupItem] = []
-    var rootGroupId: UUID?
     var words: [DictWordItem] = []
     var lastUpdate: String?
     
@@ -45,16 +44,19 @@ enum DictionariesAction: Equatable {
     case addWordOpened(Bool)
     case addGroupOpened(Bool)
     case showAlert(String)
+    case wordSelected(DictWordItem)
     
     case openGroup(UUID?)
     
     case groupInfo(GroupInfoAction)
     case addGroup(AddGroupAction)
+    case addWord(AddWordAction)
 }
 
 struct DictionariesEnvironment {
     let wordsService: WordsService
     let groupsService: GroupsService
+    let translationService: TranslationService
     let userProvider: UserProvider
     let languageProvider: LanguagePairProvider
     let dictionaryEventPublisher: DictionaryEventPublisher
@@ -76,5 +78,11 @@ struct DictionariesEnvironment {
     var groupInfoEnv: GroupInfoEnvironment {
         .init(groupsService: groupsService,
               userProvider: userProvider)
+    }
+    
+    var addWordEnv: AddWordEnvironment {
+        .init(translationService: translationService,
+              wordService: wordsService,
+              groupsService: groupsService)
     }
 }

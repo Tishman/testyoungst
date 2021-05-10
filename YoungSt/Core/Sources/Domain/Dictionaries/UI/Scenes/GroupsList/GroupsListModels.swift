@@ -25,7 +25,7 @@ enum GroupsListAction: Equatable {
     case viewAppeared
     case listRefreshRequested
     case groupsUpdated(Result<[DictGroupItem], EquatableError>)
-    case groupSelected(UUID)
+    case groupSelected(DictGroupItem)
     
     case closeSceneTriggered
 }

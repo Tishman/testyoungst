@@ -18,6 +18,13 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
         case let .titleChanged(newText):
             state.title = newText
             
+            return .init(value: .titleErrorChanged(nil))
+                .receive(on: DispatchQueue.main.animation())
+                .eraseToEffect()
+            
+        case let .titleErrorChanged(titleError):
+            state.titleError = titleError
+            
         case let .gotAddGroup(response):
             switch response {
             case .success:
@@ -29,7 +36,9 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             
         case .addGroupPressed:
             guard !state.title.isEmpty else {
-                return .init(value: .showAlert(Localizable.fillAllFields))
+                return .init(value: .titleErrorChanged(Localizable.fillAllFields))
+                    .receive(on: DispatchQueue.main.animation())
+                    .eraseToEffect()
             }
             
             let request = Dictionary_AddGroupRequest.with {

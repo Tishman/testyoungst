@@ -15,7 +15,7 @@ public enum Localizable {
   public static let addGroupAction = Localizable.tr("Localizable", "addGroupAction")
   /// New dictionary
   public static let addGroupTitle = Localizable.tr("Localizable", "addGroupTitle")
-  /// To dictionary
+  /// Add to dictionary
   public static let addToDictionary = Localizable.tr("Localizable", "addToDictionary")
   /// Add word
   public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
@@ -37,6 +37,10 @@ public enum Localizable {
   public static func dWords(_ p1: Int) -> String {
     return Localizable.tr("Localizable", "dWords", p1)
   }
+  /// Edit word
+  public static let editWordAction = Localizable.tr("Localizable", "editWordAction")
+  /// Edit word
+  public static let editWordTitle = Localizable.tr("Localizable", "editWordTitle")
   /// E-mail
   public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
   /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.

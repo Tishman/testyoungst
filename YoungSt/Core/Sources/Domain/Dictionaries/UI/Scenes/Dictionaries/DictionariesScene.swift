@@ -93,7 +93,7 @@ struct DictionariesScene: View {
                     viewStore.send(.addGroupOpened(true))
                 }
             } else {
-                ScrollView(.horizontal) {
+                ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
                         ForEach(viewStore.groups) { element in
                             NavigationLink(
@@ -126,8 +126,11 @@ struct DictionariesScene: View {
                 
             } else {
                 LazyVStack {
-                    ForEach(viewStore.state) {
-                        DictWordView(state: $0.state)
+                    ForEach(viewStore.state) { item in
+                        Button { viewStore.send(.wordSelected(item)) } label: {
+                            DictWordView(state: item.state)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding(.horizontal)
@@ -175,13 +178,11 @@ struct DictionariesScene: View {
     }
     
     private var addWordLink: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store.scope(state: \.addWordState)) { viewStore in
             Color.clear
-                .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: DictionariesAction.addWordOpened)) {
-                    coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
-                                                         semantic: .addToServer,
-                                                         userID: viewStore.userID,
-                                                         attachToGroupVisible: true)))
+                .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addWordOpened(false))) {
+                    IfLetStore(store.scope(state: \.addWordState, action: DictionariesAction.addWord),
+                               then: AddWordScene.init)
                 }
         }
     }

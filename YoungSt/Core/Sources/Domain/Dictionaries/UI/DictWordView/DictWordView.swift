@@ -14,12 +14,22 @@ struct DictWordView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: .spacing(.small)) {
-            Text(state.info)
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            if !state.info.isEmpty {
+                Text(state.info)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
             
-            Text(state.text)
-                .font(.body)
+            HStack {
+                Text(state.text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if !state.translation.isEmpty {
+                    Divider()
+                    Text(state.translation)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .font(.body)
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)

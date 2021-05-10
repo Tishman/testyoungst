@@ -7,18 +7,14 @@
 
 import Foundation
 import Utilities
+import Protocols
 
-struct DictWordItem: Identifiable, Equatable, Previwable {
-    let id: UUID
-    let state: DictWordState
-    
-    static let preview: DictWordItem = .init(id: .init(), state: .preview)
+typealias DictWordItem = DictWordModel
+extension DictWordItem: Previwable {
+    public static let preview: DictWordModel = .init(id: .init(), groupID: .init(), state: .preview)
 }
 
-struct DictWordState: Equatable, Previwable {
-    let text: String
-    let translation: String
-    let info: String
-    
-    static var preview: DictWordState = .init(text: "Слово", translation: "Word", info: "Note to the word")
+typealias DictWordState = DictWordInfo
+extension DictWordState: Previwable {
+    public static let preview: DictWordInfo = .init(text: "Слово очень очень очень очень длинное блин", translation: "Word translation with very very very long content", info: "Note to the word")
 }

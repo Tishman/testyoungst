@@ -16,9 +16,9 @@ struct AddGroupState: Equatable, Previwable {
     let userID: UUID
     
     var title: String = ""
-    var addWordOpened = false
     var titleError: String?
     
+    var addWordOpened = false
     var isLoading = false
     var alertError: AlertState<AddGroupAction>?
     
@@ -42,6 +42,7 @@ struct IdentifiedItem<T: Equatable>: Identifiable, Equatable {
 
 enum AddGroupAction: Equatable {
     case titleChanged(String)
+    case titleErrorChanged(String?)
     
     case gotAddGroup(Result<Dictionary_AddGroupResponse, EquatableError>)
     

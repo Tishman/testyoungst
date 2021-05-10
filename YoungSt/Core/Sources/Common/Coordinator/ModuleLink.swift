@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Protocols
 
 public enum ModuleLink {
     case authorization(AuthorizationInput)
@@ -59,17 +60,29 @@ public struct AddWordInput: Equatable {
         }
     }
     
-    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, attachToGroupVisible: Bool) {
+    public struct InputModel: Equatable {
+        public init(word: DictWordModel, group: DictGroupModel?) {
+            self.word = word
+            self.group = group
+        }
+        
+        public let word: DictWordModel
+        public let group: DictGroupModel?
+    }
+    
+    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel? = nil) {
         self.closeHandler = closeHandler
         self.semantic = semantic
         self.userID = userID
-        self.attachToGroupVisible = attachToGroupVisible
+        self.groupSelectionEnabled = groupSelectionEnabled
+        self.model = model
     }
     
     public let closeHandler: () -> Void
     public let semantic: Semantic
     public let userID: UUID
-    public let attachToGroupVisible: Bool
+    public let groupSelectionEnabled: Bool
+    public let model: InputModel?
 }
 
 public struct ProfileInput: Hashable {

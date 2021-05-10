@@ -15,6 +15,7 @@ import Protocols
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
     addGroupReducer.optional().pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
     groupInfoReducer.optional().pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
+    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
     Reducer { state, action, env in
         switch action {
         case .addGroup(.closeSceneTriggered):
@@ -65,19 +66,8 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             switch response {
             case let .success(result):
                 state.words = result.words
+                state.groups = result.groups
                 state.lastUpdate = env.timeFormatter.string(from: Date())
-                
-                // rootGroupIndex should be 0, but we double check here :D
-                if let rootGroupIndex = result.groups.firstIndex(where: { $0.alias == DictGroupItem.rootAlias }) {
-                    state.rootGroupId = result.groups[rootGroupIndex].id
-                    
-                    var groups = result.groups
-                    groups.remove(at: rootGroupIndex)
-                    state.groups = groups
-                    
-                } else {
-                    state.groups = result.groups
-                }
                 
             case let .failure(error):
                 state.errorAlert = .init(title: TextState(error.description))
@@ -91,7 +81,23 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             state.errorAlert = .init(title: TextState(errorText))
             
         case let .addWordOpened(isOpened):
-            state.addWordOpened = isOpened
+            if isOpened {
+                state.addWordState = .init(info: .init(closeHandler: {}, semantic: .addToServer, userID: state.userID, groupSelectionEnabled: true, editingWordID: nil),
+                                           sourceLanguage: env.languageProvider.sourceLanguage,
+                                           destinationLanguage: env.languageProvider.destinationLanguage)
+            } else {
+                state.addWordState = nil
+            }
+            
+        case let .wordSelected(item):
+            let group = state.groups.first(where: { $0.id == item.groupID })
+            state.addWordState = .init(input: .init(closeHandler: {},
+                                                    semantic: .addToServer,
+                                                    userID: state.userID,
+                                                    groupSelectionEnabled: true,
+                                                    model: .init(word: item, group: group)),
+                                       sourceLanguage: env.languageProvider.sourceLanguage,
+                                       destinationLanguage: env.languageProvider.destinationLanguage)
             
         case let .addGroupOpened(isOpened):
             if isOpened {
@@ -105,7 +111,10 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             } else {
                 state.groupInfoState = nil
             }
-        case .addGroup, .groupInfo:
+        case .addWord(.closeSceneTriggered):
+            state.addWordState = nil
+            
+        case .addWord, .addGroup, .groupInfo:
             break
         }
         return .none
@@ -114,8 +123,8 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
 
 struct DictionariesLogic {
     
-    static func createGroupsItems(groups: Dictionary_GetUserGroupsResponse) throws -> [DictGroupItem] {
-        try groups.groups.map {
+    static func createGroupsItems(groups: [Dictionary_Group]) throws -> [DictGroupItem] {
+        try groups.map {
             try DictGroupItem(id: .from(string: $0.id),
                               alias: $0.alias.isEmpty ? nil : $0.alias,
                               state: .init(title: $0.name,
@@ -123,15 +132,19 @@ struct DictionariesLogic {
         }
     }
     
-    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
-        let words = try words.items.map {
+    static func createWordsItems(words: [Dictionary_DictionaryItem]) throws -> [DictWordItem] {
+        try words.map {
             try DictWordItem(id: .from(string: $0.id),
+                             groupID: .from(string: $0.groupID),
                              state: .init(text: $0.source,
                                           translation: $0.destination,
                                           info: $0.description_p))
         }
-        
-        return try .init(groups: createGroupsItems(groups: groups), words: words)
+    }
+    
+    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
+        return try .init(groups: createGroupsItems(groups: groups.groups),
+                         words: createWordsItems(words: words.items))
     }
     
 }

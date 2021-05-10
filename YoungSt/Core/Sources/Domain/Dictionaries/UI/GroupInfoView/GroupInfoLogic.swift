@@ -79,12 +79,7 @@ private struct GroupInfoLogic {
     
     
     static func mapItems(response: Dictionary_GetGroupInfoResponse) throws -> GroupInfoAction.UpdateItemsResult {
-        let words = try response.words.map {
-            try DictWordItem(id: .from(string: $0.id),
-                             state: .init(text: $0.source,
-                                          translation: $0.destination,
-                                          info: $0.description_p))
-        }
+        let words = try DictionariesLogic.createWordsItems(words: response.words)
         let group = try DictGroupItem(id: .from(string: response.group.id),
                                       alias: response.group.alias,
                                       state: .init(title: response.group.name,

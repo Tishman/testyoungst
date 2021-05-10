@@ -36,57 +36,43 @@ struct AddWordScene: View {
     var body: some View {
         NavigationView {
             GeometryReader { globalProxy in
-                ZStack {
-                    TrackableScrollView(contentOffset: $contentOffset) {
-                        VStack {
-                            WithViewStore(store) { viewStore in
+                WithViewStore(store) { viewStore in
+                    ZStack {
+                        TrackableScrollView(contentOffset: $contentOffset) {
+                            VStack {
                                 AddWordLanguageHeader(leftText: viewStore.currentSource.title,
                                                       rightText: viewStore.currentDestination.title) {
                                     viewStore.send(.translatePressed)
                                 }
+                                .padding(.bottom, .spacing(.big))
+                                
+                                sourceInput
+                                
+                                descriptionInput
+                                
+                                groupEditing
                             }
-                            .padding(.bottom, .spacing(.big))
-                            
-                            sourceInput
-                            
-                            descriptionInput
-                            
-                            WithViewStore(store.scope(state: \.input.attachToGroupVisible)) { viewStore in
-                                if viewStore.state {
-                                    Button { viewStore.send(.groupsOpened(true)) } label: {
-                                        Image(systemName: "rectangle.stack.fill")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: InaccentButtonStyle.defaultSize,
-                                                   height: InaccentButtonStyle.defaultSize)
-                                    }
-                                    .buttonStyle(InaccentButtonStyle())
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.top)
-                                }
-                            }
+                            .padding()
+                            .padding(.bottom, RoundedButtonStyle.minHeight)
                         }
-                        .padding()
-                        .padding(.bottom, RoundedButtonStyle.minHeight)
-                    }
-                    .introspectScrollView {
-                        $0.keyboardDismissMode = .interactive
-                    }
-                    
-                    WithViewStore(store.stateless) { viewStore in
+                        .introspectScrollView {
+                            $0.keyboardDismissMode = .interactive
+                        }
+                        
                         Button { viewStore.send(.addPressed) } label: {
-                            Text(Localizable.addWordAction)
+                            Text(viewStore.editingMode ? Localizable.editWordTitle : Localizable.addWordAction)
                         }
                         .buttonStyle(RoundedButtonStyle(style: .filled))
+                        .padding(.bottom)
+                        .greedy(aligningContentTo: .bottom)
                     }
-                    .padding(.bottom)
-                    .greedy(aligningContentTo: .bottom)
+                    .overlay(
+                        TopHeaderView(width: globalProxy.size.width,
+                                      topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                            .opacity(dividerHidden ? 0 : 1)
+                    )
+                    .navigationTitle(viewStore.editingMode ? Localizable.editWordTitle : Localizable.addWordTitle)
                 }
-                .overlay(
-                    TopHeaderView(width: globalProxy.size.width,
-                                  topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                        .opacity(dividerHidden ? 0 : 1)
-                )
             }
             .background(
                 WithViewStore(store.stateless) { viewStore in
@@ -96,17 +82,16 @@ struct AddWordScene: View {
             .background(groupsListLink)
             .alert(store.scope(state: \.alertError), dismiss: AddWordAction.alertClosePressed)
             .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
-            .navigationTitle(Localizable.addWordTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     closeButton
                 }
             }
+            .fixNavigationLinkForIOS14_5()
         }
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
     }
-    
     
     private var sourceInput: some View {
         WithViewStore(store) { viewStore in
@@ -116,6 +101,13 @@ struct AddWordScene: View {
                                      lineLimit: 1,
                                      currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
+                    
+                    if let sourceError = viewStore.sourceError {
+                        Text(sourceError)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                     
                     Divider()
                     
@@ -162,6 +154,40 @@ struct AddWordScene: View {
         }
     }
     
+    private var groupEditing: some View {
+        WithViewStore(store) { viewStore in
+            HStack {
+                if viewStore.info.groupSelectionEnabled {
+                    Button { viewStore.send(.groupsOpened(true)) } label: {
+                        Image(systemName: "rectangle.stack.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: InaccentButtonStyle.defaultSize,
+                                   height: InaccentButtonStyle.defaultSize)
+                    }
+                    .buttonStyle(InaccentButtonStyle())
+                }
+                if let group = viewStore.selectedGroup {
+                    HStack(spacing: 0) {
+                        Text(group.title)
+                            .font(.body)
+                        
+                        if viewStore.info.groupSelectionEnabled {
+                            Button { viewStore.send(.removeSelectedGroupPressed) } label: {
+                                CrossView()
+                                    .frame(width: DefaultSize.smallButton, height: DefaultSize.smallButton)
+                                    .padding(.spacing(.small))
+                            }
+                        }
+                    }
+                    .padding(.leading, .spacing(.medium))
+                    .bubbled()
+                }
+                Spacer()
+            }
+        }
+    }
+    
     private var closeButton: some View {
         WithViewStore(store.stateless) { viewStore in
             CloseButton {
@@ -172,10 +198,9 @@ struct AddWordScene: View {
     
     private var groupsListLink: some View {
         WithViewStore(store.scope(state: \.groupsListState)) { viewStore in
-            Color.clear
-                .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: AddWordAction.groupsOpened(false))) {
-                    IfLetStore(store.scope(state: \.groupsListState, action: AddWordAction.groupsList), then: GroupsListScene.init)
-                }
+            NavigationLink(destination: IfLetStore(store.scope(state: \.groupsListState, action: AddWordAction.groupsList), then: GroupsListScene.init),
+                           isActive: viewStore.binding(get: { $0 != nil }, send: AddWordAction.groupsOpened(false)),
+                           label: {})
         }
     }
 }

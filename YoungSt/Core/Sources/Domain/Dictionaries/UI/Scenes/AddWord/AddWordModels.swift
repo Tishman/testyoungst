@@ -15,7 +15,12 @@ import Coordinator
 
 struct AddWordState: Equatable, Previwable {
     
-    let input: AddWordInput
+    struct SelectedGroup: Equatable {
+        let id: UUID
+        let title: String
+    }
+    
+    let info: AddWordInfo
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
@@ -27,13 +32,13 @@ struct AddWordState: Equatable, Previwable {
     var isLoading = false
     var isTranslateLoading = false
     
-    var sourceText: String = ""
-    var translationText: String = ""
-    var descriptionText: String = ""
+    var sourceText = ""
+    var sourceError: String?
+    var translationText = ""
+    var descriptionText = ""
     var alertError: AlertState<AddWordAction>?
     
-    
-    var selectedGroupID: UUID?
+    var selectedGroup: SelectedGroup?
     
     var currentSource: Languages {
         leftToRight ? sourceLanguage : destinationLanguage
@@ -43,25 +48,77 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(input: .init(closeHandler: {}, semantic: .addToServer, userID: .init(), attachToGroupVisible: true),
+    var editingMode: Bool {
+        info.editingWordID != nil
+    }
+    
+    static let preview: AddWordState = .init(info: .preview,
                                              sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",
                                              translationText: "Привет",
-                                             descriptionText: "")
+                                             descriptionText: "",
+                                             selectedGroup: .init(id: .init(), title: "Lesson 1"))
+}
+
+extension AddWordState {
+    init(input: AddWordInput, sourceLanguage: Languages, destinationLanguage: Languages) {
+        self.info = .init(input: input)
+        if let model = input.model {
+            sourceText = model.word.state.text
+            translationText = model.word.state.translation
+            descriptionText = model.word.state.info
+            if let group = model.group, group.alias != DictGroupItem.rootAlias {
+                selectedGroup = .init(id: group.id, title: group.state.title)
+            }
+        }
+        self.sourceLanguage = sourceLanguage
+        self.destinationLanguage = destinationLanguage
+    }
+}
+
+struct AddWordInfo: Equatable, Previwable {
+    let closeHandler: () -> Void
+    let semantic: AddWordInput.Semantic
+    let userID: UUID
+    let groupSelectionEnabled: Bool
+    let editingWordID: UUID?
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.semantic == rhs.semantic
+            && lhs.userID == rhs.userID
+            && lhs.groupSelectionEnabled == rhs.groupSelectionEnabled
+    }
+    
+    static let preview: AddWordInfo = .init(closeHandler: {},
+                                            semantic: .addToServer,
+                                            userID: .init(),
+                                            groupSelectionEnabled: true,
+                                            editingWordID: nil)
+}
+
+extension AddWordInfo {
+    init(input: AddWordInput) {
+        self.closeHandler = input.closeHandler
+        self.semantic = input.semantic
+        self.userID = input.userID
+        self.groupSelectionEnabled = input.groupSelectionEnabled
+        self.editingWordID = input.model?.word.id
+    }
 }
 
 enum AddWordAction: Equatable {
     case groupsList(GroupsListAction)
     
     case sourceChanged(String)
+    case sourceErrorChanged(String?)
     case descriptionChanged(String)
-    case selectedGroupChanged(UUID?)
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
     case translationDownloaded(Result<EmptyResponse, EquatableError>)
     
     case viewAppeared
+    case removeSelectedGroupPressed
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed

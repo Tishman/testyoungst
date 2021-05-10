@@ -7,20 +7,14 @@
 
 import Foundation
 import Utilities
+import Protocols
 
-struct DictGroupItem: Identifiable, Equatable, Previwable {
-    static let rootAlias = "root"
-    
-    let id: UUID
-    let alias: String?
-    let state: DictGroupState
-    
-    static let preview: DictGroupItem = .init(id: .init(), alias: nil, state: .preview)
+typealias DictGroupItem = DictGroupModel
+extension DictGroupItem: Previwable {
+    public static let preview: DictGroupModel = .init(id: .init(), alias: nil, state: .preview)
 }
 
-struct DictGroupState: Equatable, Previwable {
-    let title: String
-    let subtitle: String
-    
-    static let preview: DictGroupState = .init(title: "Lesson 1", subtitle: "12 words")
+typealias DictGroupState = DictGroupInfo
+extension DictGroupState: Previwable {
+    public static let preview: DictGroupInfo = .init(title: "Lesson 1", subtitle: "12 words")
 }

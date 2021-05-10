@@ -29,11 +29,23 @@ struct AddGroupScene: View {
                         topGroupPreview
                             .frame(maxWidth: .infinity, alignment: .center)
                         
-                        WithViewStore(store.scope(state: \.title)) { viewStore in
-                            TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
+                        VStack {
+                            WithViewStore(store.scope(state: \.title)) { viewStore in
+                                TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
+                            }
+                            .padding()
+                            .bubbled()
+                            
+                            IfLetStore(store.scope(state: \.titleError)) { store in
+                                WithViewStore(store) { viewStore in
+                                    Text(viewStore.state)
+                                        .foregroundColor(.red)
+                                        .font(.caption)
+                                        .padding(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
                         }
-                        .padding()
-                        .bubbled()
                         
                         WithViewStore(store.stateless) { viewStore in
                             Button { viewStore.send(.addWordOpened(true)) } label: {
@@ -98,7 +110,7 @@ struct AddGroupScene: View {
                         coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
                                                              semantic: .addLater(handler: { viewStore.send(.wordAdded($0)) }),
                                                              userID: viewStore.userID,
-                                                             attachToGroupVisible: false)))
+                                                             groupSelectionEnabled: false)))
                     }
             }
         )
@@ -123,7 +135,6 @@ struct AddGroupScene: View {
         .clipShape(
             RoundedRectangle(cornerRadius: .corner(.big))
         )
-        .shadow(color: .black.opacity(0.5), radius: 6, x: 0, y: 0)
     }
 }
 
