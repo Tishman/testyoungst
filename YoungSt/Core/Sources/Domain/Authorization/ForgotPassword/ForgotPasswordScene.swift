@@ -45,16 +45,18 @@ struct ForgotPasswordScene: View {
 						.padding(.top)
 					}
 					.padding(.horizontal)
-					.padding(.top, 120)
+					.padding(.top, .spacing(.header))
 				}
 				
 				WithViewStore(store) { viewStore in
 					VStack {
-						Button("Send code", action: { viewStore.send(.didSendCodeButtonTapped) })
+						Button(Localizable.sendCode, action: { viewStore.send(.didSendCodeButtonTapped) })
 							.buttonStyle(RoundedButtonStyle(style: .empty))
-						Button("Change password", action: { viewStore.send(.didChangePasswordButtonTapped) })
+							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
+						Button(Localizable.resetPassword, action: { viewStore.send(.didChangePasswordButtonTapped) })
 							.buttonStyle(RoundedButtonStyle(style: .filled))
 							.disabled(viewStore.isResetPasswordInit)
+							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
 					}
 					.greedy(aligningContentTo: .bottom)
 					.ignoresSafeArea(.keyboard, edges: .bottom)
@@ -66,7 +68,7 @@ struct ForgotPasswordScene: View {
 					.opacity(dividerHidden ? 0 : 1)
 			)
 		}
-		.makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden, requiredOffset: 120)
+		.makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden, requiredOffset: .spacing(.header))
 	}
 }
 

@@ -19,6 +19,7 @@ public extension CGFloat {
         case ultraBig
         case superBig
         case extraSize
+		case header
     }
     
     static func spacing(_ level: SpacingLevel) -> CGFloat {
@@ -41,6 +42,8 @@ public extension CGFloat {
             return 28
         case .extraSize:
             return 32
+		case .header:
+			return 120
         }
     }
     

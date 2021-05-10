@@ -34,6 +34,9 @@
 "incorrectPassword" = "Incorrect password";
 "passwordMismatch" = "Passwords mismatch";
 "allCorrect" = "Everything is correct";
+"requiredField" = "Required field";
+"sendCode" = "Send code";
+"resetPassword" = "Reset password";
 
 // AddWord
 "addWordTitle" = "Add word";

@@ -91,8 +91,14 @@ public enum Localizable {
   public static let registerToStartTitle = Localizable.tr("Localizable", "registerToStartTitle")
   /// Registration
   public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
+  /// Required field
+  public static let requiredField = Localizable.tr("Localizable", "requiredField")
+  /// Reset password
+  public static let resetPassword = Localizable.tr("Localizable", "resetPassword")
   /// Russian
   public static let ru = Localizable.tr("Localizable", "ru")
+  /// Send code
+  public static let sendCode = Localizable.tr("Localizable", "sendCode")
   /// Do you want to delete group? This cannot be undone.
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
   /// Type text here

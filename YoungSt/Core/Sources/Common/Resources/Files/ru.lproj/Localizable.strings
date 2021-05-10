@@ -34,6 +34,9 @@
 "incorrectPassword" = "Неверный пароль";
 "passwordMismatch" = "Пароли не совпадают";
 "allCorrect" = "Всё правильно";
+"requiredField" = "Заполните обязательное поле";
+"sendCode" = "Отправить код";
+"resetPassword" = "Изменить пароль";
 
 // AddWord
 "addWordTitle" = "Добавление слова";
