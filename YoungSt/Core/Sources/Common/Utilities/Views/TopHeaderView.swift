@@ -37,18 +37,20 @@ public struct TopHeaderView: View {
 
 
 public extension View {
-    
-    /// Use TrackableScrollView for getting content offset and topHidden bool variable to determine top navigation visibility
-    /// - Parameters:
-    ///   - contentOffset: scrollView content offset
-    ///   - topHidden: boolean flag for opaque determination
-    func makeCustomBarManagement(offset contentOffset: CGFloat, topHidden: Binding<Bool>) -> some View {
+	
+	/// Use TrackableScrollView for getting content offset and topHidden bool variable to determine top navigation visibility
+	/// - Parameters:
+	///   - contentOffset: scrollView content offset
+	///   - topHidden: boolean flag for opaque determinatio
+	///   - requiredOffset: required offset to show topHidden
+	
+	func makeCustomBarManagement(offset contentOffset: CGFloat, topHidden: Binding<Bool>, requiredOffset: CGFloat = 0) -> some View {
         self.onChange(of: contentOffset) { newOffset in
-            if newOffset > 0 && topHidden.wrappedValue {
+            if newOffset > requiredOffset && topHidden.wrappedValue {
                 withAnimation(.linear(duration: 0.2)) {
                     topHidden.wrappedValue = false
                 }
-            } else if newOffset <= 0 && !topHidden.wrappedValue {
+            } else if newOffset <= requiredOffset && !topHidden.wrappedValue {
                 withAnimation(.linear(duration: 0.15)) {
                     topHidden.wrappedValue = true
                 }

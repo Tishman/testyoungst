@@ -28,6 +28,12 @@
 "cancel" = "Отмена";
 "delete" = "Удалить";
 "incorrectEmail" = "Неправильный e-mail";
+"forgotPasswordTitle" = "Забыли пароль?";
+"forgotPasswordSubtitle" = "Пожалуйста, укажите свой адрес электронной почты, который вы использовали для создания аккаунта и мы пришлем вам сслыку для восстановления пароль";
+"incorrectCode" = "Неверный код";
+"incorrectPassword" = "Неверный пароль";
+"passwordMismatch" = "Пароли не совпадают";
+"allCorrect" = "Всё правильно";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

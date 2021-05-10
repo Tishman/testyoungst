@@ -46,7 +46,7 @@ struct LoginView: View {
                                 ToggableSecureField(placholder: Constants.passwordPlaceholder,
 													text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
 													status: .default,
-                                                    showPassword: viewStore.showPassword,
+													isPasswordHidden: viewStore.showPassword,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped) })
                             }
                         }

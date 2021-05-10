@@ -8,21 +8,43 @@
 import Foundation
 import NetworkService
 import Utilities
+import ComposableArchitecture
 
 struct ForgotPasswordState: Equatable {
-	var email = ""
-	var code = ""
-	var confrimCode = ""
-	var userMessage = ""
+	var email: Field<String> = .init(value: "", status: .default)
+	var code: Field<String> = .init(value: "", status: .default)
+	var password: Field<String> = .init(value: "", status: .default)
+	var confrimPassword: Field<String> = .init(value: "", status: .default)
+	var isPasswordHidden = true
+	var isConfrimPasswordHidden = true
+	var isResetPasswordInit = false
+	var isPasswordChanged = false
+	var alert: AlertState<ForgotPasswordAction>?
 }
 
-enum ForgotPasswordAction {
+extension ForgotPasswordState {
+	struct Field<T: Equatable>: Equatable {
+		var value: T
+		var status: TextEditStatus
+		
+		static func == (lhs: ForgotPasswordState.Field<T>, rhs: ForgotPasswordState.Field<T>) -> Bool {
+			return lhs.value == rhs.value && lhs.status == rhs.status
+		}
+	}
+}
+
+enum ForgotPasswordAction: Equatable {
 	case didEmailEditing(String)
 	case didCodeEditing(String)
-	case clearEmail
+	case didPasswordEditing(String)
+	case didConrimPasswordEditing(String)
+	case passwordButtonTapped
+	case confrimPasswordButtonTapped
 	case didSendCodeButtonTapped
-	case didConfrimButtonTapped
-	case handleEmailSend(Result<EmptyResponse, InitResetPasswordError>)
+	case didChangePasswordButtonTapped
+	case handleInitResetPassword(Result<EmptyResponse, InitResetPasswordError>)
+	case handleResetPassword(Result<EmptyResponse, ResetPasswordError>)
+	case alertOkButtonTapped
 }
 
 struct ForgotPasswordEnviroment {

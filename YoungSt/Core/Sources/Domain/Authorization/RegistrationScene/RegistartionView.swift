@@ -52,13 +52,13 @@ struct RegistrationView: View {
                                 ToggableSecureField(placholder: Constants.passwordPlaceholder,
 													text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
 													status: .success("ads"),
-                                                    showPassword: viewStore.isPasswordShowed,
+													isPasswordHidden: viewStore.isPasswordShowed,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
                                 
                                 ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
 													text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
 													status: .default,
-                                                    showPassword: viewStore.isConfrimPasswordShowed,
+													isPasswordHidden: viewStore.isConfrimPasswordShowed,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
                             }
                         }

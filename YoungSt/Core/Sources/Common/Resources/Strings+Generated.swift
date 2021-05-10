@@ -19,6 +19,8 @@ public enum Localizable {
   public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
   /// Add word
   public static let addWordTitle = Localizable.tr("Localizable", "addWordTitle")
+  /// Everything is correct
+  public static let allCorrect = Localizable.tr("Localizable", "allCorrect")
   /// Cancel
   public static let cancel = Localizable.tr("Localizable", "cancel")
   /// Close
@@ -45,10 +47,18 @@ public enum Localizable {
   public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// Please fill all fields.
   public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
+  /// Please enter your email address that you used to create your account and we will send you a link to recover your password.
+  public static let forgotPasswordSubtitle = Localizable.tr("Localizable", "forgotPasswordSubtitle")
+  /// Forgot password?
+  public static let forgotPasswordTitle = Localizable.tr("Localizable", "forgotPasswordTitle")
+  /// Incorrect code
+  public static let incorrectCode = Localizable.tr("Localizable", "incorrectCode")
   /// Incorrect data
   public static let incorrectDataTitle = Localizable.tr("Localizable", "incorrectDataTitle")
   /// Incorrect e-mail
   public static let incorrectEmail = Localizable.tr("Localizable", "incorrectEmail")
+  /// Incorrect password
+  public static let incorrectPassword = Localizable.tr("Localizable", "incorrectPassword")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
   /// Updated
@@ -67,6 +77,8 @@ public enum Localizable {
   public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
   /// Password mismatch.
   public static let passwordConfrimation = Localizable.tr("Localizable", "passwordConfrimation")
+  /// Passwords mismatch
+  public static let passwordMismatch = Localizable.tr("Localizable", "passwordMismatch")
   /// Password
   public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
   /// I agree to the terms of use and accept the Privacy Policy.

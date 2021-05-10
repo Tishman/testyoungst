@@ -8,7 +8,7 @@
 import SwiftUI
 import Resources
 
-enum TextEditStatus {
+enum TextEditStatus: Equatable {
 	case error(String)
 	case success(String)
 	case `default`
