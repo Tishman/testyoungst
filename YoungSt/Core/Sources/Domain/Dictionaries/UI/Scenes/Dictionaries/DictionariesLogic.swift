@@ -13,10 +13,23 @@ import Utilities
 import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
-    addGroupReducer.optional().pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
-    groupInfoReducer.optional().pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
-    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
+    addGroupReducer.optional(bag: \.bag).pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
+    
+    groupInfoReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
+    
+    addWordReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
+    
     Reducer { state, action, env in
+        
+        enum Cancellable: CaseIterable, Hashable {
+            case getUserLists
+            case dictObserving
+        }
+        
         switch action {
         case .addGroup(.closeSceneTriggered):
             state.addGroupState = nil
@@ -47,15 +60,13 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(DictionariesAction.itemsUpdated)
+                .cancellable(id: Cancellable.getUserLists, bag: env.bag)
             
         case .viewLoaded:
-            
-            // TODO: Cancel Cancellable on view dismissing!
-            struct CancelID: Hashable {}
             let dictChangedPublisher = env.dictionaryEventPublisher.dictionaryEventPublisher
                 .eraseToEffect()
                 .map { _ in DictionariesAction.silentRefreshList }
-                .cancellable(id: CancelID())
+                .cancellable(id: Cancellable.dictObserving, bag: env.bag)
             
             return .merge(
                 .init(value: .refreshList),

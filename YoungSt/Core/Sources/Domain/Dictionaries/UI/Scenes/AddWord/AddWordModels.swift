@@ -129,11 +129,13 @@ enum AddWordAction: Equatable {
 }
 
 struct AddWordEnvironment {
+    let bag: CancellationBag
+    
     let translationService: TranslationService
     let wordService: WordsService
     let groupsService: GroupsService
     
     var groupsListEnv: GroupsListEnvironment {
-        .init(groupsService: groupsService)
+        .init(bag: .autoId(childOf: bag), groupsService: groupsService)
     }
 }

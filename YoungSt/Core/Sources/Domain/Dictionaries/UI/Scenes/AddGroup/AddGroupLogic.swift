@@ -14,6 +14,10 @@ import Resources
 
 let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment>.combine(
     Reducer { state, action, env in
+        enum Cancellable: CaseIterable, Hashable {
+            case addGroup
+        }
+        
         switch action {
         case let .titleChanged(newText):
             state.title = newText
@@ -52,6 +56,7 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(AddGroupAction.gotAddGroup)
+                .cancellable(id: Cancellable.addGroup, bag: env.bag)
             
         case .alertClosePressed:
             state.alertError = nil
@@ -70,7 +75,7 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.items.append(.init(id: .init(), item: item))
             
         case .closeSceneTriggered:
-            break
+            return .cancelAll(bag: env.bag)
         }
         
         return .none

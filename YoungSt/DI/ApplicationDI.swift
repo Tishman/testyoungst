@@ -14,6 +14,7 @@ import Dictionaries
 import Profile
 import Protocols
 import Translation
+import Utilities
 
 final class ApplicationDI: DIFramework {
     static func load(container: DIContainer) {
@@ -30,6 +31,9 @@ final class ApplicationDI: DIFramework {
         container.append(framework: ProfileDIFramework.self)
         container.append(framework: TranslationServiceDIFramework.self)
         
+        container.register {
+            CancellationBag.bag(id: UUID())
+        }
         container.register(MockLangProvider.init)
             .as(check: LanguagePairProvider.self) {$0}
         

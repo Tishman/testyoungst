@@ -57,6 +57,7 @@ enum AddGroupAction: Equatable {
 }
 
 struct AddGroupEnvironment {
+    let bag: CancellationBag
     let wordsService: WordsService
     let groupsService: GroupsService
     let userProvider: UserProvider

@@ -64,6 +64,7 @@ enum GroupInfoAction: Equatable {
 }
 
 struct GroupInfoEnvironment {
+    let bag: CancellationBag
     let groupsService: GroupsService
     let userProvider: UserProvider
 }

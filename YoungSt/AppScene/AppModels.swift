@@ -7,6 +7,7 @@
 
 import Foundation
 import Protocols
+import Utilities
 
 struct AppState: Equatable {
     
@@ -24,6 +25,7 @@ enum AppAction: Equatable {
 }
 
 struct AppEnviroment {
+    let bag: CancellationBag
     let userProvider: UserProvider
     let credentialsService: CredentialsService
 }

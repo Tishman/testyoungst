@@ -31,5 +31,7 @@ enum GroupsListAction: Equatable {
 }
 
 struct GroupsListEnvironment {
+    let bag: CancellationBag
+    
     let groupsService: GroupsService
 }

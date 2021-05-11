@@ -132,6 +132,9 @@ struct DictionariesScene: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
+                    .onDelete { indexSet in
+                        print(indexSet)
+                    }
                 }
                 .padding(.horizontal)
             }

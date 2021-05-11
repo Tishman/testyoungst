@@ -12,8 +12,18 @@ import Utilities
 import Resources
 
 let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.combine(
-    groupsListReducer.optional().pullback(state: \.groupsListState, action: /AddWordAction.groupsList, environment: \.groupsListEnv),
+    groupsListReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.groupsListState, action: /AddWordAction.groupsList, environment: \.groupsListEnv),
+    
     Reducer { state, action, env in
+        
+        enum Cancellable: CaseIterable, Hashable {
+            case translate
+            case editWord
+            case addWord
+        }
+        
         switch action {
         case .viewAppeared:
             break
@@ -57,7 +67,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(AddWordAction.gotTranslation)
-                .cancellable(id: TranslationID())
+                .cancellable(id: Cancellable.translate, bag: env.bag)
             
         case .addPressed:
             if state.sourceText.isEmpty {
@@ -85,6 +95,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                         .receive(on: DispatchQueue.main)
                         .catchToEffect()
                         .map(AddWordAction.gotWordAddition)
+                        .cancellable(id: Cancellable.editWord, bag: env.bag)
                     
                 } else {
                     
@@ -101,6 +112,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                         .receive(on: DispatchQueue.main)
                         .catchToEffect()
                         .map(AddWordAction.gotWordAddition)
+                        .cancellable(id: Cancellable.addWord, bag: env.bag)
                 }
                 
                 
@@ -108,7 +120,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 handler(.init(sourceText: state.sourceText,
                               translationText: state.translationText,
                               destinationText: state.descriptionText))
-                return .init(value: .closeSceneTriggered)
+                return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
             }
             
         case let .groupsOpened(isOpened):
@@ -124,7 +136,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
         case let .gotWordAddition(result):
             switch result {
             case .success:
-                return Effect(value: .closeSceneTriggered)
+                return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
             case let .failure(error):
                 state.alertError = .init(title: TextState(error.localizedDescription))
             }

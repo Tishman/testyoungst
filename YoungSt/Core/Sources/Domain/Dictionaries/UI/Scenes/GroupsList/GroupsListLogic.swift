@@ -11,12 +11,15 @@ import NetworkService
 import Utilities
 
 let groupsListReducer = Reducer<GroupsListState, GroupsListAction, GroupsListEnvironment> { state, action, env in
+    enum Cancellation: CaseIterable, Hashable {
+        case loadGroups
+    }
+    
     switch action {
     case .viewAppeared:
         return .init(value: .listRefreshRequested)
-    case .listRefreshRequested:
-        struct RefreshListCancellable: Hashable {}
         
+    case .listRefreshRequested:
         state.isLoading = true
         let request = Dictionary_GetUserGroupsRequest.with {
             $0.userID = state.userID.uuidString
@@ -29,7 +32,7 @@ let groupsListReducer = Reducer<GroupsListState, GroupsListAction, GroupsListEnv
             .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(GroupsListAction.groupsUpdated)
-            .cancellable(id: RefreshListCancellable())
+            .cancellable(id: Cancellation.loadGroups, bag: env.bag)
         
     case let .groupsUpdated(response):
         state.isLoading = false

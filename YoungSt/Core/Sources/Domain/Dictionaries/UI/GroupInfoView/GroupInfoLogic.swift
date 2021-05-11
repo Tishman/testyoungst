@@ -13,6 +13,11 @@ import Utilities
 
 let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnvironment> { state, action, env in
     
+    enum Cancellable: CaseIterable, Hashable {
+        case getGroupInfo
+        case removeGroup
+    }
+    
     switch action {
     case .viewAppeared:
         return .init(value: .refreshList)
@@ -28,6 +33,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
             .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(GroupInfoAction.updateItems)
+            .cancellable(id: Cancellable.removeGroup, bag: env.bag)
     
     case let .updateItems(response):
         switch response {
@@ -55,21 +61,24 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
             .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(GroupInfoAction.removeGroupResult)
+            .cancellable(id: Cancellable.removeGroup, bag: env.bag)
         
     case let .removeGroupResult(result):
         switch result {
         case .success:
             return .init(value: .closeSceneTriggered)
         case let .failure(error):
-//            state.errorAlert = .init(title: TextState(error.description))
-        break
+            state.alert = .init(title: TextState(error.description))
         }
         state.isLoading = false
         
     case .alertClosed:
         state.alert = nil
         
-    case .closeSceneTriggered, .editOpened:
+    case .closeSceneTriggered:
+        return .cancelAll(bag: env.bag)
+        
+    case .editOpened:
         break
     }
     return .none

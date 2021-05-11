@@ -54,6 +54,8 @@ enum DictionariesAction: Equatable {
 }
 
 struct DictionariesEnvironment {
+    
+    let bag: CancellationBag
     let wordsService: WordsService
     let groupsService: GroupsService
     let translationService: TranslationService
@@ -69,19 +71,22 @@ struct DictionariesEnvironment {
     }()
     
     var addGroupEnv: AddGroupEnvironment {
-        .init(wordsService: wordsService,
+        .init(bag: .autoId(childOf: bag),
+              wordsService: wordsService,
               groupsService: groupsService,
               userProvider: userProvider,
               languageProvider: languageProvider)
     }
     
     var groupInfoEnv: GroupInfoEnvironment {
-        .init(groupsService: groupsService,
+        .init(bag: .autoId(childOf: bag),
+              groupsService: groupsService,
               userProvider: userProvider)
     }
     
     var addWordEnv: AddWordEnvironment {
-        .init(translationService: translationService,
+        .init(bag: .autoId(childOf: bag),
+              translationService: translationService,
               wordService: wordsService,
               groupsService: groupsService)
     }

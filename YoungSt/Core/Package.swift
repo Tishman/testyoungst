@@ -151,6 +151,7 @@ let package = Package(
             dependencies: [CorePackage.resources.dependency,
                            CorePackage.protocols.dependency,
                            ExternalDependecy.introspect.product,
+                           ExternalDependecy.composableArchitecture.product,
             ],
             path: CorePackage.utilities.path
         ),
