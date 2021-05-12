@@ -38,6 +38,7 @@
 "youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
 "translation" = "Перевод";
 "noTranslation" = "Нет перевода";
+"shouldDeleteWord" = "Вы хотите удалить слово? Операцию нельзя отменить.";
 
 // Add group
 "addGroupTitle" = "Новый словарь";

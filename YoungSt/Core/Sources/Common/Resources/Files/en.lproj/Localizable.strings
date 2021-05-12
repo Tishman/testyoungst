@@ -38,6 +38,7 @@
 "youShouldTypeText" = "Cant add empty word. Type something in first field";
 "translation" = "Translation";
 "noTranslation" = "No translation";
+"shouldDeleteWord" = "Do you want to delete word? This cannot be undone.";
 
 // Add group
 "addGroupTitle" = "New dictionary";

@@ -20,10 +20,16 @@ struct DictionariesState: Equatable, Previwable {
     
     var groups: [DictGroupItem] = []
     var words: [DictWordItem] = []
+    var deletingWords: Set<UUID> = []
+    
+    var wordsList: [DictWordItem] {
+        words.filter { !deletingWords.contains($0.id) }
+    }
+    
     var lastUpdate: String?
     
     var isLoading = false
-    var errorAlert: AlertState<DictionariesAction>?
+    var alert: AlertState<DictionariesAction>?
     
     static var preview: DictionariesState = .init(userID: .init(),
                                                   groups: [DictGroupItem.preview],
@@ -36,15 +42,34 @@ enum DictionariesAction: Equatable {
         let words: [DictWordItem]
     }
     
+    struct DeleteWordResult: Equatable {
+        let deletingID: UUID
+        let result: Result<EmptyResponse, EquatableError>
+    }
+    
+    struct UpdateWordsResult: Equatable {
+        let result: Result<[DictWordItem], EquatableError>
+        let removedID: UUID?
+    }
+    
     case refreshList
     case silentRefreshList
     case viewLoaded
     case itemsUpdated(Result<UpdateItemsResult, EquatableError>)
+    case wordsUpdated(UpdateWordsResult)
     case alertClosed
     case addWordOpened(Bool)
     case addGroupOpened(Bool)
     case showAlert(String)
     case wordSelected(DictWordItem)
+    
+    case deleteWordRequested(DictWordItem)
+    case deleteWordAlertPressed(DictWordItem)
+    
+    // this case exists only for animation purposes
+    case deleteWordTriggered(DictWordItem)
+    
+    case wordDeleted(DeleteWordResult)
     
     case openGroup(UUID?)
     

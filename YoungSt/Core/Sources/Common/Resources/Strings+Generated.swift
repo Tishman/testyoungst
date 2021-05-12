@@ -93,6 +93,8 @@ public enum Localizable {
   public static let ru = Localizable.tr("Localizable", "ru")
   /// Do you want to delete group? This cannot be undone.
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
+  /// Do you want to delete word? This cannot be undone.
+  public static let shouldDeleteWord = Localizable.tr("Localizable", "shouldDeleteWord")
   /// Translation
   public static let translation = Localizable.tr("Localizable", "translation")
   /// Type text here

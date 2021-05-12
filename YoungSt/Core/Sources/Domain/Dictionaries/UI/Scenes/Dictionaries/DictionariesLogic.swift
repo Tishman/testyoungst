@@ -25,9 +25,11 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
     
     Reducer { state, action, env in
         
-        enum Cancellable: CaseIterable, Hashable {
+        enum Cancellable: Hashable {
             case getUserLists
+            case getUserWords
             case dictObserving
+            case deleteWord(UUID)
         }
         
         switch action {
@@ -81,15 +83,68 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 state.lastUpdate = env.timeFormatter.string(from: Date())
                 
             case let .failure(error):
-                state.errorAlert = .init(title: TextState(error.description))
+                state.alert = .init(title: TextState(error.description))
             }
             state.isLoading = false
             
         case .alertClosed:
-            state.errorAlert = nil
+            state.alert = nil
             
         case let .showAlert(errorText):
-            state.errorAlert = .init(title: TextState(errorText))
+            state.alert = .init(title: TextState(errorText))
+            
+        case let .deleteWordRequested(item):
+            state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+                                primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
+                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+            
+        case let .deleteWordAlertPressed(item):
+            return .init(value: .deleteWordTriggered(item))
+                .receive(on: DispatchQueue.main.animation())
+                .eraseToEffect()
+            
+        case let .deleteWordTriggered(item):
+            state.deletingWords.insert(item.id)
+            return env.wordsService.removeWord(request: item.id)
+                .mapError(EquatableError.init)
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map { .wordDeleted(.init(deletingID: item.id, result: $0)) }
+                .cancellable(id: Cancellable.deleteWord(item.id), bag: env.bag)
+            
+        case let .wordDeleted(response):
+            switch response.result {
+            case let .success(result):
+                let request = Dictionary_GetUserWordsRequest.with {
+                    $0.userID = state.userID.uuidString
+                    $0.groupID = ""
+                }
+                return env.wordsService.getUserWords(request: request)
+                    .map(\.items)
+                    .tryMap(DictionariesLogic.createWordsItems)
+                    .mapError(EquatableError.init)
+                    .receive(on: DispatchQueue.main)
+                    .catchToEffect()
+                    .map {
+                        DictionariesAction.wordsUpdated(.init(result: $0, removedID: response.deletingID))
+                    }
+                    .cancellable(id: Cancellable.getUserWords, bag: env.bag)
+                    
+            case let .failure(error):
+                state.alert = .init(title: TextState(error.description))
+                state.deletingWords.remove(response.deletingID)
+            }
+            
+        case let .wordsUpdated(response):
+            switch response.result {
+            case let .success(items):
+                state.words = items
+                if let removedID = response.removedID {
+                    state.deletingWords.remove(removedID)
+                }
+            case let .failure(error):
+                break
+            }
             
         case let .addWordOpened(isOpened):
             if isOpened {

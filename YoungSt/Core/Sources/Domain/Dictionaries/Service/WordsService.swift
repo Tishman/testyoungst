@@ -18,6 +18,7 @@ public protocol WordsService: AnyObject {
     func addWordList(request: Dictionary_AddWordListRequest) -> AnyPublisher<Dictionary_AddWordListResponse, Error>
 
     func removeWordList(request: Dictionary_RemoveWordListRequest) -> AnyPublisher<EmptyResponse, Error>
+    func removeWord(request: UUID) -> AnyPublisher<EmptyResponse, Error>
 
     func editWord(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error>
 }
@@ -51,6 +52,13 @@ final class WordsServiceImpl: WordsService {
     
     func removeWordList(request: Dictionary_RemoveWordListRequest) -> AnyPublisher<EmptyResponse, Error> {
         client.removeWordList(request).response.publisher.map(toEmpty).eraseToAnyPublisher()
+    }
+    
+    func removeWord(request: UUID) -> AnyPublisher<EmptyResponse, Error> {
+        let request = Dictionary_RemoveWordListRequest.with {
+            $0.idList = [request.uuidString]
+        }
+        return removeWordList(request: request)
     }
     
     func editWord(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {

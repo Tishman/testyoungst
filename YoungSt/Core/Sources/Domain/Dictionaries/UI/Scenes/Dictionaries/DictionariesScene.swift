@@ -17,6 +17,7 @@ struct DictionariesScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
+    @State private var swappedWord: UUID?
     @Environment(\.coordinator) private var coordinator
     
     var body: some View {
@@ -72,6 +73,7 @@ struct DictionariesScene: View {
                 .addRefreshToScrollView { viewStore.send(.refreshList) }
             }
         }
+        .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -81,7 +83,7 @@ struct DictionariesScene: View {
         .background(addGroupLink)
         .background(addWordLink)
         .fixNavigationLinkForIOS14_5()
-        .alert(store.scope(state: \.errorAlert), dismiss: .alertClosed)
+        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -114,7 +116,7 @@ struct DictionariesScene: View {
     }
     
     private var wordsList: some View {
-        WithViewStore(store.scope(state: \.words)) { viewStore in
+        WithViewStore(store.scope(state: \.wordsList)) { viewStore in
             if viewStore.state.isEmpty {
                 Text(Localizable.emptyWordsPlaceholder)
                     .multilineTextAlignment(.center)
@@ -131,6 +133,10 @@ struct DictionariesScene: View {
                             DictWordView(state: item.state)
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .onDelete(tag: item.id, selection: $swappedWord) {
+                            viewStore.send(.deleteWordRequested(item))
+                            return false
+                        }
                     }
                     .onDelete { indexSet in
                         print(indexSet)
