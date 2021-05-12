@@ -13,9 +13,11 @@ import Utilities
 
 let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnvironment> { state, action, env in
     
-    enum Cancellable: CaseIterable, Hashable {
+    enum Cancellable: Hashable {
         case getGroupInfo
         case removeGroup
+        case getUserWords
+        case deleteWord(UUID)
     }
     
     switch action {
@@ -28,12 +30,12 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
             $0.id = state.id.uuidString
         }
         return env.groupsService.getGroupInfo(request: request)
-            .tryMap(GroupInfoLogic.mapItems)
+            .tryMap { try GroupInfoLogic.mapItems(response: $0, deletingGroup: nil) }
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(GroupInfoAction.updateItems)
-            .cancellable(id: Cancellable.removeGroup, bag: env.bag)
+            .cancellable(id: Cancellable.getGroupInfo, bag: env.bag)
     
     case let .updateItems(response):
         switch response {
@@ -50,6 +52,44 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
                                   primaryButton: .destructive(TextState(Localizable.delete), send: .removeGroup),
                                   secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+        
+    case let .deleteWordRequested(item):
+        state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+                            primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
+                            secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+        
+    case let .deleteWordAlertPressed(item):
+        return .init(value: .deleteWordTriggered(item))
+            .receive(on: DispatchQueue.main.animation())
+            .eraseToEffect()
+        
+    case let .deleteWordTriggered(item):
+        state.deletingWords.insert(item.id)
+        return env.wordsService.removeWord(request: item.id)
+            .mapError(EquatableError.init)
+            .receive(on: DispatchQueue.main)
+            .catchToEffect()
+            .map { .wordDeleted(.init(deletingID: item.id, result: $0)) }
+            .cancellable(id: Cancellable.deleteWord(item.id), bag: env.bag)
+        
+    case let .wordDeleted(response):
+        switch response.result {
+        case let .success(result):
+            let request = Dictionary_GetGroupInfoRequest.with {
+                $0.id = state.id.uuidString
+            }
+            return env.groupsService.getGroupInfo(request: request)
+                .tryMap { try GroupInfoLogic.mapItems(response: $0, deletingGroup: response.deletingID) }
+                .mapError(EquatableError.init)
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map(GroupInfoAction.updateItems)
+                .cancellable(id: Cancellable.getGroupInfo, bag: env.bag)
+                
+        case let .failure(error):
+            state.alert = .init(title: TextState(error.description))
+            state.deletingWords.remove(response.deletingID)
+        }
         
     case .removeGroup:
         state.isLoading = true
@@ -87,7 +127,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
 private struct GroupInfoLogic {
     
     
-    static func mapItems(response: Dictionary_GetGroupInfoResponse) throws -> GroupInfoAction.UpdateItemsResult {
+    static func mapItems(response: Dictionary_GetGroupInfoResponse, deletingGroup: UUID?) throws -> GroupInfoAction.UpdateItemsResult {
         let words = try DictionariesLogic.createWordsItems(words: response.words)
         let group = try DictGroupItem(id: .from(string: response.group.id),
                                       alias: response.group.alias,
@@ -95,7 +135,8 @@ private struct GroupInfoLogic {
                                                    subtitle: Localizable.dWords(Int(response.group.wordCount))))
     
         return .init(groupItem: group,
-                     wordsItems: words)
+                     wordsItems: words,
+                     deletingGroup: deletingGroup)
     }
     
     

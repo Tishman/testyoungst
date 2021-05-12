@@ -106,7 +106,8 @@ struct DictionariesEnvironment {
     var groupInfoEnv: GroupInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               groupsService: groupsService,
-              userProvider: userProvider)
+              userProvider: userProvider,
+              wordsService: wordsService)
     }
     
     var addWordEnv: AddWordEnvironment {

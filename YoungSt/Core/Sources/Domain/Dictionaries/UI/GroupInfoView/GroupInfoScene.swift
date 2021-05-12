@@ -15,6 +15,7 @@ struct GroupInfoScene: View {
     let store: Store<GroupInfoState, GroupInfoAction>
     
     @State private var contentOffset: CGFloat = 0
+    @State private var swappedWord: UUID?
     @State private var dividerHidden: Bool = true
     
     var body: some View {
@@ -25,9 +26,13 @@ struct GroupInfoScene: View {
                         topGroupInfo
                         
                         LazyVStack {
-                            WithViewStore(store.scope(state: \.words)) { viewStore in
-                                ForEach(viewStore.state) {
-                                    DictWordView(state: $0.state)
+                            WithViewStore(store.scope(state: \.wordsList)) { viewStore in
+                                ForEach(viewStore.state) { item in
+                                    DictWordView(state: item.state)
+                                        .onDelete(tag: item.id, selection: $swappedWord) {
+                                            viewStore.send(.deleteWordRequested(item))
+                                            return false
+                                        }
                                 }
                             }
                         }
@@ -49,6 +54,7 @@ struct GroupInfoScene: View {
                     .opacity(dividerHidden ? 0 : 1)
             )
         }
+        .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("")

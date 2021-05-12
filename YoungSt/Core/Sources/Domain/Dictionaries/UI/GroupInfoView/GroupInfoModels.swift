@@ -39,6 +39,12 @@ struct GroupInfoState: Equatable {
     }
     
     var words: [DictWordItem] = []
+    var deletingWords: Set<UUID> = []
+    
+    var wordsList: [DictWordItem] {
+        words.filter { !deletingWords.contains($0.id) }
+    }
+    
     var isLoading = false
     
     var alert: AlertState<GroupInfoAction>?
@@ -48,6 +54,7 @@ enum GroupInfoAction: Equatable {
     struct UpdateItemsResult: Equatable {
         let groupItem: DictGroupItem
         let wordsItems: [DictWordItem]
+        let deletingGroup: UUID?
     }
     
     case viewAppeared
@@ -58,6 +65,14 @@ enum GroupInfoAction: Equatable {
     case updateItems(Result<UpdateItemsResult, EquatableError>)
     case removeGroupResult(Result<Dictionary_RemoveGroupResponse, EquatableError>)
     
+    case deleteWordRequested(DictWordItem)
+    case deleteWordAlertPressed(DictWordItem)
+    
+    // this case exists only for animation purposes
+    case deleteWordTriggered(DictWordItem)
+    
+    case wordDeleted(DictionariesAction.DeleteWordResult)
+    
     case editOpened(Bool)
     case removeAlertOpened
     case alertClosed
@@ -67,4 +82,5 @@ struct GroupInfoEnvironment {
     let bag: CancellationBag
     let groupsService: GroupsService
     let userProvider: UserProvider
+    let wordsService: WordsService
 }
