@@ -11,6 +11,7 @@ import Resources
 struct DictWordView: View {
     
     let state: DictWordState
+    private let minRowHeight: CGFloat = 60
     
     var body: some View {
         VStack(alignment: .leading, spacing: .spacing(.small)) {
@@ -32,7 +33,7 @@ struct DictWordView: View {
             .font(.body)
         }
         .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: minRowHeight, alignment: .leading)
         .bubbled()
     }
 }

@@ -51,7 +51,10 @@ final class WordsServiceImpl: WordsService {
     }
     
     func removeWordList(request: Dictionary_RemoveWordListRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.removeWordList(request).response.publisher.map(toEmpty).eraseToAnyPublisher()
+        client.removeWordList(request).response.publisher
+            .map(toEmpty)
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func removeWord(request: UUID) -> AnyPublisher<EmptyResponse, Error> {

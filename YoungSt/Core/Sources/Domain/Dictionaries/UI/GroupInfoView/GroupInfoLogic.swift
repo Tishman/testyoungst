@@ -18,6 +18,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         case removeGroup
         case getUserWords
         case deleteWord(UUID)
+        case editGroup
     }
     
     switch action {
@@ -119,24 +120,65 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         return .cancelAll(bag: env.bag)
         
     case .editOpened:
-        break
+        state.editState = .init(text: state.itemInfo?.state.title ?? "")
+        
+    case let .editTextChanged(editText):
+        state.editState?.text = editText
+        
+    case .editCancelled:
+        state.editState = nil
+        
+    case .editCommited:
+        guard let name = state.editState?.text else { break }
+        if name.isEmpty || name == state.itemInfo?.state.title {
+            state.editState = nil
+        } else {
+            state.editState?.isLoading = true
+            let request = Dictionary_EditGroupRequest.with {
+                $0.id = state.id.uuidString
+                $0.name = name
+            }
+            return env.groupsService.editGroup(request: request)
+                .map(\.group)
+                .tryMap(GroupInfoLogic.createGroupItem)
+                .mapError(EquatableError.init)
+                .receive(on: DispatchQueue.main.animation(GroupInfoScene.editAnimation))
+                .catchToEffect()
+                .map(GroupInfoAction.editFinished)
+                .cancellable(id: Cancellable.editGroup, bag: env.bag)
+        }
+        
+    case let .editFinished(result):
+        switch result {
+        case let .success(item):
+            state.info = .item(item)
+            state.editState = nil
+            return .init(value: .refreshList)
+            
+        case let .failure(error):
+            state.editState?.isLoading = false
+            state.alert = .init(title: TextState(error.description))
+        }
     }
     return .none
 }
 
 private struct GroupInfoLogic {
     
-    
     static func mapItems(response: Dictionary_GetGroupInfoResponse, deletingGroup: UUID?) throws -> GroupInfoAction.UpdateItemsResult {
         let words = try DictionariesLogic.createWordsItems(words: response.words)
-        let group = try DictGroupItem(id: .from(string: response.group.id),
-                                      alias: response.group.alias,
-                                      state: .init(title: response.group.name,
-                                                   subtitle: Localizable.dWords(Int(response.group.wordCount))))
+        let group = try createGroupItem(from: response.group)
     
         return .init(groupItem: group,
                      wordsItems: words,
                      deletingGroup: deletingGroup)
+    }
+    
+    static func createGroupItem(from group: Dictionary_Group) throws -> DictGroupItem {
+        try DictGroupItem(id: .from(string: group.id),
+                                      alias: group.alias,
+                                      state: .init(title: group.name,
+                                                   subtitle: Localizable.dWords(Int(group.wordCount))))
     }
     
     

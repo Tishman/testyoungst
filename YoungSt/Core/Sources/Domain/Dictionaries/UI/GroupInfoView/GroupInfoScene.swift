@@ -18,6 +18,11 @@ struct GroupInfoScene: View {
     @State private var swappedWord: UUID?
     @State private var dividerHidden: Bool = true
     
+    @Namespace private var groupInfoNamespace
+    @State private var flag: Bool = true
+    private let editAnimationID = "EditAnimation"
+    static let editAnimation = Animation.spring(response: 0.45, dampingFraction: 0.6)
+    
     var body: some View {
         GeometryReader { globalProxy in
             WithViewStore(store.stateless) { viewStore in
@@ -67,8 +72,68 @@ struct GroupInfoScene: View {
                 VStack {
                     DictGroupView(id: viewStore.id, size: .medium, state: viewStore.state.state)
                     
-                    HStack(spacing: .spacing(.ultraBig)) {
-                        Button { viewStore.send(.editOpened(true)) } label: {
+                    editNameView
+                }
+                .padding(.vertical)
+            }
+        }
+    }
+    
+    private var editNameView: some View {
+        WithViewStore(store.scope(state: \.editState)) { viewStore in
+            HStack(spacing: .spacing(.ultraBig)) {
+                HStack {
+                    if let editInfo = viewStore.state {
+                        HStack {
+                            TextField(Localizable.name, text: viewStore.binding(get: { $0?.text ?? "" }, send: GroupInfoAction.editTextChanged))
+                                .frame(minHeight: InaccentButtonStyle.defaultSize)
+                            
+                            HStack {
+                                Button {
+                                    withAnimation(Self.editAnimation) {
+                                        viewStore.send(.editCancelled)
+                                    }
+                                } label: {
+                                    CrossView()
+                                        .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                Divider()
+                                
+                                Button {
+                                    withAnimation(Self.editAnimation) {
+                                        viewStore.send(.editCommited)
+                                    }
+                                } label: {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                                }
+                                .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                            }
+                            .opacity(editInfo.isLoading ? 0 : 1)
+                            .overlay(
+                                Group {
+                                    if editInfo.isLoading {
+                                        IndicatorView(size: DefaultSize.mediumButton, paddingValue: .spacing(.ultraSmall))
+                                            .frame(maxWidth: .infinity, alignment: .trailing)
+                                    }
+                                }
+                            )
+                        }
+                        .buttonStyle(PlainInaccentButtonStyle())
+                        .padding(.vertical, .spacing(.medium) + .spacing(.ultraSmall))
+                        .padding(.horizontal)
+                        .matchedGeometryEffect(id: editAnimationID, in: groupInfoNamespace, anchor: .leading)
+                        .disabled(editInfo.isLoading)
+                    } else {
+                        Button {
+                            withAnimation(Self.editAnimation) {
+                                viewStore.send(.editOpened(true))
+                            }
+                        } label: {
                             Image(systemName: "pencil")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -76,21 +141,26 @@ struct GroupInfoScene: View {
                                 .padding(.horizontal, 2 * .spacing(.ultraBig))
                                 .padding(.vertical, .spacing(.ultraSmall))
                         }
-                        
-                        Button { viewStore.send(.removeAlertOpened) } label: {
-                            Image(systemName: "trash")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                                .padding(.horizontal, 2 * .spacing(.ultraBig))
-                                .padding(.vertical, .spacing(.ultraSmall))
-                        }
+                        .buttonStyle(PlainInaccentButtonStyle())
+                        .matchedGeometryEffect(id: editAnimationID, in: groupInfoNamespace, anchor: .leading)
                     }
-                    .padding(.vertical, .spacing(.small))
+                }
+                .bubbled()
+                
+                if viewStore.state == nil {
+                    Button { viewStore.send(.removeAlertOpened) } label: {
+                        Image(systemName: "trash")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                            .padding(.horizontal, 2 * .spacing(.ultraBig))
+                            .padding(.vertical, .spacing(.ultraSmall))
+                    }
                     .buttonStyle(InaccentButtonStyle())
                 }
-                .padding(.vertical)
             }
+            .padding(.vertical, .spacing(.small))
+            .padding(.horizontal)
         }
     }
 }

@@ -13,12 +13,18 @@ import Protocols
 
 struct GroupInfoState: Equatable {
     
+    struct EditState: Equatable {
+        var text: String = ""
+        var isLoading = false
+    }
+    
     enum GroupInfo: Equatable {
         case id(UUID)
         case item(DictGroupItem)
     }
     
     var info: GroupInfo
+    var editState: EditState?
     
     var id: UUID {
         switch info {
@@ -61,6 +67,11 @@ enum GroupInfoAction: Equatable {
     case removeGroup
     case refreshList
     case closeSceneTriggered
+    
+    case editTextChanged(String)
+    case editCancelled
+    case editCommited
+    case editFinished(Result<DictGroupItem, EquatableError>)
     
     case updateItems(Result<UpdateItemsResult, EquatableError>)
     case removeGroupResult(Result<Dictionary_RemoveGroupResponse, EquatableError>)

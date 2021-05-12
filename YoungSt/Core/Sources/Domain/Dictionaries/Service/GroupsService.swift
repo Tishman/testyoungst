@@ -17,7 +17,7 @@ public protocol GroupsService: AnyObject {
 
     func getUserGroups(request: Dictionary_GetUserGroupsRequest) -> AnyPublisher<Dictionary_GetUserGroupsResponse, Error>
     
-    func editGroup(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error>
+    func editGroup(request: Dictionary_EditGroupRequest) -> AnyPublisher<Dictionary_EditGroupResponse, Error>
     
     func getGroupInfo(request: Dictionary_GetGroupInfoRequest) -> AnyPublisher<Dictionary_GetGroupInfoResponse, Error>
 }
@@ -48,8 +48,8 @@ final class GroupsServiceImpl: GroupsService {
         client.getUserGroups(request).response.publisher.eraseToAnyPublisher()
     }
     
-    func editGroup(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {
-        client.editWord(request).response.publisher
+    func editGroup(request: Dictionary_EditGroupRequest) -> AnyPublisher<Dictionary_EditGroupResponse, Error> {
+        client.editGroup(request).response.publisher
             .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .groupListUpdated) })
             .eraseToAnyPublisher()
     }

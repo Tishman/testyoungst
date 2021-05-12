@@ -11,5 +11,6 @@ public enum DefaultSize {
     
     public static let navigationBarButton: CGFloat = 30
     public static let smallButton: CGFloat = 22
+    public static let mediumButton: CGFloat = 33
     
 }

@@ -11,11 +11,15 @@ import Resources
 public typealias IndicatorView = GrowingArcIndicatorView
 public struct GrowingArcIndicatorView: View {
     
-    public init() {
-        self.color = Asset.Colors.loaderContent.color.swiftuiColor
-    }
     
+    public init(size: CGFloat = 60, paddingValue: CGFloat? = nil) {
+        self.color = Asset.Colors.loaderContent.color.swiftuiColor
+        self.size = size
+        self.paddingValue = paddingValue // nil padding is system default
+    }
 
+    private let size: CGFloat
+    private let paddingValue: CGFloat?
     private let color: Color
     @State private var animatableParameter: Double = 0
 
@@ -26,10 +30,10 @@ public struct GrowingArcIndicatorView: View {
         
         return GrowingArc(percent: animatableParameter)
             .stroke(color, lineWidth: 3)
-            .padding()
+            .padding(.all, paddingValue)
             .background(BlurEffect(style: .systemThickMaterial))
             .clipShape(RoundedRectangle(cornerRadius: .corner(.medium)))
-            .frame(width: 60, height: 60)
+            .frame(width: size, height: size)
             .onAppear {
                 DispatchQueue.main.async {
                     withAnimation(animation) {
