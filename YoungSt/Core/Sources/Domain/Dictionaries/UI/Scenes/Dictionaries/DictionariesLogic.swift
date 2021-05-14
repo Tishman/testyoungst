@@ -173,7 +173,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             }
         case let .openGroup(groupId):
             if let groupId = groupId, let groupItem = state.groups.first(where: { $0.id == groupId }) {
-                state.groupInfoState = .init(info: .item(groupItem))
+                state.groupInfoState = .init(userID: state.userID, info: .item(groupItem))
             } else {
                 state.groupInfoState = nil
             }

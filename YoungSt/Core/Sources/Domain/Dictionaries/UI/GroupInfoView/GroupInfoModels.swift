@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Utilities
 import NetworkService
 import Protocols
+import Coordinator
 
 struct GroupInfoState: Equatable {
     
@@ -23,6 +24,7 @@ struct GroupInfoState: Equatable {
         case item(DictGroupItem)
     }
     
+    let userID: UUID
     var info: GroupInfo
     var editState: EditState?
     
@@ -44,6 +46,7 @@ struct GroupInfoState: Equatable {
         }
     }
     
+    var addWordOpened = false
     var words: [DictWordItem] = []
     var deletingWords: Set<UUID> = []
     
@@ -66,6 +69,7 @@ enum GroupInfoAction: Equatable {
     case viewAppeared
     case removeGroup
     case refreshList
+    case silentRefreshList
     case closeSceneTriggered
     
     case editTextChanged(String)
@@ -84,7 +88,8 @@ enum GroupInfoAction: Equatable {
     
     case wordDeleted(DictionariesAction.DeleteWordResult)
     
-    case editOpened(Bool)
+    case addWordOpened(Bool)
+    case editOpened
     case removeAlertOpened
     case alertClosed
 }

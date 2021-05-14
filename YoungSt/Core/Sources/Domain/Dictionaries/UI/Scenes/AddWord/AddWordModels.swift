@@ -64,14 +64,15 @@ struct AddWordState: Equatable, Previwable {
 extension AddWordState {
     init(input: AddWordInput, sourceLanguage: Languages, destinationLanguage: Languages) {
         self.info = .init(input: input)
-        if let model = input.model {
-            sourceText = model.word.state.text
-            translationText = model.word.state.translation
-            descriptionText = model.word.state.info
-            if let group = model.group, group.alias != DictGroupItem.rootAlias {
-                selectedGroup = .init(id: group.id, title: group.state.title)
-            }
+        if let word = input.model.word {
+            sourceText = word.state.text
+            translationText = word.state.translation
+            descriptionText = word.state.info
         }
+        if let group = input.model.group, group.alias != DictGroupItem.rootAlias {
+            selectedGroup = .init(id: group.id, title: group.state.title)
+        }
+        
         self.sourceLanguage = sourceLanguage
         self.destinationLanguage = destinationLanguage
     }
@@ -103,7 +104,7 @@ extension AddWordInfo {
         self.semantic = input.semantic
         self.userID = input.userID
         self.groupSelectionEnabled = input.groupSelectionEnabled
-        self.editingWordID = input.model?.word.id
+        self.editingWordID = input.model.word?.id
     }
 }
 

@@ -180,7 +180,7 @@ struct AddWordScene: View {
                             }
                         }
                     }
-                    .padding(.leading, .spacing(.medium))
+                    .padding(viewStore.info.groupSelectionEnabled ? .leading : .all, .spacing(.medium))
                     .bubbled()
                 }
                 Spacer()

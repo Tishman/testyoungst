@@ -61,16 +61,16 @@ public struct AddWordInput: Equatable {
     }
     
     public struct InputModel: Equatable {
-        public init(word: DictWordModel, group: DictGroupModel?) {
+        public init(word: DictWordModel?, group: DictGroupModel?) {
             self.word = word
             self.group = group
         }
         
-        public let word: DictWordModel
+        public let word: DictWordModel?
         public let group: DictGroupModel?
     }
     
-    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel? = nil) {
+    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel = .init(word: nil, group: nil)) {
         self.closeHandler = closeHandler
         self.semantic = semantic
         self.userID = userID
@@ -82,7 +82,7 @@ public struct AddWordInput: Equatable {
     public let semantic: Semantic
     public let userID: UUID
     public let groupSelectionEnabled: Bool
-    public let model: InputModel?
+    public let model: InputModel
 }
 
 public struct ProfileInput: Hashable {

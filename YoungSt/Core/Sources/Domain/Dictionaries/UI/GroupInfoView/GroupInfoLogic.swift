@@ -27,6 +27,9 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         
     case .refreshList:
         state.isLoading = true
+        return .init(value: .silentRefreshList)
+        
+    case .silentRefreshList:
         let request = Dictionary_GetGroupInfoRequest.with {
             $0.id = state.id.uuidString
         }
@@ -118,6 +121,12 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         
     case .closeSceneTriggered:
         return .cancelAll(bag: env.bag)
+        
+    case let .addWordOpened(isOpened):
+        state.addWordOpened = isOpened
+        if !isOpened {
+            return .init(value: .silentRefreshList)
+        }
         
     case .editOpened:
         state.editState = .init(text: state.itemInfo?.state.title ?? "")

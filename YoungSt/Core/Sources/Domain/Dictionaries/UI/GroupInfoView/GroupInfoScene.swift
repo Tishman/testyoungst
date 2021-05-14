@@ -9,6 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 import Resources
 import Utilities
+import Coordinator
 
 struct GroupInfoScene: View {
     
@@ -17,6 +18,8 @@ struct GroupInfoScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var swappedWord: UUID?
     @State private var dividerHidden: Bool = true
+    
+    @Environment(\.coordinator) private var coordinator
     
     @Namespace private var groupInfoNamespace
     @State private var flag: Bool = true
@@ -61,9 +64,27 @@ struct GroupInfoScene: View {
         }
         .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .background(addWordLink)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var addWordLink: some View {
+        WithViewStore(store) { viewStore in
+            Color.clear
+                .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: GroupInfoAction.addWordOpened)) {
+                    coordinator.view(for: .addWord(.init(closeHandler: { viewStore.send(.addWordOpened(false)) },
+                                                         semantic: .addToServer,
+                                                         userID: viewStore.userID,
+                                                         groupSelectionEnabled: false,
+                                                         model: .init(word: nil,
+                                                                      group: .init(id: viewStore.id,
+                                                                                   alias: nil,
+                                                                                   state: viewStore.itemInfo?.state
+                                                                                    ?? .init(title: "", subtitle: ""))))))
+                }
+        }
     }
     
     private var topGroupInfo: some View {
@@ -79,9 +100,26 @@ struct GroupInfoScene: View {
         }
     }
     
+    private var openWordAddingButton: some View {
+        WithViewStore(store.stateless) { viewStore in
+            Button { viewStore.send(.addWordOpened(true)) } label: {
+                Image(systemName: "plus")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                    .padding(.horizontal, .spacing(.ultraBig))
+                    .padding(.vertical, .spacing(.ultraSmall))
+            }
+            .buttonStyle(InaccentButtonStyle())
+        }
+    }
+    
     private var editNameView: some View {
         WithViewStore(store.scope(state: \.editState)) { viewStore in
-            HStack(spacing: .spacing(.ultraBig)) {
+            HStack(spacing: .spacing(.big)) {
+                if viewStore.state == nil {
+                    openWordAddingButton
+                }
                 HStack {
                     if let editInfo = viewStore.state {
                         HStack {
@@ -131,14 +169,14 @@ struct GroupInfoScene: View {
                     } else {
                         Button {
                             withAnimation(Self.editAnimation) {
-                                viewStore.send(.editOpened(true))
+                                viewStore.send(.editOpened)
                             }
                         } label: {
                             Image(systemName: "pencil")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                                .padding(.horizontal, 2 * .spacing(.ultraBig))
+                                .padding(.horizontal, .spacing(.ultraBig))
                                 .padding(.vertical, .spacing(.ultraSmall))
                         }
                         .buttonStyle(PlainInaccentButtonStyle())
@@ -153,7 +191,7 @@ struct GroupInfoScene: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                            .padding(.horizontal, 2 * .spacing(.ultraBig))
+                            .padding(.horizontal, .spacing(.ultraBig))
                             .padding(.vertical, .spacing(.ultraSmall))
                     }
                     .buttonStyle(InaccentButtonStyle())
@@ -169,7 +207,7 @@ struct GroupInfoScene_Previews: PreviewProvider {
     static var previews: some View {
         let item = DictGroupItem(id: .init(), alias: nil, state: .init(title: "Hello", subtitle: "12 words"))
         return NavigationView {
-            GroupInfoScene(store: .init(initialState: .init(info: .item(item), words: [DictWordItem.preview]),
+            GroupInfoScene(store: .init(initialState: .init(userID: .init(), info: .item(item), words: [DictWordItem.preview]),
                                         reducer: .empty,
                                         environment: ()))
         }
