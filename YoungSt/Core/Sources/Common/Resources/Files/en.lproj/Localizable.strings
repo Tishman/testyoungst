@@ -66,3 +66,7 @@
 
 // Groups list
 "addToDictionary" = "Add to dictionary";
+
+// CurrentProfile
+"shouldFinishInfoProviding" = "You almost done!\nOne more last step left";
+"provideInfo" = "Provide info";

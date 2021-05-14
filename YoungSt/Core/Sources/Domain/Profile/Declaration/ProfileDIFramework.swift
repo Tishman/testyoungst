@@ -12,6 +12,8 @@ public final class ProfileDIFramework: DIFramework {
     
     public static func load(container: DIContainer) {
         container.append(part: ProfileModuleDeclaration.self)
+        container.register(ProfileServiceImpl.init)
+            .as(check: ProfileService.self) {$0}
     }
     
 }

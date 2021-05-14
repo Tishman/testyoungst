@@ -17,11 +17,13 @@ public protocol CredentialsService: AnyObject {
 }
 
 public struct Credentials: Hashable {
-    public init(userID: UUID, sessionID: UUID) {
+    public init(userID: UUID, info: UserInfo, sessionID: UUID) {
         self.userID = userID
+        self.info = info
         self.sessionID = sessionID
     }
     
     public let userID: UUID
+    public let info: UserInfo
     public let sessionID: UUID
 }

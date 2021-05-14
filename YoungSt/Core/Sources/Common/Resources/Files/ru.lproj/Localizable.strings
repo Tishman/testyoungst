@@ -66,3 +66,7 @@
 
 // Groups list
 "addToDictionary" = "Добавить в словарь";
+
+// CurrentProfile
+"shouldFinishInfoProviding" = "Осталось совсем чуть-чуть! Остался последний шаг";
+"provideInfo" = "Заполнить";

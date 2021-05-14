@@ -36,6 +36,6 @@ final class ProfileModuleDeclaration: DIPart, ModuleStoreProvider {
     }
     
     func createInitialModuleStore() -> Store<ProfileState, ProfileAction> {
-        .init(initialState: .init(userID: input.userID), reducer: .empty, environment: environment)
+        .init(initialState: .init(userID: input.userID), reducer: profileReducer, environment: environment)
     }
 }

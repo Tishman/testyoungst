@@ -7,13 +7,31 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Utilities
 
 struct ProfileScene: View {
     
     let store: Store<ProfileState, ProfileAction>
+    @State private var contentOffset: CGFloat = 0
+    @State private var dividerHidden: Bool = true
     
     var body: some View {
-        Text("Hello, World!")
+        GeometryReader { globalProxy in
+            ZStack {
+                TrackableScrollView(contentOffset: $contentOffset) {
+                    CurrentProfileView(store: store.scope(state: \.currentProfileState, action: ProfileAction.currentProfile))
+                        .frame(maxWidth: .infinity)
+                        .padding([.top, .horizontal])
+                }
+                .overlay(
+                    TopHeaderView(width: globalProxy.size.width,
+                                  topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                        .opacity(dividerHidden ? 0 : 1)
+                )
+            }
+        }
+        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -7,8 +7,18 @@
 
 import Foundation
 
-public protocol UserProvider: AnyObject {
+public struct UserInfo: Hashable, Codable {
+    public init(nickname: String, email: String) {
+        self.nickname = nickname
+        self.email = email
+    }
     
-    var currentUserID: UUID? { get }
-    
+    public let nickname: String
+    public let email: String
 }
+
+public protocol UserProvider: AnyObject {
+    var currentUser: UserInfo? { get }
+    var currentUserID: UUID? { get }
+}
+

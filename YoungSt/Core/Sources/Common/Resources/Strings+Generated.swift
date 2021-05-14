@@ -83,6 +83,8 @@ public enum Localizable {
   public static let privacyPolicyTitle = Localizable.tr("Localizable", "privacyPolicyTitle")
   /// Profile
   public static let profile = Localizable.tr("Localizable", "profile")
+  /// Provide info
+  public static let provideInfo = Localizable.tr("Localizable", "provideInfo")
   /// Recent
   public static let recent = Localizable.tr("Localizable", "recent")
   /// Register to get started.
@@ -95,6 +97,8 @@ public enum Localizable {
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
   /// Do you want to delete word? This cannot be undone.
   public static let shouldDeleteWord = Localizable.tr("Localizable", "shouldDeleteWord")
+  /// You almost done! Plase fill information to help other people communicate with you more effectively
+  public static let shouldFinishInfoProviding = Localizable.tr("Localizable", "shouldFinishInfoProviding")
   /// Translation
   public static let translation = Localizable.tr("Localizable", "translation")
   /// Type text here
