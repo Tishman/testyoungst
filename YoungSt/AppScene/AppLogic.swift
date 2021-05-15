@@ -10,7 +10,6 @@ import ComposableArchitecture
 import Protocols
 
 let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine (
-    tabReducer.optional().pullback(state: \.authorizedState, action: /AppAction.tab, environment: { _ in ()}),
     Reducer { state, action, env in
         switch action {
         case .appLaunched:
@@ -26,12 +25,26 @@ let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine (
             )
             
         case .unauthorized:
-            state.authorizedState = nil
-        case let .authorized(userID):
-            state.authorizedState = .init(userID: userID)
+            state.uiState = .authorization
             
-        case .tab:
-            break
+        case let .authorized(userID):
+            state.uiState = .authorized(userID)
+            
+            if let deeplink = state.pendingDeeplink {
+                state.pendingDeeplink = nil
+                return .init(value: .handleDeeplink(deeplink))
+            }
+            
+        case let .handleDeeplink(moduleLink):
+            switch state.uiState {
+            case .authorized:
+                state.deeplink = moduleLink
+            default:
+                state.pendingDeeplink = moduleLink
+            }
+            
+        case .deeplinkHandled:
+            state.deeplink = nil
         }
         
         return .none

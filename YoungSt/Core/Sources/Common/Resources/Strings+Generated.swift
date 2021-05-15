@@ -21,8 +21,12 @@ public enum Localizable {
   public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
   /// Add word
   public static let addWordTitle = Localizable.tr("Localizable", "addWordTitle")
+  /// Become student
+  public static let becomeStudent = Localizable.tr("Localizable", "becomeStudent")
   /// Cancel
   public static let cancel = Localizable.tr("Localizable", "cancel")
+  /// Cancel invite
+  public static let cancelInvite = Localizable.tr("Localizable", "cancelInvite")
   /// Close
   public static let closeTitle = Localizable.tr("Localizable", "closeTitle")
   /// Confrim password
@@ -33,10 +37,16 @@ public enum Localizable {
   public static let dictionaries = Localizable.tr("Localizable", "dictionaries")
   /// Dictionary
   public static let dictionary = Localizable.tr("Localizable", "dictionary")
+  /// Request sent. Wait for your teacher to accept it.
+  public static let didSendRequestToBecomeStudent = Localizable.tr("Localizable", "didSendRequestToBecomeStudent")
   /// Plural format key: "%#@VARIABLE@"
   public static func dWords(_ p1: Int) -> String {
     return Localizable.tr("Localizable", "dWords", p1)
   }
+  /// Update profile
+  public static let editProfileAction = Localizable.tr("Localizable", "editProfileAction")
+  /// Update profile
+  public static let editProfileTitle = Localizable.tr("Localizable", "editProfileTitle")
   /// Edit word
   public static let editWordAction = Localizable.tr("Localizable", "editWordAction")
   /// Edit word
@@ -55,10 +65,22 @@ public enum Localizable {
   public static let enterCode = Localizable.tr("Localizable", "enterCode")
   /// Please fill all fields.
   public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
+  /// You almost done. Fill info about you
+  public static let fillInfoDescription = Localizable.tr("Localizable", "fillInfoDescription")
+  /// Welcome!
+  public static let fillInfoWelcome = Localizable.tr("Localizable", "fillInfoWelcome")
+  /// First name
+  public static let firstName = Localizable.tr("Localizable", "firstName")
   /// Incorrect data
   public static let incorrectDataTitle = Localizable.tr("Localizable", "incorrectDataTitle")
   /// Enter word
   public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
+  /// First name can't be empty
+  public static let invalidFirstName = Localizable.tr("Localizable", "invalidFirstName")
+  /// Nickname can't be empty
+  public static let invalidNickname = Localizable.tr("Localizable", "invalidNickname")
+  /// Last name
+  public static let lastName = Localizable.tr("Localizable", "lastName")
   /// Updated
   public static let lastUpdateTime = Localizable.tr("Localizable", "lastUpdateTime")
   /// Log In
@@ -69,6 +91,10 @@ public enum Localizable {
   public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
   /// Name
   public static let name = Localizable.tr("Localizable", "name")
+  /// Nickname
+  public static let nickname = Localizable.tr("Localizable", "nickname")
+  /// Nickname already in use. Choose another
+  public static let nicknameAlreadyUsed = Localizable.tr("Localizable", "nicknameAlreadyUsed")
   /// No translation
   public static let noTranslation = Localizable.tr("Localizable", "noTranslation")
   /// OK
@@ -91,14 +117,26 @@ public enum Localizable {
   public static let registerToStartTitle = Localizable.tr("Localizable", "registerToStartTitle")
   /// Registration
   public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
+  /// Remove teacher
+  public static let removeTeacher = Localizable.tr("Localizable", "removeTeacher")
   /// Russian
   public static let ru = Localizable.tr("Localizable", "ru")
+  /// Settings
+  public static let settings = Localizable.tr("Localizable", "settings")
   /// Do you want to delete group? This cannot be undone.
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
   /// Do you want to delete word? This cannot be undone.
   public static let shouldDeleteWord = Localizable.tr("Localizable", "shouldDeleteWord")
-  /// You almost done! Plase fill information to help other people communicate with you more effectively
+  /// You almost done!\nOne more last step left
   public static let shouldFinishInfoProviding = Localizable.tr("Localizable", "shouldFinishInfoProviding")
+  /// Student
+  public static let student = Localizable.tr("Localizable", "student")
+  /// Students
+  public static let students = Localizable.tr("Localizable", "students")
+  /// Teacher
+  public static let teacher = Localizable.tr("Localizable", "teacher")
+  /// Teacher have not accept your invintation yet
+  public static let teacherNotAcceptedInviteYet = Localizable.tr("Localizable", "teacherNotAcceptedInviteYet")
   /// Translation
   public static let translation = Localizable.tr("Localizable", "translation")
   /// Type text here
@@ -107,6 +145,8 @@ public enum Localizable {
   public static let unknownError = Localizable.tr("Localizable", "unknownError")
   /// Unnamed
   public static let unnamed = Localizable.tr("Localizable", "unnamed")
+  /// Update
+  public static let update = Localizable.tr("Localizable", "update")
   /// Username
   public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
   /// Verification
@@ -123,6 +163,10 @@ public enum Localizable {
   public static let wordDescription = Localizable.tr("Localizable", "wordDescription")
   /// Words
   public static let words = Localizable.tr("Localizable", "words")
+  /// You can send request to become student. Good luck in learning!
+  public static let youCanSendRequestToBecomeStudent = Localizable.tr("Localizable", "youCanSendRequestToBecomeStudent")
+  /// You can't become student because you already have teacher.
+  public static let youCantBecomeStudent = Localizable.tr("Localizable", "youCantBecomeStudent")
   /// Cant add empty word. Type something in first field
   public static let youShouldTypeText = Localizable.tr("Localizable", "youShouldTypeText")
 }

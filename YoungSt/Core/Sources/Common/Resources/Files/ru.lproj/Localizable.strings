@@ -25,6 +25,7 @@
 "unknownError" = "Неизвестная ошибка";
 "cancel" = "Отмена";
 "delete" = "Удалить";
+"update" = "Обновить";
 
 // AddWord
 "addWordTitle" = "Добавление слова";
@@ -38,7 +39,7 @@
 "youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
 "translation" = "Перевод";
 "noTranslation" = "Нет перевода";
-"shouldDeleteWord" = "Вы хотите удалить слово? Операцию нельзя отменить.";
+"shouldDeleteWord" = "Вы хотите удалить слово?\nОперацию нельзя отменить.";
 
 // Add group
 "addGroupTitle" = "Новый словарь";
@@ -70,3 +71,30 @@
 // CurrentProfile
 "shouldFinishInfoProviding" = "Осталось совсем чуть-чуть! Остался последний шаг";
 "provideInfo" = "Заполнить";
+"settings" = "Настройки";
+"teacher" = "Учитель";
+"students" = "Ученики";
+"student" = "Ученик";
+"removeTeacher" = "Удалить учителя";
+"teacherNotAcceptedInviteYet" = "Учитель пока не принял ваше приглашение";
+"cancelInvite" = "Отменить приглашение";
+
+// Fill info
+"fillInfoWelcome" = "Добро пожаловать!";
+"fillInfoDescription" = "Осталось совсем чуть-чуть. Заполните ниже информацию о себе";
+
+// EditProfile
+"nicknameAlreadyUsed" = "Имя пользователя занято. Выберите другое имя";
+"invalidNickname" = "Введите непустое имя пользователя";
+"invalidFirstName" = "Введите непустое имя";
+"editProfileAction" = "Обновить профиль";
+"editProfileTitle" = "Обновить профиль";
+"firstName" = "Имя";
+"lastName" = "Фамилия";
+"nickname" = "Никнейм";
+
+// StudentInvite
+"youCantBecomeStudent" = "Вы не можете стать учеником, потому что у вас уже есть учитель.";
+"youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником. Удачи в обучении!";
+"didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
+"becomeStudent" = "Стать учеником";

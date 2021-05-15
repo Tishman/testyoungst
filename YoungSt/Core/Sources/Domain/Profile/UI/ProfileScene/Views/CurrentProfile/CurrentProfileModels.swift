@@ -12,25 +12,29 @@ import Resources
 import Protocols
 import NetworkService
 
+extension CurrentProfileInfo: Previwable {
+    public static let preview: Self = .init(firstName: "Max", lastName: "Rakotanski")
+}
+
 struct CurrentProfileState: Equatable, Previwable {
     
     enum InfoState: Equatable, Previwable {
         case loading
         case infoRequired
-        case infoProvided(ProfileInfo)
-        
-        struct ProfileInfo: Equatable, Previwable {
-            let firstName: String
-            let lastName: String
-            
-            static let preview: Self = .init(firstName: "Max", lastName: "Rakotanski")
-        }
+        case infoProvided(CurrentProfileInfo)
         
         static var preview: Self = .infoProvided(.preview)
     }
     
     var infoState: InfoState = .loading
     var nickname: String?
+    
+    var isInfoProvided: Bool {
+        if case .infoProvided = infoState {
+            return true
+        }
+        return false
+    }
     
     static var preview: Self = .init(infoState: .preview, nickname: "@mrakotanski")
 }
@@ -39,7 +43,7 @@ enum CurrentProfileAction: Equatable {
     case viewAppeared
     case profileUpdateRequested
     case profileUpdated(Result<Profile_GetOwnProfileInfoResponse, EquatableError>)
-    case editInfoOpened(Bool)
+    case editInfoOpened
 }
 
 struct CurrentProfileEnvironment {

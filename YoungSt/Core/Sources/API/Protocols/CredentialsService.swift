@@ -13,6 +13,8 @@ public protocol CredentialsService: AnyObject {
     var credentialsUpdated: AnyPublisher<Credentials?, Never> { get }
     
     func save(credentials: Credentials)
+    func save(profile: CurrentProfileInfo)
+    
     func clearCredentials()
 }
 

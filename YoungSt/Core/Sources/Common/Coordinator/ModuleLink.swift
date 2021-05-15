@@ -7,12 +7,24 @@
 
 import Foundation
 import Protocols
+import Utilities
 
-public enum ModuleLink {
+public enum ModuleLink: Equatable {
     case authorization(AuthorizationInput)
     case dictionaries(DictionariesInput)
     case profile(ProfileInput)
     case addWord(AddWordInput)
+    case studentInvite(StudentInviteInput)
+}
+
+public struct StudentInviteInput: Equatable {
+    public init(teacherID: UUID, closeHandler: AnyEquatable<() -> Void>) {
+        self.teacherID = teacherID
+        self.closeHandler = closeHandler
+    }
+    
+    public let teacherID: UUID
+    public let closeHandler: AnyEquatable<() -> Void>
 }
 
 public enum AuthorizationInput: Identifiable, Hashable {
@@ -31,10 +43,6 @@ public struct DictionariesInput: Hashable {
 
 public struct AddWordInput: Equatable {
     
-    public static func == (lhs: AddWordInput, rhs: AddWordInput) -> Bool {
-        true
-    }
-    
     public struct AddLaterRequest: Equatable {
         public init(sourceText: String, translationText: String, destinationText: String) {
             self.sourceText = sourceText
@@ -49,15 +57,7 @@ public struct AddWordInput: Equatable {
     
     public enum Semantic: Equatable {
         case addToServer
-        case addLater(handler: (AddLaterRequest) -> Void)
-        
-        public static func == (lhs: Self, rhs: Self) -> Bool {
-            switch (lhs, rhs) {
-            case (.addToServer, .addToServer): return true
-            case (.addLater, .addLater): return true
-            default: return false
-            }
-        }
+        case addLater(handler: AnyEquatable<(AddLaterRequest) -> Void>)
     }
     
     public struct InputModel: Equatable {
@@ -70,7 +70,7 @@ public struct AddWordInput: Equatable {
         public let group: DictGroupModel?
     }
     
-    public init(closeHandler: @escaping () -> Void, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel = .init(word: nil, group: nil)) {
+    public init(closeHandler: AnyEquatable<() -> Void>, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel = .init(word: nil, group: nil)) {
         self.closeHandler = closeHandler
         self.semantic = semantic
         self.userID = userID
@@ -78,7 +78,7 @@ public struct AddWordInput: Equatable {
         self.model = model
     }
     
-    public let closeHandler: () -> Void
+    public let closeHandler: AnyEquatable<() -> Void>
     public let semantic: Semantic
     public let userID: UUID
     public let groupSelectionEnabled: Bool

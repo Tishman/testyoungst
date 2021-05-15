@@ -26,7 +26,36 @@ struct GroupInfoState: Equatable {
     
     let userID: UUID
     var info: GroupInfo
-    var editState: EditState?
+    var controlsState: ControlsState = .allVisible
+    
+    var editState: EditState? {
+        get {
+            guard case let .edit(editState) = controlsState else { return nil }
+            return editState
+        }
+        set {
+            guard let newValue = newValue else { return }
+            switch controlsState {
+            case .edit:
+                controlsState = .edit(newValue)
+            default:
+                break
+            }
+        }
+    }
+    
+    enum ControlsState: Equatable {
+        case edit(EditState)
+        case delete(isLoading: Bool)
+        case allVisible
+        
+        var isAllVisible: Bool {
+            if case .allVisible = self {
+                return true
+            }
+            return false
+        }
+    }
     
     var id: UUID {
         switch info {
@@ -90,7 +119,8 @@ enum GroupInfoAction: Equatable {
     
     case addWordOpened(Bool)
     case editOpened
-    case removeAlertOpened
+    case deleteOpened
+    case deleteClosed
     case alertClosed
 }
 

@@ -15,11 +15,11 @@ public final class NetworkDIFramework: DIFramework {
             .as(check: CallOptionConfigurator.self) {$0}
         
         container.register { () -> ServerConfiguration in
-            #if DEBUG
+//            #if DEBUG
             return .stage
-            #else
-            return .production
-            #endif
+//            #else
+//            return .production
+//            #endif
         }
         
         container.register(CommonInterceptorDependencies.init)

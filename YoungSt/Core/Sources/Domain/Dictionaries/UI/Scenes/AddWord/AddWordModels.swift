@@ -79,19 +79,13 @@ extension AddWordState {
 }
 
 struct AddWordInfo: Equatable, Previwable {
-    let closeHandler: () -> Void
+    let closeHandler: AnyEquatable<() -> Void>
     let semantic: AddWordInput.Semantic
     let userID: UUID
     let groupSelectionEnabled: Bool
     let editingWordID: UUID?
     
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.semantic == rhs.semantic
-            && lhs.userID == rhs.userID
-            && lhs.groupSelectionEnabled == rhs.groupSelectionEnabled
-    }
-    
-    static let preview: AddWordInfo = .init(closeHandler: {},
+    static let preview: AddWordInfo = .init(closeHandler: .init {},
                                             semantic: .addToServer,
                                             userID: .init(),
                                             groupSelectionEnabled: true,

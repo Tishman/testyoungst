@@ -11,6 +11,7 @@ import Coordinator
 import Resources
 import ComposableArchitecture
 import Combine
+import Utilities
 
 final class TabController: UIViewController {
     
@@ -97,16 +98,20 @@ final class TabController: UIViewController {
     }
     
     private func showAddWordScene(userID: UUID) {
-        let box = Box<UIViewController>()
-        let addWordVC = self.coordinator.view(for: .addWord(.init(closeHandler: { [weak self] in
-            box.value?.dismiss(animated: true, completion: nil)
+        let vc = Box<UIViewController>()
+        let closeHandler = { [weak self] in
+            vc.value?.dismiss(animated: true)
             self?.viewStore.send(.addWordOpened(false))
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
-        }, semantic: .addToServer, userID: userID, groupSelectionEnabled: true))).uiKitHosted
-        box.value = addWordVC
-        addWordVC.modalPresentationStyle = .automatic
-        self.present(addWordVC, animated: true) {
+        }
+        
+        let addWordController = coordinator.view(for: .addWord(.init(closeHandler: .init(closeHandler),
+                                                                     semantic: .addToServer,
+                                                                     userID: userID,
+                                                                     groupSelectionEnabled: true))).uiKitHosted
+        vc.value = addWordController
+        present(addWordController, animated: true) {
             self.viewStore.send(.addWordOpened(false))
         }
     }

@@ -49,25 +49,80 @@ final class AppViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        store.scope(state: \.authorizedState)
-            .ifLet(then: { [weak self] store in
-                self?.setAuthorizedState(store: store)
-            }) { [weak self] in
-                self?.setLoginState()
+        viewStore.publisher.map(\.uiState)
+            .removeDuplicates()
+            .sink { [weak self] newUIState in
+                self?.handleChange(uiState: newUIState)
+            }
+            .store(in: &cancellables)
+        
+        viewStore.publisher.map(\.deeplink)
+            .compactMap { $0 }
+            .sink { [weak self] deeplink in
+                self?.handleChange(deeplink: deeplink)
             }
             .store(in: &cancellables)
         
         viewStore.send(.appLaunched)
     }
     
-    private func setAuthorizedState(store: Store<TabState, AppAction>) {
-        let tab = TabController(coordinator: coordinator, store: store.scope(state: { $0 }, action: AppAction.tab))
+    private func handleChange(deeplink: Deeplink) {
+        switch deeplink {
+        case let .studentInvite(teacherID):
+            let vc = Box<UIViewController>()
+            let closeHandler: () -> Void = {
+                vc.value?.dismiss(animated: true)
+            }
+            let studentInviteVC = coordinator
+                .view(for: .studentInvite(.init(teacherID: teacherID, closeHandler: .init(closeHandler))))
+                .uiKitHosted
+            
+            vc.value = studentInviteVC
+            topViewController(root: self).present(studentInviteVC, animated: true) { [viewStore] in
+                viewStore.send(.deeplinkHandled)
+            }
+        }
+    }
+    
+    private func handleChange(uiState: AppState.UIState) {
+        switch uiState {
+        case let .authorized(userID):
+            setAuthorizedState(userID: userID)
+        case .authorization:
+            setLoginState()
+        case .onboarding:
+            setOnboardingState()
+        }
+    }
+    
+    private func setAuthorizedState(userID: UUID) {
+        let tab = TabController(coordinator: coordinator,
+                                store: .init(initialState: .init(userID: userID),
+                                             reducer: tabReducer,
+                                             environment: ()))
         ViewEmbedder.embed(child: tab, to: self)
     }
     
     private func setLoginState() {
         let loginView = coordinator.view(for: .authorization(.default)).uiKitHosted
         ViewEmbedder.embed(child: loginView, to: self)
+    }
+    
+    private func setOnboardingState() {
+        let onboarding = Text("Onboarding").uiKitHosted
+        ViewEmbedder.embed(child: onboarding, to: self)
+    }
+
+    func topViewController(root: UIViewController) -> UIViewController {
+        if let tab = root as? UITabBarController {
+            return tab.selectedViewController.map(topViewController) ?? root
+        } else if let navigation = root as? UINavigationController {
+            return navigation.visibleViewController.map(topViewController) ?? root
+        } else if let presented = root.presentedViewController {
+            return topViewController(root: presented)
+        } else {
+            return root
+        }
     }
 }
 
@@ -108,3 +163,4 @@ class ViewEmbedder {
         vc.removeFromParent()
     }
 }
+

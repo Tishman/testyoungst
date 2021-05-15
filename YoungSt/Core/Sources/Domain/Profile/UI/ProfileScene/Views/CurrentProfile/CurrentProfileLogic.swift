@@ -21,6 +21,10 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
         if state.nickname == nil, let nickname = env.userProvider.currentUser?.nickname {
             state.nickname = "@\(nickname)"
         }
+        if let currentProfile = env.userProvider.currentProfile, !currentProfile.firstName.isEmpty {
+            state.infoState = .infoProvided(.init(firstName: currentProfile.firstName,
+                                                  lastName: currentProfile.lastName))
+        }
         return .init(value: .profileUpdateRequested)
         
     case .profileUpdateRequested:
@@ -35,7 +39,7 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
     case let .profileUpdated(response):
         switch response {
         case let .success(result):
-            if result.shouldFillName {
+            if result.shouldFillName || result.profile.firstName.isEmpty {
                 state.infoState = .infoRequired
             } else {
                 state.infoState = .infoProvided(.init(firstName: result.profile.firstName,

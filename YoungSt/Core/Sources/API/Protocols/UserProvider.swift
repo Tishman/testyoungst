@@ -17,8 +17,19 @@ public struct UserInfo: Hashable, Codable {
     public let email: String
 }
 
+public struct CurrentProfileInfo: Hashable, Codable {
+    public init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+    
+    public let firstName: String
+    public let lastName: String
+}
+
 public protocol UserProvider: AnyObject {
     var currentUser: UserInfo? { get }
+    var currentProfile: CurrentProfileInfo? { get }
     var currentUserID: UUID? { get }
 }
 

@@ -8,20 +8,28 @@
 import Foundation
 import Protocols
 import Utilities
+import Coordinator
 
 struct AppState: Equatable {
     
-    var authorizedState: TabState?
+    enum UIState: Equatable {
+        case onboarding
+        case authorization
+        case authorized(UUID)
+    }
     
+    var uiState: UIState = .authorization
+    var pendingDeeplink: Deeplink?
+    
+    var deeplink: Deeplink?
 }
-
 
 enum AppAction: Equatable {
     case appLaunched
     case authorized(userID: UUID)
     case unauthorized
-    
-    case tab(TabAction)
+    case handleDeeplink(Deeplink)
+    case deeplinkHandled
 }
 
 struct AppEnviroment {

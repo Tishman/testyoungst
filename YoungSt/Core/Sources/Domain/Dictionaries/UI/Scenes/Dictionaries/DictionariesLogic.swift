@@ -148,7 +148,11 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .addWordOpened(isOpened):
             if isOpened {
-                state.addWordState = .init(info: .init(closeHandler: {}, semantic: .addToServer, userID: state.userID, groupSelectionEnabled: true, editingWordID: nil),
+                state.addWordState = .init(info: .init(closeHandler: .init {},
+                                                       semantic: .addToServer,
+                                                       userID: state.userID,
+                                                       groupSelectionEnabled: true,
+                                                       editingWordID: nil),
                                            sourceLanguage: env.languageProvider.sourceLanguage,
                                            destinationLanguage: env.languageProvider.destinationLanguage)
             } else {
@@ -157,7 +161,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .wordSelected(item):
             let group = state.groups.first(where: { $0.id == item.groupID })
-            state.addWordState = .init(input: .init(closeHandler: {},
+            state.addWordState = .init(input: .init(closeHandler: .init{},
                                                     semantic: .addToServer,
                                                     userID: state.userID,
                                                     groupSelectionEnabled: true,

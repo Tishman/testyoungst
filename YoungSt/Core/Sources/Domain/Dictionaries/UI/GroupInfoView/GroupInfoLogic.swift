@@ -52,10 +52,11 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         }
         state.isLoading = false
         
-    case .removeAlertOpened:
-        state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
-                                  primaryButton: .destructive(TextState(Localizable.delete), send: .removeGroup),
-                                  secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+    case .deleteOpened:
+        state.controlsState = .delete(isLoading: false)
+        
+    case .deleteClosed:
+        state.controlsState = .allVisible
         
     case let .deleteWordRequested(item):
         state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
@@ -96,7 +97,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         }
         
     case .removeGroup:
-        state.isLoading = true
+        state.controlsState = .delete(isLoading: true)
         let request = Dictionary_RemoveGroupRequest.with {
             $0.groupID = state.id.uuidString
         }
@@ -112,9 +113,9 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         case .success:
             return .init(value: .closeSceneTriggered)
         case let .failure(error):
+            state.controlsState = .delete(isLoading: false)
             state.alert = .init(title: TextState(error.description))
         }
-        state.isLoading = false
         
     case .alertClosed:
         state.alert = nil
@@ -129,29 +130,32 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         }
         
     case .editOpened:
-        state.editState = .init(text: state.itemInfo?.state.title ?? "")
+        state.controlsState = .edit(.init(text: state.itemInfo?.state.title ?? ""))
         
     case let .editTextChanged(editText):
         state.editState?.text = editText
         
     case .editCancelled:
-        state.editState = nil
+        state.controlsState = .allVisible
         
     case .editCommited:
-        guard let name = state.editState?.text else { break }
-        if name.isEmpty || name == state.itemInfo?.state.title {
-            state.editState = nil
+        guard case var .edit(editState) = state.controlsState else { break }
+        
+        if editState.text.isEmpty || editState.text == state.itemInfo?.state.title {
+            state.controlsState = .allVisible
         } else {
             state.editState?.isLoading = true
+            state.controlsState = .edit(editState)
+            
             let request = Dictionary_EditGroupRequest.with {
                 $0.id = state.id.uuidString
-                $0.name = name
+                $0.name = editState.text
             }
             return env.groupsService.editGroup(request: request)
                 .map(\.group)
                 .tryMap(GroupInfoLogic.createGroupItem)
                 .mapError(EquatableError.init)
-                .receive(on: DispatchQueue.main.animation(GroupInfoScene.editAnimation))
+                .receive(on: DispatchQueue.main.animation(GroupInfoScene.controlsToggle))
                 .catchToEffect()
                 .map(GroupInfoAction.editFinished)
                 .cancellable(id: Cancellable.editGroup, bag: env.bag)
@@ -161,7 +165,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         switch result {
         case let .success(item):
             state.info = .item(item)
-            state.editState = nil
+            state.controlsState = .allVisible
             return .init(value: .refreshList)
             
         case let .failure(error):

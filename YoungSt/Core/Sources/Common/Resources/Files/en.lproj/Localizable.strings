@@ -25,6 +25,7 @@
 "unknownError" = "Unknown error";
 "cancel" = "Cancel";
 "delete" = "Delete";
+"update" = "Update";
 
 // AddWord
 "addWordTitle" = "Add word";
@@ -58,7 +59,7 @@
 "emptyWordsPlaceholder" = "You don't have any words yet.\nTap 'plus' in menu to add";
 
 // GroupInfo
-"shouldDeleteGroup" = "Do you want to delete group? This cannot be undone.";
+"shouldDeleteGroup" = "Do you want to delete group?\nThis cannot be undone.";
 
 // AppScene
 "dictionary" = "Dictionary";
@@ -70,3 +71,30 @@
 // CurrentProfile
 "shouldFinishInfoProviding" = "You almost done!\nOne more last step left";
 "provideInfo" = "Provide info";
+"settings" = "Settings";
+"teacher" = "Teacher";
+"students" = "Students";
+"student" = "Student";
+"removeTeacher" = "Remove teacher";
+"teacherNotAcceptedInviteYet" = "Teacher have not accept your invintation yet";
+"cancelInvite" = "Cancel invite";
+
+// Fill info
+"fillInfoWelcome" = "Welcome!";
+"fillInfoDescription" = "You almost done. Fill info about you";
+
+// EditProfile
+"nicknameAlreadyUsed" = "Nickname already in use. Choose another";
+"invalidNickname" = "Nickname can't be empty";
+"invalidFirstName" = "First name can't be empty";
+"editProfileAction" = "Update profile";
+"editProfileTitle" = "Update profile";
+"firstName" = "First name";
+"lastName" = "Last name";
+"nickname" = "Nickname";
+
+// StudentInvite
+"youCantBecomeStudent" = "You can't become student because you already have teacher.";
+"youCanSendRequestToBecomeStudent" = "You can send request to become student. Good luck in learning!";
+"didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
+"becomeStudent" = "Become student";

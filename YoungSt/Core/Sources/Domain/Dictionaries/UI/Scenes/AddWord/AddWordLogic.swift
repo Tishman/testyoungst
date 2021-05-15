@@ -117,9 +117,9 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 
                 
             case let .addLater(handler):
-                handler(.init(sourceText: state.sourceText,
-                              translationText: state.translationText,
-                              destinationText: state.descriptionText))
+                handler.value(.init(sourceText: state.sourceText,
+                                    translationText: state.translationText,
+                                    destinationText: state.descriptionText))
                 return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
             }
             
@@ -143,7 +143,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             state.isLoading = false
             
         case .closeSceneTriggered:
-            state.info.closeHandler()
+            state.info.closeHandler.value()
             
         case let .groupsList(.groupSelected(selectedGroup)):
             state.selectedGroup = .init(id: selectedGroup.id,

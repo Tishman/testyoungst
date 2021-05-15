@@ -20,6 +20,7 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
     let sessionKey = "session"
     let userKey = "user"
     let userInfoKey = "userInfo"
+    let profileInfoKey = "profileInfo"
     
     let credentialsSubject: PassthroughSubject<Credentials?, Never> = .init()
     var credentialsUpdated: AnyPublisher<Credentials?, Never> { credentialsSubject.eraseToAnyPublisher() }
@@ -45,6 +46,11 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
         return user
     }
     
+    var currentProfile: CurrentProfileInfo? {
+        defaults.data(forKey: profileInfoKey)
+            .flatMap { try? decoder.decode(CurrentProfileInfo.self, from: $0) }
+    }
+    
     func save(credentials: Credentials) {
         keychain.set(credentials.sessionID.uuidString, forKey: sessionKey)
         keychain.set(credentials.userID.uuidString, forKey: userKey)
@@ -53,6 +59,11 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
         defaults.set(info, forKey: userInfoKey)
         
         credentialsSubject.send(credentials)
+    }
+    
+    func save(profile: CurrentProfileInfo) {
+        let info = try! encoder.encode(profile)
+        defaults.set(info, forKey: profileInfoKey)
     }
     
     func clearCredentials() {

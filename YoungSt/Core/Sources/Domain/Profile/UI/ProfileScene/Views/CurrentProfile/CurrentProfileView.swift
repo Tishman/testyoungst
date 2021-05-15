@@ -25,7 +25,7 @@ struct CurrentProfileView: View {
                         Text(Localizable.shouldFinishInfoProviding)
                             .multilineTextAlignment(.center)
                             .font(.callout)
-                        Button { viewStore.send(.editInfoOpened(true)) } label: {
+                        Button { viewStore.send(.editInfoOpened) } label: {
                             Text(Localizable.provideInfo)
                                 .bold()
                         }

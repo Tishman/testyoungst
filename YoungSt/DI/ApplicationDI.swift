@@ -39,6 +39,9 @@ final class ApplicationDI: DIFramework {
         
         container.register(AppEnviroment.init)
         
+        container.register { UserDefaults.standard }
+            .as(check: KeyValueStorage.self) {$0}
+        
         #if DEBUG
         if !container.makeGraph().checkIsValid(checkGraphCycles: true) {
             fatalError("invalid graph")

@@ -7,17 +7,20 @@
 
 import Foundation
 
-public struct EquatableError: Error, Equatable {
-    public init(value: Error) {
+public struct AnyEquatable<T>: Equatable {
+    public let value: T
+    
+    public init(_ value: T) {
         self.value = value
     }
-    
-    let value: Error
     
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         true
     }
-    
+}
+
+public typealias EquatableError = AnyEquatable<Error>
+extension EquatableError: Error {
     public var description: String {
         return value.localizedDescription
     }
