@@ -74,10 +74,14 @@
 "settings" = "Settings";
 "teacher" = "Teacher";
 "students" = "Students";
+"invites" = "Invites";
 "student" = "Student";
 "removeTeacher" = "Remove teacher";
+"removeStudent" = "Remove student";
 "teacherNotAcceptedInviteYet" = "Teacher have not accept your invintation yet";
 "cancelInvite" = "Cancel invite";
+"acceptInvite" = "Accept";
+"rejectInvite" = "Reject";
 
 // Fill info
 "fillInfoWelcome" = "Welcome!";
@@ -98,3 +102,9 @@
 "youCanSendRequestToBecomeStudent" = "You can send request to become student. Good luck in learning!";
 "didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
 "becomeStudent" = "Become student";
+
+// ShareProfile
+"shareProfileTitle" = "Invite student";
+"shareProfileDescription" = "Bring your students and learn together!";
+"copy" = "Copy";
+"share" = "Share";

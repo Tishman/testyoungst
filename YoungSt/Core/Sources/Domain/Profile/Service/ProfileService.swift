@@ -30,13 +30,20 @@ struct ProfileInfo: Identifiable, Hashable {
         if !firstName.isEmpty {
             return [firstName, lastName].filter { !$0.isEmpty }.joined(separator: " ")
         } else if !nickname.isEmpty {
-            return nickname
+            return "@\(nickname)"
         } else if !email.isEmpty {
             return email
         } else {
             // Should never happen
             return "Empty"
         }
+    }
+    
+    var secondaryDisplayName: String {
+        if !nickname.isEmpty {
+            return "@\(nickname)"
+        }
+        return email
     }
 }
 

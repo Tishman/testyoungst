@@ -9,6 +9,8 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Localizable {
+  /// Accept
+  public static let acceptInvite = Localizable.tr("Localizable", "acceptInvite")
   /// Your account successfully created %
   public static let accountCreated = Localizable.tr("Localizable", "accountCreated")
   /// Add group
@@ -31,6 +33,8 @@ public enum Localizable {
   public static let closeTitle = Localizable.tr("Localizable", "closeTitle")
   /// Confrim password
   public static let confrimPasswordPlaceholder = Localizable.tr("Localizable", "confrimPasswordPlaceholder")
+  /// Copy
+  public static let copy = Localizable.tr("Localizable", "copy")
   /// Delete
   public static let delete = Localizable.tr("Localizable", "delete")
   /// Dictionaries
@@ -79,6 +83,8 @@ public enum Localizable {
   public static let invalidFirstName = Localizable.tr("Localizable", "invalidFirstName")
   /// Nickname can't be empty
   public static let invalidNickname = Localizable.tr("Localizable", "invalidNickname")
+  /// Invites
+  public static let invites = Localizable.tr("Localizable", "invites")
   /// Last name
   public static let lastName = Localizable.tr("Localizable", "lastName")
   /// Updated
@@ -117,13 +123,23 @@ public enum Localizable {
   public static let registerToStartTitle = Localizable.tr("Localizable", "registerToStartTitle")
   /// Registration
   public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
+  /// Reject
+  public static let rejectInvite = Localizable.tr("Localizable", "rejectInvite")
+  /// Remove student
+  public static let removeStudent = Localizable.tr("Localizable", "removeStudent")
   /// Remove teacher
   public static let removeTeacher = Localizable.tr("Localizable", "removeTeacher")
   /// Russian
   public static let ru = Localizable.tr("Localizable", "ru")
   /// Settings
   public static let settings = Localizable.tr("Localizable", "settings")
-  /// Do you want to delete group? This cannot be undone.
+  /// Share
+  public static let share = Localizable.tr("Localizable", "share")
+  /// Bring your students and learn together!
+  public static let shareProfileDescription = Localizable.tr("Localizable", "shareProfileDescription")
+  /// Invite student
+  public static let shareProfileTitle = Localizable.tr("Localizable", "shareProfileTitle")
+  /// Do you want to delete group?\nThis cannot be undone.
   public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
   /// Do you want to delete word? This cannot be undone.
   public static let shouldDeleteWord = Localizable.tr("Localizable", "shouldDeleteWord")

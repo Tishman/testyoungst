@@ -30,22 +30,9 @@ struct TeacherInfoView: View {
                         
                     case let .exists(teacher):
                         VStack {
-                            VStack(alignment: .leading, spacing: .spacing(.medium)) {
-                                VStack(alignment: .leading) {
-                                    Text(teacher.profile.displayName)
-                                        .font(.title3.bold())
-                                    Text(teacher.profile.email)
-                                }
-                                if !teacher.inviteAccepted {
-                                    Text(Localizable.teacherNotAcceptedInviteYet)
-                                        .foregroundColor(.secondary)
-                                        .font(.caption)
-                                }
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .bubbled()
-                            
+                            ProfileInfoView(displayName: teacher.profile.displayName,
+                                            secondaryDisplayName: teacher.profile.secondaryDisplayName,
+                                            subtitle: teacher.inviteAccepted ? "" : Localizable.teacherNotAcceptedInviteYet)
                             Button { viewStore.send(.removeTeacher) } label: {
                                 Text(teacher.inviteAccepted ? Localizable.removeTeacher : Localizable.cancelInvite)
                             }

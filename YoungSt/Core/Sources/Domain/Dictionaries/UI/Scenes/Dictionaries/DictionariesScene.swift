@@ -30,15 +30,15 @@ struct DictionariesScene: View {
                                 .font(.title2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
-                            
+
                             groupsList
-                            
+
                             HStack {
                                 Text(Localizable.words)
                                     .font(.title2)
-                                
+
                                 Spacer()
-                                
+
                                 WithViewStore(store.scope(state: \.lastUpdate)) { viewStore in
                                     if let lastUpdate = viewStore.state {
                                         HStack {
@@ -54,12 +54,12 @@ struct DictionariesScene: View {
                                 }
                             }
                             .padding([.horizontal, .top])
-                            
+
                             wordsList
                         }
                         .padding(.top, .spacing(.medium))
                     }
-                    
+
                     if viewStore.state {
                         IndicatorView()
                     }
@@ -82,6 +82,7 @@ struct DictionariesScene: View {
         }
         .background(addGroupLink)
         .background(addWordLink)
+        .background(groupInfoLink)
         .fixNavigationLinkForIOS14_5()
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("Home")
@@ -98,11 +99,7 @@ struct DictionariesScene: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
                         ForEach(viewStore.groups) { element in
-                            NavigationLink(
-                                destination: IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
-                                                        then: GroupInfoScene.init),
-                                tag: element.id,
-                                selection: viewStore.binding(get: { $0.groupInfoState?.id }, send: DictionariesAction.openGroup)) {
+                            Button { viewStore.send(.openGroup(element.id)) } label: {
                                 DictGroupView(id: element.id, size: .small, state: element.state)
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -113,6 +110,15 @@ struct DictionariesScene: View {
             }
         }
         .frame(height: DictGroupView.Size.small.value, alignment: .top)
+    }
+    
+    private var groupInfoLink: some View {
+        WithViewStore(store.scope(state: \.groupInfoState)) { viewStore in
+            NavigationLink(destination: IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
+                                                   then: GroupInfoScene.init),
+                           isActive: viewStore.binding(get: { $0 != nil }, send: .openGroup(nil)),
+                           label: {})
+        }
     }
     
     private var wordsList: some View {

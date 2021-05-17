@@ -25,21 +25,30 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             $0.editProfileEnv(bag: .autoId(childOf: $0.bag))
         },
     
+    shareProfileReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.shareProfileState, action: /ProfileAction.shareProfile, environment: \.shareProfileEnv),
+    
     teacherInfoReducer
         .pullback(state: \.teacherInfoState, action: /ProfileAction.teacherInfo, environment: \.teacherInfoEnv),
+    
+    studentsInfoReducer
+        .pullback(state: \.studentsInfoState, action: /ProfileAction.studentsInfo, environment: \.studentsInfoEnv),
     
     Reducer { state, action, env in
         
         let currentProfileTypeKey = "currentProfileTypeKey"
+        let currentProfileTabKey = "currentProfileTabKey"
         
         switch action {
         case .viewAppeared:
             state.profileType = env.storage[currentProfileTypeKey] ?? .student
+            state.selectedTab = env.storage[currentProfileTabKey] ?? .settings
             
         case let .profileTypeChanged(newProfileType):
             state.profileType = newProfileType
-            state.selectedTab = .settings
             env.storage[currentProfileTypeKey] = newProfileType
+            return .init(value: .changeSelectedTab(ProfileState.Tab.settings.rawValue))
             
         case let .changeSelectedTab(tabIndex):
             let newTab = ProfileState.Tab(rawValue: tabIndex) ?? .settings
@@ -49,6 +58,7 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             
         case let .selectedTabShanged(newTab):
             state.selectedTab = newTab
+            env.storage[currentProfileTabKey] = newTab
             
         case let .fillProfileInfo(.profileEdited(.success(result))),
              let .editProfile(.profileEdited(.success(result))):
@@ -67,7 +77,13 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .editProfileOpened:
             state.editProfileState = .init(shouldFetchProfile: true)
             
-        case .currentProfile, .fillProfileInfo, .editProfile, .teacherInfo:
+        case let .shareProfileOpened(isOpened):
+            state.shareProfileState = isOpened ? .init(userID: state.userID) : nil
+            
+        case .logout:
+            env.credentialsService.clearCredentials()
+            
+        case .currentProfile, .fillProfileInfo, .editProfile, .teacherInfo, .studentsInfo, .shareProfile:
             break
         }
         return .none

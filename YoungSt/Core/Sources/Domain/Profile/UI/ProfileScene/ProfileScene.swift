@@ -16,9 +16,11 @@ struct ProfileScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     
+    @Environment(\.coordinator) private var coordinator
+    
     var body: some View {
         GeometryReader { globalProxy in
-            WithViewStore(store.scope(state: \.currentProfileState.isInfoProvided)) { viewStore in
+            WithViewStore(store) { viewStore in
                 ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         VStack {
@@ -36,12 +38,19 @@ struct ProfileScene: View {
                             .opacity(dividerHidden ? 0 : 1)
                     )
                 }
+                .onAppear { viewStore.send(.viewAppeared) }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        if viewStore.state {
+                        if viewStore.currentProfileState.isInfoProvided {
                             Button { viewStore.send(.editProfileOpened) } label: {
                                 Image(systemName: "pencil.circle")
                             }
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button { viewStore.send(.shareProfileOpened(true)) } label: {
+                            Image(systemName: "square.and.arrow.up")
                         }
                     }
                 }
@@ -50,8 +59,20 @@ struct ProfileScene: View {
         .fixNavigationLinkForIOS14_5()
         .background(fillInfoLink)
         .background(editProfileLink)
+        .background(shareProfileLink)
+        .background(openedStudentLink)
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private var shareProfileLink: some View {
+        WithViewStore(store.scope(state: \.shareProfileState)) { viewStore in
+            NavigationLink(destination: IfLetStore(store.scope(state: \.shareProfileState, action: ProfileAction.shareProfile),
+                                                   then: ShareProfileScene.init),
+                           isActive: viewStore.binding(get: { $0 != nil },
+                                                       send: .shareProfileOpened(false)),
+                           label: {})
+        }
     }
     
     private var fillInfoLink: some View {
@@ -69,6 +90,22 @@ struct ProfileScene: View {
                                                    then: EditProfileScene.init),
                            isActive: viewStore.binding(get: { $0 != nil }, send: ProfileAction.editProfileClosed),
                            label: {})
+        }
+        
+    }
+    private var openedStudentLink: some View {
+        WithViewStore(store.scope(state: \.studentsInfoState.openedStudent)) { viewStore in
+            NavigationLink(destination: openedStudentView,
+                           isActive: viewStore.binding(get: { $0 != nil }, send: .studentsInfo(.studentOpened(nil))),
+                           label: {})
+        }
+    }
+    
+    private var openedStudentView: some View {
+        IfLetStore(store.scope(state: \.studentsInfoState.openedStudent)) { store in
+            WithViewStore(store) { viewStore in
+                coordinator.view(for: .dictionaries(.init(userID: viewStore.state)))
+            }
         }
     }
     
@@ -108,21 +145,28 @@ struct ProfileScene: View {
         WithViewStore(store.scope(state: \.selectedTab)) { viewStore in
             switch viewStore.state {
             case .settings:
-                Text("Settings")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .bubbled()
-                    .padding()
-                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+                Button {
+                    viewStore.send(.logout)
+                } label: {
+                    Text("Logout")
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .bubbled()
+                .padding()
+                .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
                 
             case .teacher:
                 TeacherInfoView(store: store.scope(state: \.teacherInfoState, action: ProfileAction.teacherInfo))
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+                
             case .students:
-                EmptyView()
+                StudentsInfoView(store: store.scope(state: \.studentsInfoState, action: ProfileAction.studentsInfo))
+                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             }
         }
     }
+    
 }
 
 struct ProfileScene_Previews: PreviewProvider {

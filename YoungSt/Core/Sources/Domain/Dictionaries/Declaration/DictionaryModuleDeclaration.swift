@@ -26,11 +26,9 @@ final class DictionaryModuleDeclaration: DIPart, ModuleStoreProvider {
         container.register(DictionariesEnvironment.init)
         
         container.register { env in { input in
-            NavigationView {
-                ViewHolder(storeProvider: DictionaryModuleDeclaration(environment: env, input: input),
-                           content: DictionariesScene.init)
-            }
-            .erased
+            ViewHolder(storeProvider: DictionaryModuleDeclaration(environment: env, input: input),
+                       content: DictionariesScene.init)
+                .erased
         }
         }
     }

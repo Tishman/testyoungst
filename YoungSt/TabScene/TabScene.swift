@@ -21,7 +21,7 @@ final class TabController: UIViewController {
     
     var cancellable = Set<AnyCancellable>()
     
-    private let dictionaries: UIHostingController<AnyView>
+    private let dictionaries: UIHostingController<NavigationView<AnyView>>
     private let profile: UIHostingController<AnyView>
     
     private let tabBarView: UIHostingController<AnyView>
@@ -35,7 +35,12 @@ final class TabController: UIViewController {
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-        self.dictionaries = coordinator.view(for: .dictionaries(.init(userID: viewStore.userID))).uiKitHosted
+        self.dictionaries =
+            NavigationView {
+                coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
+            }
+            .uiKitHosted
+        
         self.profile = coordinator.view(for: .profile(.init(userID: viewStore.userID))).uiKitHosted
         
         self.tabBarView = WithViewStore(store) { viewStore in

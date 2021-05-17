@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Utilities
 import Protocols
 import Resources
+import Coordinator
 
 struct ProfileState: Equatable, Previwable {
     
@@ -59,12 +60,16 @@ struct ProfileState: Equatable, Previwable {
     
     let userID: UUID
     var currentProfileState: CurrentProfileState = .init()
+    
     var profileType: ProfileTypeState = .student
     var selectedTab: Tab = .settings
     
     var fillInfoState: EditProfileState?
     var editProfileState: EditProfileState?
+    var shareProfileState: ShareProfileState?
+    
     var teacherInfoState: TeacherInfoState = .loading
+    var studentsInfoState: StudentsInfoState = .init()
     
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
 }
@@ -80,10 +85,15 @@ enum ProfileAction: Equatable {
     case fillProfileInfo(EditProfileAction)
     case editProfile(EditProfileAction)
     case teacherInfo(TeacherInfoAction)
+    case studentsInfo(StudentsInfoAction)
+    case shareProfile(ShareProfileAction)
     
     case editProfileOpened
     case fillInfoClosed
     case editProfileClosed
+    case shareProfileOpened(Bool)
+    
+    case logout
 }
 
 struct ProfileEnvironment {
@@ -93,6 +103,8 @@ struct ProfileEnvironment {
     let inviteService: InviteService
     let userProvider: UserProvider
     let storage: KeyValueStorage
+    let deeplinkService: DeeplinkService
+    let credentialsService: CredentialsService
     
     var currentProfileEnv: CurrentProfileEnvironment {
         .init(bag: .autoId(childOf: bag),
@@ -109,5 +121,15 @@ struct ProfileEnvironment {
     var teacherInfoEnv: TeacherInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               inviteService: inviteService)
+    }
+    
+    var studentsInfoEnv: StudentsInfoEnvironment {
+        .init(bag: .autoId(childOf: bag),
+              inviteService: inviteService)
+    }
+    
+    var shareProfileEnv: ShareProfileEnvironment {
+        .init(bag: .autoId(childOf: bag),
+              deeplinkService: deeplinkService)
     }
 }

@@ -74,10 +74,14 @@
 "settings" = "Настройки";
 "teacher" = "Учитель";
 "students" = "Ученики";
+"invites" = "Заявки";
 "student" = "Ученик";
 "removeTeacher" = "Удалить учителя";
+"removeStudent" = "Удалить студента";
 "teacherNotAcceptedInviteYet" = "Учитель пока не принял ваше приглашение";
 "cancelInvite" = "Отменить приглашение";
+"acceptInvite" = "Принять";
+"rejectInvite" = "Отклонить";
 
 // Fill info
 "fillInfoWelcome" = "Добро пожаловать!";
@@ -98,3 +102,9 @@
 "youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником. Удачи в обучении!";
 "didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
 "becomeStudent" = "Стать учеником";
+
+// ShareProfile
+"shareProfileTitle" = "Пригласите ученика";
+"shareProfileDescription" = "Пригласите ваших учеников и изучайте язык вместе!";
+"copy" = "Копировать";
+"share" = "Поделиться";
