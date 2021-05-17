@@ -4,7 +4,7 @@ strings:
   outputs:
     - templateName: flat-swift5
       params:
-        enumName: Localizable
+        enumName: Loc
         publicAccess: 1
         bundle: Bundle.coreModule
       output: YoungSt/Core/Sources/Common/Resources/Strings+Generated.swift

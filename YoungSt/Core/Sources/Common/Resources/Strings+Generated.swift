@@ -8,189 +8,259 @@ import Foundation
 // MARK: - Strings
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
-public enum Localizable {
-  /// Accept
-  public static let acceptInvite = Localizable.tr("Localizable", "acceptInvite")
-  /// Your account successfully created %
-  public static let accountCreated = Localizable.tr("Localizable", "accountCreated")
-  /// Add group
-  public static let addGroupAction = Localizable.tr("Localizable", "addGroupAction")
-  /// New dictionary
-  public static let addGroupTitle = Localizable.tr("Localizable", "addGroupTitle")
-  /// Add to dictionary
-  public static let addToDictionary = Localizable.tr("Localizable", "addToDictionary")
-  /// Add word
-  public static let addWordAction = Localizable.tr("Localizable", "addWordAction")
-  /// Add word
-  public static let addWordTitle = Localizable.tr("Localizable", "addWordTitle")
-  /// Become student
-  public static let becomeStudent = Localizable.tr("Localizable", "becomeStudent")
-  /// Cancel
-  public static let cancel = Localizable.tr("Localizable", "cancel")
-  /// Cancel invite
-  public static let cancelInvite = Localizable.tr("Localizable", "cancelInvite")
-  /// Close
-  public static let closeTitle = Localizable.tr("Localizable", "closeTitle")
-  /// Confrim password
-  public static let confrimPasswordPlaceholder = Localizable.tr("Localizable", "confrimPasswordPlaceholder")
-  /// Copy
-  public static let copy = Localizable.tr("Localizable", "copy")
-  /// Delete
-  public static let delete = Localizable.tr("Localizable", "delete")
-  /// Dictionaries
-  public static let dictionaries = Localizable.tr("Localizable", "dictionaries")
-  /// Dictionary
-  public static let dictionary = Localizable.tr("Localizable", "dictionary")
-  /// Request sent. Wait for your teacher to accept it.
-  public static let didSendRequestToBecomeStudent = Localizable.tr("Localizable", "didSendRequestToBecomeStudent")
-  /// Plural format key: "%#@VARIABLE@"
-  public static func dWords(_ p1: Int) -> String {
-    return Localizable.tr("Localizable", "dWords", p1)
+public enum Loc {
+  public enum Errors {
+    /// Could not establish internet connection. Check your network config
+    public static let errConnectionIssue = Loc.tr("Errors", "errConnectionIssue")
+    /// Group not found. Maybe it already deleted?
+    public static let errGroupNotFound = Loc.tr("Errors", "errGroupNotFound")
+    /// Incorrect confirmation code. Please check again
+    public static let errIncorrectConfirmationCode = Loc.tr("Errors", "errIncorrectConfirmationCode")
+    /// Incorrect request data
+    public static let errIncorrectRequest = Loc.tr("Errors", "errIncorrectRequest")
+    /// Incorrect reset code
+    public static let errIncorrectResetPasswordCode = Loc.tr("Errors", "errIncorrectResetPasswordCode")
+    /// Internal error
+    public static let errInternal = Loc.tr("Errors", "errInternal")
+    /// Invalid credentials
+    public static let errInvalidCredentials = Loc.tr("Errors", "errInvalidCredentials")
+    /// Invalid email
+    public static let errInvalidEmail = Loc.tr("Errors", "errInvalidEmail")
+    /// First name is icorrect
+    public static let errInvalidFirstName = Loc.tr("Errors", "errInvalidFirstName")
+    /// Invalid input format
+    public static let errInvalidFormat = Loc.tr("Errors", "errInvalidFormat")
+    /// Last name is incorrect
+    public static let errInvalidLastName = Loc.tr("Errors", "errInvalidLastName")
+    /// Invalid login
+    public static let errInvalidLogin = Loc.tr("Errors", "errInvalidLogin")
+    /// Nickname is incorrect
+    public static let errInvalidNickname = Loc.tr("Errors", "errInvalidNickname")
+    /// Invalid password
+    public static let errInvalidPassword = Loc.tr("Errors", "errInvalidPassword")
+    /// Invite not found. Maybe it already rejected or accepted?
+    public static let errInviteNotFound = Loc.tr("Errors", "errInviteNotFound")
+    /// Language not supported yed
+    public static let errLanguageNotSupported = Loc.tr("Errors", "errLanguageNotSupported")
+    /// Locales metadata not found
+    public static let errLocalesNotSet = Loc.tr("Errors", "errLocalesNotSet")
+    /// Information metadata not found
+    public static let errMetadataNotFound = Loc.tr("Errors", "errMetadataNotFound")
+    /// Nickname already taken. Please choose anoser
+    public static let errNicknameAlreadyTaken = Loc.tr("Errors", "errNicknameAlreadyTaken")
+    /// Nickname already taken. Please choose anoser
+    public static let errNicknameAlreadyUsed = Loc.tr("Errors", "errNicknameAlreadyUsed")
+    /// No acces for requested operation
+    public static let errNoAccess = Loc.tr("Errors", "errNoAccess")
+    /// Not found information. Maybe relation not exists?
+    public static let errNotFoundInviteAndRelation = Loc.tr("Errors", "errNotFoundInviteAndRelation")
+    /// Profile info not found. Maybe you are not registered?
+    public static let errProfileNotFound = Loc.tr("Errors", "errProfileNotFound")
+    /// Session not provided. Are you logged out?
+    public static let errSessionNotProvided = Loc.tr("Errors", "errSessionNotProvided")
+    /// Not found teacher
+    public static let errTeacherEmpty = Loc.tr("Errors", "errTeacherEmpty")
+    /// Unknown error
+    public static let errUnknown = Loc.tr("Errors", "errUnknown")
+    /// User already exists
+    public static let errUserAlreadyExists = Loc.tr("Errors", "errUserAlreadyExists")
+    /// User identifier not provided. Are you logged out?
+    public static let errUserIdNotProvided = Loc.tr("Errors", "errUserIdNotProvided")
+    /// Invalid registration identifier
+    public static let errVerificationInvalidRegID = Loc.tr("Errors", "errVerificationInvalidRegID")
+    /// Registration not confirmed. Please provide confirmation code
+    public static let errVerificationNotConfirmedRegID = Loc.tr("Errors", "errVerificationNotConfirmedRegID")
+    /// User not found
+    public static let errVerificationNotFoundUser = Loc.tr("Errors", "errVerificationNotFoundUser")
+    /// Registration id not exists. Please register new user
+    public static let errVerificationRegIdNotExists = Loc.tr("Errors", "errVerificationRegIdNotExists")
+    /// Word not found. Maybe it already deleted?
+    public static let errWordNotFound = Loc.tr("Errors", "errWordNotFound")
   }
-  /// Update profile
-  public static let editProfileAction = Localizable.tr("Localizable", "editProfileAction")
-  /// Update profile
-  public static let editProfileTitle = Localizable.tr("Localizable", "editProfileTitle")
-  /// Edit word
-  public static let editWordAction = Localizable.tr("Localizable", "editWordAction")
-  /// Edit word
-  public static let editWordTitle = Localizable.tr("Localizable", "editWordTitle")
-  /// E-mail
-  public static let emailPlaceholder = Localizable.tr("Localizable", "emailPlaceholder")
-  /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
-  public static let emailSendedToConfrim = Localizable.tr("Localizable", "emailSendedToConfrim")
-  /// You don't yet have any dictionary.\nTap 'plus' to add
-  public static let emptyGroupsPlaceholder = Localizable.tr("Localizable", "emptyGroupsPlaceholder")
-  /// You don't have any words yet.\nTap 'plus' in menu to add
-  public static let emptyWordsPlaceholder = Localizable.tr("Localizable", "emptyWordsPlaceholder")
-  /// English
-  public static let en = Localizable.tr("Localizable", "en")
-  /// Enter code
-  public static let enterCode = Localizable.tr("Localizable", "enterCode")
-  /// Please fill all fields.
-  public static let fillAllFields = Localizable.tr("Localizable", "fillAllFields")
-  /// You almost done. Fill info about you
-  public static let fillInfoDescription = Localizable.tr("Localizable", "fillInfoDescription")
-  /// Welcome!
-  public static let fillInfoWelcome = Localizable.tr("Localizable", "fillInfoWelcome")
-  /// First name
-  public static let firstName = Localizable.tr("Localizable", "firstName")
-  /// Incorrect data
-  public static let incorrectDataTitle = Localizable.tr("Localizable", "incorrectDataTitle")
-  /// Enter word
-  public static let inputTranslationPlacholder = Localizable.tr("Localizable", "inputTranslationPlacholder")
-  /// First name can't be empty
-  public static let invalidFirstName = Localizable.tr("Localizable", "invalidFirstName")
-  /// Nickname can't be empty
-  public static let invalidNickname = Localizable.tr("Localizable", "invalidNickname")
-  /// Invites
-  public static let invites = Localizable.tr("Localizable", "invites")
-  /// Last name
-  public static let lastName = Localizable.tr("Localizable", "lastName")
-  /// Updated
-  public static let lastUpdateTime = Localizable.tr("Localizable", "lastUpdateTime")
-  /// Log In
-  public static let loginButtonTitle = Localizable.tr("Localizable", "loginButtonTitle")
-  /// Login or create an account to get started.
-  public static let loginOrRegisterAccountSubtitle = Localizable.tr("Localizable", "loginOrRegisterAccountSubtitle")
-  /// Log in to your account to return to our ranks!
-  public static let loginToReturnTitle = Localizable.tr("Localizable", "loginToReturnTitle")
-  /// Name
-  public static let name = Localizable.tr("Localizable", "name")
-  /// Nickname
-  public static let nickname = Localizable.tr("Localizable", "nickname")
-  /// Nickname already in use. Choose another
-  public static let nicknameAlreadyUsed = Localizable.tr("Localizable", "nicknameAlreadyUsed")
-  /// No translation
-  public static let noTranslation = Localizable.tr("Localizable", "noTranslation")
-  /// OK
-  public static let ok = Localizable.tr("Localizable", "ok")
-  /// Result here
-  public static let outputTranslationPlacholder = Localizable.tr("Localizable", "outputTranslationPlacholder")
-  /// Password mismatch.
-  public static let passwordConfrimation = Localizable.tr("Localizable", "passwordConfrimation")
-  /// Password
-  public static let passwordPlaceholder = Localizable.tr("Localizable", "passwordPlaceholder")
-  /// I agree to the terms of use and accept the Privacy Policy.
-  public static let privacyPolicyTitle = Localizable.tr("Localizable", "privacyPolicyTitle")
-  /// Profile
-  public static let profile = Localizable.tr("Localizable", "profile")
-  /// Provide info
-  public static let provideInfo = Localizable.tr("Localizable", "provideInfo")
-  /// Recent
-  public static let recent = Localizable.tr("Localizable", "recent")
-  /// Register to get started.
-  public static let registerToStartTitle = Localizable.tr("Localizable", "registerToStartTitle")
-  /// Registration
-  public static let registrationButtonTitle = Localizable.tr("Localizable", "registrationButtonTitle")
-  /// Reject
-  public static let rejectInvite = Localizable.tr("Localizable", "rejectInvite")
-  /// Remove student
-  public static let removeStudent = Localizable.tr("Localizable", "removeStudent")
-  /// Remove teacher
-  public static let removeTeacher = Localizable.tr("Localizable", "removeTeacher")
-  /// Russian
-  public static let ru = Localizable.tr("Localizable", "ru")
-  /// Settings
-  public static let settings = Localizable.tr("Localizable", "settings")
-  /// Share
-  public static let share = Localizable.tr("Localizable", "share")
-  /// Bring your students and learn together!
-  public static let shareProfileDescription = Localizable.tr("Localizable", "shareProfileDescription")
-  /// Invite student
-  public static let shareProfileTitle = Localizable.tr("Localizable", "shareProfileTitle")
-  /// Do you want to delete group?\nThis cannot be undone.
-  public static let shouldDeleteGroup = Localizable.tr("Localizable", "shouldDeleteGroup")
-  /// Do you want to delete word? This cannot be undone.
-  public static let shouldDeleteWord = Localizable.tr("Localizable", "shouldDeleteWord")
-  /// You almost done!\nOne more last step left
-  public static let shouldFinishInfoProviding = Localizable.tr("Localizable", "shouldFinishInfoProviding")
-  /// Student
-  public static let student = Localizable.tr("Localizable", "student")
-  /// Students
-  public static let students = Localizable.tr("Localizable", "students")
-  /// Teacher
-  public static let teacher = Localizable.tr("Localizable", "teacher")
-  /// Teacher have not accept your invintation yet
-  public static let teacherNotAcceptedInviteYet = Localizable.tr("Localizable", "teacherNotAcceptedInviteYet")
-  /// Translation
-  public static let translation = Localizable.tr("Localizable", "translation")
-  /// Type text here
-  public static let typeText = Localizable.tr("Localizable", "typeText")
-  /// Unknown error
-  public static let unknownError = Localizable.tr("Localizable", "unknownError")
-  /// Unnamed
-  public static let unnamed = Localizable.tr("Localizable", "unnamed")
-  /// Update
-  public static let update = Localizable.tr("Localizable", "update")
-  /// Username
-  public static let usernamePlaceholder = Localizable.tr("Localizable", "usernamePlaceholder")
-  /// Verification
-  public static let verification = Localizable.tr("Localizable", "verification")
-  /// Verify
-  public static let verify = Localizable.tr("Localizable", "verify")
-  /// Welcome back
-  public static let welcomeBackTitle = Localizable.tr("Localizable", "welcomeBackTitle")
-  /// Welcome
-  public static let welcomeTitle = Localizable.tr("Localizable", "welcomeTitle")
-  /// Word
-  public static let word = Localizable.tr("Localizable", "word")
-  /// Description
-  public static let wordDescription = Localizable.tr("Localizable", "wordDescription")
-  /// Words
-  public static let words = Localizable.tr("Localizable", "words")
-  /// You can send request to become student. Good luck in learning!
-  public static let youCanSendRequestToBecomeStudent = Localizable.tr("Localizable", "youCanSendRequestToBecomeStudent")
-  /// You can't become student because you already have teacher.
-  public static let youCantBecomeStudent = Localizable.tr("Localizable", "youCantBecomeStudent")
-  /// Cant add empty word. Type something in first field
-  public static let youShouldTypeText = Localizable.tr("Localizable", "youShouldTypeText")
+  public enum Localizable {
+    /// Accept
+    public static let acceptInvite = Loc.tr("Localizable", "acceptInvite")
+    /// Your account successfully created %
+    public static let accountCreated = Loc.tr("Localizable", "accountCreated")
+    /// Add group
+    public static let addGroupAction = Loc.tr("Localizable", "addGroupAction")
+    /// New dictionary
+    public static let addGroupTitle = Loc.tr("Localizable", "addGroupTitle")
+    /// Add to dictionary
+    public static let addToDictionary = Loc.tr("Localizable", "addToDictionary")
+    /// Add word
+    public static let addWordAction = Loc.tr("Localizable", "addWordAction")
+    /// Add word
+    public static let addWordTitle = Loc.tr("Localizable", "addWordTitle")
+    /// Become student
+    public static let becomeStudent = Loc.tr("Localizable", "becomeStudent")
+    /// Cancel
+    public static let cancel = Loc.tr("Localizable", "cancel")
+    /// Cancel invite
+    public static let cancelInvite = Loc.tr("Localizable", "cancelInvite")
+    /// Close
+    public static let closeTitle = Loc.tr("Localizable", "closeTitle")
+    /// Confrim password
+    public static let confrimPasswordPlaceholder = Loc.tr("Localizable", "confrimPasswordPlaceholder")
+    /// Copy
+    public static let copy = Loc.tr("Localizable", "copy")
+    /// Delete
+    public static let delete = Loc.tr("Localizable", "delete")
+    /// Dictionaries
+    public static let dictionaries = Loc.tr("Localizable", "dictionaries")
+    /// Dictionary
+    public static let dictionary = Loc.tr("Localizable", "dictionary")
+    /// Request sent. Wait for your teacher to accept it.
+    public static let didSendRequestToBecomeStudent = Loc.tr("Localizable", "didSendRequestToBecomeStudent")
+    /// Plural format key: "%#@VARIABLE@"
+    public static func dWords(_ p1: Int) -> String {
+      return Loc.tr("Localizable", "dWords", p1)
+    }
+    /// Update profile
+    public static let editProfileAction = Loc.tr("Localizable", "editProfileAction")
+    /// Update profile
+    public static let editProfileTitle = Loc.tr("Localizable", "editProfileTitle")
+    /// Edit word
+    public static let editWordAction = Loc.tr("Localizable", "editWordAction")
+    /// Edit word
+    public static let editWordTitle = Loc.tr("Localizable", "editWordTitle")
+    /// E-mail
+    public static let emailPlaceholder = Loc.tr("Localizable", "emailPlaceholder")
+    /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
+    public static let emailSendedToConfrim = Loc.tr("Localizable", "emailSendedToConfrim")
+    /// You don't yet have any dictionary.\nTap 'plus' to add
+    public static let emptyGroupsPlaceholder = Loc.tr("Localizable", "emptyGroupsPlaceholder")
+    /// You don't have any words yet.\nTap 'plus' in menu to add
+    public static let emptyWordsPlaceholder = Loc.tr("Localizable", "emptyWordsPlaceholder")
+    /// English
+    public static let en = Loc.tr("Localizable", "en")
+    /// Enter code
+    public static let enterCode = Loc.tr("Localizable", "enterCode")
+    /// Please fill all fields.
+    public static let fillAllFields = Loc.tr("Localizable", "fillAllFields")
+    /// You almost done. Fill info about you
+    public static let fillInfoDescription = Loc.tr("Localizable", "fillInfoDescription")
+    /// Welcome!
+    public static let fillInfoWelcome = Loc.tr("Localizable", "fillInfoWelcome")
+    /// First name
+    public static let firstName = Loc.tr("Localizable", "firstName")
+    /// Incorrect data
+    public static let incorrectDataTitle = Loc.tr("Localizable", "incorrectDataTitle")
+    /// Enter word
+    public static let inputTranslationPlacholder = Loc.tr("Localizable", "inputTranslationPlacholder")
+    /// First name can't be empty
+    public static let invalidFirstName = Loc.tr("Localizable", "invalidFirstName")
+    /// Nickname can't be empty
+    public static let invalidNickname = Loc.tr("Localizable", "invalidNickname")
+    /// Invites
+    public static let invites = Loc.tr("Localizable", "invites")
+    /// Last name
+    public static let lastName = Loc.tr("Localizable", "lastName")
+    /// Updated
+    public static let lastUpdateTime = Loc.tr("Localizable", "lastUpdateTime")
+    /// Log In
+    public static let loginButtonTitle = Loc.tr("Localizable", "loginButtonTitle")
+    /// Login or create an account to get started.
+    public static let loginOrRegisterAccountSubtitle = Loc.tr("Localizable", "loginOrRegisterAccountSubtitle")
+    /// Log in to your account to return to our ranks!
+    public static let loginToReturnTitle = Loc.tr("Localizable", "loginToReturnTitle")
+    /// Name
+    public static let name = Loc.tr("Localizable", "name")
+    /// Nickname
+    public static let nickname = Loc.tr("Localizable", "nickname")
+    /// Nickname already in use. Choose another
+    public static let nicknameAlreadyUsed = Loc.tr("Localizable", "nicknameAlreadyUsed")
+    /// No translation
+    public static let noTranslation = Loc.tr("Localizable", "noTranslation")
+    /// OK
+    public static let ok = Loc.tr("Localizable", "ok")
+    /// Result here
+    public static let outputTranslationPlacholder = Loc.tr("Localizable", "outputTranslationPlacholder")
+    /// Password mismatch.
+    public static let passwordConfrimation = Loc.tr("Localizable", "passwordConfrimation")
+    /// Password
+    public static let passwordPlaceholder = Loc.tr("Localizable", "passwordPlaceholder")
+    /// I agree to the terms of use and accept the Privacy Policy.
+    public static let privacyPolicyTitle = Loc.tr("Localizable", "privacyPolicyTitle")
+    /// Profile
+    public static let profile = Loc.tr("Localizable", "profile")
+    /// Provide info
+    public static let provideInfo = Loc.tr("Localizable", "provideInfo")
+    /// Recent
+    public static let recent = Loc.tr("Localizable", "recent")
+    /// Register to get started.
+    public static let registerToStartTitle = Loc.tr("Localizable", "registerToStartTitle")
+    /// Registration
+    public static let registrationButtonTitle = Loc.tr("Localizable", "registrationButtonTitle")
+    /// Reject
+    public static let rejectInvite = Loc.tr("Localizable", "rejectInvite")
+    /// Remove student
+    public static let removeStudent = Loc.tr("Localizable", "removeStudent")
+    /// Remove teacher
+    public static let removeTeacher = Loc.tr("Localizable", "removeTeacher")
+    /// Russian
+    public static let ru = Loc.tr("Localizable", "ru")
+    /// Settings
+    public static let settings = Loc.tr("Localizable", "settings")
+    /// Share
+    public static let share = Loc.tr("Localizable", "share")
+    /// Bring your students and learn together!
+    public static let shareProfileDescription = Loc.tr("Localizable", "shareProfileDescription")
+    /// Invite student
+    public static let shareProfileTitle = Loc.tr("Localizable", "shareProfileTitle")
+    /// Do you want to delete group?\nThis cannot be undone.
+    public static let shouldDeleteGroup = Loc.tr("Localizable", "shouldDeleteGroup")
+    /// Do you want to delete word? This cannot be undone.
+    public static let shouldDeleteWord = Loc.tr("Localizable", "shouldDeleteWord")
+    /// You almost done!\nOne more last step left
+    public static let shouldFinishInfoProviding = Loc.tr("Localizable", "shouldFinishInfoProviding")
+    /// Student
+    public static let student = Loc.tr("Localizable", "student")
+    /// Students
+    public static let students = Loc.tr("Localizable", "students")
+    /// Teacher
+    public static let teacher = Loc.tr("Localizable", "teacher")
+    /// Teacher have not accept your invintation yet
+    public static let teacherNotAcceptedInviteYet = Loc.tr("Localizable", "teacherNotAcceptedInviteYet")
+    /// Translation
+    public static let translation = Loc.tr("Localizable", "translation")
+    /// Type text here
+    public static let typeText = Loc.tr("Localizable", "typeText")
+    /// Unknown error
+    public static let unknownError = Loc.tr("Localizable", "unknownError")
+    /// Unnamed
+    public static let unnamed = Loc.tr("Localizable", "unnamed")
+    /// Update
+    public static let update = Loc.tr("Localizable", "update")
+    /// Username
+    public static let usernamePlaceholder = Loc.tr("Localizable", "usernamePlaceholder")
+    /// Verification
+    public static let verification = Loc.tr("Localizable", "verification")
+    /// Verify
+    public static let verify = Loc.tr("Localizable", "verify")
+    /// Welcome back
+    public static let welcomeBackTitle = Loc.tr("Localizable", "welcomeBackTitle")
+    /// Welcome
+    public static let welcomeTitle = Loc.tr("Localizable", "welcomeTitle")
+    /// Word
+    public static let word = Loc.tr("Localizable", "word")
+    /// Description
+    public static let wordDescription = Loc.tr("Localizable", "wordDescription")
+    /// Words
+    public static let words = Loc.tr("Localizable", "words")
+    /// You can send request to become student. Good luck in learning!
+    public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
+    /// You can't become student because you already have teacher.
+    public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")
+    /// Cant add empty word. Type something in first field
+    public static let youShouldTypeText = Loc.tr("Localizable", "youShouldTypeText")
+  }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
 // MARK: - Implementation Details
 
-extension Localizable {
+extension Loc {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
     let format = Bundle.coreModule.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)

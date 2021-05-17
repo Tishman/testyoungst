@@ -130,6 +130,7 @@ let package = Package(
             dependencies: [
                 CorePackage.protocols.dependency,
                 CorePackage.utilities.dependency,
+                CorePackage.resources.dependency,
                 ExternalDependecy.grpc.product,
                 ExternalDependecy.diTranquillity.product
             ],

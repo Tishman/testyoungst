@@ -12,7 +12,7 @@ public extension NIO.EventLoopFuture {
     var publisher: Future<Value, Error> {
         Future { promise in
             self.whenComplete { result in
-                promise(result)
+                promise(result.mapError(BLError.init))
             }
         }
     }
