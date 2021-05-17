@@ -59,7 +59,12 @@ struct ProfileState: Equatable, Previwable {
     }
     
     let userID: UUID
-    var currentProfileState: CurrentProfileState = .init()
+    var currentProfileState: CurrentProfileState
+    
+    init(userID: UUID, currentProfileState: CurrentProfileState? = nil) {
+        self.userID = userID
+        self.currentProfileState = currentProfileState ?? .init(id: userID)
+    }
     
     var profileType: ProfileTypeState = .student
     var selectedTab: Tab = .settings

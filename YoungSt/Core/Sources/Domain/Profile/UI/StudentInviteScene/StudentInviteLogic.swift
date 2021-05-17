@@ -59,6 +59,7 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
         case let .success(info):
             state.title = info.teacherProfile.displayName
             state.nickname = "@\(info.teacherProfile.nickname)"
+            state.avatarSource = .init(profileInfo: info.teacherProfile)
             if info.alreadyHasTeacher {
                 state.error = Localizable.youCantBecomeStudent
                 state.actionType = .close

@@ -66,7 +66,7 @@ struct DictGroupView: View {
         .background(
             RoundedRectangle(cornerRadius: .corner(.ultraBig))
                 .fill(
-                    LinearGradient(gradient: Gradients(id).swiftUI, startPoint: .topLeading, endPoint: .bottomTrailing)
+                    LinearGradient(gradient: YoungstGradient(id).swiftUI, startPoint: .topLeading, endPoint: .bottomTrailing)
                 )
         )
     }

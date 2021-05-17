@@ -30,7 +30,8 @@ struct TeacherInfoView: View {
                         
                     case let .exists(teacher):
                         VStack {
-                            ProfileInfoView(displayName: teacher.profile.displayName,
+                            ProfileInfoView(avatarSource: .init(profileInfo: teacher.profile),
+                                            displayName: teacher.profile.displayName,
                                             secondaryDisplayName: teacher.profile.secondaryDisplayName,
                                             subtitle: teacher.inviteAccepted ? "" : Localizable.teacherNotAcceptedInviteYet)
                             Button { viewStore.send(.removeTeacher) } label: {

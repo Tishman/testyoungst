@@ -26,8 +26,18 @@ struct CurrentProfileState: Equatable, Previwable {
         static var preview: Self = .infoProvided(.preview)
     }
     
+    let id: UUID
     var infoState: InfoState = .loading
     var nickname: String?
+    
+    var avatarSource: ProfileAvatarSource {
+        switch infoState {
+        case let .infoProvided(info):
+            return .init(id: id, first: info.firstName, last: info.lastName)
+        default:
+            return .init(id: id, title: nickname ?? "")
+        }
+    }
     
     var isInfoProvided: Bool {
         if case .infoProvided = infoState {
@@ -36,7 +46,7 @@ struct CurrentProfileState: Equatable, Previwable {
         return false
     }
     
-    static var preview: Self = .init(infoState: .preview, nickname: "@mrakotanski")
+    static var preview: Self = .init(id: .init(), infoState: .preview, nickname: "@mrakotanski")
 }
 
 enum CurrentProfileAction: Equatable {

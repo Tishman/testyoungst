@@ -24,16 +24,28 @@ struct StudentInviteState: Equatable, Previwable {
     var subtitle = ""
     var error: String?
     var actionType = ActionType.requestInvite
+    var avatarSource: ProfileAvatarSource
     
     enum ActionType {
         case requestInvite
         case close
     }
     
-    static let preview: Self = .init(input: .init(teacherID: .init(), closeHandler: .init {}),
-                                     title: "Steve Jobs",
-                                     nickname: "@stevejobs",
-                                     subtitle: Localizable.youCantBecomeStudent)
+    static let preview: Self = {
+        let id = UUID()
+        return .init(input: .init(teacherID: id, closeHandler: .init {}),
+                     title: "Steve Jobs",
+                     nickname: "@stevejobs",
+                     subtitle: Localizable.youCantBecomeStudent,
+                     avatarSource: .init(id: id, title: "SJ"))
+    }()
+}
+
+extension StudentInviteState {
+    init(input: StudentInviteInput) {
+        self.input = input
+        self.avatarSource = .info(id: input.teacherID, title: "")
+    }
 }
 
 enum StudentInviteAction: Equatable {

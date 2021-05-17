@@ -41,7 +41,8 @@ struct StudentsInfoView: View {
                     
                     ForEach(viewStore.students) { profile in
                         Button { viewStore.send(.studentOpened(profile.id)) } label: {
-                            ProfileInfoView(displayName: profile.displayName,
+                            ProfileInfoView(avatarSource: .init(profileInfo: profile),
+                                            displayName: profile.displayName,
                                             secondaryDisplayName: profile.secondaryDisplayName,
                                             subtitle: "")
                         }

@@ -17,6 +17,8 @@ struct CurrentProfileView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack(spacing: .spacing(.regular)) {
+                ProfileAvatarView(source: viewStore.avatarSource, size: .big)
+                
                 switch viewStore.infoState {
                 case .loading:
                     IndicatorView()
