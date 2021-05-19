@@ -14,6 +14,7 @@ struct ForgotPasswordScene: View {
 	let store: Store<ForgotPasswordState, ForgotPasswordAction>
 	@State private var contentOffset: CGFloat = 0
 	@State private var dividerHidden: Bool = true
+	private var requiredOffset: CGFloat = 0
 	
 	var body: some View {
 		GeometryReader { globalProxy in
@@ -54,8 +55,9 @@ struct ForgotPasswordScene: View {
 							.buttonStyle(RoundedButtonStyle(style: .empty))
 							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
 						Button(Localizable.resetPassword, action: { viewStore.send(.didChangePasswordButtonTapped) })
-							.buttonStyle(RoundedButtonStyle(style: .filled))
-							.disabled(viewStore.isResetPasswordInit)
+							.buttonStyle(RoundedButtonStyle(style: .filled, isDisabled: !viewStore.isResetPasswordInit))
+							.foregroundColor(viewStore.isResetPasswordInit ? Color.white.opacity(0.4) : Asset.Colors.greenDark.color.swiftuiColor)
+							.disabled(!viewStore.isResetPasswordInit)
 							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
 					}
 					.greedy(aligningContentTo: .bottom)

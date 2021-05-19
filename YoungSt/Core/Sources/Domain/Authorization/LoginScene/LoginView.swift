@@ -20,6 +20,7 @@ extension LoginView {
         static let registrationButtonTitle = Localizable.registrationButtonTitle
         static let incorrectData = Localizable.incorrectDataTitle
         static let ok = Localizable.ok
+		static let forgotPassword = Localizable.forgotPasswordTitle
     }
 }
 
@@ -48,10 +49,16 @@ struct LoginView: View {
 													status: .default,
 													isPasswordHidden: viewStore.showPassword,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped) })
+								Button(action: { viewStore.send(.forgotPasswordOpened(true)) }, label: {
+									Text(Constants.forgotPassword)
+										.font(.callout)
+										.foregroundColor(Asset.Colors.grayLight.color.swiftuiColor)
+								})
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))
                         .padding(.top, .spacing(.extraSize))
+						.background(forgotPasswordLink)
                     }
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
@@ -81,6 +88,15 @@ struct LoginView: View {
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .alert(store.scope(state: \.alertState), dismiss: .alertClosed)
     }
+	
+	private var forgotPasswordLink: some View {
+		WithViewStore(store.scope(state: \.forgotPasswordState)) { viewStore in
+			NavigationLink(
+				destination: IfLetStore(store.scope(state: \.forgotPasswordState, action: LoginAction.forgotPassword), then: ForgotPasswordScene.init(store:)),
+				isActive: viewStore.binding(get: { $0 != nil }, send: LoginAction.forgotPasswordOpened),
+				label: {})
+		}
+	}
 }
 
 struct LoginView_Previews: PreviewProvider {

@@ -11,7 +11,7 @@ import NetworkService
 import Resources
 import Utilities
 
-let reducer = Reducer<ForgotPasswordState, ForgotPasswordAction, ForgotPasswordEnviroment> { state, action, enviroment in
+let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, ForgotPasswordEnviroment> { state, action, enviroment in
 	switch action {
 	case let .didEmailEditing(value):
 		state.email.value = value
