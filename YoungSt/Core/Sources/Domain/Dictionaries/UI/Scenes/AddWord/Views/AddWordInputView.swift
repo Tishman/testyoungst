@@ -12,6 +12,7 @@ import Resources
 struct AddWordInputView: View {
     
     let subtitle: String
+    let lineLimit: Int
     @Binding var currentText: String
     
     var body: some View {
@@ -20,8 +21,9 @@ struct AddWordInputView: View {
                 .foregroundColor(.secondary)
                 .font(.caption)
             
+            
             TextEditor(text: $currentText)
-                .lineLimit(4)
+                .lineLimit(lineLimit)
                 .background(placeholder)
                 .foregroundColor(.primary)
                 .font(.body)
@@ -31,10 +33,6 @@ struct AddWordInputView: View {
                     $0.textContainer.lineFragmentPadding = 0
                 }
         }
-        .padding()
-        .frame(height: 130)
-        .frame(maxWidth: .infinity)
-        .bubbled()
     }
     
     
@@ -47,6 +45,6 @@ struct AddWordInputView: View {
 
 struct AddWordInputView_Previews: PreviewProvider {
     static var previews: some View {
-        AddWordInputView(subtitle: Localizable.word, currentText: .constant("Hello"))
+        AddWordInputView(subtitle: Localizable.word, lineLimit: 4, currentText: .constant("Hello"))
     }
 }

@@ -38,3 +38,5 @@ playground.xcworkspace
 
 *.grpc.swift
 *.pb.swift
+
+Pods

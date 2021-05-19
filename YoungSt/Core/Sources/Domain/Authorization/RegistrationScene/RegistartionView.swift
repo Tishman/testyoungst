@@ -76,7 +76,6 @@ struct RegistrationView: View {
                 .buttonStyle(RoundedButtonStyle(style: .filled))
                 .padding(.bottom)
                 .greedy(aligningContentTo: .bottom)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,

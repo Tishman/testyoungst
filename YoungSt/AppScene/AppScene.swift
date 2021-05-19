@@ -49,52 +49,112 @@ final class AppViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        store.scope(state: \.authorizedState)
-            .ifLet(then: { [weak self] store in
-                self?.setAuthorizedState(userID: ViewStore(store).userID)
-            }) { [weak self] in
-                self?.setLoginState()
+        viewStore.publisher.map(\.uiState)
+            .removeDuplicates()
+            .sink { [weak self] newUIState in
+                self?.handleChange(uiState: newUIState)
+            }
+            .store(in: &cancellables)
+
+        viewStore.publisher.map(\.deeplink)
+            .compactMap { $0 }
+            .sink { [weak self] deeplink in
+                self?.handleChange(deeplink: deeplink)
             }
             .store(in: &cancellables)
         
         viewStore.send(.appLaunched)
     }
     
+    private func handleChange(deeplink: Deeplink) {
+        switch deeplink {
+        case let .studentInvite(teacherID):
+            let vc = Box<UIViewController>()
+            let closeHandler: () -> Void = {
+                vc.value?.dismiss(animated: true)
+            }
+            let studentInviteVC = coordinator
+                .view(for: .studentInvite(.init(teacherID: teacherID, closeHandler: .init(closeHandler))))
+                .uiKitHosted
+
+            vc.value = studentInviteVC
+            topViewController(root: self).present(studentInviteVC, animated: true) { [viewStore] in
+                viewStore.send(.deeplinkHandled)
+            }
+        }
+    }
+
+    private func handleChange(uiState: AppState.UIState) {
+        switch uiState {
+        case let .authorized(userID):
+            setAuthorizedState(userID: userID)
+        case .authorization:
+            setLoginState()
+        case .onboarding:
+            setOnboardingState()
+        }
+    }
+
     private func setAuthorizedState(userID: UUID) {
-        let dictionariesView = coordinator.view(for: .dictionaries(.init(userID: userID))).uiKitHosted
-		dictionariesView.tabBarItem = .init(title: Localizable.dictionary, image: UIImage(systemName: "rectangle.stack"), tag: 0)
-        
-        let profileView = coordinator.view(for: .profile(.init(userID: userID))).uiKitHosted
-		profileView.tabBarItem = .init(title: Localizable.profile, image: UIImage(systemName: "person.crop.circle"), tag: 1)
-        
-        ViewEmbedder.embed(child: dictionariesView, to: self)
+        let tab = TabController(coordinator: coordinator,
+                                store: .init(initialState: .init(userID: userID),
+                                             reducer: tabReducer,
+                                             environment: ()))
+        ViewEmbedder.embed(child: tab, to: self)
     }
     
     private func setLoginState() {
         let loginView = coordinator.view(for: .authorization(.default)).uiKitHosted
         ViewEmbedder.embed(child: loginView, to: self)
     }
+
+    private func setOnboardingState() {
+        let onboarding = Text("Onboarding").uiKitHosted
+        ViewEmbedder.embed(child: onboarding, to: self)
+    }
+
+    func topViewController(root: UIViewController) -> UIViewController {
+        if let tab = root as? UITabBarController {
+            return tab.selectedViewController.map(topViewController) ?? root
+        } else if let navigation = root as? UINavigationController {
+            return navigation.visibleViewController.map(topViewController) ?? root
+        } else if let presented = root.presentedViewController {
+            return topViewController(root: presented)
+        } else {
+            return root
+        }
+    }
 }
 
 class ViewEmbedder {
     
-    class func embed(child:UIViewController, to parent:UIViewController) {
+    class func embed(removing: Set<UIViewController>?, child: UIViewController, to parent: UIViewController, layout: (_ parent: UIViewController, _ child: UIViewController) -> Void) {
         
-        parent.children.forEach(removeFromParent(vc:))
+        if child.parent == parent {
+            return
+        }
+        let removing = removing ?? Set(parent.children)
+        parent.children.filter(removing.contains).forEach(removeFromParent)
         
         child.willMove(toParent: parent)
         parent.addChild(child)
-        parent.view.addSubview(child.view)
+        parent.view.insertSubview(child.view, at: 0)
         
         child.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            parent.view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor),
-            parent.view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
-            parent.view.topAnchor.constraint(equalTo: child.view.topAnchor),
-            parent.view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-        ])
-        
+        layout(parent, child)
+
         child.didMove(toParent: parent)
+    }
+
+    class func embed(removing: Set<UIViewController>? = nil, child: UIViewController, to parent: UIViewController) {
+        embed(removing: removing, child: child, to: parent) { parent, child in
+            NSLayoutConstraint.activate([
+                parent.view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor),
+                parent.view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
+                parent.view.topAnchor.constraint(equalTo: child.view.topAnchor),
+                parent.view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+            ])
+        }
     }
     
     class func removeFromParent(vc:UIViewController){
@@ -103,3 +163,4 @@ class ViewEmbedder {
         vc.removeFromParent()
     }
 }
+

@@ -10,19 +10,21 @@ import ComposableArchitecture
 import Utilities
 import NetworkService
 import Protocols
+import Coordinator
 
 struct AddGroupState: Equatable, Previwable {
-    let userID: UUID?
+    let userID: UUID
     
-    let tmpID = UUID()
-    var addWordState: AddWordState?
     var title: String = ""
+    var titleError: String?
+    
+    var addWordOpened = false
     var isLoading = false
     var alertError: AlertState<AddGroupAction>?
     
     var items: [IdentifiedItem<Dictionary_AddWordItem>] = []
     
-    static var preview: AddGroupState = .init(userID: nil,
+    static var preview: AddGroupState = .init(userID: .init(),
                                               title: "Test name",
                                               items: [Dictionary_AddWordItem](repeating: wordItemPreview, count: 10).map {
                                                 .init(id: .init(), item: $0)
@@ -40,28 +42,25 @@ struct IdentifiedItem<T: Equatable>: Identifiable, Equatable {
 
 enum AddGroupAction: Equatable {
     case titleChanged(String)
+    case titleErrorChanged(String?)
     
     case gotAddGroup(Result<Dictionary_AddGroupResponse, EquatableError>)
     
     case addGroupPressed
     case alertClosePressed
     case addWordOpened(Bool)
+    case wordAdded(AddWordInput.AddLaterRequest)
     
     case showAlert(String)
-    case addWord(AddWordAction)
     
     case closeSceneTriggered
 }
 
 struct AddGroupEnvironment {
-    let translateService: TranslateService
+    let bag: CancellationBag
     let wordsService: WordsService
     let groupsService: GroupsService
     let userProvider: UserProvider
     
     let languageProvider: LanguagePairProvider
-    
-    var addWordEnv: AddWordEnvironment {
-        .init(translateService: translateService, wordService: wordsService)
-    }
 }

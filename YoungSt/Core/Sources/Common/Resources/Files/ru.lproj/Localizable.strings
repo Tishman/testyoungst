@@ -37,15 +37,21 @@
 "requiredField" = "Заполните обязательное поле";
 "sendCode" = "Отправить код";
 "resetPassword" = "Изменить пароль";
+"update" = "Обновить";
 
 // AddWord
 "addWordTitle" = "Добавление слова";
+"editWordTitle" = "Редактирование слова";
 "word" = "Слово";
 "wordDescription" = "Описание слова";
 "recent" = "Недавние";
 "addWordAction" = "Добавить слово";
+"editWordAction" = "Отредактировать слово";
 "typeText" = "Введите текст";
 "youShouldTypeText" = "Нельзя добавить пустой слово. Напишите что-нибудь в верхнее поле";
+"translation" = "Перевод";
+"noTranslation" = "Нет перевода";
+"shouldDeleteWord" = "Вы хотите удалить слово?\nОперацию нельзя отменить.";
 
 // Add group
 "addGroupTitle" = "Новый словарь";
@@ -61,6 +67,8 @@
 "dictionaries" = "Словари";
 "words" = "Слова";
 "lastUpdateTime" = "Обновлено";
+"emptyGroupsPlaceholder" = "У вас еще нет словарей. Нажмите\nна плюс, чтобы добавить";
+"emptyWordsPlaceholder" = "У вас еще нет слов. Нажмите на\nплюс в меню, чтобы добавить.";
 
 // GroupInfo
 "shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";
@@ -68,3 +76,47 @@
 // AppScene
 "dictionary" = "Словарь";
 "profile" = "Профиль";
+
+// Groups list
+"addToDictionary" = "Добавить в словарь";
+
+// CurrentProfile
+"shouldFinishInfoProviding" = "Осталось совсем чуть-чуть! Остался последний шаг";
+"provideInfo" = "Заполнить";
+"settings" = "Настройки";
+"teacher" = "Учитель";
+"students" = "Ученики";
+"invites" = "Заявки";
+"student" = "Ученик";
+"removeTeacher" = "Удалить учителя";
+"removeStudent" = "Удалить студента";
+"teacherNotAcceptedInviteYet" = "Учитель пока не принял ваше приглашение";
+"cancelInvite" = "Отменить приглашение";
+"acceptInvite" = "Принять";
+"rejectInvite" = "Отклонить";
+
+// Fill info
+"fillInfoWelcome" = "Добро пожаловать!";
+"fillInfoDescription" = "Осталось совсем чуть-чуть. Заполните ниже информацию о себе";
+
+// EditProfile
+"nicknameAlreadyUsed" = "Имя пользователя занято. Выберите другое имя";
+"invalidNickname" = "Введите непустое имя пользователя";
+"invalidFirstName" = "Введите непустое имя";
+"editProfileAction" = "Обновить профиль";
+"editProfileTitle" = "Обновить профиль";
+"firstName" = "Имя";
+"lastName" = "Фамилия";
+"nickname" = "Никнейм";
+
+// StudentInvite
+"youCantBecomeStudent" = "Вы не можете стать учеником, потому что у вас уже есть учитель.";
+"youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником. Удачи в обучении!";
+"didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
+"becomeStudent" = "Стать учеником";
+
+// ShareProfile
+"shareProfileTitle" = "Пригласите ученика";
+"shareProfileDescription" = "Пригласите ваших учеников и изучайте язык вместе!";
+"copy" = "Копировать";
+"share" = "Поделиться";

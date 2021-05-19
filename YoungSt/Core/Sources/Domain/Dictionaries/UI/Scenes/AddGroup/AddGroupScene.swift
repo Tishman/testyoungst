@@ -9,6 +9,8 @@ import SwiftUI
 import Resources
 import Utilities
 import ComposableArchitecture
+import Liquid
+import Coordinator
 
 struct AddGroupScene: View {
     
@@ -17,24 +19,33 @@ struct AddGroupScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     
+    @Environment(\.coordinator) private var coordinator
+    
     var body: some View {
         GeometryReader { globalProxy in
             ZStack {
                 TrackableScrollView(contentOffset: $contentOffset) {
                     VStack(spacing: .spacing(.big)) {
-                        WithViewStore(store) { viewStore in
-                            DictGroupView(id: viewStore.tmpID,
-                                          size: .big,
-                                          state: .init(title: viewStore.title.isEmpty ? Localizable.unnamed : viewStore.title,
-                                                       subtitle: ""))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        topGroupPreview
+                            .frame(maxWidth: .infinity, alignment: .center)
                         
-                        WithViewStore(store.scope(state: \.title)) { viewStore in
-                            TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
+                        VStack {
+                            WithViewStore(store.scope(state: \.title)) { viewStore in
+                                TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
+                            }
+                            .padding()
+                            .bubbled()
+                            
+                            IfLetStore(store.scope(state: \.titleError)) { store in
+                                WithViewStore(store) { viewStore in
+                                    Text(viewStore.state)
+                                        .foregroundColor(.red)
+                                        .font(.caption)
+                                        .padding(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
                         }
-                        .padding()
-                        .bubbled()
                         
                         WithViewStore(store.stateless) { viewStore in
                             Button { viewStore.send(.addWordOpened(true)) } label: {
@@ -54,7 +65,8 @@ struct AddGroupScene: View {
                             WithViewStore(store.scope(state: \.items)) { viewStore in
                                 ForEach(viewStore.state) {
                                     DictWordView(state: .init(text: $0.item.source,
-                                                              info: $0.item.destination))
+                                                              translation: $0.item.destination,
+                                                              info: $0.item.description_p))
                                 }
                             }
                         }
@@ -75,7 +87,6 @@ struct AddGroupScene: View {
                 }
                 .padding(.bottom)
                 .greedy(aligningContentTo: .bottom)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,
@@ -93,11 +104,13 @@ struct AddGroupScene: View {
         }
         .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
         .background(
-            WithViewStore(store.scope(state: \.addWordState)) { viewStore in
+            WithViewStore(store) { viewStore in
                 Color.clear
-                    .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: AddGroupAction.addWordOpened)) {
-                        IfLetStore(store.scope(state: \.addWordState, action: AddGroupAction.addWord),
-                                   then: AddWordScene.init)
+                    .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: AddGroupAction.addWordOpened)) {
+                        coordinator.view(for: .addWord(.init(closeHandler: .init { viewStore.send(.addWordOpened(false)) },
+                                                             semantic: .addLater(handler: .init { viewStore.send(.wordAdded($0)) }),
+                                                             userID: viewStore.userID,
+                                                             groupSelectionEnabled: false)))
                     }
             }
         )
@@ -105,6 +118,23 @@ struct AddGroupScene: View {
         .navigationTitle(Localizable.addGroupTitle)
         .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
+    }
+    
+    private var topGroupPreview: some View {
+        WithViewStore(store.scope(state: \.title)) { viewStore in
+            Text(viewStore.state)
+        }
+        .foregroundColor(.white)
+        .multilineTextAlignment(.center)
+        .lineLimit(3)
+        .font(.title3)
+        .frame(width: DictGroupView.Size.big.value, height: DictGroupView.Size.big.value)
+        .background(
+            MeshGradientView(samples: 5, period: 3)
+        )
+        .clipShape(
+            RoundedRectangle(cornerRadius: .corner(.big))
+        )
     }
 }
 

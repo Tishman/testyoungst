@@ -18,27 +18,49 @@ public struct CloseButton: View {
     
     public var body: some View {
         Button(action: action) {
-            CloseShape()
-                .stroke(style: .init(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                .padding(10)
-                .background(
-                    BlurEffect(style: .systemThickMaterial)
-                )
-                .clipShape(Circle())
+            CrossView()
         }
         .frame(width: DefaultSize.navigationBarButton,
                height: DefaultSize.navigationBarButton)
     }
 }
 
+public struct CrossView: View {
+    
+    public init() {}
+    
+    public var body: some View {
+        GeometryReader { proxy in
+            CloseShape()
+                .stroke(style: .init(lineWidth: min(proxy.size.width, proxy.size.height) / 15, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Asset.Colors.secondaryAccentContent.color.swiftuiColor)
+                .background(
+                    Asset.Colors.secondaryAccentBackground.color.swiftuiColor
+                )
+                .clipShape(Circle())
+        }
+    }
+}
+
 struct CloseShape: Shape {
     
     func path(in rect: CGRect) -> Path {
-        Path{ path in
-            path.move(to: .zero)
-            path.addLine(to: .init(x: rect.maxX, y: rect.maxY))
-            path.move(to: .init(x: rect.maxX, y: 0))
-            path.addLine(to: .init(x: 0, y: rect.maxY))
+        Path { path in
+            let side = min(rect.size.width, rect.size.height)
+            let opposite = max(rect.size.width, rect.size.height)
+            let shift = side / 3
+            
+            if rect.size.width < rect.size.height {
+                path.move(to: .init(x: shift, y: (opposite - side) / 2 + shift))
+                path.addLine(to: .init(x: rect.maxX - shift, y: (opposite + side) / 2 - shift))
+                path.move(to: .init(x: rect.maxX - shift, y: (opposite - side) / 2 + shift))
+                path.addLine(to: .init(x: shift, y: (opposite + side) / 2 - shift))
+            } else {
+                path.move(to: .init(x: (opposite - side) / 2 + shift, y: shift))
+                path.addLine(to: .init(x: (opposite + side) / 2 - shift, y: rect.maxY - shift))
+                path.move(to: .init(x: (opposite - side) / 2 + shift, y: rect.maxY - shift))
+                path.addLine(to: .init(x: (opposite + side) / 2 - shift, y: shift))
+            }
         }
     }
     

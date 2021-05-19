@@ -13,15 +13,19 @@ import Combine
 final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionProvider {
     
     private let keychain: KeychainWrapper = .standard
+    private let defaults: UserDefaults = .standard
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
+    
     let sessionKey = "session"
     let userKey = "user"
+    let userInfoKey = "userInfo"
+    let profileInfoKey = "profileInfo"
     
     let credentialsSubject: PassthroughSubject<Credentials?, Never> = .init()
     var credentialsUpdated: AnyPublisher<Credentials?, Never> { credentialsSubject.eraseToAnyPublisher() }
     
     var currentSid: UUID? {
-//        return .init(uuidString: "0e38b43a-18da-47b3-b7d3-6c0d49e98d01")!
-        
         guard let stringSid = keychain.string(forKey: sessionKey),
             let id = UUID(uuidString: stringSid)
         else { return nil }
@@ -29,24 +33,43 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
     }
     
     var currentUserID: UUID? {
-//        return .init(uuidString: "031a71c3-dca2-44f6-bb2d-022b4a9473b2")!
-        
         guard let stringId = keychain.string(forKey: userKey),
               let id = UUID(uuidString: stringId)
         else { return nil }
         return id
     }
     
+    var currentUser: UserInfo? {
+        guard let data = defaults.data(forKey: userInfoKey),
+              let user = try? decoder.decode(UserInfo.self, from: data)
+        else { return nil }
+        return user
+    }
+    
+    var currentProfile: CurrentProfileInfo? {
+        defaults.data(forKey: profileInfoKey)
+            .flatMap { try? decoder.decode(CurrentProfileInfo.self, from: $0) }
+    }
+    
     func save(credentials: Credentials) {
         keychain.set(credentials.sessionID.uuidString, forKey: sessionKey)
         keychain.set(credentials.userID.uuidString, forKey: userKey)
         
+        let info = try! encoder.encode(credentials.info)
+        defaults.set(info, forKey: userInfoKey)
+        
         credentialsSubject.send(credentials)
+    }
+    
+    func save(profile: CurrentProfileInfo) {
+        let info = try! encoder.encode(profile)
+        defaults.set(info, forKey: profileInfoKey)
     }
     
     func clearCredentials() {
         keychain.removeObject(forKey: sessionKey)
         keychain.removeObject(forKey: userKey)
+        defaults.removeObject(forKey: userInfoKey)
         
         credentialsSubject.send(nil)
     }

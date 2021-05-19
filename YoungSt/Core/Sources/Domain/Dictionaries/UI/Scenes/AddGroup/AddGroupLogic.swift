@@ -13,11 +13,21 @@ import NetworkService
 import Resources
 
 let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment>.combine(
-    addWordReducer.optional().pullback(state: \.addWordState, action: /AddGroupAction.addWord, environment: \.addWordEnv),
     Reducer { state, action, env in
+        enum Cancellable: CaseIterable, Hashable {
+            case addGroup
+        }
+        
         switch action {
         case let .titleChanged(newText):
             state.title = newText
+            
+            return .init(value: .titleErrorChanged(nil))
+                .receive(on: DispatchQueue.main.animation())
+                .eraseToEffect()
+            
+        case let .titleErrorChanged(titleError):
+            state.titleError = titleError
             
         case let .gotAddGroup(response):
             switch response {
@@ -30,17 +40,15 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             
         case .addGroupPressed:
             guard !state.title.isEmpty else {
-                return .init(value: .showAlert(Localizable.fillAllFields))
-            }
-            
-            guard let userID = state.userID ?? env.userProvider.currentUserID else {
-                return .init(value: .showAlert(Localizable.unknownError))
+                return .init(value: .titleErrorChanged(Localizable.fillAllFields))
+                    .receive(on: DispatchQueue.main.animation())
+                    .eraseToEffect()
             }
             
             let request = Dictionary_AddGroupRequest.with {
                 $0.name = state.title
                 $0.items = state.items.map(\.item)
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
             }
             state.isLoading = true
             return env.groupsService.addGroup(request: request)
@@ -48,6 +56,7 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(AddGroupAction.gotAddGroup)
+                .cancellable(id: Cancellable.addGroup, bag: env.bag)
             
         case .alertClosePressed:
             state.alertError = nil
@@ -56,26 +65,19 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.alertError = .init(title: TextState(error))
             
         case let .addWordOpened(isOpened):
-            if isOpened {
-                state.addWordState = .init(semantic: .addLater,
-                                           sourceLanguage: env.languageProvider.sourceLanguage,
-                                           destinationLanguage: env.languageProvider.destinationLanguage)
-            } else {
-                state.addWordState = nil
+            state.addWordOpened = isOpened
+            
+        case let .wordAdded(request):
+            let item = Dictionary_AddWordItem.with {
+                $0.source = request.sourceText
+                $0.destination = request.destinationText
             }
+            state.items.append(.init(id: .init(), item: item))
             
-        case let .addWord(.addLaterTriggered(item)):
-            state.items.append(.init(id: .init(), item: item.item))
-            state.addWordState = nil
-            
-        case .addWord(.closeSceneTriggered):
-            state.addWordState = nil
-            
-        case .addWord, .closeSceneTriggered:
-            break
+        case .closeSceneTriggered:
+            return .cancelAll(bag: env.bag)
         }
         
         return .none
     }
-    
 )

@@ -18,11 +18,22 @@ struct DictGroupView: View {
         var value: CGFloat {
             switch self {
             case .small:
-                return 130
+                return 120
             case .medium:
                 return 150
             case .big:
                 return 180
+            }
+        }
+        
+        var titleFont: Font {
+            switch self {
+            case .small:
+                return .body
+            case .medium:
+                return .title3
+            case .big:
+                return .title3
             }
         }
     }
@@ -38,7 +49,7 @@ struct DictGroupView: View {
             Text(state.title)
                 .multilineTextAlignment(.center)
                 .lineLimit(3)
-                .font(.title3)
+                .font(size.titleFont)
             
             Spacer()
             
@@ -55,7 +66,7 @@ struct DictGroupView: View {
         .background(
             RoundedRectangle(cornerRadius: .corner(.ultraBig))
                 .fill(
-                    LinearGradient(gradient: Gradients(id).swiftUI, startPoint: .topLeading, endPoint: .bottomTrailing)
+                    LinearGradient(gradient: YoungstGradient(id).swiftUI, startPoint: .topLeading, endPoint: .bottomTrailing)
                 )
         )
     }

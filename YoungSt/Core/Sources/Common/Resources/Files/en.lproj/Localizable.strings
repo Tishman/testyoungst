@@ -37,15 +37,21 @@
 "requiredField" = "Required field";
 "sendCode" = "Send code";
 "resetPassword" = "Reset password";
+"update" = "Update";
 
 // AddWord
 "addWordTitle" = "Add word";
+"editWordTitle" = "Edit word";
 "word" = "Word";
 "wordDescription" = "Description";
 "recent" = "Recent";
 "addWordAction" = "Add word";
+"editWordAction" = "Edit word";
 "typeText" = "Type text here";
 "youShouldTypeText" = "Cant add empty word. Type something in first field";
+"translation" = "Translation";
+"noTranslation" = "No translation";
+"shouldDeleteWord" = "Do you want to delete word? This cannot be undone.";
 
 // Add group
 "addGroupTitle" = "New dictionary";
@@ -61,10 +67,56 @@
 "dictionaries" = "Dictionaries";
 "words" = "Words";
 "lastUpdateTime" = "Updated";
+"emptyGroupsPlaceholder" = "You don't yet have any dictionary.\nTap 'plus' to add";
+"emptyWordsPlaceholder" = "You don't have any words yet.\nTap 'plus' in menu to add";
 
 // GroupInfo
-"shouldDeleteGroup" = "Do you want to delete group? This cannot be undone.";
+"shouldDeleteGroup" = "Do you want to delete group?\nThis cannot be undone.";
 
 // AppScene
 "dictionary" = "Dictionary";
 "profile" = "Profile";
+
+// Groups list
+"addToDictionary" = "Add to dictionary";
+
+// CurrentProfile
+"shouldFinishInfoProviding" = "You almost done!\nOne more last step left";
+"provideInfo" = "Provide info";
+"settings" = "Settings";
+"teacher" = "Teacher";
+"students" = "Students";
+"invites" = "Invites";
+"student" = "Student";
+"removeTeacher" = "Remove teacher";
+"removeStudent" = "Remove student";
+"teacherNotAcceptedInviteYet" = "Teacher have not accept your invintation yet";
+"cancelInvite" = "Cancel invite";
+"acceptInvite" = "Accept";
+"rejectInvite" = "Reject";
+
+// Fill info
+"fillInfoWelcome" = "Welcome!";
+"fillInfoDescription" = "You almost done. Fill info about you";
+
+// EditProfile
+"nicknameAlreadyUsed" = "Nickname already in use. Choose another";
+"invalidNickname" = "Nickname can't be empty";
+"invalidFirstName" = "First name can't be empty";
+"editProfileAction" = "Update profile";
+"editProfileTitle" = "Update profile";
+"firstName" = "First name";
+"lastName" = "Last name";
+"nickname" = "Nickname";
+
+// StudentInvite
+"youCantBecomeStudent" = "You can't become student because you already have teacher.";
+"youCanSendRequestToBecomeStudent" = "You can send request to become student. Good luck in learning!";
+"didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
+"becomeStudent" = "Become student";
+
+// ShareProfile
+"shareProfileTitle" = "Invite student";
+"shareProfileDescription" = "Bring your students and learn together!";
+"copy" = "Copy";
+"share" = "Share";

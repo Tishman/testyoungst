@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 // https://digitalsynopsis.com/design/beautiful-color-ui-gradients-backgrounds/
-public enum Gradients: CaseIterable {
+public enum YoungstGradient: CaseIterable {
     
     case roseanna
     case sexyBlue
@@ -30,7 +30,7 @@ public enum Gradients: CaseIterable {
     public init(_ id: UUID) {
         // Associate gradient with id consistently
         let hashValue = Self.consistentHashValue(id: id)
-        let allCases = Gradients.allCases
+        let allCases = YoungstGradient.allCases
         self = allCases[abs(hashValue % allCases.count)]
     }
     

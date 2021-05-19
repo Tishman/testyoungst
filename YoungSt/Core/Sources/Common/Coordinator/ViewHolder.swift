@@ -25,6 +25,7 @@ public protocol ModuleStoreProvider {
 public struct ViewHolder<StoreProvider: ModuleStoreProvider, Content: View>: View {
     
     @StateObject public var store: StoreHolder<StoreProvider.T>
+    
     private let content: Content
     
     public init(storeProvider: StoreProvider, @ViewBuilder content: (StoreProvider.T) -> Content) {

@@ -12,21 +12,26 @@ import Protocols
 
 struct DictionariesState: Equatable, Previwable {
     
-    var addWordState: AddWordState?
     var addGroupState: AddGroupState?
     var groupInfoState: GroupInfoState?
+    var addWordState: AddWordState?
     
-    // nil for current user dictionaries
-    let userID: UUID?
+    let userID: UUID
     
     var groups: [DictGroupItem] = []
     var words: [DictWordItem] = []
+    var deletingWords: Set<UUID> = []
+    
+    var wordsList: [DictWordItem] {
+        words.filter { !deletingWords.contains($0.id) }
+    }
+    
     var lastUpdate: String?
     
     var isLoading = false
-    var errorAlert: AlertState<DictionariesAction>?
+    var alert: AlertState<DictionariesAction>?
     
-    static var preview: DictionariesState = .init(userID: nil,
+    static var preview: DictionariesState = .init(userID: .init(),
                                                   groups: [DictGroupItem.preview],
                                                   words: [DictWordItem.preview])
 }
@@ -37,28 +42,51 @@ enum DictionariesAction: Equatable {
         let words: [DictWordItem]
     }
     
+    struct DeleteWordResult: Equatable {
+        let deletingID: UUID
+        let result: Result<EmptyResponse, EquatableError>
+    }
+    
+    struct UpdateWordsResult: Equatable {
+        let result: Result<[DictWordItem], EquatableError>
+        let removedID: UUID?
+    }
+    
     case refreshList
     case silentRefreshList
     case viewLoaded
     case itemsUpdated(Result<UpdateItemsResult, EquatableError>)
+    case wordsUpdated(UpdateWordsResult)
     case alertClosed
     case addWordOpened(Bool)
     case addGroupOpened(Bool)
     case showAlert(String)
+    case wordSelected(DictWordItem)
+    
+    case deleteWordRequested(DictWordItem)
+    case deleteWordAlertPressed(DictWordItem)
+    
+    // this case exists only for animation purposes
+    case deleteWordTriggered(DictWordItem)
+    
+    case wordDeleted(DeleteWordResult)
     
     case openGroup(UUID?)
     
     case groupInfo(GroupInfoAction)
-    case addWord(AddWordAction)
     case addGroup(AddGroupAction)
+    case addWord(AddWordAction)
 }
 
 struct DictionariesEnvironment {
+    
+    let bag: CancellationBag
     let wordsService: WordsService
     let groupsService: GroupsService
+    let translationService: TranslationService
     let userProvider: UserProvider
-    let translateService: TranslateService
     let languageProvider: LanguagePairProvider
+    let dictionaryEventPublisher: DictionaryEventPublisher
     
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -67,12 +95,8 @@ struct DictionariesEnvironment {
         return formatter
     }()
     
-    var addWordEnv: AddWordEnvironment {
-        .init(translateService: translateService, wordService: wordsService)
-    }
-    
     var addGroupEnv: AddGroupEnvironment {
-        .init(translateService: translateService,
+        .init(bag: .autoId(childOf: bag),
               wordsService: wordsService,
               groupsService: groupsService,
               userProvider: userProvider,
@@ -80,7 +104,16 @@ struct DictionariesEnvironment {
     }
     
     var groupInfoEnv: GroupInfoEnvironment {
-        .init(groupsService: groupsService,
-              userProvider: userProvider)
+        .init(bag: .autoId(childOf: bag),
+              groupsService: groupsService,
+              userProvider: userProvider,
+              wordsService: wordsService)
+    }
+    
+    var addWordEnv: AddWordEnvironment {
+        .init(bag: .autoId(childOf: bag),
+              translationService: translationService,
+              wordService: wordsService,
+              groupsService: groupsService)
     }
 }

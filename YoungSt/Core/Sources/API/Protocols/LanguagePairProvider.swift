@@ -16,8 +16,8 @@ public protocol LanguagePairProvider {
 }
 
 public struct MockLangProvider: LanguagePairProvider {
-    public let sourceLanguage: Languages = .russian
-    public let destinationLanguage: Languages = .english
+    public let sourceLanguage: Languages = .english
+    public let destinationLanguage: Languages = .russian
     public let sourceLangKey: String = "sourceLocale"
     public var destinationLangKey: String = "destinationLocale"
     

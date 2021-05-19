@@ -11,29 +11,34 @@ import ComposableArchitecture
 import Protocols
 import NetworkService
 import Combine
+import Coordinator
 
 struct AddWordState: Equatable, Previwable {
     
-    enum Semantic: Equatable {
-        case addToServer
-        case addLater
+    struct SelectedGroup: Equatable {
+        let id: UUID
+        let title: String
     }
     
-    let semantic: Semantic
+    let info: AddWordInfo
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
+    var groupsListState: GroupsListState?
+    
     var leftToRight = true
+    var localTranslationDownloading = false
     
     var isLoading = false
     var isTranslateLoading = false
-    var groupsOpened = false
     
-    var sourceText: String = ""
-    var descriptionText: String = ""
+    var sourceText = ""
+    var sourceError: String?
+    var translationText = ""
+    var descriptionText = ""
     var alertError: AlertState<AddWordAction>?
     
-    var selectedGroupID: UUID?
+    var selectedGroup: SelectedGroup?
     
     var currentSource: Languages {
         leftToRight ? sourceLanguage : destinationLanguage
@@ -43,20 +48,72 @@ struct AddWordState: Equatable, Previwable {
         leftToRight ? destinationLanguage : sourceLanguage
     }
     
-    static let preview: AddWordState = .init(semantic: .addToServer,
+    var editingMode: Bool {
+        info.editingWordID != nil
+    }
+    
+    static let preview: AddWordState = .init(info: .preview,
                                              sourceLanguage: .russian,
                                              destinationLanguage: .english,
                                              sourceText: "Hello",
-                                             descriptionText: "")
+                                             translationText: "Привет",
+                                             descriptionText: "",
+                                             selectedGroup: .init(id: .init(), title: "Lesson 1"))
+}
+
+extension AddWordState {
+    init(input: AddWordInput, sourceLanguage: Languages, destinationLanguage: Languages) {
+        self.info = .init(input: input)
+        if let word = input.model.word {
+            sourceText = word.state.text
+            translationText = word.state.translation
+            descriptionText = word.state.info
+        }
+        if let group = input.model.group, group.alias != DictGroupItem.rootAlias {
+            selectedGroup = .init(id: group.id, title: group.state.title)
+        }
+        
+        self.sourceLanguage = sourceLanguage
+        self.destinationLanguage = destinationLanguage
+    }
+}
+
+struct AddWordInfo: Equatable, Previwable {
+    let closeHandler: AnyEquatable<() -> Void>
+    let semantic: AddWordInput.Semantic
+    let userID: UUID
+    let groupSelectionEnabled: Bool
+    let editingWordID: UUID?
+    
+    static let preview: AddWordInfo = .init(closeHandler: .init {},
+                                            semantic: .addToServer,
+                                            userID: .init(),
+                                            groupSelectionEnabled: true,
+                                            editingWordID: nil)
+}
+
+extension AddWordInfo {
+    init(input: AddWordInput) {
+        self.closeHandler = input.closeHandler
+        self.semantic = input.semantic
+        self.userID = input.userID
+        self.groupSelectionEnabled = input.groupSelectionEnabled
+        self.editingWordID = input.model.word?.id
+    }
 }
 
 enum AddWordAction: Equatable {
+    case groupsList(GroupsListAction)
+    
     case sourceChanged(String)
+    case sourceErrorChanged(String?)
     case descriptionChanged(String)
-    case selectedGroupChanged(UUID?)
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
+    case translationDownloaded(Result<EmptyResponse, EquatableError>)
     
+    case viewAppeared
+    case removeSelectedGroupPressed
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed
@@ -64,11 +121,16 @@ enum AddWordAction: Equatable {
     
     case groupsOpened(Bool)
     case closeSceneTriggered
-    
-    case addLaterTriggered(Dictionary_AddWordRequest)
 }
 
 struct AddWordEnvironment {
-    let translateService: TranslateService
+    let bag: CancellationBag
+    
+    let translationService: TranslationService
     let wordService: WordsService
+    let groupsService: GroupsService
+    
+    var groupsListEnv: GroupsListEnvironment {
+        .init(bag: .autoId(childOf: bag), groupsService: groupsService)
+    }
 }

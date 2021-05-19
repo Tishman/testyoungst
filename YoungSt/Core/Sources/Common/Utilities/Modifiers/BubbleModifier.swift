@@ -8,6 +8,8 @@
 import SwiftUI
 import Resources
 
+private let bubble = RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
+
 struct StrokedBubbleModifier: ViewModifier {
     let borderColor: Color
     let foregroundColor: Color
@@ -24,10 +26,6 @@ struct StrokedBubbleModifier: ViewModifier {
                     .stroke(borderColor, lineWidth: lineWidth)
             )
     }
-    
-    private var bubble: some Shape {
-        RoundedRectangle(cornerRadius: .corner(.big), style: .continuous)
-    }
 }
 
 struct BubbleModifier: ViewModifier {
@@ -37,8 +35,24 @@ struct BubbleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(
-                RoundedRectangle(cornerRadius: .corner(.big))
+                bubble
                     .foregroundColor(color)
+            )
+    }
+}
+
+struct GeometryEffectBubbleModifier: ViewModifier {
+    let color: Color
+    let id: String
+    let namespace: Namespace.ID
+    
+    func body(content: Content) -> some View {
+        content
+            .clipShape(bubble)
+            .background(
+                bubble
+                    .foregroundColor(color)
+                    .matchedGeometryEffect(id: id, in: namespace)
             )
     }
 }
@@ -50,6 +64,10 @@ public extension View {
     
     func bubbled(color: Color = Asset.Colors.greenLightly.color.swiftuiColor) -> some View {
         modifier(BubbleModifier(color: color))
+    }
+    
+    func bubbledMatched(color: Color = Asset.Colors.greenLightly.color.swiftuiColor, id: String, in namespace: Namespace.ID) -> some View {
+        modifier(GeometryEffectBubbleModifier(color: color, id: id, namespace: namespace))
     }
 }
 

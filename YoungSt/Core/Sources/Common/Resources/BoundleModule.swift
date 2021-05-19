@@ -9,6 +9,8 @@ import Foundation
 
 private class CurrentBundleFinder {}
 
+public typealias Localizable = Loc.Localizable
+
 extension Foundation.Bundle {
     public static var coreModule: Bundle = {
         /* The name of your local package, prepended by "LocalPackages_" */

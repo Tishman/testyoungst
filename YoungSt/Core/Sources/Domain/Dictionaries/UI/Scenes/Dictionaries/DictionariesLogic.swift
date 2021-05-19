@@ -13,17 +13,28 @@ import Utilities
 import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
-    addWordReducer.optional().pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
-    addGroupReducer.optional().pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
-    groupInfoReducer.optional().pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
+    addGroupReducer.optional(bag: \.bag).pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
+    
+    groupInfoReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
+    
+    addWordReducer
+        .optional(bag: \.bag)
+        .pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
+    
     Reducer { state, action, env in
+        
+        enum Cancellable: Hashable {
+            case getUserLists
+            case getUserWords
+            case dictObserving
+            case deleteWord(UUID)
+        }
+        
         switch action {
         case .addGroup(.closeSceneTriggered):
             state.addGroupState = nil
-            return Effect(value: .silentRefreshList)
-        
-        case .addWord(.closeSceneTriggered):
-            state.addWordState = nil
             return Effect(value: .silentRefreshList)
             
         case .groupInfo(.closeSceneTriggered):
@@ -35,15 +46,13 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             return .init(value: .silentRefreshList)
             
         case .silentRefreshList:
-            guard let userID = state.userID ?? env.userProvider.currentUserID else {
-                return .init(value: .showAlert(Localizable.unknownError))
-            }
             let wordsRequest = Dictionary_GetUserWordsRequest.with {
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
                 $0.groupID = ""
             }
             let groupsRequest = Dictionary_GetUserGroupsRequest.with {
-                $0.userID = userID.uuidString
+                $0.userID = state.userID.uuidString
+                $0.order = .position
             }
             
             return env.wordsService.getUserWords(request: wordsRequest)
@@ -53,72 +62,159 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(DictionariesAction.itemsUpdated)
+                .cancellable(id: Cancellable.getUserLists, bag: env.bag)
             
         case .viewLoaded:
-            return .init(value: .refreshList)
+            let dictChangedPublisher = env.dictionaryEventPublisher.dictionaryEventPublisher
+                .eraseToEffect()
+                .map { _ in DictionariesAction.silentRefreshList }
+                .cancellable(id: Cancellable.dictObserving, bag: env.bag)
+            
+            return .merge(
+                .init(value: .refreshList),
+                dictChangedPublisher
+            )
             
         case let .itemsUpdated(response):
             switch response {
             case let .success(result):
-                state.groups = result.groups
                 state.words = result.words
+                state.groups = result.groups
                 state.lastUpdate = env.timeFormatter.string(from: Date())
+                
             case let .failure(error):
-                state.errorAlert = .init(title: TextState(error.description))
+                state.alert = .init(title: TextState(error.description))
             }
             state.isLoading = false
             
         case .alertClosed:
-            state.errorAlert = nil
+            state.alert = nil
             
         case let .showAlert(errorText):
-            state.errorAlert = .init(title: TextState(errorText))
+            state.alert = .init(title: TextState(errorText))
+            
+        case let .deleteWordRequested(item):
+            state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+                                primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
+                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+            
+        case let .deleteWordAlertPressed(item):
+            return .init(value: .deleteWordTriggered(item))
+                .receive(on: DispatchQueue.main.animation())
+                .eraseToEffect()
+            
+        case let .deleteWordTriggered(item):
+            state.deletingWords.insert(item.id)
+            return env.wordsService.removeWord(request: item.id)
+                .mapError(EquatableError.init)
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map { .wordDeleted(.init(deletingID: item.id, result: $0)) }
+                .cancellable(id: Cancellable.deleteWord(item.id), bag: env.bag)
+            
+        case let .wordDeleted(response):
+            switch response.result {
+            case let .success(result):
+                let request = Dictionary_GetUserWordsRequest.with {
+                    $0.userID = state.userID.uuidString
+                    $0.groupID = ""
+                }
+                return env.wordsService.getUserWords(request: request)
+                    .map(\.items)
+                    .tryMap(DictionariesLogic.createWordsItems)
+                    .mapError(EquatableError.init)
+                    .receive(on: DispatchQueue.main)
+                    .catchToEffect()
+                    .map {
+                        DictionariesAction.wordsUpdated(.init(result: $0, removedID: response.deletingID))
+                    }
+                    .cancellable(id: Cancellable.getUserWords, bag: env.bag)
+                    
+            case let .failure(error):
+                state.alert = .init(title: TextState(error.description))
+                state.deletingWords.remove(response.deletingID)
+            }
+            
+        case let .wordsUpdated(response):
+            switch response.result {
+            case let .success(items):
+                state.words = items
+                if let removedID = response.removedID {
+                    state.deletingWords.remove(removedID)
+                }
+            case let .failure(error):
+                break
+            }
             
         case let .addWordOpened(isOpened):
             if isOpened {
-                state.addWordState = .init(semantic: .addToServer,
-                                           sourceLanguage: .russian,
-                                           destinationLanguage: .english)
+                state.addWordState = .init(info: .init(closeHandler: .init {},
+                                                       semantic: .addToServer,
+                                                       userID: state.userID,
+                                                       groupSelectionEnabled: true,
+                                                       editingWordID: nil),
+                                           sourceLanguage: env.languageProvider.sourceLanguage,
+                                           destinationLanguage: env.languageProvider.destinationLanguage)
             } else {
                 state.addWordState = nil
             }
+            
+        case let .wordSelected(item):
+            let group = state.groups.first(where: { $0.id == item.groupID })
+            state.addWordState = .init(input: .init(closeHandler: .init{},
+                                                    semantic: .addToServer,
+                                                    userID: state.userID,
+                                                    groupSelectionEnabled: true,
+                                                    model: .init(word: item, group: group)),
+                                       sourceLanguage: env.languageProvider.sourceLanguage,
+                                       destinationLanguage: env.languageProvider.destinationLanguage)
+            
         case let .addGroupOpened(isOpened):
             if isOpened {
-                state.addGroupState = .init(userID: nil)
+                state.addGroupState = .init(userID: state.userID)
             } else {
                 state.addGroupState = nil
             }
         case let .openGroup(groupId):
             if let groupId = groupId, let groupItem = state.groups.first(where: { $0.id == groupId }) {
-                state.groupInfoState = .init(info: .item(groupItem))
+                state.groupInfoState = .init(userID: state.userID, info: .item(groupItem))
             } else {
                 state.groupInfoState = nil
             }
+        case .addWord(.closeSceneTriggered):
+            state.addWordState = nil
+            
         case .addWord, .addGroup, .groupInfo:
             break
         }
         return .none
     }
-    .debug()
 )
 
-private struct DictionariesLogic {
+struct DictionariesLogic {
     
-    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
-        let words = try words.items.map {
-            try DictWordItem(id: .from(string: $0.id),
-                             state: .init(text: $0.source,
-                                          info: $0.destination))
-        }
-        let groups = try groups.groups.map {
+    static func createGroupsItems(groups: [Dictionary_Group]) throws -> [DictGroupItem] {
+        try groups.map {
             try DictGroupItem(id: .from(string: $0.id),
                               alias: $0.alias.isEmpty ? nil : $0.alias,
                               state: .init(title: $0.name,
                                            subtitle: Localizable.dWords(Int($0.wordCount))))
         }
-        
-        return .init(groups: groups,
-                     words: words)
+    }
+    
+    static func createWordsItems(words: [Dictionary_DictionaryItem]) throws -> [DictWordItem] {
+        try words.map {
+            try DictWordItem(id: .from(string: $0.id),
+                             groupID: .from(string: $0.groupID),
+                             state: .init(text: $0.source,
+                                          translation: $0.destination,
+                                          info: $0.description_p))
+        }
+    }
+    
+    static func createUpdateItemsResult(words: Dictionary_GetUserWordsResponse, groups: Dictionary_GetUserGroupsResponse) throws -> DictionariesAction.UpdateItemsResult {
+        return try .init(groups: createGroupsItems(groups: groups.groups),
+                         words: createWordsItems(words: words.items))
     }
     
 }

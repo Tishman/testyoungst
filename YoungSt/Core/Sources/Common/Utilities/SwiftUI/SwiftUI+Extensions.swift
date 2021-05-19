@@ -36,13 +36,14 @@ public extension View {
         }
     }
     
+    
+    /// Due to bug in SwiftUI in iOS 14.5 we ARE NOT ALLOWED TO GAVE EXACT 2 NavigationLink.
+    /// It can be 0,1 or 3+
+    /// So if we can possibly have navigationlink in view, we sould add two additional links to background
     func fixNavigationLinkForIOS14_5() -> some View {
         self
-            .background(
-                NavigationLink(destination: EmptyView()) {
-                    EmptyView()
-                }
-            )
+            .background(NavigationLink(destination: EmptyView(), label: {}))
+            .background(NavigationLink(destination: EmptyView(), label: {}))
     }
 }
 

@@ -15,11 +15,11 @@ public final class NetworkDIFramework: DIFramework {
             .as(check: CallOptionConfigurator.self) {$0}
         
         container.register { () -> ServerConfiguration in
-            #if DEBUG
+//            #if DEBUG
             return .stage
-            #else
-            return .production
-            #endif
+//            #else
+//            return .production
+//            #endif
         }
         
         container.register(CommonInterceptorDependencies.init)
@@ -36,6 +36,9 @@ public final class NetworkDIFramework: DIFramework {
         
         container.register(TranslatorInjectionInterceptorFactory.init)
             .as(check: Translator_TranslatorClientInterceptorFactoryProtocol.self) {$0}
+        
+        container.register(ProfileInjectionInterceptorFactory.init)
+            .as(check: Profile_ProfileClientInterceptorFactoryProtocol.self) {$0}
         
         container.register {
             ($0 as NetworkConnector).getConnection()
@@ -60,6 +63,13 @@ public final class NetworkDIFramework: DIFramework {
                                             interceptors: $2 as Dictionary_UserDictionaryClientInterceptorFactoryProtocol)
         }
         .as(check: Dictionary_UserDictionaryClientProtocol.self) {$0}
+        
+        container.register {
+            Profile_ProfileClient(channel: $0 as ClientConnection,
+                                  defaultCallOptions: ($1 as CallOptionConfigurator).createDefaultCallOptions(),
+                                  interceptors: $2 as Profile_ProfileClientInterceptorFactoryProtocol)
+        }
+        .as(check: Profile_ProfileClientProtocol.self) {$0}
         
             
 //            .as(check: NetworkClientFactory.self)
