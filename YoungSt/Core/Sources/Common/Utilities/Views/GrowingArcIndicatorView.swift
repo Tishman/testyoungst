@@ -9,56 +9,85 @@ import SwiftUI
 import Resources
 
 public typealias IndicatorView = GrowingArcIndicatorView
-public struct GrowingArcIndicatorView: View {
+
+public struct PlainIndicatorView: View {
     
-    
-    public init(size: CGFloat = 60, paddingValue: CGFloat? = nil) {
-        self.color = Asset.Colors.loaderContent.color.swiftuiColor
+    public init(color: Color = Asset.Colors.loaderContent.color.swiftuiColor,
+                size: CGFloat = 33,
+                paddingValue: CGFloat = 0) {
+        self.color = color
         self.size = size
-        self.paddingValue = paddingValue // nil padding is system default
+        self.paddingValue = paddingValue
     }
 
     private let size: CGFloat
-    private let paddingValue: CGFloat?
     private let color: Color
+    private let paddingValue: CGFloat
     @State private var animatableParameter: Double = 0
 
     public var body: some View {
-        let animation = Animation
-            .easeInOut(duration: 2)
-            .repeatForever(autoreverses: false)
-        
-        return GrowingArc(percent: animatableParameter)
-            .stroke(color, lineWidth: 3)
+        GrowingArc(percent: animatableParameter)
+            .strokeBorder(lineWidth: 3)
+            .animation(.easeInOut(duration: 2).repeatForever(autoreverses: false),
+                       value: animatableParameter)
+            .foregroundColor(color)
             .padding(.all, paddingValue)
-            .background(BlurEffect(style: .systemThickMaterial))
-            .clipShape(RoundedRectangle(cornerRadius: .corner(.medium)))
             .frame(width: size, height: size)
             .onAppear {
                 DispatchQueue.main.async {
-                    withAnimation(animation) {
-                        self.animatableParameter = 1
-                    }
+                    self.animatableParameter = 1
                 }
             }
     }
 }
 
-struct GrowingArcIndicatorView_Previews: PreviewProvider {
-    static var previews: some View {
-        GrowingArcIndicatorView()
+public struct GrowingArcIndicatorView: View {
+    
+    public init(size: CGFloat = 60) {
+        self.color = Asset.Colors.loaderContent.color.swiftuiColor
+        self.size = size
+    }
+
+    private let size: CGFloat
+    private let color: Color
+
+    public var body: some View {
+        PlainIndicatorView(color: color, size: size, paddingValue: size / 4)
+            .background(BlurEffect(style: .systemThickMaterial))
+            .clipShape(RoundedRectangle(cornerRadius: .corner(.medium)))
     }
 }
 
-struct GrowingArc: Shape {
+struct GrowingArcIndicatorView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            PlainIndicatorView()
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .bubbled()
+            GrowingArcIndicatorView()
+        }
+    }
+}
+
+struct GrowingArc: InsettableShape {
+    
+    typealias InsetShape = GrowingArc
 
     var maxLength = 2 * Double.pi - 0.7
     var lag = 0.35
     var percent: Double
+    var inset: CGFloat = 0
 
     var animatableData: Double {
         get { return percent }
         set { percent = newValue }
+    }
+    
+    func inset(by amount: CGFloat) -> GrowingArc {
+        var arc = self
+        arc.inset = amount
+        return arc
     }
 
     func path(in rect: CGRect) -> Path {
@@ -86,7 +115,7 @@ struct GrowingArc: Shape {
 
         var path = Path()
         path.addArc(center: CGPoint(x: rect.size.width/2, y: rect.size.width/2),
-                    radius: rect.size.width/2,
+                    radius: rect.size.width / 2 - inset,
                     startAngle: Angle(radians: start),
                     endAngle: Angle(radians: end),
                     clockwise: true)

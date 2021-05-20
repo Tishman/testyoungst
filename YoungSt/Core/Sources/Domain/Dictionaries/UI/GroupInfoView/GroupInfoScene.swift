@@ -127,6 +127,7 @@ struct GroupInfoScene: View {
                             .frame(minHeight: InaccentButtonStyle.defaultSize)
 
                         HStack {
+                            Spacer()
                             Button {
                                 withAnimation(Self.controlsToggle) {
                                     viewStore.send(.editCancelled)
@@ -155,7 +156,7 @@ struct GroupInfoScene: View {
                         .overlay(
                             Group {
                                 if editInfo.isLoading {
-                                    IndicatorView(size: DefaultSize.mediumButton, paddingValue: .spacing(.ultraSmall))
+                                    PlainIndicatorView(size: DefaultSize.mediumButton, paddingValue: 0)
                                         .frame(maxWidth: .infinity, alignment: .trailing)
                                 }
                             }

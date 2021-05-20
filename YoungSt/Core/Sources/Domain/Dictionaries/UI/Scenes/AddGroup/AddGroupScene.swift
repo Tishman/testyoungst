@@ -9,7 +9,7 @@ import SwiftUI
 import Resources
 import Utilities
 import ComposableArchitecture
-import Liquid
+import Meshy
 import Coordinator
 
 struct AddGroupScene: View {
@@ -79,11 +79,11 @@ struct AddGroupScene: View {
                     $0.keyboardDismissMode = .interactive
                 }
                 
-                WithViewStore(store.stateless) { viewStore in
+                WithViewStore(store.scope(state: \.isLoading)) { viewStore in
                     Button { viewStore.send(.addGroupPressed) } label: {
                         Text(Localizable.addGroupAction)
                     }
-                    .buttonStyle(RoundedButtonStyle(style: .filled))
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
                 }
                 .padding(.bottom)
                 .greedy(aligningContentTo: .bottom)

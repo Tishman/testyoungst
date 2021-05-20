@@ -47,12 +47,12 @@
         }
       },
       {
-        "package": "Liquid",
-        "repositoryURL": "https://github.com/Nekitosss/liquid.git",
+        "package": "Meshy",
+        "repositoryURL": "https://github.com/Nekitosss/meshy.git",
         "state": {
           "branch": null,
-          "revision": "06fe4223ada1d44879b7815c0d11da733bd97614",
-          "version": "0.0.4"
+          "revision": "f4fca4087b22b515d3715931d6a697e2692d4bf5",
+          "version": "0.0.1"
         }
       },
       {

@@ -62,7 +62,7 @@ struct AddWordScene: View {
                         Button { viewStore.send(.addPressed) } label: {
                             Text(viewStore.editingMode ? Localizable.editWordTitle : Localizable.addWordAction)
                         }
-                        .buttonStyle(RoundedButtonStyle(style: .filled))
+                        .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
                         .padding(.bottom)
                         .greedy(aligningContentTo: .bottom)
                     }

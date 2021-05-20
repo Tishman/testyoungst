@@ -23,8 +23,10 @@ struct StrokedBubbleModifier: ViewModifier {
             )
             .overlay(
                 bubble
-                    .stroke(borderColor, lineWidth: lineWidth)
+                    .strokeBorder(lineWidth: lineWidth)
+                    .foregroundColor(borderColor)
             )
+            .clipShape(bubble)
     }
 }
 

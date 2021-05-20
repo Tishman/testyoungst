@@ -31,16 +31,10 @@ struct EditProfileScene: View {
                     .introspectScrollView { $0.keyboardDismissMode = .interactive }
                     
                     WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                        if viewStore.state {
-                            IndicatorView()
-                        }
-                    }
-                    
-                    WithViewStore(store.stateless) { viewStore in
                         Button { viewStore.send(.editProfileTriggered) } label: {
                             Text(Localizable.editProfileAction)
                         }
-                        .buttonStyle(RoundedButtonStyle(style: .filled))
+                        .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
                     }
                     .padding(.bottom)
                     .greedy(aligningContentTo: .bottom)
@@ -89,16 +83,10 @@ struct FinishProfileUpdatingScene: View {
                     .introspectScrollView { $0.keyboardDismissMode = .interactive }
                     
                     WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                        if viewStore.state {
-                            IndicatorView()
-                        }
-                    }
-                    
-                    WithViewStore(store.stateless) { viewStore in
                         Button { viewStore.send(.editProfileTriggered) } label: {
                             Text(Localizable.editProfileAction)
                         }
-                        .buttonStyle(RoundedButtonStyle(style: .filled))
+                        .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
                     }
                     .padding(.bottom)
                     .greedy(aligningContentTo: .bottom)

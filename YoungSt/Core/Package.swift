@@ -50,7 +50,7 @@ enum ExternalDependecy {
     case composableArchitecture
     case keychain
     case introspect
-    case liquid
+    case meshy
     
     var product: Target.Dependency {
         switch self {
@@ -68,8 +68,8 @@ enum ExternalDependecy {
             return .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
         case .introspect:
             return "Introspect"
-        case .liquid:
-            return "Liquid"
+        case .meshy:
+            return "Meshy"
         }
     }
 }
@@ -86,7 +86,7 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),
         .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3"),
-        .package(name: "Liquid", url: "https://github.com/Nekitosss/liquid.git", from: "0.0.4"),
+        .package(name: "Meshy", url: "https://github.com/Nekitosss/meshy.git", from: "0.0.1"),
     ],
     targets: [
         .target(name: CorePackage.dictionaries.rawValue,
@@ -97,7 +97,7 @@ let package = Package(
                     ExternalDependecy.diTranquillity.product,
                     ExternalDependecy.composableArchitecture.product,
                     ExternalDependecy.introspect.product,
-                    ExternalDependecy.liquid.product,
+                    ExternalDependecy.meshy.product,
                 ],
                 path: CorePackage.dictionaries.path),
         .target(name: CorePackage.profile.rawValue,

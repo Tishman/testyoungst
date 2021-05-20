@@ -42,7 +42,7 @@ struct ConfrimCodeView: View {
 				Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
 					Text(Constants.Text.verify)
 				})
-				.buttonStyle(RoundedButtonStyle(style: .filled))
+                .buttonStyle(RoundedButtonStyle(style: .filled))
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}
