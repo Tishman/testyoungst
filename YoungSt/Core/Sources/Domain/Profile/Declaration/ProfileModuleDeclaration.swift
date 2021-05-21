@@ -26,11 +26,9 @@ final class ProfileModuleDeclaration: DIPart, ModuleStoreProvider {
         container.register(ProfileEnvironment.init)
         
         container.register { env in { input in
-            NavigationView {
-                ViewHolder(storeProvider: ProfileModuleDeclaration(environment: env, input: input),
-                           content: ProfileScene.init)
-            }
-            .erased
+            ViewHolder(storeProvider: ProfileModuleDeclaration(environment: env, input: input),
+                       content: ProfileScene.init)
+                .erased
         }
         }
     }

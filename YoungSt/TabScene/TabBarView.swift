@@ -9,30 +9,33 @@ import SwiftUI
 import Resources
 
 struct TabItem {
-    enum Identifier: Hashable {
+    enum Identifier: Int, Hashable {
         case dictionaries
         case profile
+        
+        var title: String {
+            switch self {
+            case .dictionaries:
+                return Localizable.dictionaries
+            case .profile:
+                return Localizable.profile
+            }
+        }
+        
+        var imageName: String {
+            switch self {
+            case .dictionaries:
+                return "rectangle.stack"
+            case .profile:
+                return "person.circle"
+            }
+        }
     }
     
     let id: Identifier
     
-    var title: String {
-        switch id {
-        case .dictionaries:
-            return Localizable.dictionaries
-        case .profile:
-            return Localizable.profile
-        }
-    }
-    
-    var imageName: String {
-        switch id {
-        case .dictionaries:
-            return "rectangle.stack"
-        case .profile:
-            return "person.circle"
-        }
-    }
+    var title: String { id.title }
+    var imageName: String { id.imageName }
     
     var accentImageName: String {
         switch id {

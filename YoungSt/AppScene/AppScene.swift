@@ -96,11 +96,11 @@ final class AppViewController: UIViewController {
     }
     
     private func setAuthorizedState(userID: UUID) {
-        let tab = TabController(coordinator: coordinator,
-                                store: .init(initialState: .init(userID: userID),
-                                             reducer: tabReducer,
-                                             environment: ()))
-        ViewEmbedder.embed(child: tab, to: self)
+        let container = NativeApplicationContainerView(coordinator: coordinator,
+                                           store: .init(initialState: .init(userID: userID),
+                                                        reducer: tabReducer,
+                                                        environment: ()))
+        ViewEmbedder.embed(child: container.uiKitHosted, to: self)
     }
     
     private func setLoginState() {

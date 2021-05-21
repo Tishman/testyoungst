@@ -12,8 +12,154 @@ import Resources
 import ComposableArchitecture
 import Combine
 import Utilities
+import Introspect
 
-final class TabController: UIViewController {
+extension View {
+    public func introspectSplitViewController(customize: @escaping (UISplitViewController) -> ()) -> some View {
+        return inject(UIKitIntrospectionViewController(
+            selector: { introspectionViewController in
+                // Search in ancestors
+                if let splitController = introspectionViewController.splitViewController {
+                    return splitController
+                }
+                
+                // Search in siblings
+                return Introspect.previousSibling(containing: UISplitViewController.self, from: introspectionViewController)
+            },
+            customize: customize
+        ))
+    }
+}
+
+final class SplitControllerDelegate: NSObject, ObservableObject, UISplitViewControllerDelegate {
+    
+//    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
+//        return .supplementary
+//    }
+    
+}
+
+struct NativeApplicationContainerView: View {
+    
+    let coordinator: Coordinator
+    let store: Store<TabState, TabAction>
+    
+    @StateObject private var splitDelegate = SplitControllerDelegate()
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    var body: some View {
+        content
+            .edgesIgnoringSafeArea(.all)
+    }
+    
+    @ViewBuilder private var content: some View {
+        if horizontalSizeClass == .regular {
+            NavigationView {
+                Text("123")
+                    .introspectSplitViewController(customize: configure)
+                
+                WithViewStore(store) { viewStore in
+                    switch viewStore.selectedTab {
+                        case .dictionaries:
+                            coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
+                        case .profile:
+                            coordinator.view(for: .profile(.init(userID: viewStore.userID)))
+                    }
+                }
+                .frame(minWidth: 320)
+                .introspectSplitViewController(customize: configure)
+                
+                
+                EmptyView()
+                    .introspectSplitViewController(customize: configure)
+            }
+        } else {
+            compactTabView
+        }
+    }
+    
+    private func configure(split: UISplitViewController) {
+        
+        guard split.delegate !== splitDelegate else { return }
+        
+        split.preferredDisplayMode = .oneBesideSecondary
+        split.preferredSplitBehavior = .tile
+    }
+    
+    private var compactTabView: some View {
+        WithViewStore(store) { viewStore in
+            TabView(selection: viewStore.binding(get: \.selectedTab.rawValue, send: { .selectedTabShanged(.init(rawValue: $0)!) })) {
+                NavigationView {
+                    coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
+                }
+                .tabItem {
+                    Label(TabItem.Identifier.dictionaries.title,
+                          systemImage: TabItem.Identifier.dictionaries.imageName)
+                }
+                .tag(TabItem.Identifier.dictionaries.rawValue)
+                
+                NavigationView {
+                    coordinator.view(for: .profile(.init(userID: viewStore.userID)))
+                }
+                .tabItem {
+                    Label(TabItem.Identifier.profile.title,
+                          systemImage: TabItem.Identifier.profile.imageName)
+                }
+                .tag(TabItem.Identifier.profile.rawValue)
+            }
+        }
+    }
+    
+}
+
+struct ApplicationContainerView: UIViewControllerRepresentable {
+    
+    let coordinator: Coordinator
+    let store: Store<TabState, TabAction>
+    
+    func makeUIViewController(context: Context) -> ApplicationContainerController {
+        ApplicationContainerController(coordinator: coordinator, store: store)
+    }
+    
+    func updateUIViewController(_ uiViewController: ApplicationContainerController, context: Context) {
+        
+    }
+//
+//    func makeCoordinator() -> SplitCoordinator {
+//        .init(coordinator: coordinator, store: store, containerView: self)
+//    }
+//
+//    class SplitCoordinator: NSObject, UISplitViewControllerDelegate {
+//
+//        let coordinator: Coordinator
+//        let store: Store<TabState, TabAction>
+//        let viewStore: ViewStore<TabState, TabAction>
+//
+//        let containerView: ApplicationContainerView
+//
+//        var cancellable = Set<AnyCancellable>()
+//
+//        let dictionaries: UIViewController
+//        private let profile: UIViewController
+//
+//        init(coordinator: Coordinator, store: Store<TabState, TabAction>, containerView: ApplicationContainerView) {
+//            self.coordinator = coordinator
+//            self.store = store
+//            self.containerView = containerView
+//
+//            let viewStore = ViewStore(store)
+//            self.viewStore = viewStore
+//
+//            self.dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: viewStore.userID))).uiKitHosted)
+//
+//            self.profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: viewStore.userID))).uiKitHosted)
+//        }
+//    }
+}
+
+
+final class ApplicationContainerController: UIViewController {
     
     let coordinator: Coordinator
     let store: Store<TabState, TabAction>
@@ -21,8 +167,8 @@ final class TabController: UIViewController {
     
     var cancellable = Set<AnyCancellable>()
     
-    private let dictionaries: UIHostingController<NavigationView<AnyView>>
-    private let profile: UIHostingController<AnyView>
+    private let dictionaries: UIViewController
+    private let profile: UIViewController
     
     private let tabBarView: UIHostingController<AnyView>
     private var tabBarHeightConstraint: NSLayoutConstraint!
@@ -35,13 +181,9 @@ final class TabController: UIViewController {
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-        self.dictionaries =
-            NavigationView {
-                coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
-            }
-            .uiKitHosted
+        self.dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: viewStore.userID))).uiKitHosted)
         
-        self.profile = coordinator.view(for: .profile(.init(userID: viewStore.userID))).uiKitHosted
+        self.profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: viewStore.userID))).uiKitHosted)
         
         self.tabBarView = WithViewStore(store) { viewStore in
             TabBarView(leftItem: .init(id: .dictionaries, selectHandler: { viewStore.send(.selectedTabShanged(.dictionaries)) }),
