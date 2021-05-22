@@ -25,8 +25,8 @@ enum Constants {
 	}
 }
 
-struct ConfrimCodeView: View {
-	let store: Store<ConfrimCodeState, ConfrimCodeAction>
+struct ConfrimEmailScene: View {
+	let store: Store<ConfrimEmailState, ConfrimEmailAction>
 	
 	var body: some View {
 		WithViewStore(store) { viewStore in
@@ -34,8 +34,9 @@ struct ConfrimCodeView: View {
 				Spacer()
 				HeaderDescriptionView(title: Constants.Text.verification,
 									  subtitle: Constants.Text.emailSendedToConfrim)
-				ToggableTextEditingView(placholder: Localizable.enterCode,
-										text: viewStore.binding(get: \.code, send: ConfrimCodeAction.didCodeStartEnter))
+				ClearTextEditingView(placholder: Localizable.enterCode,
+									 text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
+									 status: .default)
 					.padding(.top, .spacing(.extraSize))
 					.padding(.horizontal, .spacing(.extraSize))
 				Spacer()
@@ -46,7 +47,7 @@ struct ConfrimCodeView: View {
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}
-			.alert(isPresented: viewStore.binding(get: \.isAlertPresent, send: ConfrimCodeAction.alertPresented), content: {
+			.alert(isPresented: viewStore.binding(get: \.isAlertPresent, send: ConfrimEmailAction.alertPresented), content: {
 				Alert(title: Text(Constants.Text.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.Text.ok)))
 			})
 		}
@@ -55,6 +56,6 @@ struct ConfrimCodeView: View {
 
 struct ConfrimCodeView_Previews: PreviewProvider {
     static var previews: some View {
-		ConfrimCodeView(store: .init(initialState: .init(userId: "123"), reducer: .empty, environment: ()))
+		ConfrimEmailScene(store: .init(initialState: .init(userId: "123"), reducer: .empty, environment: ()))
     }
 }

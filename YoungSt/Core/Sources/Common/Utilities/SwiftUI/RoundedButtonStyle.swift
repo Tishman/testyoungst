@@ -52,12 +52,16 @@ public struct RoundedButtonStyle: ButtonStyle {
     let style: StyleType
     let isLoading: Bool
     
+    @Environment(\.isEnabled) private var isEnabled
+    
     public func makeBody(configuration: Self.Configuration) -> some View {
         // ZStack for proper content identity
         ZStack {
             content(configuration: configuration)
         }
-        .bubbled(borderColor: style.borderColor, foregroundColor: style.foregroundColor, lineWidth: 2)
+        .bubbled(borderColor: style.borderColor.opacity(isEnabled ? 1 : 0.4),
+                 foregroundColor: style.foregroundColor.opacity(isEnabled ? 1 : 0.4),
+                 lineWidth: 2)
         .scaleEffect(configuration.isPressed ? 0.95 : 1)
         .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isLoading)
     }

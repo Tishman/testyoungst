@@ -14,6 +14,7 @@ struct LoginState: Equatable {
     var resetPasswordOpened = false
     var showPassword: Bool = false
     var isLoading = false
+	var forgotPasswordState: ForgotPasswordState?
     
     var alertState: AlertState<LoginAction>?
 }

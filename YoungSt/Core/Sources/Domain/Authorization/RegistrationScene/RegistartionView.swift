@@ -41,20 +41,24 @@ struct RegistrationView: View {
                         
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.big)) {
-                                ToggableTextEditingView(placholder: Constants.emailPlaceholder,
-                                                        text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged))
+                                ClearTextEditingView(placholder: Constants.emailPlaceholder,
+													 text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
+													 status: .success("sas"))
                                 
-                                ToggableTextEditingView(placholder: Constants.usernamePlaceholder,
-                                                        text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange))
+                                ClearTextEditingView(placholder: Constants.usernamePlaceholder,
+													 text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
+													 status: .default)
                                 
                                 ToggableSecureField(placholder: Constants.passwordPlaceholder,
-                                                    text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-                                                    showPassword: viewStore.isPasswordShowed,
+													text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
+													status: .success("ads"),
+													isPasswordHidden: viewStore.isPasswordShowed,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
                                 
                                 ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
-                                                    text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
-                                                    showPassword: viewStore.isConfrimPasswordShowed,
+													text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+													status: .default,
+													isPasswordHidden: viewStore.isConfrimPasswordShowed,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
                             }
                         }
@@ -87,7 +91,7 @@ struct RegistrationView: View {
     private var confirmCodeLink: some View {
         WithViewStore(store.scope(state: \.confrimCodeState)) { viewStore in
             NavigationLink.init(destination: IfLetStore(store.scope(state: \.confrimCodeState, action: RegistrationAction.confrimCode),
-                                                        then: ConfrimCodeView.init),
+                                                        then: ConfrimEmailScene.init),
                                 isActive: viewStore.binding(get: { $0 != nil }, send: RegistrationAction.confrimCodeClosed),
                                 label: {})
         }

@@ -55,7 +55,7 @@ final class AppViewController: UIViewController {
                 self?.handleChange(uiState: newUIState)
             }
             .store(in: &cancellables)
-        
+
         viewStore.publisher.map(\.deeplink)
             .compactMap { $0 }
             .sink { [weak self] deeplink in
@@ -76,14 +76,14 @@ final class AppViewController: UIViewController {
             let studentInviteVC = coordinator
                 .view(for: .studentInvite(.init(teacherID: teacherID, closeHandler: .init(closeHandler))))
                 .uiKitHosted
-            
+
             vc.value = studentInviteVC
             topViewController(root: self).present(studentInviteVC, animated: true) { [viewStore] in
                 viewStore.send(.deeplinkHandled)
             }
         }
     }
-    
+
     private func handleChange(uiState: AppState.UIState) {
         switch uiState {
         case let .authorized(userID):
@@ -94,7 +94,7 @@ final class AppViewController: UIViewController {
             setOnboardingState()
         }
     }
-    
+
     private func setAuthorizedState(userID: UUID) {
         let container = NativeApplicationContainerView(coordinator: coordinator,
                                            store: .init(initialState: .init(userID: userID),
@@ -108,7 +108,7 @@ final class AppViewController: UIViewController {
         let loginView = coordinator.view(for: .authorization(.default)).uiKitHosted
         ViewEmbedder.embed(child: loginView, to: self)
     }
-    
+
     private func setOnboardingState() {
         let onboarding = Text("Onboarding").uiKitHosted
         ViewEmbedder.embed(child: onboarding, to: self)
@@ -143,10 +143,10 @@ class ViewEmbedder {
         
         child.view.translatesAutoresizingMaskIntoConstraints = false
         layout(parent, child)
-        
+
         child.didMove(toParent: parent)
     }
-    
+
     class func embed(removing: Set<UIViewController>? = nil, child: UIViewController, to parent: UIViewController) {
         embed(removing: removing, child: child, to: parent) { parent, child in
             NSLayoutConstraint.activate([

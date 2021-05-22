@@ -1,5 +1,7 @@
 "inputTranslationPlacholder" = "Введите слово";
 "outputTranslationPlacholder" = "Результат";
+
+// Authorization
 "emailPlaceholder" = "E-mail";
 "passwordPlaceholder" = "Пароль";
 "usernamePlaceholder" = "Имя пользователя";
@@ -25,6 +27,16 @@
 "unknownError" = "Неизвестная ошибка";
 "cancel" = "Отмена";
 "delete" = "Удалить";
+"incorrectEmail" = "Неправильный e-mail";
+"forgotPasswordTitle" = "Забыли пароль?";
+"forgotPasswordSubtitle" = "Пожалуйста, укажите свой адрес электронной почты, который вы использовали для создания аккаунта и мы пришлем вам сслыку для восстановления пароль";
+"incorrectCode" = "Неверный код";
+"incorrectPassword" = "Неверный пароль";
+"passwordMismatch" = "Пароли не совпадают";
+"allCorrect" = "Всё правильно";
+"requiredField" = "Заполните обязательное поле";
+"sendCode" = "Отправить код";
+"resetPassword" = "Изменить пароль";
 "update" = "Обновить";
 
 // AddWord

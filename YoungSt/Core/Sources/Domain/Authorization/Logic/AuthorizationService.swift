@@ -19,9 +19,9 @@ protocol AuthorizationService: AnyObject {
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError>
     func logout() -> AnyPublisher<Void, Error>
     func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError>
-    func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<Void, InitResetPasswordError>
+    func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<EmptyResponse, InitResetPasswordError>
     func checkResetPassword(request: Authorization_ResetPasswordCheckRequest) -> AnyPublisher<Bool, CheckResetPasswordError>
-    func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<Void, ResetPasswordError>
+    func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<EmptyResponse, ResetPasswordError>
 }
 
 final class AuthorizationServiceImpl: AuthorizationService {
@@ -91,9 +91,9 @@ final class AuthorizationServiceImpl: AuthorizationService {
             .eraseToAnyPublisher()
     }
     
-    func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<Void, InitResetPasswordError> {
+    func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<EmptyResponse, InitResetPasswordError> {
         return client.initResetPassword(request).response.publisher
-            .map(toVoid)
+            .map(toEmpty)
             .mapError(InitResetPasswordError.init(error:))
             .eraseToAnyPublisher()
     }
@@ -105,9 +105,9 @@ final class AuthorizationServiceImpl: AuthorizationService {
             .eraseToAnyPublisher()
     }
     
-    func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<Void, ResetPasswordError> {
+    func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<EmptyResponse, ResetPasswordError> {
         return client.resetPassword(request).response.publisher
-            .map(toVoid)
+            .map(toEmpty)
             .mapError(ResetPasswordError.init(error:))
             .eraseToAnyPublisher()
     }

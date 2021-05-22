@@ -1,5 +1,7 @@
 "inputTranslationPlacholder" = "Enter word";
 "outputTranslationPlacholder" = "Result here";
+
+// Authorization
 "emailPlaceholder" = "E-mail";
 "passwordPlaceholder" = "Password";
 "usernamePlaceholder" = "Username";
@@ -25,6 +27,16 @@
 "unknownError" = "Unknown error";
 "cancel" = "Cancel";
 "delete" = "Delete";
+"incorrectEmail" = "Incorrect e-mail";
+"forgotPasswordTitle" = "Forgot password?";
+"forgotPasswordSubtitle" = "Please enter your email address that you used to create your account and we will send you a link to recover your password.";
+"incorrectCode" = "Incorrect code";
+"incorrectPassword" = "Incorrect password";
+"passwordMismatch" = "Passwords mismatch";
+"allCorrect" = "Everything is correct";
+"requiredField" = "Required field";
+"sendCode" = "Send code";
+"resetPassword" = "Reset password";
 "update" = "Update";
 
 // AddWord
