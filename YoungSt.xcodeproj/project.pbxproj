@@ -48,6 +48,7 @@
 		FD4337CC263E9EFB00FA6DCE /* AppScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScene.swift; sourceTree = "<group>"; };
 		FD4337D2263EA4FB00FA6DCE /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
 		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
+		FDD32C1F2657BE97001DE446 /* YoungSt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YoungSt.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +95,7 @@
 		0C34921C2592001900F729C4 /* YoungSt */ = {
 			isa = PBXGroup;
 			children = (
+				FDD32C1F2657BE97001DE446 /* YoungSt.entitlements */,
 				FD27500F263FEE3E00B12EDB /* TabScene */,
 				FD4337CB263E9EDC00FA6DCE /* AppScene */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
@@ -368,7 +370,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YoungSt/YoungSt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
@@ -383,8 +387,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.yougst.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Vyoungst Dev";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Youngst Dev Catalyst";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -393,7 +399,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YoungSt/YoungSt.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
@@ -408,8 +416,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.yougst.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Vyoungst App Store";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "Youngst Dev Catalyst";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};

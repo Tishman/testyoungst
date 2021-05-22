@@ -31,20 +31,21 @@ extension View {
     }
 }
 
-final class SplitControllerDelegate: NSObject, ObservableObject, UISplitViewControllerDelegate {
-    
-//    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
-//        return .supplementary
-//    }
-    
-}
-
 struct NativeApplicationContainerView: View {
+    internal init(coordinator: Coordinator, store: Store<TabState, TabAction>, userID: UUID) {
+        self.coordinator = coordinator
+        self.store = store
+        
+        dictionariesView = coordinator.view(for: .dictionaries(.init(userID: userID)))
+        currentProfileView = coordinator.view(for: .profile(.init(userID: userID)))
+    }
+    
     
     let coordinator: Coordinator
     let store: Store<TabState, TabAction>
     
-    @StateObject private var splitDelegate = SplitControllerDelegate()
+    let dictionariesView: AnyView
+    let currentProfileView: AnyView
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -56,21 +57,39 @@ struct NativeApplicationContainerView: View {
     @ViewBuilder private var content: some View {
         if horizontalSizeClass == .regular {
             NavigationView {
-                Text("123")
-                    .introspectSplitViewController(customize: configure)
-                
+                WithViewStore(store) { viewStore in
+                    List {
+                        NavigationLink(destination: dictionariesView,
+                                       tag: TabItem.Identifier.dictionaries,
+                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
+                                       label: {
+                                        Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
+                                       })
+                        
+                        NavigationLink(destination: currentProfileView,
+                                       tag: TabItem.Identifier.profile,
+                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
+                                       label: {
+                                        Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
+                                       })
+                    }
+                }
+                .listStyle(SidebarListStyle())
+                .introspectSplitViewController(customize: configure)
+                .navigationTitle("YoungSt")
+
                 WithViewStore(store) { viewStore in
                     switch viewStore.selectedTab {
                         case .dictionaries:
-                            coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
+                            dictionariesView
                         case .profile:
-                            coordinator.view(for: .profile(.init(userID: viewStore.userID)))
+                            currentProfileView
                     }
                 }
                 .frame(minWidth: 320)
                 .introspectSplitViewController(customize: configure)
-                
-                
+
+
                 EmptyView()
                     .introspectSplitViewController(customize: configure)
             }
@@ -80,9 +99,6 @@ struct NativeApplicationContainerView: View {
     }
     
     private func configure(split: UISplitViewController) {
-        
-        guard split.delegate !== splitDelegate else { return }
-        
         split.preferredDisplayMode = .oneBesideSecondary
         split.preferredSplitBehavior = .tile
     }
@@ -91,7 +107,7 @@ struct NativeApplicationContainerView: View {
         WithViewStore(store) { viewStore in
             TabView(selection: viewStore.binding(get: \.selectedTab.rawValue, send: { .selectedTabShanged(.init(rawValue: $0)!) })) {
                 NavigationView {
-                    coordinator.view(for: .dictionaries(.init(userID: viewStore.userID)))
+                    dictionariesView
                 }
                 .tabItem {
                     Label(TabItem.Identifier.dictionaries.title,
@@ -100,62 +116,15 @@ struct NativeApplicationContainerView: View {
                 .tag(TabItem.Identifier.dictionaries.rawValue)
                 
                 NavigationView {
-                    coordinator.view(for: .profile(.init(userID: viewStore.userID)))
+                    currentProfileView
                 }
                 .tabItem {
-                    Label(TabItem.Identifier.profile.title,
-                          systemImage: TabItem.Identifier.profile.imageName)
+                    Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
                 }
                 .tag(TabItem.Identifier.profile.rawValue)
             }
         }
     }
-    
-}
-
-struct ApplicationContainerView: UIViewControllerRepresentable {
-    
-    let coordinator: Coordinator
-    let store: Store<TabState, TabAction>
-    
-    func makeUIViewController(context: Context) -> ApplicationContainerController {
-        ApplicationContainerController(coordinator: coordinator, store: store)
-    }
-    
-    func updateUIViewController(_ uiViewController: ApplicationContainerController, context: Context) {
-        
-    }
-//
-//    func makeCoordinator() -> SplitCoordinator {
-//        .init(coordinator: coordinator, store: store, containerView: self)
-//    }
-//
-//    class SplitCoordinator: NSObject, UISplitViewControllerDelegate {
-//
-//        let coordinator: Coordinator
-//        let store: Store<TabState, TabAction>
-//        let viewStore: ViewStore<TabState, TabAction>
-//
-//        let containerView: ApplicationContainerView
-//
-//        var cancellable = Set<AnyCancellable>()
-//
-//        let dictionaries: UIViewController
-//        private let profile: UIViewController
-//
-//        init(coordinator: Coordinator, store: Store<TabState, TabAction>, containerView: ApplicationContainerView) {
-//            self.coordinator = coordinator
-//            self.store = store
-//            self.containerView = containerView
-//
-//            let viewStore = ViewStore(store)
-//            self.viewStore = viewStore
-//
-//            self.dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: viewStore.userID))).uiKitHosted)
-//
-//            self.profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: viewStore.userID))).uiKitHosted)
-//        }
-//    }
 }
 
 

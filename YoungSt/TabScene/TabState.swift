@@ -15,7 +15,7 @@ struct TabState: Equatable {
 }
 
 enum TabAction: Equatable {
-    case selectedTabShanged(TabItem.Identifier)
+    case selectedTabShanged(TabItem.Identifier?)
     case addWordOpened(Bool)
     case mainButtonPressed
 }

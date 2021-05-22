@@ -65,20 +65,30 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             state.currentProfileState.infoState = .infoProvided(.init(firstName: result.profile.firstName,
                                                                       lastName: result.profile.lastName))
             
-        case .fillProfileInfo(.closeSceneTriggered), .fillInfoClosed:
-            state.fillInfoState = nil
+        case .changeDetail(.editProfile):
+            state.detailState = .editProfile(state.editProfileState ?? .init(shouldFetchProfile: true))
             
-        case .editProfile(.closeSceneTriggered), .editProfileClosed:
-            state.editProfileState = nil
+        case .changeDetail(.fillInfo):
+            state.detailState = .fillInfo(state.fillInfoState ?? .init(shouldFetchProfile: false))
+            
+        case .changeDetail(.shareProfile):
+            state.detailState = .shareProfile(state.shareProfileState ?? .init(userID: state.userID))
+            
+        case let .changeDetail(.openStudent(id)):
+            state.detailState = .openedStudent(id)
+            
+        case .changeDetail(.closed): break
+            
+        case //.changeDetail(.closed),
+             .editProfile(.closeSceneTriggered),
+             .fillProfileInfo(.closeSceneTriggered):
+            state.detailState = nil
+            
+        case let .studentsInfo(.studentOpened(id)):
+            return .init(value: .changeDetail(.openStudent(id)))
             
         case .currentProfile(.editInfoOpened):
-            state.fillInfoState = .init(shouldFetchProfile: false)
-            
-        case .editProfileOpened:
-            state.editProfileState = .init(shouldFetchProfile: true)
-            
-        case let .shareProfileOpened(isOpened):
-            state.shareProfileState = isOpened ? .init(userID: state.userID) : nil
+            return .init(value: .changeDetail(.fillInfo))
             
         case .logout:
             env.credentialsService.clearCredentials()
@@ -89,3 +99,4 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         return .none
     }
 )
+.debugActions()

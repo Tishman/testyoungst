@@ -64,8 +64,8 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
             state.studentsInvites.remove(id: id)
             return .init(value: .updateList)
             
-        case let .studentOpened(studentID):
-            state.openedStudent = studentID
+        case .studentOpened:
+            break
             
         case let .removeStudentTriggered(studentID):
             let request = Profile_RemoveStudentRequest.with {

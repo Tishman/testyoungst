@@ -58,6 +58,13 @@ struct ProfileState: Equatable, Previwable {
         }
     }
     
+    enum DetailState: Equatable {
+        case fillInfo(EditProfileState)
+        case editProfile(EditProfileState)
+        case shareProfile(ShareProfileState)
+        case openedStudent(UUID)
+    }
+    
     let userID: UUID
     var currentProfileState: CurrentProfileState
     
@@ -69,14 +76,107 @@ struct ProfileState: Equatable, Previwable {
     var profileType: ProfileTypeState = .student
     var selectedTab: Tab = .settings
     
-    var fillInfoState: EditProfileState?
-    var editProfileState: EditProfileState?
-    var shareProfileState: ShareProfileState?
+    var detailState: DetailState?
     
     var teacherInfoState: TeacherInfoState = .loading
     var studentsInfoState: StudentsInfoState = .init()
     
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
+}
+
+extension ProfileState {
+    
+    var fillInfoState: EditProfileState? {
+        get {
+            switch detailState {
+            case let .fillInfo(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .fillInfo:
+                detailState = .fillInfo(newValue)
+            default:
+                break
+            }
+        }
+    }
+    
+    var editProfileState: EditProfileState? {
+        get {
+            switch detailState {
+            case let .editProfile(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .editProfile:
+                detailState = .editProfile(newValue)
+            default:
+                break
+            }
+        }
+    }
+    
+    var shareProfileState: ShareProfileState? {
+        get {
+            switch detailState {
+            case let .shareProfile(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .shareProfile:
+                detailState = .shareProfile(newValue)
+            default:
+                break
+            }
+        }
+    }
+    
+    var studentInfoState: UUID? {
+        get {
+            switch detailState {
+            case let .openedStudent(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .openedStudent:
+                detailState = .openedStudent(newValue)
+            default:
+                break
+            }
+        }
+    }
 }
 
 enum ProfileAction: Equatable {
@@ -93,10 +193,16 @@ enum ProfileAction: Equatable {
     case studentsInfo(StudentsInfoAction)
     case shareProfile(ShareProfileAction)
     
-    case editProfileOpened
-    case fillInfoClosed
-    case editProfileClosed
-    case shareProfileOpened(Bool)
+    
+    enum DetailState: Equatable {
+        case closed
+        case editProfile
+        case fillInfo
+        case shareProfile
+        case openStudent(UUID)
+    }
+    
+    case changeDetail(DetailState)
     
     case logout
 }

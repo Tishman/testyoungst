@@ -31,7 +31,7 @@ struct GroupInfoScene: View {
     
     var body: some View {
         GeometryReader { globalProxy in
-            WithViewStore(store.stateless) { viewStore in
+            WithViewStore(store.scope(state: \.id)) { viewStore in
                 ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         topGroupInfo
@@ -49,6 +49,7 @@ struct GroupInfoScene: View {
                         }
                         .padding([.top, .horizontal])
                     }
+                    .onChange(of: viewStore.state) { _ in viewStore.send(.refreshList) }
                     .addRefreshToScrollView { viewStore.send(.refreshList) }
                     
                     WithViewStore(store.scope(state: \.isLoading)) { viewStore in

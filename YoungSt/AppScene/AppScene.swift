@@ -99,7 +99,8 @@ final class AppViewController: UIViewController {
         let container = NativeApplicationContainerView(coordinator: coordinator,
                                            store: .init(initialState: .init(userID: userID),
                                                         reducer: tabReducer,
-                                                        environment: ()))
+                                                        environment: ()),
+                                           userID: userID)
         ViewEmbedder.embed(child: container.uiKitHosted, to: self)
     }
     

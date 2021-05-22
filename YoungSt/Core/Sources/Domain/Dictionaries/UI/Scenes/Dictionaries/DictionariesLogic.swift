@@ -146,6 +146,30 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 break
             }
             
+        case let .wordSelected(item):
+            let group = state.groups.first(where: { $0.id == item.groupID })
+            state.addWordState = .init(input: .init(closeHandler: .init{},
+                                                    semantic: .addToServer,
+                                                    userID: state.userID,
+                                                    groupSelectionEnabled: true,
+                                                    model: .init(word: item, group: group)),
+                                       sourceLanguage: env.languageProvider.sourceLanguage,
+                                       destinationLanguage: env.languageProvider.destinationLanguage)
+            
+        case let .changeDetail(.group(id)):
+            guard id != state.groupInfoState?.id,
+                  let groupItem = state.groups.first(where: { $0.id == id })
+            else { break }
+            
+            state.detailState = .groupInfo(.init(userID: state.userID, info: .item(groupItem)))
+            
+        case .changeDetail(.addGroup):
+            guard state.addGroupState == nil else { break }
+            state.detailState = .addGroup(.init(userID: state.userID))
+            
+        case .changeDetail(.closed):
+            state.detailState = nil
+            
         case let .addWordOpened(isOpened):
             if isOpened {
                 state.addWordState = .init(info: .init(closeHandler: .init {},
@@ -159,28 +183,6 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 state.addWordState = nil
             }
             
-        case let .wordSelected(item):
-            let group = state.groups.first(where: { $0.id == item.groupID })
-            state.addWordState = .init(input: .init(closeHandler: .init{},
-                                                    semantic: .addToServer,
-                                                    userID: state.userID,
-                                                    groupSelectionEnabled: true,
-                                                    model: .init(word: item, group: group)),
-                                       sourceLanguage: env.languageProvider.sourceLanguage,
-                                       destinationLanguage: env.languageProvider.destinationLanguage)
-            
-        case let .addGroupOpened(isOpened):
-            if isOpened {
-                state.addGroupState = .init(userID: state.userID)
-            } else {
-                state.addGroupState = nil
-            }
-        case let .openGroup(groupId):
-            if let groupId = groupId, let groupItem = state.groups.first(where: { $0.id == groupId }) {
-                state.groupInfoState = .init(userID: state.userID, info: .item(groupItem))
-            } else {
-                state.groupInfoState = nil
-            }
         case .addWord(.closeSceneTriggered):
             state.addWordState = nil
             

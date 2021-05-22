@@ -18,7 +18,6 @@ struct StudentsInfoState: Equatable {
     
     var isLoading = false
     var alert: AlertState<StudentsInfoAction>?
-    var openedStudent: UUID?
     
     var shouldShowLoader: Bool {
         isLoading && studentsInvites.isEmpty && students.isEmpty
@@ -30,7 +29,7 @@ enum StudentsInfoAction: Equatable {
     case updateList
     case alertClosed
     
-    case studentOpened(UUID?)
+    case studentOpened(UUID)
     case removeStudentTriggered(UUID)
     
     case studentRemove(Result<UUID, EquatableError>)

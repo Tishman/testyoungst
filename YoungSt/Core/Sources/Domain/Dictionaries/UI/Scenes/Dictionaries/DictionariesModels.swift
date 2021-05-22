@@ -12,8 +12,13 @@ import Protocols
 
 struct DictionariesState: Equatable, Previwable {
     
-    var addGroupState: AddGroupState?
-    var groupInfoState: GroupInfoState?
+    enum DetailState: Equatable {
+        case addGroup(AddGroupState)
+        case groupInfo(GroupInfoState)
+    }
+    
+    var detailState: DetailState?
+    
     var addWordState: AddWordState?
     
     let userID: UUID
@@ -34,6 +39,54 @@ struct DictionariesState: Equatable, Previwable {
     static var preview: DictionariesState = .init(userID: .init(),
                                                   groups: [DictGroupItem.preview],
                                                   words: [DictWordItem.preview])
+}
+
+extension DictionariesState {
+    var addGroupState: AddGroupState? {
+        get {
+            switch detailState {
+            case let .addGroup(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .addGroup:
+                detailState = .addGroup(newValue)
+            default:
+                break
+            }
+        }
+    }
+    
+    var groupInfoState: GroupInfoState? {
+        get {
+            switch detailState {
+            case let .groupInfo(state):
+                return state
+            default:
+                return nil
+            }
+        }
+        set {
+            guard let newValue = newValue else {
+                detailState = nil
+                return
+            }
+            switch detailState {
+            case .groupInfo:
+                detailState = .groupInfo(newValue)
+            default:
+                break
+            }
+        }
+    }
 }
 
 enum DictionariesAction: Equatable {
@@ -59,7 +112,6 @@ enum DictionariesAction: Equatable {
     case wordsUpdated(UpdateWordsResult)
     case alertClosed
     case addWordOpened(Bool)
-    case addGroupOpened(Bool)
     case showAlert(String)
     case wordSelected(DictWordItem)
     
@@ -71,7 +123,13 @@ enum DictionariesAction: Equatable {
     
     case wordDeleted(DeleteWordResult)
     
-    case openGroup(UUID?)
+    case changeDetail(DetailState)
+    
+    enum DetailState: Equatable {
+        case closed
+        case group(UUID)
+        case addGroup
+    }
     
     case groupInfo(GroupInfoAction)
     case addGroup(AddGroupAction)

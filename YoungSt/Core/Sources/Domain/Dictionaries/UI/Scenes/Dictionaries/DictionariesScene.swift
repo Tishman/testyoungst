@@ -80,9 +80,8 @@ struct DictionariesScene: View {
                 addGroupButton
             }
         }
-        .background(addGroupLink)
         .background(addWordLink)
-        .background(groupInfoLink)
+        .background(detailNavigationLink)
         .fixNavigationLinkForIOS14_5()
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("Home")
@@ -93,13 +92,13 @@ struct DictionariesScene: View {
         WithViewStore(store) { viewStore in
             if viewStore.groups.isEmpty {
                 emptyPlaceholder(text: Localizable.emptyGroupsPlaceholder) {
-                    viewStore.send(.addGroupOpened(true))
+                    viewStore.send(.changeDetail(.addGroup))
                 }
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
                         ForEach(viewStore.groups) { element in
-                            Button { viewStore.send(.openGroup(element.id)) } label: {
+                            Button { viewStore.send(.changeDetail(.group(element.id))) } label: {
                                 DictGroupView(id: element.id, size: .small, state: element.state)
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -112,12 +111,26 @@ struct DictionariesScene: View {
         .frame(height: DictGroupView.Size.small.value, alignment: .top)
     }
     
-    private var groupInfoLink: some View {
-        WithViewStore(store.scope(state: \.groupInfoState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
-                                                   then: GroupInfoScene.init),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: .openGroup(nil)),
+    private var detailNavigationLink: some View {
+        WithViewStore(store.scope(state: \.detailState)) { viewStore in
+            NavigationLink(destination: linkDetailDestination,
+                           isActive: viewStore.binding(get: { $0 != nil }, send: .changeDetail(.closed)),
                            label: {})
+        }
+    }
+    
+    private var linkDetailDestination: some View {
+        WithViewStore(store.scope(state: \.detailState)) { viewStore in
+            switch viewStore.state {
+            case .addGroup:
+                IfLetStore(store.scope(state: \.addGroupState, action: DictionariesAction.addGroup),
+                           then: AddGroupScene.init)
+            case .groupInfo:
+                IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
+                           then: GroupInfoScene.init)
+            case .none:
+                EmptyView()
+            }
         }
     }
     
@@ -173,18 +186,9 @@ struct DictionariesScene: View {
         .padding(.top, .spacing(.regular))
     }
     
-    private var addGroupLink: some View {
-        WithViewStore(store.scope(state: \.addGroupState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.addGroupState, action: DictionariesAction.addGroup),
-                                                   then: AddGroupScene.init),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addGroupOpened),
-                           label: {})
-        }
-    }
-    
     private var addGroupButton: some View {
         WithViewStore(store.scope(state: \.addGroupState)) { viewStore in
-            Button { viewStore.send(.addGroupOpened(true)) } label: {
+            Button { viewStore.send(.changeDetail(.addGroup)) } label: {
                 Image(systemName: "plus.app")
             }
             .frame(width: DefaultSize.navigationBarButton,

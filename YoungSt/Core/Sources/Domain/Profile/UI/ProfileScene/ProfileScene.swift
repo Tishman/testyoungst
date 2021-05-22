@@ -42,14 +42,14 @@ struct ProfileScene: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         if viewStore.currentProfileState.isInfoProvided {
-                            Button { viewStore.send(.editProfileOpened) } label: {
+                            Button { viewStore.send(.changeDetail(.editProfile)) } label: {
                                 Image(systemName: "pencil.circle")
                             }
                         }
                     }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.shareProfileOpened(true)) } label: {
+                        Button { viewStore.send(.changeDetail(.shareProfile)) } label: {
                             Image(systemName: "square.and.arrow.up")
                         }
                     }
@@ -57,54 +57,40 @@ struct ProfileScene: View {
             }
         }
         .fixNavigationLinkForIOS14_5()
-        .background(fillInfoLink)
-        .background(editProfileLink)
-        .background(shareProfileLink)
-        .background(openedStudentLink)
+        .background(detailNavigationLink)
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    private var shareProfileLink: some View {
-        WithViewStore(store.scope(state: \.shareProfileState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.shareProfileState, action: ProfileAction.shareProfile),
-                                                   then: ShareProfileScene.init),
-                           isActive: viewStore.binding(get: { $0 != nil },
-                                                       send: .shareProfileOpened(false)),
+    private var detailNavigationLink: some View {
+        WithViewStore(store.scope(state: \.detailState)) { viewStore in
+            NavigationLink(destination: linkDetailDestination,
+                           isActive: viewStore.binding(get: { $0 != nil }, send: .changeDetail(.closed)),
                            label: {})
+                .isDetailLink(false)
         }
     }
     
-    private var fillInfoLink: some View {
-        WithViewStore(store.scope(state: \.fillInfoState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.fillInfoState, action: ProfileAction.fillProfileInfo),
-                                                   then: FinishProfileUpdatingScene.init),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: ProfileAction.fillInfoClosed),
-                           label: {})
-        }
-    }
-    
-    private var editProfileLink: some View {
-        WithViewStore(store.scope(state: \.editProfileState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.editProfileState, action: ProfileAction.editProfile),
-                                                   then: EditProfileScene.init),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: ProfileAction.editProfileClosed),
-                           label: {})
-        }
-        
-    }
-    private var openedStudentLink: some View {
-        WithViewStore(store.scope(state: \.studentsInfoState.openedStudent)) { viewStore in
-            NavigationLink(destination: openedStudentView,
-                           isActive: viewStore.binding(get: { $0 != nil }, send: .studentsInfo(.studentOpened(nil))),
-                           label: {})
-        }
-    }
-    
-    private var openedStudentView: some View {
-        IfLetStore(store.scope(state: \.studentsInfoState.openedStudent)) { store in
-            WithViewStore(store) { viewStore in
-                coordinator.view(for: .dictionaries(.init(userID: viewStore.state)))
+    private var linkDetailDestination: some View {
+        WithViewStore(store.scope(state: \.detailState)) { viewStore in
+            switch viewStore.state {
+            case .shareProfile:
+                IfLetStore(store.scope(state: \.shareProfileState, action: ProfileAction.shareProfile),
+                                                       then: ShareProfileScene.init)
+            case .fillInfo:
+                IfLetStore(store.scope(state: \.fillInfoState, action: ProfileAction.fillProfileInfo),
+                                                       then: FinishProfileUpdatingScene.init)
+                
+            case .editProfile:
+                IfLetStore(store.scope(state: \.editProfileState, action: ProfileAction.editProfile),
+                                                       then: EditProfileScene.init)
+                
+            case let .openedStudent(id):
+                coordinator.view(for: .dictionaries(.init(userID: id)))
+                    .id(id)
+                
+            case .none:
+                EmptyView()
             }
         }
     }
