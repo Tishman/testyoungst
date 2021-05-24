@@ -9,6 +9,7 @@ import Foundation
 import ComposableArchitecture
 import Utilities
 import Protocols
+import Coordinator
 
 struct DictionariesState: Equatable, Previwable {
     
@@ -17,9 +18,13 @@ struct DictionariesState: Equatable, Previwable {
         case groupInfo(GroupInfoState)
     }
     
-    var detailState: DetailState?
+    enum Routing: Equatable {
+        case addGroup(userID: UUID)
+        case groupInfo(userID: UUID, info: GroupInfoState.GroupInfo)
+        case addWord(AddWordInput)
+    }
     
-    var addWordState: AddWordState?
+    var routing: Routing?
     
     let userID: UUID
     
@@ -39,54 +44,6 @@ struct DictionariesState: Equatable, Previwable {
     static var preview: DictionariesState = .init(userID: .init(),
                                                   groups: [DictGroupItem.preview],
                                                   words: [DictWordItem.preview])
-}
-
-extension DictionariesState {
-    var addGroupState: AddGroupState? {
-        get {
-            switch detailState {
-            case let .addGroup(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .addGroup:
-                detailState = .addGroup(newValue)
-            default:
-                break
-            }
-        }
-    }
-    
-    var groupInfoState: GroupInfoState? {
-        get {
-            switch detailState {
-            case let .groupInfo(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .groupInfo:
-                detailState = .groupInfo(newValue)
-            default:
-                break
-            }
-        }
-    }
 }
 
 enum DictionariesAction: Equatable {
@@ -111,7 +68,7 @@ enum DictionariesAction: Equatable {
     case itemsUpdated(Result<UpdateItemsResult, EquatableError>)
     case wordsUpdated(UpdateWordsResult)
     case alertClosed
-    case addWordOpened(Bool)
+    case addWordOpened
     case showAlert(String)
     case wordSelected(DictWordItem)
     
@@ -130,10 +87,6 @@ enum DictionariesAction: Equatable {
         case group(UUID)
         case addGroup
     }
-    
-    case groupInfo(GroupInfoAction)
-    case addGroup(AddGroupAction)
-    case addWord(AddWordAction)
 }
 
 struct DictionariesEnvironment {

@@ -12,6 +12,19 @@ import SwiftUI
 import Utilities
 import ComposableArchitecture
 
+struct DictionaryControllerWrapper: UIViewControllerRepresentable {
+    
+    let provider: DictionariesController.Endpoint
+    
+    let userID: UUID
+    
+    func makeUIViewController(context: Context) -> DictionariesController {
+        provider.value(userID)
+    }
+    
+    func updateUIViewController(_ uiViewController: DictionariesController, context: Context) {}
+}
+
 final class DictionaryModuleDeclaration: DIPart, ModuleStoreProvider {
     
     private let environment: DictionariesEnvironment
@@ -25,9 +38,8 @@ final class DictionaryModuleDeclaration: DIPart, ModuleStoreProvider {
     static func load(container: DIContainer) {
         container.register(DictionariesEnvironment.init)
         
-        container.register { env in { input in
-            ViewHolder(storeProvider: DictionaryModuleDeclaration(environment: env, input: input),
-                       content: DictionariesScene.init)
+        container.register { provider in { (input: DictionariesInput) in
+            DictionaryControllerWrapper(provider: provider, userID: input.userID)
                 .erased
         }
         }

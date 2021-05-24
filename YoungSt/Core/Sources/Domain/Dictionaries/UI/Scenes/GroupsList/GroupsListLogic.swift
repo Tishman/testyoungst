@@ -43,8 +43,12 @@ let groupsListReducer = Reducer<GroupsListState, GroupsListAction, GroupsListEnv
             state.alertError = .init(title: TextState(error.description))
         }
         
-    case .groupSelected, .closeSceneTriggered:
-        break
+    case let .groupSelected(item):
+        state.selectedItem = item
+        return .init(value: .closeSceneTriggered)
+        
+    case .closeSceneTriggered:
+        state.isClosed = true
     }
     return .none
 }

@@ -123,11 +123,19 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
     case .closeSceneTriggered:
         return .cancelAll(bag: env.bag)
         
-    case let .addWordOpened(isOpened):
-        state.addWordOpened = isOpened
-        if !isOpened {
-            return .init(value: .silentRefreshList)
-        }
+    case .routingHandled:
+        state.routing = nil
+        
+    case .addWordOpened:
+        let groupInfo = DictGroupItem(id: state.id,
+                                      alias: state.itemInfo?.alias,
+                                      state: state.itemInfo?.state ?? .init(title: "", subtitle: ""))
+        state.routing = .addWord(
+            .init(semantic: .addToServer,
+                  userID: state.userID,
+                  groupSelectionEnabled: false,
+                  model: .init(word: nil, group: groupInfo))
+        )
         
     case .editOpened:
         state.controlsState = .edit(.init(text: state.itemInfo?.state.title ?? ""))

@@ -13,16 +13,6 @@ import Utilities
 import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
-    addGroupReducer.optional(bag: \.bag).pullback(state: \.addGroupState, action: /DictionariesAction.addGroup, environment: \.addGroupEnv),
-    
-    groupInfoReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.groupInfoState, action: /DictionariesAction.groupInfo, environment: \.groupInfoEnv),
-    
-    addWordReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.addWordState, action: /DictionariesAction.addWord, environment: \.addWordEnv),
-    
     Reducer { state, action, env in
         
         enum Cancellable: Hashable {
@@ -33,14 +23,6 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
         }
         
         switch action {
-        case .addGroup(.closeSceneTriggered):
-            state.addGroupState = nil
-            return Effect(value: .silentRefreshList)
-            
-        case .groupInfo(.closeSceneTriggered):
-            state.groupInfoState = nil
-            return Effect(value: .silentRefreshList)
-        
         case .refreshList:
             state.isLoading = true
             return .init(value: .silentRefreshList)
@@ -148,46 +130,30 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             
         case let .wordSelected(item):
             let group = state.groups.first(where: { $0.id == item.groupID })
-            state.addWordState = .init(input: .init(closeHandler: .init{},
-                                                    semantic: .addToServer,
-                                                    userID: state.userID,
-                                                    groupSelectionEnabled: true,
-                                                    model: .init(word: item, group: group)),
-                                       sourceLanguage: env.languageProvider.sourceLanguage,
-                                       destinationLanguage: env.languageProvider.destinationLanguage)
+            state.routing = .addWord(
+                .init(semantic: .addToServer,
+                      userID: state.userID,
+                      groupSelectionEnabled: true,
+                      model: .init(word: item, group: group))
+            )
             
         case let .changeDetail(.group(id)):
-            guard id != state.groupInfoState?.id,
-                  let groupItem = state.groups.first(where: { $0.id == id })
+            guard let groupItem = state.groups.first(where: { $0.id == id })
             else { break }
-            
-            state.detailState = .groupInfo(.init(userID: state.userID, info: .item(groupItem)))
+            state.routing = .groupInfo(userID: state.userID, info: .item(groupItem))
             
         case .changeDetail(.addGroup):
-            guard state.addGroupState == nil else { break }
-            state.detailState = .addGroup(.init(userID: state.userID))
+            state.routing = .addGroup(userID: state.userID)
             
         case .changeDetail(.closed):
-            state.detailState = nil
+            state.routing = nil
             
-        case let .addWordOpened(isOpened):
-            if isOpened {
-                state.addWordState = .init(info: .init(closeHandler: .init {},
-                                                       semantic: .addToServer,
-                                                       userID: state.userID,
-                                                       groupSelectionEnabled: true,
-                                                       editingWordID: nil),
-                                           sourceLanguage: env.languageProvider.sourceLanguage,
-                                           destinationLanguage: env.languageProvider.destinationLanguage)
-            } else {
-                state.addWordState = nil
-            }
-            
-        case .addWord(.closeSceneTriggered):
-            state.addWordState = nil
-            
-        case .addWord, .addGroup, .groupInfo:
-            break
+        case .addWordOpened:
+            state.routing = .addWord(
+                .init(semantic: .addToServer,
+                      userID: state.userID,
+                      groupSelectionEnabled: true)
+            )
         }
         return .none
     }

@@ -24,7 +24,12 @@ struct GroupInfoState: Equatable {
         case item(DictGroupItem)
     }
     
+    enum Routing: Equatable {
+        case addWord(AddWordInput)
+    }
+    
     let userID: UUID
+    var routing: Routing?
     var info: GroupInfo
     var controlsState: ControlsState = .allVisible
     
@@ -117,7 +122,9 @@ enum GroupInfoAction: Equatable {
     
     case wordDeleted(DictionariesAction.DeleteWordResult)
     
-    case addWordOpened(Bool)
+    case routingHandled
+    
+    case addWordOpened
     case editOpened
     case deleteOpened
     case deleteClosed

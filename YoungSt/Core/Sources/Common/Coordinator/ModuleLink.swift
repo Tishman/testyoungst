@@ -70,15 +70,13 @@ public struct AddWordInput: Equatable {
         public let group: DictGroupModel?
     }
     
-    public init(closeHandler: AnyEquatable<() -> Void>, semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel = .init(word: nil, group: nil)) {
-        self.closeHandler = closeHandler
+    public init(semantic: Semantic, userID: UUID, groupSelectionEnabled: Bool, model: InputModel = .init(word: nil, group: nil)) {
         self.semantic = semantic
         self.userID = userID
         self.groupSelectionEnabled = groupSelectionEnabled
         self.model = model
     }
     
-    public let closeHandler: AnyEquatable<() -> Void>
     public let semantic: Semantic
     public let userID: UUID
     public let groupSelectionEnabled: Bool

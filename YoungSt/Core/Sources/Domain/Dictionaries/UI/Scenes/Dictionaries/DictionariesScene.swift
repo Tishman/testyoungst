@@ -80,9 +80,6 @@ struct DictionariesScene: View {
                 addGroupButton
             }
         }
-        .background(addWordLink)
-        .background(detailNavigationLink)
-        .fixNavigationLinkForIOS14_5()
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
@@ -111,28 +108,6 @@ struct DictionariesScene: View {
         .frame(height: DictGroupView.Size.small.value, alignment: .top)
     }
     
-    private var detailNavigationLink: some View {
-        WithViewStore(store.scope(state: \.detailState)) { viewStore in
-            NavigationLink(destination: linkDetailDestination,
-                           isActive: viewStore.binding(get: { $0 != nil }, send: .changeDetail(.closed)),
-                           label: {})
-        }
-    }
-    
-    private var linkDetailDestination: some View {
-        WithViewStore(store.scope(state: \.detailState)) { viewStore in
-            switch viewStore.state {
-            case .addGroup:
-                IfLetStore(store.scope(state: \.addGroupState, action: DictionariesAction.addGroup),
-                           then: AddGroupScene.init)
-            case .groupInfo:
-                IfLetStore(store.scope(state: \.groupInfoState, action: DictionariesAction.groupInfo),
-                           then: GroupInfoScene.init)
-            case .none:
-                EmptyView()
-            }
-        }
-    }
     
     private var wordsList: some View {
         WithViewStore(store.scope(state: \.wordsList)) { viewStore in
@@ -187,7 +162,7 @@ struct DictionariesScene: View {
     }
     
     private var addGroupButton: some View {
-        WithViewStore(store.scope(state: \.addGroupState)) { viewStore in
+        WithViewStore(store.stateless) { viewStore in
             Button { viewStore.send(.changeDetail(.addGroup)) } label: {
                 Image(systemName: "plus.app")
             }
@@ -195,17 +170,6 @@ struct DictionariesScene: View {
                    height: DefaultSize.navigationBarButton)
         }
     }
-    
-    private var addWordLink: some View {
-        WithViewStore(store.scope(state: \.addWordState)) { viewStore in
-            Color.clear
-                .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: DictionariesAction.addWordOpened(false))) {
-                    IfLetStore(store.scope(state: \.addWordState, action: DictionariesAction.addWord),
-                               then: AddWordScene.init)
-                }
-        }
-    }
-    
 }
 
 struct DictionariesScene_Previews: PreviewProvider {

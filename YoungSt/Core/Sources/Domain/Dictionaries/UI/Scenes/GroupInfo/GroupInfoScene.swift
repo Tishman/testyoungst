@@ -68,27 +68,9 @@ struct GroupInfoScene: View {
         }
         .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
-        .background(addWordLink)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-    }
-    
-    private var addWordLink: some View {
-        WithViewStore(store) { viewStore in
-            Color.clear
-                .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: GroupInfoAction.addWordOpened)) {
-                    coordinator.view(for: .addWord(.init(closeHandler: .init { viewStore.send(.addWordOpened(false)) },
-                                                         semantic: .addToServer,
-                                                         userID: viewStore.userID,
-                                                         groupSelectionEnabled: false,
-                                                         model: .init(word: nil,
-                                                                      group: .init(id: viewStore.id,
-                                                                                   alias: nil,
-                                                                                   state: viewStore.itemInfo?.state
-                                                                                    ?? .init(title: "", subtitle: ""))))))
-                }
-        }
     }
     
     private var topGroupInfo: some View {
@@ -106,7 +88,7 @@ struct GroupInfoScene: View {
     
     private var openWordAddingButton: some View {
         WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.addWordOpened(true)) } label: {
+            Button { viewStore.send(.addWordOpened) } label: {
                 Image(systemName: "plus")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

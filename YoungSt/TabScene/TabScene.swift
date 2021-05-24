@@ -36,7 +36,7 @@ struct NativeApplicationContainerView: View {
         self.coordinator = coordinator
         self.store = store
         
-        dictionariesView = coordinator.view(for: .dictionaries(.init(userID: userID)))
+        dictionariesView = coordinator.view(for: .dictionaries(.init(userID: userID))).navigationBarTitleDisplayMode(.inline).erased
         currentProfileView = coordinator.view(for: .profile(.init(userID: userID)))
     }
     
@@ -57,36 +57,37 @@ struct NativeApplicationContainerView: View {
     @ViewBuilder private var content: some View {
         if horizontalSizeClass == .regular {
             NavigationView {
-                WithViewStore(store) { viewStore in
-                    List {
-                        NavigationLink(destination: dictionariesView,
-                                       tag: TabItem.Identifier.dictionaries,
-                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
-                                       label: {
-                                        Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
-                                       })
-                        
-                        NavigationLink(destination: currentProfileView,
-                                       tag: TabItem.Identifier.profile,
-                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
-                                       label: {
-                                        Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
-                                       })
-                    }
-                }
-                .listStyle(SidebarListStyle())
-                .introspectSplitViewController(customize: configure)
-                .navigationTitle("YoungSt")
+//                WithViewStore(store) { viewStore in
+//                    List {
+//                        NavigationLink(destination: dictionariesView,
+//                                       tag: TabItem.Identifier.dictionaries,
+//                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
+//                                       label: {
+//                                        Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
+//                                       })
+//
+//                        NavigationLink(destination: currentProfileView,
+//                                       tag: TabItem.Identifier.profile,
+//                                       selection: viewStore.binding(get: { $0.selectedTab }, send: { .selectedTabShanged($0) }),
+//                                       label: {
+//                                        Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
+//                                       })
+//                    }
+//                }
+//                .listStyle(SidebarListStyle())
+//                .introspectSplitViewController(customize: configure)
+//                .navigationTitle("YoungSt")
 
-                WithViewStore(store) { viewStore in
-                    switch viewStore.selectedTab {
-                        case .dictionaries:
-                            dictionariesView
-                        case .profile:
-                            currentProfileView
-                    }
-                }
-                .frame(minWidth: 320)
+                
+                dictionariesView
+//                WithViewStore(store) { viewStore in
+//                    switch viewStore.selectedTab {
+//                        case .dictionaries:
+//                        case .profile:
+//                            currentProfileView
+//                    }
+//                }
+//                .frame(minWidth: 320)
                 .introspectSplitViewController(customize: configure)
 
 
@@ -222,8 +223,7 @@ final class ApplicationContainerController: UIViewController {
             self?.view.layoutIfNeeded()
         }
         
-        let addWordController = coordinator.view(for: .addWord(.init(closeHandler: .init(closeHandler),
-                                                                     semantic: .addToServer,
+        let addWordController = coordinator.view(for: .addWord(.init(semantic: .addToServer,
                                                                      userID: userID,
                                                                      groupSelectionEnabled: true))).uiKitHosted
         vc.value = addWordController

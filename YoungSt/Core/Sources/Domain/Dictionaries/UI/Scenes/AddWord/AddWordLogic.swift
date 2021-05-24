@@ -12,10 +12,6 @@ import Utilities
 import Resources
 
 let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.combine(
-    groupsListReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.groupsListState, action: /AddWordAction.groupsList, environment: \.groupsListEnv),
-    
     Reducer { state, action, env in
         
         enum Cancellable: CaseIterable, Hashable {
@@ -123,12 +119,8 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
             }
             
-        case let .groupsOpened(isOpened):
-            if isOpened {
-                state.groupsListState = .init(userID: state.info.userID)
-            } else {
-                state.groupsListState = nil
-            }
+        case .groupsOpened:
+            state.routing = .groupsList(userID: state.info.userID)
             
         case .removeSelectedGroupPressed:
             state.selectedGroup = nil
@@ -143,18 +135,13 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             state.isLoading = false
             
         case .closeSceneTriggered:
-            state.info.closeHandler.value()
+            state.isClosed = true
             
-        case let .groupsList(.groupSelected(selectedGroup)):
-            state.selectedGroup = .init(id: selectedGroup.id,
-                                        title: selectedGroup.state.title)
-            state.groupsListState = nil
+        case .routingHandled:
+            state.routing = nil
             
-        case .groupsList(.closeSceneTriggered):
-            state.groupsListState = nil
-            
-        case .groupsList:
-            break
+        case let .selectedGroupChanged(item):
+            state.selectedGroup = item.map { .init(id: $0.id, title: $0.state.title) }
         }
         
         return .none

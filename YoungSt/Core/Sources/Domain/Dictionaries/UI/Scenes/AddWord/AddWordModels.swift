@@ -13,22 +13,27 @@ import NetworkService
 import Combine
 import Coordinator
 
-struct AddWordState: Equatable, Previwable {
+struct AddWordState: Equatable, Previwable, ClosableState {
     
     struct SelectedGroup: Equatable {
         let id: UUID
         let title: String
     }
     
+    enum Routing: Equatable {
+        case groupsList(userID: UUID)
+    }
+    
     let info: AddWordInfo
     let sourceLanguage: Languages
     let destinationLanguage: Languages
     
-    var groupsListState: GroupsListState?
+    var routing: Routing?
     
     var leftToRight = true
     var localTranslationDownloading = false
     
+    var isClosed = false
     var isLoading = false
     var isTranslateLoading = false
     
@@ -79,14 +84,12 @@ extension AddWordState {
 }
 
 struct AddWordInfo: Equatable, Previwable {
-    let closeHandler: AnyEquatable<() -> Void>
     let semantic: AddWordInput.Semantic
     let userID: UUID
     let groupSelectionEnabled: Bool
     let editingWordID: UUID?
     
-    static let preview: AddWordInfo = .init(closeHandler: .init {},
-                                            semantic: .addToServer,
+    static let preview: AddWordInfo = .init(semantic: .addToServer,
                                             userID: .init(),
                                             groupSelectionEnabled: true,
                                             editingWordID: nil)
@@ -94,7 +97,6 @@ struct AddWordInfo: Equatable, Previwable {
 
 extension AddWordInfo {
     init(input: AddWordInput) {
-        self.closeHandler = input.closeHandler
         self.semantic = input.semantic
         self.userID = input.userID
         self.groupSelectionEnabled = input.groupSelectionEnabled
@@ -103,8 +105,6 @@ extension AddWordInfo {
 }
 
 enum AddWordAction: Equatable {
-    case groupsList(GroupsListAction)
-    
     case sourceChanged(String)
     case sourceErrorChanged(String?)
     case descriptionChanged(String)
@@ -112,14 +112,16 @@ enum AddWordAction: Equatable {
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
     case translationDownloaded(Result<EmptyResponse, EquatableError>)
     
+    case selectedGroupChanged(DictGroupItem?)
     case viewAppeared
     case removeSelectedGroupPressed
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed
     case addPressed
+    case routingHandled
     
-    case groupsOpened(Bool)
+    case groupsOpened
     case closeSceneTriggered
 }
 

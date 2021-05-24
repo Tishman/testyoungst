@@ -103,17 +103,6 @@ struct AddGroupScene: View {
             }
         }
         .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
-        .background(
-            WithViewStore(store) { viewStore in
-                Color.clear
-                    .sheet(isPresented: viewStore.binding(get: \.addWordOpened, send: AddGroupAction.addWordOpened)) {
-                        coordinator.view(for: .addWord(.init(closeHandler: .init { viewStore.send(.addWordOpened(false)) },
-                                                             semantic: .addLater(handler: .init { viewStore.send(.wordAdded($0)) }),
-                                                             userID: viewStore.userID,
-                                                             groupSelectionEnabled: false)))
-                    }
-            }
-        )
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationTitle(Localizable.addGroupTitle)
         .navigationBarTitleDisplayMode(.inline)

@@ -9,13 +9,14 @@ import Foundation
 import ComposableArchitecture
 import Utilities
 
-struct GroupsListState: Equatable, Previwable {
+struct GroupsListState: Equatable, Previwable, ClosableState {
     let userID: UUID
     
     var groups: [DictGroupItem] = []
     var isLoading = false
     var alertError: AlertState<GroupsListAction>?
-    
+    var selectedItem: DictGroupItem?
+    var isClosed: Bool = false
     
     static var preview: GroupsListState = .init(userID: .init(),
                                                 groups: [DictGroupItem.preview, .init(id: .init(), alias: nil, state: .preview)])
