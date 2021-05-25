@@ -125,6 +125,10 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         }
     }
     
+    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
+        viewController(for: .secondary) === emptyDetailVC ? .supplementary : .secondary
+    }
+    
     func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
         guard column == .compact else { return }
         splitViewController?.setViewController(UIViewController(), for: .supplementary)
