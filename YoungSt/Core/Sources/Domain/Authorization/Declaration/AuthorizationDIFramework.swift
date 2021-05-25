@@ -18,6 +18,10 @@ public final class AuthorizationDIFramework: DIFramework {
         container.register(AuthorizationServiceImpl.init)
             .as(check: AuthorizationService.self) {$0}
         
+        container.register { env in { (input: AuthorizationInput) in
+            WelcomeController(env: env).erased
+        }}
+        
         container.register(CredentialsServiceImpl.init)
             .as(check: CredentialsService.self) {$0}
             .as(check: SessionProvider.self) {$0}

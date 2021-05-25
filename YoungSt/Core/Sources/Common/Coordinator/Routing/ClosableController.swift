@@ -16,14 +16,21 @@ public protocol ClosableController: AnyObject {
     var closePublisher: AnyPublisher<Bool, Never> { get }
 }
 
+public protocol SplitResetter {
+    func resetSplitDetailToEmpty(caller: UIViewController)
+}
+
 public extension ClosableController where Self: UIViewController {
     func observeClosing() -> AnyCancellable {
         closePublisher.filter { $0 }
             .sink(receiveValue: { [weak self] _ in
-                if let navigation = self?.navigationController, navigation.viewControllers.count > 1 {
+                guard let self = self else { return }
+                if let navigation = self.navigationController, navigation.viewControllers.count > 1 {
                     navigation.popViewController(animated: true)
-                } else {
-                    self?.dismiss(animated: true)
+                } else if self.presentingViewController != nil {
+                    self.dismiss(animated: true)
+                } else if let splitResetter = self.splitViewController as? SplitResetter {
+                    splitResetter.resetSplitDetailToEmpty(caller: self)
                 }
             })
     }

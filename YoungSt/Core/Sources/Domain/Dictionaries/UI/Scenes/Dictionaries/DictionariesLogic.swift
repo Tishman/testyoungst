@@ -41,7 +41,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .combineLatest(env.groupsService.getUserGroups(request: groupsRequest))
                 .tryMap(DictionariesLogic.createUpdateItemsResult)
                 .mapError(EquatableError.init)
-                .receive(on: DispatchQueue.main)
+                .receive(on: DispatchQueue.main.animation())
                 .catchToEffect()
                 .map(DictionariesAction.itemsUpdated)
                 .cancellable(id: Cancellable.getUserLists, bag: env.bag)

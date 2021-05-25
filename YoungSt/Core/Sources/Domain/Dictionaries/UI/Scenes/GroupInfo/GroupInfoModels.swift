@@ -12,7 +12,7 @@ import NetworkService
 import Protocols
 import Coordinator
 
-struct GroupInfoState: Equatable {
+struct GroupInfoState: Equatable, ClosableState {
     
     struct EditState: Equatable {
         var text: String = ""
@@ -32,6 +32,7 @@ struct GroupInfoState: Equatable {
     var routing: Routing?
     var info: GroupInfo
     var controlsState: ControlsState = .allVisible
+    var isClosed = false
     
     var editState: EditState? {
         get {

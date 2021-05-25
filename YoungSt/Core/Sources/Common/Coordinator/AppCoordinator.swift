@@ -11,7 +11,7 @@ import SwiftLazy
 
 struct AppCoordinator: Coordinator {
     
-//    let authorizationProvider: (AuthorizationInput) -> UIViewController
+    let authorizationProvider: (AuthorizationInput) -> UIViewController
     let dictionariesProvider: (DictionariesInput) -> UIViewController
     let profileProvider: (ProfileInput, Coordinator) -> UIViewController
     let addWordProvider: (AddWordInput) -> UIViewController
@@ -19,9 +19,8 @@ struct AppCoordinator: Coordinator {
     
     func view(for link: ModuleLink) -> UIViewController {
         switch link {
-        case let .authorization(input):
-            return UIViewController()
-//            return authorizationProvider(input)
+        case let .authorization(input): 
+            return authorizationProvider(input)
         case let .dictionaries(input):
             return dictionariesProvider(input)
         case let .profile(input):

@@ -14,7 +14,7 @@ import Combine
 import Utilities
 
 
-final class ApplicationContainerController: UISplitViewController, UISplitViewControllerDelegate {
+final class ApplicationContainerController: UISplitViewController, UISplitViewControllerDelegate, SplitResetter {
     
     let store: Store<TabState, TabAction>
     let viewStore: ViewStore<TabState, TabAction>
@@ -69,13 +69,38 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         setViewController(sidebar, for: .primary)
         setViewController(profile, for: .supplementary)
         
-        let empty = UIViewController()
-        empty.view.backgroundColor = .systemBackground
-        setViewController(empty, for: .secondary)
-        
+        self.setViewController(emptyDetailVC, for: .secondary)
 //        setViewController(tab, for: .compact)
         self.delegate = self
     }
+    
+    func resetSplitDetailToEmpty(caller: UIViewController) {
+        
+        if self.isCollapsed {
+            // We cant just set new detail controller in collapsed mode. It will cause runtime crash
+            // We should:
+            // pop back to master
+            caller.navigationController?.navigationController?.popViewController(animated: true)
+            
+            // set new detail, because user should see empty when move back to expanded presentation.
+            // All withour animation to prevent UI glitches
+            UIView.setAnimationsEnabled(false)
+            self.setViewController(emptyDetailVC, for: .secondary)
+            // setting new detail will automatically push it to stack so we should pop it back again
+            caller.navigationController?.navigationController?.popViewController(animated: false)
+            UIView.setAnimationsEnabled(true)
+            // should enabled
+        } else {
+            self.setViewController(emptyDetailVC, for: .secondary)
+        }
+        
+    }
+    
+    private let emptyDetailVC: UIViewController = {
+        let vc = UIViewController()
+        vc.view.backgroundColor = .systemBackground
+        return UINavigationController(rootViewController: vc)
+    }()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

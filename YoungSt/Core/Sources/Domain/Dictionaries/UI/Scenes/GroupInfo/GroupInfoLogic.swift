@@ -121,6 +121,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         state.alert = nil
         
     case .closeSceneTriggered:
+        state.isClosed = true
         return .cancelAll(bag: env.bag)
         
     case .routingHandled:

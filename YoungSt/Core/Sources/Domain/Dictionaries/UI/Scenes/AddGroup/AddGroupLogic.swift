@@ -75,6 +75,7 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.items.append(.init(id: .init(), item: item))
             
         case .closeSceneTriggered:
+            state.isClosed = true
             return .cancelAll(bag: env.bag)
         }
         

@@ -17,9 +17,11 @@ struct AddGroupRoutingPoints {
     let addWord: AddWordController.Endpoint
 }
 
-final class AddGroupController: UIHostingController<AddGroupScene> {
+final class AddGroupController: UIHostingController<AddGroupScene>, ClosableController {
     
     typealias Endpoint = Provider1<AddGroupController, UUID>
+    
+    var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     
     private let store: Store<AddGroupState, AddGroupAction>
     private let viewStore: ViewStore<AddGroupState, AddGroupAction>
@@ -49,6 +51,8 @@ final class AddGroupController: UIHostingController<AddGroupScene> {
                 ), animated: true)
             })
             .store(in: &bag)
+        
+        observeClosing().store(in: &bag)
     }
     
     @objc required dynamic init?(coder aDecoder: NSCoder) {

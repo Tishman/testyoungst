@@ -12,7 +12,7 @@ import NetworkService
 import Protocols
 import Coordinator
 
-struct AddGroupState: Equatable, Previwable {
+struct AddGroupState: Equatable, Previwable, ClosableState {
     let userID: UUID
     
     var title: String = ""
@@ -21,6 +21,7 @@ struct AddGroupState: Equatable, Previwable {
     var addWordOpened = false
     var isLoading = false
     var alertError: AlertState<AddGroupAction>?
+    var isClosed = false
     
     var items: [IdentifiedItem<Dictionary_AddWordItem>] = []
     

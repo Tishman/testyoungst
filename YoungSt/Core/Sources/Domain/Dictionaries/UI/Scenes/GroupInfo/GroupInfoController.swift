@@ -17,9 +17,11 @@ struct GroupInfoRoutingPoints {
     let addWord: AddWordController.Endpoint
 }
 
-final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableController {
+final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableController, ClosableController {
     
     typealias Endpoint = Provider2<GroupInfoController, UUID, GroupInfoState.GroupInfo>
+    
+    var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     
     var routePublisher: AnyPublisher<GroupInfoState.Routing?, Never> {
         viewStore.publisher.routing
@@ -46,6 +48,7 @@ final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableCo
     override func viewDidLoad() {
         super.viewDidLoad()
         observeRouting().store(in: &bag)
+        observeClosing().store(in: &bag)
     }
     
     func handle(routing: GroupInfoState.Routing) {
