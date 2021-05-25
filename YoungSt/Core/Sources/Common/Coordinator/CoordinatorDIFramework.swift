@@ -13,6 +13,7 @@ public final class CoordinatorDIFramework: DIFramework {
     public static func load(container: DIContainer) {
         container.register(AppCoordinator.init)
             .as(check: Coordinator.self) {$0}
+            .lifetime(.perContainer(.weak))
         
         container.register(DeeplinkServiceImpl.init)
             .as(check: DeeplinkService.self) {$0}

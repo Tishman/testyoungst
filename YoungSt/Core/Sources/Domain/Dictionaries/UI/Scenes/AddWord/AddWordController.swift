@@ -25,6 +25,7 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
     private let viewStore: ViewStore<AddWordState, AddWordAction>
     
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
+    
     var routePublisher: AnyPublisher<AddWordState.Routing?, Never> {
         viewStore.publisher.routing
             .handleEvents(receiveOutput: { [weak viewStore] point in
@@ -60,9 +61,7 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
         switch routing {
         case let .groupsList(userID):
             let vc = routingPoints.groupsList.value(userID, viewStore.binding(get: {
-                $0.selectedGroup.map {
-                    DictGroupItem(id: $0.id, alias: nil, state: .init(title: "", subtitle: ""))
-                }
+                $0.selectedGroup.map { DictGroupItem(id: $0.id, alias: nil, state: .init(title: "", subtitle: "")) }
             }, send: AddWordAction.selectedGroupChanged))
             present(controller: vc, preferredPresentation: .detail)
         }

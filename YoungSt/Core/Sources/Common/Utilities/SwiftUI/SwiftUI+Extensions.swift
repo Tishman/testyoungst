@@ -10,6 +10,12 @@ import SwiftUI
 import Introspect
 import UIKit
 
+public extension UIViewController {
+    
+    var erased: UIViewController { self }
+    
+}
+
 public extension View {
     
     var erased: AnyView {

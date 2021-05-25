@@ -19,8 +19,6 @@ struct AddGroupScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     
-    @Environment(\.coordinator) private var coordinator
-    
     var body: some View {
         GeometryReader { globalProxy in
             ZStack {

@@ -30,21 +30,21 @@ struct TabItem {
                 return "person.circle"
             }
         }
+        var accentImageName: String {
+            switch self {
+            case .dictionaries:
+                return "rectangle.stack.fill"
+            case .profile:
+                return "person.circle.fill"
+            }
+        }
     }
     
     let id: Identifier
     
     var title: String { id.title }
     var imageName: String { id.imageName }
-    
-    var accentImageName: String {
-        switch id {
-        case .dictionaries:
-            return "rectangle.stack.fill"
-        case .profile:
-            return "person.circle.fill"
-        }
-    }
+    var accentImageName: String { id.accentImageName }
     
     let selectHandler: () -> Void
 }

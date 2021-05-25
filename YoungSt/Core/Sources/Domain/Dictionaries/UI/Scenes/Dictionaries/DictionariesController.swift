@@ -21,7 +21,7 @@ struct DictionariesRoutingPoints {
 
 final class DictionariesController: UIHostingController<DictionariesScene>, RoutableController {
     
-    typealias Endpoint = Provider1<DictionariesController, UUID>
+    typealias Endpoint = Provider1<DictionariesController, DictionariesInput>
     
     private let store: Store<DictionariesState, DictionariesAction>
     private let viewStore: ViewStore<DictionariesState, DictionariesAction>
@@ -38,8 +38,8 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
             .eraseToAnyPublisher()
     }
     
-    init(userID: UUID, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {
-        let store = Store(initialState: DictionariesState(userID: userID),
+    init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {
+        let store = Store(initialState: DictionariesState(userID: input.userID),
                           reducer: dictionariesReducer,
                           environment: env)
         self.store = store

@@ -16,10 +16,10 @@ struct DictionaryControllerWrapper: UIViewControllerRepresentable {
     
     let provider: DictionariesController.Endpoint
     
-    let userID: UUID
+    let input: DictionariesInput
     
     func makeUIViewController(context: Context) -> DictionariesController {
-        provider.value(userID)
+        provider.value(input)
     }
     
     func updateUIViewController(_ uiViewController: DictionariesController, context: Context) {}
@@ -39,7 +39,7 @@ final class DictionaryModuleDeclaration: DIPart, ModuleStoreProvider {
         container.register(DictionariesEnvironment.init)
         
         container.register { provider in { (input: DictionariesInput) in
-            DictionaryControllerWrapper(provider: provider, userID: input.userID)
+            DictionaryControllerWrapper(provider: provider, input: input)
                 .erased
         }
         }

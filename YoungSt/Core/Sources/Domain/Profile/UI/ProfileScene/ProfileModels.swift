@@ -58,15 +58,16 @@ struct ProfileState: Equatable, Previwable {
         }
     }
     
-    enum DetailState: Equatable {
-        case fillInfo(EditProfileState)
-        case editProfile(EditProfileState)
-        case shareProfile(ShareProfileState)
-        case openedStudent(UUID)
+    enum Route: Equatable {
+        case fillInfo
+        case editProfile
+        case shareProfile(userID: UUID)
+        case openedStudent(userID: UUID)
     }
     
     let userID: UUID
     var currentProfileState: CurrentProfileState
+    var route: Route?
     
     init(userID: UUID, currentProfileState: CurrentProfileState? = nil) {
         self.userID = userID
@@ -76,107 +77,10 @@ struct ProfileState: Equatable, Previwable {
     var profileType: ProfileTypeState = .student
     var selectedTab: Tab = .settings
     
-    var detailState: DetailState?
-    
     var teacherInfoState: TeacherInfoState = .loading
     var studentsInfoState: StudentsInfoState = .init()
     
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
-}
-
-extension ProfileState {
-    
-    var fillInfoState: EditProfileState? {
-        get {
-            switch detailState {
-            case let .fillInfo(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .fillInfo:
-                detailState = .fillInfo(newValue)
-            default:
-                break
-            }
-        }
-    }
-    
-    var editProfileState: EditProfileState? {
-        get {
-            switch detailState {
-            case let .editProfile(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .editProfile:
-                detailState = .editProfile(newValue)
-            default:
-                break
-            }
-        }
-    }
-    
-    var shareProfileState: ShareProfileState? {
-        get {
-            switch detailState {
-            case let .shareProfile(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .shareProfile:
-                detailState = .shareProfile(newValue)
-            default:
-                break
-            }
-        }
-    }
-    
-    var studentInfoState: UUID? {
-        get {
-            switch detailState {
-            case let .openedStudent(state):
-                return state
-            default:
-                return nil
-            }
-        }
-        set {
-            guard let newValue = newValue else {
-                detailState = nil
-                return
-            }
-            switch detailState {
-            case .openedStudent:
-                detailState = .openedStudent(newValue)
-            default:
-                break
-            }
-        }
-    }
 }
 
 enum ProfileAction: Equatable {
@@ -187,8 +91,6 @@ enum ProfileAction: Equatable {
     case selectedTabShanged(ProfileState.Tab)
     
     case currentProfile(CurrentProfileAction)
-    case fillProfileInfo(EditProfileAction)
-    case editProfile(EditProfileAction)
     case teacherInfo(TeacherInfoAction)
     case studentsInfo(StudentsInfoAction)
     case shareProfile(ShareProfileAction)
@@ -223,12 +125,6 @@ struct ProfileEnvironment {
               userProvider: userProvider)
     }
     
-    func editProfileEnv(bag: CancellationBag) -> EditProfileEnvironment {
-        .init(bag: bag,
-              profileService: profileService,
-              userProvider: userProvider)
-    }
-    
     var teacherInfoEnv: TeacherInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               inviteService: inviteService)
@@ -237,10 +133,5 @@ struct ProfileEnvironment {
     var studentsInfoEnv: StudentsInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               inviteService: inviteService)
-    }
-    
-    var shareProfileEnv: ShareProfileEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              deeplinkService: deeplinkService)
     }
 }

@@ -8,20 +8,22 @@
 import Foundation
 import DITranquillity
 import Protocols
-
-class CompositeControllerProvider {}
-class IndependentControllerProvider {}
+import UIKit
+import Coordinator
 
 public final class DictionaryDIFramework: DIFramework {
     
     public static func load(container: DIContainer) {
-        container.append(part: DictionaryModuleDeclaration.self)
-        container.append(part: AddWordModuleDeclaration.self)
-        
         container.register(DictionariesRoutingPoints.init)
+        container.register(DictionariesEnvironment.init)
         container.register {
-            DictionariesController(userID: arg($0), env: $1, routingPoints: $2)
+            DictionariesController(input: arg($0), env: $1, routingPoints: $2)
         }
+        
+        // Fod module link
+        container.register { env, routingPoints in { input in
+            DictionariesController(input: input, env: env, routingPoints: routingPoints).erased
+        }}
         
         container.register(GroupsListEnvironment.init)
         container.register {
@@ -29,9 +31,15 @@ public final class DictionaryDIFramework: DIFramework {
         }
         
         container.register(AddWordRoutingPoints.init)
+        container.register(AddWordEnvironment.init)
         container.register {
             AddWordController(input: arg($0), env: $1, langProvider: $2, routingPoints: $3)
         }
+        
+        // Fod module link
+        container.register { env, langProvider, routingPoints in { input in
+            AddWordController(input: input, env: env, langProvider: langProvider, routingPoints: routingPoints).erased
+        }}
         
         container.register(AddGroupEnvironment.init)
         container.register(AddGroupRoutingPoints.init)

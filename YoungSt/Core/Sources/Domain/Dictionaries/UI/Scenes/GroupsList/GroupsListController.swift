@@ -10,6 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 import SwiftLazy
 import Combine
+import Coordinator
 
 final class GroupsListController: UIHostingController<GroupsListScene>, ClosableController {
     

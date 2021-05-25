@@ -69,15 +69,7 @@ final class AppViewController: UIViewController {
     private func handleChange(deeplink: Deeplink) {
         switch deeplink {
         case let .studentInvite(teacherID):
-            let vc = Box<UIViewController>()
-            let closeHandler: () -> Void = {
-                vc.value?.dismiss(animated: true)
-            }
-            let studentInviteVC = coordinator
-                .view(for: .studentInvite(.init(teacherID: teacherID, closeHandler: .init(closeHandler))))
-                .uiKitHosted
-
-            vc.value = studentInviteVC
+            let studentInviteVC = coordinator.view(for: .studentInvite(.init(teacherID: teacherID)))
             topViewController(root: self).present(studentInviteVC, animated: true) { [viewStore] in
                 viewStore.send(.deeplinkHandled)
             }
@@ -96,16 +88,15 @@ final class AppViewController: UIViewController {
     }
 
     private func setAuthorizedState(userID: UUID) {
-        let container = NativeApplicationContainerView(coordinator: coordinator,
-                                           store: .init(initialState: .init(userID: userID),
-                                                        reducer: tabReducer,
-                                                        environment: ()),
-                                           userID: userID)
-        ViewEmbedder.embed(child: container.uiKitHosted, to: self)
+        let container = ApplicationContainerController(coordinator: coordinator,
+                                                       store: .init(initialState: .init(userID: userID),
+                                                                    reducer: tabReducer,
+                                                                    environment: ()))
+        ViewEmbedder.embed(child: container, to: self)
     }
     
     private func setLoginState() {
-        let loginView = coordinator.view(for: .authorization(.default)).uiKitHosted
+        let loginView = coordinator.view(for: .authorization(.default))
         ViewEmbedder.embed(child: loginView, to: self)
     }
 

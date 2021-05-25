@@ -8,20 +8,9 @@
 import Foundation
 import SwiftUI
 
-private struct CoordinatorEnvironmentKey: EnvironmentKey {
-    static var defaultValue: Coordinator = EmptyViewCoordinator()
-}
-
-extension EnvironmentValues {
-    public var coordinator: Coordinator {
-        get { self[CoordinatorEnvironmentKey.self] }
-        set { self[CoordinatorEnvironmentKey.self] = newValue }
-    }
-}
-
 struct EmptyViewCoordinator: Coordinator {
-    func view(for link: ModuleLink) -> AnyView {
-        .init(EmptyView())
+    func view(for link: ModuleLink) -> UIViewController {
+        .init()
     }
 }
 

@@ -16,8 +16,6 @@ struct ProfileScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     
-    @Environment(\.coordinator) private var coordinator
-    
     var body: some View {
         GeometryReader { globalProxy in
             WithViewStore(store) { viewStore in
@@ -56,43 +54,8 @@ struct ProfileScene: View {
                 }
             }
         }
-        .fixNavigationLinkForIOS14_5()
-        .background(detailNavigationLink)
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationBarTitleDisplayMode(.inline)
-    }
-    
-    private var detailNavigationLink: some View {
-        WithViewStore(store.scope(state: \.detailState)) { viewStore in
-            NavigationLink(destination: linkDetailDestination,
-                           isActive: viewStore.binding(get: { $0 != nil }, send: .changeDetail(.closed)),
-                           label: {})
-                .isDetailLink(false)
-        }
-    }
-    
-    private var linkDetailDestination: some View {
-        WithViewStore(store.scope(state: \.detailState)) { viewStore in
-            switch viewStore.state {
-            case .shareProfile:
-                IfLetStore(store.scope(state: \.shareProfileState, action: ProfileAction.shareProfile),
-                                                       then: ShareProfileScene.init)
-            case .fillInfo:
-                IfLetStore(store.scope(state: \.fillInfoState, action: ProfileAction.fillProfileInfo),
-                                                       then: FinishProfileUpdatingScene.init)
-                
-            case .editProfile:
-                IfLetStore(store.scope(state: \.editProfileState, action: ProfileAction.editProfile),
-                                                       then: EditProfileScene.init)
-                
-            case let .openedStudent(id):
-                coordinator.view(for: .dictionaries(.init(userID: id)))
-                    .id(id)
-                
-            case .none:
-                EmptyView()
-            }
-        }
     }
     
     private var topControls: some View {

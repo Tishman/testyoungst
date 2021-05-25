@@ -18,13 +18,11 @@ public enum ModuleLink: Equatable {
 }
 
 public struct StudentInviteInput: Equatable {
-    public init(teacherID: UUID, closeHandler: AnyEquatable<() -> Void>) {
+    public init(teacherID: UUID) {
         self.teacherID = teacherID
-        self.closeHandler = closeHandler
     }
     
     public let teacherID: UUID
-    public let closeHandler: AnyEquatable<() -> Void>
 }
 
 public enum AuthorizationInput: Identifiable, Hashable {

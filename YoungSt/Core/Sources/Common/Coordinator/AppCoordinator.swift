@@ -7,23 +7,25 @@
 
 import Foundation
 import SwiftUI
+import SwiftLazy
 
 struct AppCoordinator: Coordinator {
     
-    let authorizationProvider: (AuthorizationInput) -> AnyView
-    let dictionariesProvider: (DictionariesInput) -> AnyView
-    let profileProvider: (ProfileInput) -> AnyView
-    let addWordProvider: (AddWordInput) -> AnyView
-    let studentInviteProvider: (StudentInviteInput) -> AnyView
+//    let authorizationProvider: (AuthorizationInput) -> UIViewController
+    let dictionariesProvider: (DictionariesInput) -> UIViewController
+    let profileProvider: (ProfileInput, Coordinator) -> UIViewController
+    let addWordProvider: (AddWordInput) -> UIViewController
+    let studentInviteProvider: (StudentInviteInput) -> UIViewController
     
-    func view(for link: ModuleLink) -> AnyView {
+    func view(for link: ModuleLink) -> UIViewController {
         switch link {
         case let .authorization(input):
-            return authorizationProvider(input)
+            return UIViewController()
+//            return authorizationProvider(input)
         case let .dictionaries(input):
             return dictionariesProvider(input)
         case let .profile(input):
-            return profileProvider(input)
+            return profileProvider(input, self)
         case let .addWord(input):
             return addWordProvider(input)
         case let .studentInvite(input):

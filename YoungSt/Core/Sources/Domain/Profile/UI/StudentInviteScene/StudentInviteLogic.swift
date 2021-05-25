@@ -82,7 +82,7 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
             state.error = error.description
         }
     case .closeScene:
-        state.closeHandler.value()
+        state.isClosed = true
         
     case .performAction:
         switch state.actionType {

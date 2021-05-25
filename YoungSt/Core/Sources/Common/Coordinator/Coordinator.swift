@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 public protocol Coordinator {
-    func view(for link: ModuleLink) -> AnyView
+    func view(for link: ModuleLink) -> UIViewController
 }

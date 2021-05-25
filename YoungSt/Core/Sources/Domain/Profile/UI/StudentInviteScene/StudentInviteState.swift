@@ -12,11 +12,10 @@ import Resources
 import NetworkService
 import Coordinator
 
-struct StudentInviteState: Equatable, Previwable {
+struct StudentInviteState: Equatable, Previwable, ClosableState {
     
     let input: StudentInviteInput
     var teacherID: UUID { input.teacherID }
-    var closeHandler: AnyEquatable<(() -> Void)> { input.closeHandler }
     
     var isLoading = false
     var title = ""
@@ -25,6 +24,7 @@ struct StudentInviteState: Equatable, Previwable {
     var error: String?
     var actionType = ActionType.requestInvite
     var avatarSource: ProfileAvatarSource
+    var isClosed = false
     
     enum ActionType {
         case requestInvite
@@ -33,7 +33,7 @@ struct StudentInviteState: Equatable, Previwable {
     
     static let preview: Self = {
         let id = UUID()
-        return .init(input: .init(teacherID: id, closeHandler: .init {}),
+        return .init(input: .init(teacherID: id),
                      title: "Steve Jobs",
                      nickname: "@stevejobs",
                      subtitle: Localizable.youCantBecomeStudent,

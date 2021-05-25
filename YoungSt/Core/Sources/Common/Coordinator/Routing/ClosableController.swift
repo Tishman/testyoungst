@@ -8,15 +8,15 @@
 import Combine
 import UIKit
 
-protocol ClosableState {
+public protocol ClosableState {
     var isClosed: Bool { get }
 }
 
-protocol ClosableController: AnyObject {
+public protocol ClosableController: AnyObject {
     var closePublisher: AnyPublisher<Bool, Never> { get }
 }
 
-extension ClosableController where Self: UIViewController {
+public extension ClosableController where Self: UIViewController {
     func observeClosing() -> AnyCancellable {
         closePublisher.filter { $0 }
             .sink(receiveValue: { [weak self] _ in

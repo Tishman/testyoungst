@@ -13,22 +13,6 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
     currentProfileReducer
         .pullback(state: \.currentProfileState, action: /ProfileAction.currentProfile, environment: \.currentProfileEnv),
     
-    editProfileReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.fillInfoState, action: /ProfileAction.fillProfileInfo) {
-            $0.editProfileEnv(bag: .autoId(childOf: $0.bag))
-        },
-    
-    editProfileReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.editProfileState, action: /ProfileAction.editProfile) {
-            $0.editProfileEnv(bag: .autoId(childOf: $0.bag))
-        },
-    
-    shareProfileReducer
-        .optional(bag: \.bag)
-        .pullback(state: \.shareProfileState, action: /ProfileAction.shareProfile, environment: \.shareProfileEnv),
-    
     teacherInfoReducer
         .pullback(state: \.teacherInfoState, action: /ProfileAction.teacherInfo, environment: \.teacherInfoEnv),
     
@@ -60,29 +44,20 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             state.selectedTab = newTab
             env.storage[currentProfileTabKey] = newTab
             
-        case let .fillProfileInfo(.profileEdited(.success(result))),
-             let .editProfile(.profileEdited(.success(result))):
-            state.currentProfileState.infoState = .infoProvided(.init(firstName: result.profile.firstName,
-                                                                      lastName: result.profile.lastName))
-            
         case .changeDetail(.editProfile):
-            state.detailState = .editProfile(state.editProfileState ?? .init(shouldFetchProfile: true))
+            state.route = .editProfile
             
         case .changeDetail(.fillInfo):
-            state.detailState = .fillInfo(state.fillInfoState ?? .init(shouldFetchProfile: false))
+            state.route = .fillInfo
             
         case .changeDetail(.shareProfile):
-            state.detailState = .shareProfile(state.shareProfileState ?? .init(userID: state.userID))
+            state.route = .shareProfile(userID: state.userID)
             
         case let .changeDetail(.openStudent(id)):
-            state.detailState = .openedStudent(id)
+            state.route = .openedStudent(userID: id)
             
-        case .changeDetail(.closed): break
-            
-        case //.changeDetail(.closed),
-             .editProfile(.closeSceneTriggered),
-             .fillProfileInfo(.closeSceneTriggered):
-            state.detailState = nil
+        case .changeDetail(.closed):
+            state.route = nil
             
         case let .studentsInfo(.studentOpened(id)):
             return .init(value: .changeDetail(.openStudent(id)))
@@ -93,7 +68,7 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .logout:
             env.credentialsService.clearCredentials()
             
-        case .currentProfile, .fillProfileInfo, .editProfile, .teacherInfo, .studentsInfo, .shareProfile:
+        case .currentProfile, .teacherInfo, .studentsInfo, .shareProfile:
             break
         }
         return .none

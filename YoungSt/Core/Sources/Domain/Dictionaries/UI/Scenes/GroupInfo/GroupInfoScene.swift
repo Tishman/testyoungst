@@ -19,8 +19,6 @@ struct GroupInfoScene: View {
     @State private var swappedWord: UUID?
     @State private var dividerHidden: Bool = true
     
-    @Environment(\.coordinator) private var coordinator
-    
     @Namespace private var namespace
     
     private let editAnimationID = "EditAnimation"

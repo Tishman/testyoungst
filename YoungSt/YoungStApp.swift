@@ -40,7 +40,6 @@ struct YoungStApp: App {
             AppScene(coordinator: coordinator, store: store)
                 .edgesIgnoringSafeArea(.all)
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
-                .environment(\.coordinator, container.resolve())
                 .onOpenURL(perform: handle(deeplink:))
         }
     }

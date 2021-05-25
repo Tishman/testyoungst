@@ -108,7 +108,7 @@ let editProfileReducer = Reducer<EditProfileState, EditProfileAction, EditProfil
         state.alert = nil
         
     case .closeSceneTriggered:
-        break
+        state.isClosed = true
     }
     return .none
 }

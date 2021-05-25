@@ -8,14 +8,14 @@
 import Combine
 import UIKit
 
-enum PreferredPresentation: Equatable {
+public enum PreferredPresentation: Equatable {
     case modal
     case sheet
     case detail
     case pushInCurrent
 }
 
-protocol RoutableController: AnyObject {
+public protocol RoutableController: AnyObject {
     associatedtype Routing
     
     var routePublisher: AnyPublisher<Routing?, Never> { get }
@@ -24,7 +24,7 @@ protocol RoutableController: AnyObject {
     func handle(routing: Routing)
 }
 
-extension RoutableController {
+public extension RoutableController {
     
     func observeRouting() -> AnyCancellable {
         routePublisher
@@ -33,7 +33,7 @@ extension RoutableController {
     }
 }
 
-extension RoutableController where Self: UIViewController {
+public extension RoutableController where Self: UIViewController {
     
     func present(controller: UIViewController, preferredPresentation: PreferredPresentation) {
         
@@ -54,7 +54,11 @@ extension RoutableController where Self: UIViewController {
 
         case .detail:
             if let split = self.splitViewController {
-                split.showDetailViewController(wrappedToNavigation(), sender: self)
+                if let navigation = self.navigationController, split.viewControllers.last == navigation {
+                    navigation.pushViewController(controller, animated: true)
+                } else {
+                    split.showDetailViewController(wrappedToNavigation(), sender: self)
+                }
             } else if let navigation = self.navigationController {
                 navigation.pushViewController(controller, animated: true)
             } else {

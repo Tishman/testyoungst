@@ -8,6 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import Utilities
+import Coordinator
 
 struct GroupsListState: Equatable, Previwable, ClosableState {
     let userID: UUID

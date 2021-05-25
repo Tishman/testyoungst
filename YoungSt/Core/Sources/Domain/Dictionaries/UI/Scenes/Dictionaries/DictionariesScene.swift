@@ -18,7 +18,6 @@ struct DictionariesScene: View {
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     @State private var swappedWord: UUID?
-    @Environment(\.coordinator) private var coordinator
     
     var body: some View {
         GeometryReader { globalProxy in

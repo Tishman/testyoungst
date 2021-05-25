@@ -11,10 +11,12 @@ import Utilities
 import Resources
 import Protocols
 import NetworkService
+import Coordinator
 
-struct EditProfileState: Equatable, Previwable {
+struct EditProfileState: Equatable, Previwable, ClosableState {
     let shouldFetchProfile: Bool
     
+    var isClosed: Bool = false
     var firstName = ""
     var firstNameError: String?
     
