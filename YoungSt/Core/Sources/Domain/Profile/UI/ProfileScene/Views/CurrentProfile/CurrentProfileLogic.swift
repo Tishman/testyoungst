@@ -19,7 +19,7 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
     switch action {
     case .viewAppeared:
         if state.nickname == nil, let nickname = env.userProvider.currentUser?.nickname {
-            state.nickname = "@\(nickname)"
+            state.nickname = nickname
         }
         if let currentProfile = env.userProvider.currentProfile, !currentProfile.firstName.isEmpty {
             state.infoState = .infoProvided(.init(firstName: currentProfile.firstName,

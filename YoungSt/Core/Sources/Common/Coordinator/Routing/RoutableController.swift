@@ -53,7 +53,7 @@ public extension RoutableController where Self: UIViewController {
             present(controller, animated: true)
 
         case .detail:
-            if let split = self.splitViewController {
+            if let split = self.splitViewController, !split.isCollapsed {
                 if let navigation = self.navigationController, split.viewControllers.last == navigation {
                     navigation.pushViewController(controller, animated: true)
                 } else {

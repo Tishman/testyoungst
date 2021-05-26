@@ -37,7 +37,7 @@ struct CurrentProfileView: View {
                         .font(.title2.bold())
                 }
                 if let nickname = viewStore.nickname {
-                    Text(nickname)
+                    Text("@\(nickname)")
                         .foregroundColor(.secondary)
                 }
             }

@@ -82,6 +82,8 @@ public enum Loc {
     public static let acceptInvite = Loc.tr("Localizable", "acceptInvite")
     /// Your account successfully created %
     public static let accountCreated = Loc.tr("Localizable", "accountCreated")
+    /// Add
+    public static let add = Loc.tr("Localizable", "add")
     /// Add group
     public static let addGroupAction = Loc.tr("Localizable", "addGroupAction")
     /// New dictionary

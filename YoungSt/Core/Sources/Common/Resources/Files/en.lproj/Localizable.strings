@@ -68,7 +68,8 @@
 "words" = "Words";
 "lastUpdateTime" = "Updated";
 "emptyGroupsPlaceholder" = "You don't yet have any dictionary.\nTap 'plus' to add";
-"emptyWordsPlaceholder" = "You don't have any words yet.\nTap 'plus' in menu to add";
+"emptyWordsPlaceholder" = "You don't have any words yet.\nTap 'plus' above to add";
+"add" = "Add";
 
 // GroupInfo
 "shouldDeleteGroup" = "Do you want to delete group?\nThis cannot be undone.";

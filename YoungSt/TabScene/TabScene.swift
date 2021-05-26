@@ -31,47 +31,63 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-        self.dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: viewStore.userID))))
-        let dictItem = TabItem.Identifier.dictionaries
-        self.dictionaries.tabBarItem = .init(title: dictItem.title,
-                                             image: .init(systemName: dictItem.imageName),
-                                             selectedImage: .init(systemName: dictItem.accentImageName))
+        self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
+        self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
-        self.profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: viewStore.userID))))
-        let profileItem = TabItem.Identifier.profile
-        self.profile.tabBarItem = .init(title: profileItem.title,
-                                        image: .init(systemName: profileItem.imageName),
-                                        selectedImage: .init(systemName: profileItem.accentImageName))
-        
-        let sidebar = WithViewStore(store) { viewStore in
-            List {
-                Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
-                    Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
-                }
-                Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
-                    Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
+        let sidebar =
+            WithViewStore(store) { viewStore in
+                List {
+                    Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
+                        Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
+                    }
+                    Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
+                        Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
+                    }
                 }
             }
-        }
-        .listStyle(SidebarListStyle())
-        .navigationTitle("YoungSt")
-        .navigationBarTitleDisplayMode(.large)
-        .uiKitHosted
+            .listStyle(SidebarListStyle())
+            .navigationTitle("YoungSt")
+            .navigationBarTitleDisplayMode(.large)
+            .uiKitHosted
+        let sidebarNav = UINavigationController(rootViewController: sidebar)
+        sidebarNav.navigationBar.prefersLargeTitles = true
         
         self.tab = UITabBarController()
         
         super.init(style: .tripleColumn)
         
-        tab.setViewControllers([dictionaries, profile], animated: false)
+        tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID),
+                                Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
+                               animated: false)
+        
         preferredDisplayMode = .oneBesideSecondary
         preferredSplitBehavior = .tile
         
-        setViewController(sidebar, for: .primary)
+        setViewController(sidebarNav, for: .primary)
         setViewController(profile, for: .supplementary)
         
-        self.setViewController(emptyDetailVC, for: .secondary)
-//        setViewController(tab, for: .compact)
+        setViewController(emptyDetailVC, for: .secondary)
+        setViewController(tab, for: .compact)
+        
         self.delegate = self
+    }
+    
+    static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {
+        let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
+        let dictItem = TabItem.Identifier.dictionaries
+        dictionaries.tabBarItem = .init(title: dictItem.title,
+                                        image: .init(systemName: dictItem.imageName),
+                                        selectedImage: .init(systemName: dictItem.accentImageName))
+        return dictionaries
+    }
+    
+    static private func createProfiles(coordinator: Coordinator, userID: UUID) -> UINavigationController {
+        let profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: userID))))
+        let profileItem = TabItem.Identifier.profile
+        profile.tabBarItem = .init(title: profileItem.title,
+                                   image: .init(systemName: profileItem.imageName),
+                                   selectedImage: .init(systemName: profileItem.accentImageName))
+        return profile
     }
     
     func resetSplitDetailToEmpty(caller: UIViewController) {
@@ -123,25 +139,6 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         case .profile:
             setViewController(profile, for: .supplementary)
         }
-    }
-    
-    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
-        viewController(for: .secondary) === emptyDetailVC ? .supplementary : .secondary
-    }
-    
-    func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
-        guard column == .compact else { return }
-        splitViewController?.setViewController(UIViewController(), for: .supplementary)
-        splitViewController?.setViewController(UIViewController(), for: .secondary)
-        
-        tab.setViewControllers([dictionaries, profile], animated: false)
-    }
-    
-    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
-        guard column == .compact else { return }
-        
-        setViewController(UIViewController(), for: .primary)
-        setViewController(dictionaries, for: .supplementary)
     }
     
 }

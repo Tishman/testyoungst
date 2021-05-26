@@ -74,4 +74,3 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         return .none
     }
 )
-.debugActions()

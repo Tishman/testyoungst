@@ -25,10 +25,22 @@ struct DictionariesScene: View {
                 ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         VStack {
-                            Text(Localizable.dictionaries)
-                                .font(.title2)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal)
+                            
+                            HStack {
+                                Text(Localizable.dictionaries)
+                                    .font(.title2)
+                                Spacer()
+                                
+                                WithViewStore(store.scope(state: \.groups.isEmpty)) { viewStore in
+                                    if !viewStore.state {
+                                        Button { viewStore.send(.changeDetail(.addGroup)) } label: {
+                                            Label(Localizable.add, systemImage: "plus.app")
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                            
 
                             groupsList
 
@@ -37,23 +49,29 @@ struct DictionariesScene: View {
                                     .font(.title2)
 
                                 Spacer()
-
-                                WithViewStore(store.scope(state: \.lastUpdate)) { viewStore in
-                                    if let lastUpdate = viewStore.state {
-                                        HStack {
-                                            Spacer()
-                                            Text(Localizable.lastUpdateTime)
-                                            Text(lastUpdate)
-                                                .padding(.spacing(.ultraSmall))
-                                                .padding(.horizontal, .spacing(.ultraSmall))
-                                                .bubbled()
-                                        }
-                                        .font(.caption)
-                                    }
+                                
+                                Button { viewStore.send(.addWordOpened) } label: {
+                                    Label(Localizable.add, systemImage: "plus.app")
                                 }
                             }
                             .padding([.horizontal, .top])
-
+                            
+                            IfLetStore(store.scope(state: \.lastUpdate)) { store in
+                                WithViewStore(store) { viewStore in
+                                    HStack {
+                                        Spacer()
+                                        Text(Localizable.lastUpdateTime)
+                                        Text(viewStore.state)
+                                            .padding(.spacing(.ultraSmall))
+                                            .padding(.horizontal, .spacing(.ultraSmall))
+                                            .bubbled()
+                                    }
+                                    .font(.caption)
+                                    .padding(.horizontal)
+                                    .padding(.top, .spacing(.ultraSmall))
+                                }
+                            }
+                            
                             wordsList
                         }
                         .padding(.top, .spacing(.medium))
@@ -74,13 +92,7 @@ struct DictionariesScene: View {
         }
         .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                addGroupButton
-            }
-        }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
-        .navigationTitle("Home")
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -158,16 +170,6 @@ struct DictionariesScene: View {
         .fixedSize()
         .frame(maxWidth: .infinity)
         .padding(.top, .spacing(.regular))
-    }
-    
-    private var addGroupButton: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.changeDetail(.addGroup)) } label: {
-                Image(systemName: "plus.app")
-            }
-            .frame(width: DefaultSize.navigationBarButton,
-                   height: DefaultSize.navigationBarButton)
-        }
     }
 }
 
