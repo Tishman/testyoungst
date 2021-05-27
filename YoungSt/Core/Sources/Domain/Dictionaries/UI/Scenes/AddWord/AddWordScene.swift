@@ -31,7 +31,7 @@ struct AddWordScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
-    private let addWordInputHeight: CGFloat = 130
+    private let addWordInputHeight: CGFloat = UIFloat(130)
     
     var body: some View {
         GeometryReader { globalProxy in

@@ -63,9 +63,9 @@ struct ProfileAvatarView: View {
         var value: CGFloat {
             switch self {
             case .medium:
-                return 60
+                return UIFloat(60)
             case .big:
-                return 120
+                return UIFloat(120)
             }
         }
         

@@ -10,12 +10,12 @@ import Foundation
 struct TabState: Equatable {
     let userID: UUID
     
-    var selectedTab: TabItem.Identifier = .dictionaries
+    var selectedTab: TabItem = .dictionaries
     var addWordOpened = false
 }
 
 enum TabAction: Equatable {
-    case selectedTabShanged(TabItem.Identifier?)
+    case selectedTabShanged(TabItem?)
     case addWordOpened(Bool)
     case mainButtonPressed
 }

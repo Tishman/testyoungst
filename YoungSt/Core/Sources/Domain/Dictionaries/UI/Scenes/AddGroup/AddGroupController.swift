@@ -17,11 +17,19 @@ struct AddGroupRoutingPoints {
     let addWord: AddWordController.Endpoint
 }
 
-final class AddGroupController: UIHostingController<AddGroupScene>, ClosableController {
+final class AddGroupController: UIHostingController<AddGroupScene>, ClosableController, RoutableController {
     
     typealias Endpoint = Provider1<AddGroupController, UUID>
     
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
+    var routePublisher: AnyPublisher<AddGroupState.Routing?, Never> {
+        viewStore.publisher.routing
+            .handleEvents(receiveOutput: { [weak viewStore] routing in
+                guard let viewStore = viewStore, routing != nil else { return }
+                viewStore.send(.rountingHandled)
+            })
+            .eraseToAnyPublisher()
+    }
     
     private let store: Store<AddGroupState, AddGroupAction>
     private let viewStore: ViewStore<AddGroupState, AddGroupAction>
@@ -34,25 +42,21 @@ final class AddGroupController: UIHostingController<AddGroupScene>, ClosableCont
         self.routingPoints = routingPoints
         
         super.init(rootView: AddGroupScene(store: store))
+        
+        observeRouting().store(in: &bag)
+        observeClosing().store(in: &bag)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        viewStore.publisher.addWordOpened
-            .removeDuplicates()
-            .filter { $0 }
-            .sink(receiveValue: { [weak self, weak viewStore] _ in
-                guard let self = self, let viewStore = viewStore else { return }
-                self.present(self.routingPoints.addWord.value(
-                    .init(semantic: .addLater(handler: .init { viewStore.send(.wordAdded($0)) }),
-                          userID: viewStore.userID,
-                          groupSelectionEnabled: false)
-                ), animated: true)
-            })
-            .store(in: &bag)
-        
-        observeClosing().store(in: &bag)
+    func handle(routing: AddGroupState.Routing) {
+        switch routing {
+        case .addWord:
+            let addWordController = self.routingPoints.addWord.value(
+                .init(semantic: .addLater(handler: .init { [weak viewStore] in viewStore?.send(.wordAdded($0)) }),
+                      userID: viewStore.userID,
+                      groupSelectionEnabled: false)
+            )
+            present(controller: addWordController, preferredPresentation: .sheet)
+        }
     }
     
     @objc required dynamic init?(coder aDecoder: NSCoder) {

@@ -31,10 +31,7 @@ final class GroupsListController: UIHostingController<GroupsListScene>, Closable
         self.viewStore = .init(store)
         self.selectedGroup = selectedGroup
         super.init(rootView: GroupsListScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        
         
         observeClosing().store(in: &bag)
         

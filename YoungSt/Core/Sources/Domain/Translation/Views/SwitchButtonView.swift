@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Utilities
 import ComposableArchitecture
 
 struct SwitchButtonView: View {
@@ -19,7 +20,7 @@ struct SwitchButtonView: View {
 				HStack {
 					Image("switch")
 						.resizable()
-						.frame(width: 24, height: 24, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+						.frame(width: UIFloat(24), height: UIFloat(24))
 				}
 			}
 		}
