@@ -31,6 +31,7 @@ struct AddWordScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
+    @State private var elementsAppeared: Bool = false
     private let addWordInputHeight: CGFloat = UIFloat(130)
     
     var body: some View {
@@ -45,11 +46,19 @@ struct AddWordScene: View {
                             }
                             .padding(.bottom, .spacing(.big))
                             
-                            sourceInput
-                            
-                            descriptionInput
-                            
-                            groupEditing
+                            if elementsAppeared {
+                                sourceInput
+                                    .transition(contentTransition(delay: 0.25))
+                                    .animation(contentTransitionAnimation(delay: 0.25))
+                                
+                                descriptionInput
+                                    .transition(contentTransition(delay: 0.35))
+                                    .animation(contentTransitionAnimation(delay: 0.35))
+                                
+                                groupEditing
+                                    .transition(contentTransition(offset: 10, delay: 0.55))
+                                    .animation(contentTransitionAnimation(delay: 0.55))
+                            }
                         }
                         .padding()
                         .padding(.bottom, RoundedButtonStyle.minHeight)
@@ -87,6 +96,20 @@ struct AddWordScene: View {
             }
         }
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
+        .onAppear {
+            elementsAppeared = true
+        }
+    }
+    
+    private func contentTransition(offset: CGFloat = 25, delay: Double) -> AnyTransition {
+        .opacity
+            .combined(with: .offset(x: 0, y: offset))
+            .combined(with: .scale(scale: 0.95))
+            .animation(contentTransitionAnimation(delay: delay))
+    }
+    
+    private func contentTransitionAnimation(delay: Double) -> Animation {
+        .easeOut(duration: 0.2).delay(delay)
     }
     
     private var sourceInput: some View {
