@@ -17,9 +17,35 @@ public final class AuthorizationDIFramework: DIFramework {
         
         container.register(AuthorizationServiceImpl.init)
             .as(check: AuthorizationService.self) {$0}
+		
+		container.register(LoginEnviroment.init)
+		container.register(LoginRoutingPoints.init)
+		container.register {
+			LoginController(env: $0, routingPoints: $1)
+		}
+		
+		container.register(RegistrationEnviroment.init)
+		container.register(RegistrationRoutingPoints.init)
+		container.register {
+			RegistrationController(env: $0, routingPoints: $1)
+		}
+		
+		container.register(ForgotPasswordEnviroment.init)
+		container.register {
+			ForgotPasswordController(env: $0)
+		}
+		
+		container.register(ConfrimEmailEnviroment.init)
+		container.register {
+			ConfrimEmailController(env: $0)
+		}
+		
+		container.register(WelcomeEnviroment.init)
+		container.register(WelcomeRoutingPoints.init)
         
-        container.register { env in { (input: AuthorizationInput) in
-            WelcomeController(env: env).erased
+		// For module's link
+        container.register { env, routingPoints in { (input: WelcomeInput) in
+			WelcomeViewController(input: input, env: env, routingPoints: routingPoints).erased
         }}
         
         container.register(CredentialsServiceImpl.init)

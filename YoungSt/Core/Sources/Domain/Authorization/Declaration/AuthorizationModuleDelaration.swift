@@ -15,9 +15,9 @@ import ComposableArchitecture
 final class AuthorizationModuleDelaration: DIPart, ModuleStoreProvider {
     
     private let environment: WelcomeEnviroment
-    private let input: AuthorizationInput
+    private let input: WelcomeInput
     
-    private init(environment: WelcomeEnviroment, input: AuthorizationInput) {
+    private init(environment: WelcomeEnviroment, input: WelcomeInput) {
         self.environment = environment
         self.input = input
     }

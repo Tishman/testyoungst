@@ -8,6 +8,10 @@
 import Foundation
 
 struct WelcomeState: Equatable {
-	var loginState: LoginState?
-	var registrationState: RegistrationState?
+	enum Routing: Equatable {
+		case login
+		case registration
+	}
+	
+	var routing: Routing?
 }

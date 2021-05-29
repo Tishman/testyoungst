@@ -7,13 +7,15 @@
 
 import Foundation
 import ComposableArchitecture
+import Coordinator
 
-struct ConfrimEmailState: Equatable {
+struct ConfrimEmailState: Equatable, ClosableState {
 	var code = ""
 	var userId: String = ""
 	var isCodeVerified: Bool = false
 	var isAlertPresent: Bool = false
 	var alertMessage = ""
+	var isClosed = false
 }
 
 enum ConfrimEmailAction: Equatable {

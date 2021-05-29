@@ -21,6 +21,7 @@ enum RegistrationAction: Equatable {
 	case confrimCodeClosed
 	case showPasswordButtonTapped(SecureFieldType)
     case finishRegistration
+	case routingHandled
 	
 	enum SecureFieldType {
 		case password

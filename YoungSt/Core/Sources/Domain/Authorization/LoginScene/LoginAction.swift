@@ -18,5 +18,5 @@ enum LoginAction: Equatable {
 	case alertClosed
 	case failedValidtion(String)
 	case forgotPassword(ForgotPasswordAction)
-	case forgotPasswordOpened(Bool)
+	case routingHandled
 }

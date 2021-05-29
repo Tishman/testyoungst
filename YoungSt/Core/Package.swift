@@ -183,6 +183,7 @@ let package = Package(
                 CorePackage.networkService.dependency,
                 CorePackage.utilities.dependency,
                 CorePackage.coordinator.dependency,
+				CorePackage.coordinator.dependency
             ],
             path: CorePackage.authorization.path,
             resources: [.copy("Sources/Common/Resources")]
