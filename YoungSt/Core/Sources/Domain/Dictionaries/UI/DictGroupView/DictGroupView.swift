@@ -18,11 +18,11 @@ struct DictGroupView: View {
         var value: CGFloat {
             switch self {
             case .small:
-                return 120
+                return UIFloat(120)
             case .medium:
-                return 150
+                return UIFloat(150)
             case .big:
-                return 180
+                return UIFloat(180)
             }
         }
         

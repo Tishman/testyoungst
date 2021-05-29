@@ -10,7 +10,7 @@ import Resources
 
 public struct RoundedButtonStyle: ButtonStyle {
     
-    public static let minHeight: CGFloat = 64
+    public static let minHeight: CGFloat = UIFloat(64)
     
     public init(style: RoundedButtonStyle.StyleType, isLoading: Bool = false) {
         self.style = style
@@ -74,7 +74,7 @@ public struct RoundedButtonStyle: ButtonStyle {
         } else {
             configuration.label
                 .padding()
-                .frame(minWidth: 200, minHeight: RoundedButtonStyle.minHeight)
+                .frame(minWidth: UIFloat(200), minHeight: RoundedButtonStyle.minHeight)
                 .font(.body.weight(.semibold))
                 .foregroundColor(style.textColor.opacity(configuration.isPressed ? 0.4 : 1))
         }

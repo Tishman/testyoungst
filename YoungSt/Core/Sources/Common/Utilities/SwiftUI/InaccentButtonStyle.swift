@@ -11,7 +11,7 @@ import Resources
 
 public struct InaccentButtonStyle: ButtonStyle {
     
-    public static let defaultSize: CGFloat = 24
+    public static let defaultSize: CGFloat = UIFloat(24)
     
     public init() {}
     

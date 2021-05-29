@@ -7,11 +7,12 @@
 
 import SwiftUI
 import Resources
+import Utilities
 
 struct DictWordView: View {
     
     let state: DictWordState
-    private let minRowHeight: CGFloat = 60
+    private let minRowHeight: CGFloat = UIFloat(60)
     
     var body: some View {
         VStack(alignment: .leading, spacing: .spacing(.small)) {

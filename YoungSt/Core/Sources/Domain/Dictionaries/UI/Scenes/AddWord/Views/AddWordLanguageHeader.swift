@@ -27,7 +27,7 @@ struct AddWordLanguageHeader: View {
                 Asset.Images.arrowsSwap.swiftUI
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 18, height: 18)
+                    .frame(width: UIFloat(18), height: UIFloat(18))
             }
             .buttonStyle(InaccentButtonStyle())
             

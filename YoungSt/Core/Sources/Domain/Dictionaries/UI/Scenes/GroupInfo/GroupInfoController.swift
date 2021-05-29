@@ -43,10 +43,7 @@ final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableCo
         self.viewStore = .init(store)
         self.routingPoints = routingPoints
         super.init(rootView: GroupInfoScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        
         observeRouting().store(in: &bag)
         observeClosing().store(in: &bag)
     }

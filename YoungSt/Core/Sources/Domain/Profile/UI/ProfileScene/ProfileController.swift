@@ -49,10 +49,6 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
         self.routingPoints = routingPoints
 
         super.init(rootView: ProfileScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         observeRouting().store(in: &bag)
     }

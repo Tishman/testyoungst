@@ -64,8 +64,11 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
         case let .showAlert(error):
             state.alertError = .init(title: TextState(error))
             
-        case let .addWordOpened(isOpened):
-            state.addWordOpened = isOpened
+        case .addWordOpened:
+            state.routing = .addWord
+            
+        case .rountingHandled:
+            state.routing = nil
             
         case let .wordAdded(request):
             let item = Dictionary_AddWordItem.with {

@@ -46,10 +46,7 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
         self.viewStore = .init(store)
         self.routingPoints = routingPoints
         super.init(rootView: DictionariesScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        
         observeRouting().store(in: &bag)
     }
     

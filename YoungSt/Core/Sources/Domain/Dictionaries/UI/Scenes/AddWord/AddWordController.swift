@@ -48,10 +48,6 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
         self.viewStore = .init(store)
         self.routingPoints = routingPoints
         super.init(rootView: AddWordScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         observeRouting().store(in: &bag)
         observeClosing().store(in: &bag)

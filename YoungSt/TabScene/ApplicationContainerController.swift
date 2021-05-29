@@ -34,23 +34,23 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
-        let sidebar =
-            WithViewStore(store) { viewStore in
-                List {
-                    Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
-                        Label(TabItem.Identifier.dictionaries.title, systemImage: TabItem.Identifier.dictionaries.imageName)
-                    }
-                    Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
-                        Label(TabItem.Identifier.profile.title, systemImage: TabItem.Identifier.profile.imageName)
-                    }
-                }
-            }
-            .listStyle(SidebarListStyle())
-            .navigationTitle("YoungSt")
-            .navigationBarTitleDisplayMode(.large)
-            .uiKitHosted
+//        let sidebar =
+//            WithViewStore(store) { viewStore in
+//                List {
+//                    Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
+//                        Label(TabItem.dictionaries.title, systemImage: TabItem.dictionaries.imageName)
+//                    }
+//                    Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
+//                        Label(TabItem.profile.title, systemImage: TabItem.profile.imageName)
+//                    }
+//                }
+//            }
+//            .listStyle(SidebarListStyle())
+//            .navigationTitle("YoungSt")
+//            .navigationBarTitleDisplayMode(.large)
+//            .uiKitHosted
+        let sidebar = SidebarViewController(store: store)
         let sidebarNav = UINavigationController(rootViewController: sidebar)
-        sidebarNav.navigationBar.prefersLargeTitles = true
         
         self.tab = UITabBarController()
         
@@ -64,7 +64,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         preferredSplitBehavior = .tile
         
         setViewController(sidebarNav, for: .primary)
-        setViewController(profile, for: .supplementary)
+        updateSelectedTab(tab: viewStore.selectedTab)
         
         setViewController(emptyDetailVC, for: .secondary)
         setViewController(tab, for: .compact)
@@ -74,7 +74,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     
     static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {
         let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
-        let dictItem = TabItem.Identifier.dictionaries
+        let dictItem = TabItem.dictionaries
         dictionaries.tabBarItem = .init(title: dictItem.title,
                                         image: .init(systemName: dictItem.imageName),
                                         selectedImage: .init(systemName: dictItem.accentImageName))
@@ -83,7 +83,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     
     static private func createProfiles(coordinator: Coordinator, userID: UUID) -> UINavigationController {
         let profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: userID))))
-        let profileItem = TabItem.Identifier.profile
+        let profileItem = TabItem.profile
         profile.tabBarItem = .init(title: profileItem.title,
                                    image: .init(systemName: profileItem.imageName),
                                    selectedImage: .init(systemName: profileItem.accentImageName))
@@ -132,7 +132,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         updateSelectedTab(tab: .dictionaries)
     }
     
-    private func updateSelectedTab(tab: TabItem.Identifier) {
+    private func updateSelectedTab(tab: TabItem) {
         switch tab {
         case .dictionaries:
             setViewController(dictionaries, for: .supplementary)

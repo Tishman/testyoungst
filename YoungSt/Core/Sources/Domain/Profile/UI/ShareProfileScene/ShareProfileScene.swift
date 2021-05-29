@@ -19,7 +19,7 @@ struct ShareProfileScene: View {
             VStack {
                 Text(Localizable.shareProfileTitle)
                     .font(.title)
-                    .padding(.top, 160)
+                    .padding(.top, .spacing(.custom(160)))
                 Text(Localizable.shareProfileDescription)
                     .foregroundColor(.secondary)
             }
@@ -33,7 +33,7 @@ struct ShareProfileScene: View {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .bubbled()
-                    .padding(.top, 80)
+                    .padding(.top, .spacing(.custom(80)))
                     .padding(.horizontal)
             }
             

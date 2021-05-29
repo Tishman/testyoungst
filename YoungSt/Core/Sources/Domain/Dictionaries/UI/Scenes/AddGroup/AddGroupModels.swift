@@ -18,10 +18,14 @@ struct AddGroupState: Equatable, Previwable, ClosableState {
     var title: String = ""
     var titleError: String?
     
-    var addWordOpened = false
     var isLoading = false
     var alertError: AlertState<AddGroupAction>?
     var isClosed = false
+    
+    enum Routing: Hashable {
+        case addWord
+    }
+    var routing: Routing?
     
     var items: [IdentifiedItem<Dictionary_AddWordItem>] = []
     
@@ -49,7 +53,8 @@ enum AddGroupAction: Equatable {
     
     case addGroupPressed
     case alertClosePressed
-    case addWordOpened(Bool)
+    case addWordOpened
+    case rountingHandled
     case wordAdded(AddWordInput.AddLaterRequest)
     
     case showAlert(String)

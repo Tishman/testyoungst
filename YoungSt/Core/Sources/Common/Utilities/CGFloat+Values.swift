@@ -6,6 +6,19 @@
 //
 
 import CoreGraphics
+import UIKit
+
+@usableFromInline let supportsMacIdiom: Bool = !(UIDevice.current.userInterfaceIdiom == .pad)
+
+// https://www.highcaffeinecontent.com/blog/20210516-Supporting-Catalysts-Optimize-for-Mac-with-Manual-Layout
+@inlinable public func UIFloat(_ value: CGFloat) -> CGFloat
+{
+    #if targetEnvironment(macCatalyst)
+    return round((value == 0.5) ? 0.5 : value * (supportsMacIdiom ? 0.77 : 1.0))
+    #else
+    return value
+    #endif
+}
 
 public extension CGFloat {
     
@@ -20,30 +33,33 @@ public extension CGFloat {
         case superBig
         case extraSize
 		case header
+        case custom(CGFloat)
     }
     
     static func spacing(_ level: SpacingLevel) -> CGFloat {
         switch level {
         case .none:
-            return 0
+            return UIFloat(0)
         case .ultraSmall:
-            return 4
+            return UIFloat(4)
         case .small:
-            return 8
+            return UIFloat(8)
         case .medium:
-            return 12
+            return UIFloat(12)
         case .regular:
-            return 16
+            return UIFloat(16)
         case .big:
-            return 20
+            return UIFloat(20)
         case .ultraBig:
-            return 24
+            return UIFloat(24)
         case .superBig:
-            return 28
+            return UIFloat(28)
         case .extraSize:
-            return 32
+            return UIFloat(32)
 		case .header:
-			return 120
+			return UIFloat(120)
+        case let .custom(value):
+            return UIFloat(value)
         }
     }
     
@@ -59,17 +75,17 @@ public extension CGFloat {
     static func corner(_ level: CornerLevel) -> CGFloat {
         switch level {
         case .none:
-            return 0
+            return UIFloat(0)
         case .ultraSmall:
-            return 4
+            return UIFloat(4)
         case .small:
-            return 8
+            return UIFloat(8)
         case .medium:
-            return 12
+            return UIFloat(12)
         case .big:
-            return 16
+            return UIFloat(16)
         case .ultraBig:
-            return 20
+            return UIFloat(20)
         }
     }
     

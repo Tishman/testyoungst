@@ -46,7 +46,7 @@ struct AddGroupScene: View {
                         }
                         
                         WithViewStore(store.stateless) { viewStore in
-                            Button { viewStore.send(.addWordOpened(true)) } label: {
+                            Button { viewStore.send(.addWordOpened) } label: {
                                 HStack(spacing: .spacing(.big)) {
                                     Image(systemName: "plus.app.fill")
                                         .resizable()
@@ -54,7 +54,7 @@ struct AddGroupScene: View {
                                     Text(Localizable.addWordTitle)
                                 }
                             }
-                            .frame(height: 35)
+                            .frame(height: UIFloat(35))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal)

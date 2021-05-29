@@ -32,10 +32,6 @@ final class FinishProfileUpdatingController: UIHostingController<EditProfileScen
         self.store = store
         self.viewStore = .init(store)
         super.init(rootView: EditProfileScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         observeClosing().store(in: &bag)
     }

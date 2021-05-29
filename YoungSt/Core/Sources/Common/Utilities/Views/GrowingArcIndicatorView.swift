@@ -13,7 +13,7 @@ public typealias IndicatorView = GrowingArcIndicatorView
 public struct PlainIndicatorView: View {
     
     public init(color: Color = Asset.Colors.loaderContent.color.swiftuiColor,
-                size: CGFloat = 33,
+                size: CGFloat = UIFloat(33),
                 paddingValue: CGFloat = 0) {
         self.color = color
         self.size = size
@@ -43,7 +43,7 @@ public struct PlainIndicatorView: View {
 
 public struct GrowingArcIndicatorView: View {
     
-    public init(size: CGFloat = 60) {
+    public init(size: CGFloat = UIFloat(60)) {
         self.color = Asset.Colors.loaderContent.color.swiftuiColor
         self.size = size
     }
