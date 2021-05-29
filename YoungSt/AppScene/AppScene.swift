@@ -96,7 +96,7 @@ final class AppViewController: UIViewController {
     }
     
     private func setLoginState() {
-        let loginView = coordinator.view(for: .authorization(.default))
+		let loginView = coordinator.view(for: .authorization(WelcomeInput()))
         ViewEmbedder.embed(child: loginView, to: self)
     }
 

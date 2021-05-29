@@ -65,6 +65,7 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		
 	case .handleResetPassword(.success):
 		state.isPasswordChanged = true
+		state.isClosed = true
 		
 	case let .handleResetPassword(.failure(error)):
 		state.alert = .init(title: TextState(Localizable.incorrectDataTitle),

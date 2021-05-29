@@ -53,7 +53,7 @@ final class RegistrationController: UIHostingController<RegistrationView>, Routa
 	
 	func handle(routing: RegistrationState.Routing) {
 		switch routing {
-		case .confrimPassword:
+		case .confrimEmail:
 			let vc = routingPoints.confrimPassword.value
 			present(controller: vc, preferredPresentation: .detail)
 		}

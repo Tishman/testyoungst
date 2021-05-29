@@ -13,23 +13,20 @@ import Resources
 let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, ConfrimEmailEnviroment> { state, action, enviroment in
 	switch action {
 	case let .failedValidation(value):
-		state.alertMessage = value
-		state.isAlertPresent = true
-		
-	case .alertPresented:
-		state.alertMessage = ""
-		state.isAlertPresent = false
-		guard state.isCodeVerified else { break }
-		return .init(value: .finishRegistartion)
+		state.alert = .init(title: TextState(value),
+							message: nil,
+							dismissButton: .cancel(TextState(Localizable.ok)))
 	
 	case let .handleConfrimation(.success(value)):
 		state.isCodeVerified = value
-		state.alertMessage = Localizable.accountCreated
-		state.isAlertPresent = true
+		state.alert = .init(title: TextState(Localizable.accountCreated),
+							message: nil,
+							dismissButton: .cancel(TextState(Localizable.ok)))
 		
 	case let .handleConfrimation(.failure(value)):
-		state.isAlertPresent = true
-		state.alertMessage = value.localizedDescription
+		state.alert = .init(title: TextState(value.localizedDescription),
+							message: nil,
+							dismissButton: .cancel(TextState(Localizable.ok)))
 		
 	case let .didCodeStartEnter(value):
 		state.code = value
@@ -47,8 +44,11 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
 			.catchToEffect()
 			.map(ConfrimEmailAction.handleConfrimation)
 		
-	case .finishRegistartion:
-		break
+	case .alertOkButtonTapped:
+		state.alert = nil
+		if state.isCodeVerified {
+			state.isClosed = true
+		}
 	}
 	return .none
 }

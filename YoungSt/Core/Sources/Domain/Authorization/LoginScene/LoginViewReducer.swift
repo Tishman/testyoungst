@@ -11,62 +11,54 @@ import NetworkService
 import Utilities
 import Resources
 
-let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment>.combine(
-	forgotPasswordReducer.optional().pullback(state: \.forgotPasswordState,
-											  action: /LoginAction.forgotPassword,
-											  environment: { ForgotPasswordEnviroment(authorizationService: $0.service) }),
-	Reducer { state, action, enviroment in
-		switch action {
-		case let .emailChanged(value):
-			state.email = value
-			
-		case let .passwordChanged(value):
-			state.password = value
-			
-		case .loginTapped:
-			guard !state.email.isEmpty && !state.password.isEmpty else {
-				return .init(value: .failedValidtion(Localizable.fillAllFields))
-			}
-			state.isLoading = true
-			let requestData = Authorization_LoginRequest.with {
-				$0.email = state.email
-				$0.password = state.password
-			}
-			
-			return enviroment.service.login(request: requestData)
-				.receive(on: DispatchQueue.main)
-				.catchToEffect()
-				.map(LoginAction.handleLogin)
-			
-		case let .handleLogin(result):
-			switch result {
-			case let .success(response):
-				// Should be handled by main application
-				break
-				
-			case let .failure(error):
-				state.isLoading = false
-				state.alertState = .init(title: TextState(error.localizedDescription))
-			}
-			
-		case let .failedValidtion(value):
-			state.alertState = .init(title: TextState(value))
-			
-		case .alertClosed:
-			state.alertState = nil
-			
-		case .forgotPasswordTapped:
-			break
-			
-		case .showPasswordButtonTapped:
-			state.showPassword.toggle()
-			
-		case .forgotPassword:
-			break
-			
-		case let .forgotPasswordOpened(isOpen):
-			state.forgotPasswordState = isOpen ? .init() : nil
+let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
+	switch action {
+	case let .emailChanged(value):
+		state.email = value
+		
+	case let .passwordChanged(value):
+		state.password = value
+		
+	case .loginTapped:
+		guard !state.email.isEmpty && !state.password.isEmpty else {
+			return .init(value: .failedValidtion(Localizable.fillAllFields))
 		}
-		return .none
+		state.isLoading = true
+		let requestData = Authorization_LoginRequest.with {
+			$0.email = state.email
+			$0.password = state.password
+		}
+		
+		return enviroment.service.login(request: requestData)
+			.receive(on: DispatchQueue.main)
+			.catchToEffect()
+			.map(LoginAction.handleLogin)
+		
+	case let .handleLogin(result):
+		switch result {
+		case let .success(response):
+			// Should be handled by main application
+			break
+			
+		case let .failure(error):
+			state.isLoading = false
+			state.alertState = .init(title: TextState(error.localizedDescription))
+		}
+		
+	case let .failedValidtion(value):
+		state.alertState = .init(title: TextState(value))
+		
+	case .alertClosed:
+		state.alertState = nil
+		
+	case .forgotPasswordTapped:
+		state.routing = .forgotPassword
+		
+	case .showPasswordButtonTapped:
+		state.showPassword.toggle()
+		
+	case .routingHandled:
+		state.routing = nil
 	}
-)
+	return .none
+}

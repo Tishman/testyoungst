@@ -8,20 +8,14 @@
 import Foundation
 import ComposableArchitecture
 
-let welcomeReducer = Reducer<WelcomeState, WelcomeAction, WelcomeEnviroment>.combine(
-    Reducer { state, action, enviroment in
+let welcomeReducer = Reducer<WelcomeState, WelcomeAction, WelcomeEnviroment> { state, action, enviroment in
         switch action {
-            
-        case .viewsClosed:
-            state.loginState = nil
-            state.registrationState = nil
-			
-        case .registration(.finishRegistration):
-			state.registrationState = nil
-			
-		case .login, .registration:
-			break
+		case .routingHandled(.close):
+			state.routing = nil
+		case .routingHandled(.login):
+			state.routing = .login
+		case .routingHandled(.registration):
+			state.routing = .registration
 		}
         return .none
-    }
-)
+}

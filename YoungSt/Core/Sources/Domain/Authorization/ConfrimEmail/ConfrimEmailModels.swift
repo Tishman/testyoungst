@@ -13,18 +13,16 @@ struct ConfrimEmailState: Equatable, ClosableState {
 	var code = ""
 	var userId: String = ""
 	var isCodeVerified: Bool = false
-	var isAlertPresent: Bool = false
-	var alertMessage = ""
+	var alert: AlertState<ConfrimEmailAction>?
 	var isClosed = false
 }
 
 enum ConfrimEmailAction: Equatable {
 	case didCodeStartEnter(String)
 	case failedValidation(String)
-	case alertPresented
 	case didConfrimButtonTapped
 	case handleConfrimation(Result<Bool, ConfrimCodeError>)
-	case finishRegistartion
+	case alertOkButtonTapped
 }
 
 struct ConfrimEmailEnviroment {

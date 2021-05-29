@@ -23,7 +23,6 @@ final class AuthorizationModuleDelaration: DIPart, ModuleStoreProvider {
     }
     
     static func load(container: DIContainer) {
-        container.register(WelcomeEnviroment.init)
         
         container.register { env in { input in
             ViewHolder(storeProvider: AuthorizationModuleDelaration(environment: env, input: input)) { store in

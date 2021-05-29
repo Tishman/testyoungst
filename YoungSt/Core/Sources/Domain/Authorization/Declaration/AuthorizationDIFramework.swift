@@ -45,7 +45,7 @@ public final class AuthorizationDIFramework: DIFramework {
         
 		// For module's link
         container.register { env, routingPoints in { (input: WelcomeInput) in
-			WelcomeViewController(input: input, env: env, routingPoints: routingPoints).erased
+			UINavigationController(rootViewController: WelcomeViewController(input: input, env: env, routingPoints: routingPoints)).erased
         }}
         
         container.register(CredentialsServiceImpl.init)

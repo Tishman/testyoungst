@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct RegistrationState: Equatable {
 	enum Routing: Equatable {
-		case confrimPassword
+		case confrimEmail
 	}
 	
     var email: String = ""

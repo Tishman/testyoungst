@@ -31,7 +31,7 @@ final class WelcomeViewController: UIHostingController<WelcomeView>, RoutableCon
 		viewStore.publisher.routing
 			.handleEvents(receiveOutput: { [weak viewStore] point in
 				guard let viewStore = viewStore, point != nil else { return }
-				viewStore.send(.routingHandled)
+				viewStore.send(.routingHandled(.close))
 			})
 			.eraseToAnyPublisher()
 	}
@@ -55,10 +55,10 @@ final class WelcomeViewController: UIHostingController<WelcomeView>, RoutableCon
 		switch routing {
 		case .login:
 			let vc = routingPoints.login.value
-			present(controller: vc, preferredPresentation: .detail)
+			present(controller: vc, preferredPresentation: .pushInCurrent)
 		case .registration:
 			let vc = routingPoints.registration.value
-			present(controller: vc, preferredPresentation: .detail)
+			present(controller: vc, preferredPresentation: .pushInCurrent)
 		}
 	}
 	

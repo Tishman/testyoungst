@@ -47,9 +47,7 @@ struct ConfrimEmailScene: View {
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}
-			.alert(isPresented: viewStore.binding(get: \.isAlertPresent, send: ConfrimEmailAction.alertPresented), content: {
-				Alert(title: Text(Constants.Text.incorrectData), message: Text(viewStore.alertMessage), dismissButton: .default(Text(Constants.Text.ok)))
-			})
+			.alert(store.scope(state: \.alert), dismiss: ConfrimEmailAction.alertOkButtonTapped)
 		}
 	}
 }

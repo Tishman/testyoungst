@@ -26,7 +26,7 @@ public struct StudentInviteInput: Equatable {
 }
 
 public struct WelcomeInput: Equatable {
-	
+	public init() {}
 }
 
 public struct DictionariesInput: Hashable {

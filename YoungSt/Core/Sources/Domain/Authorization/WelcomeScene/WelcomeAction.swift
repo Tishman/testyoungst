@@ -8,5 +8,11 @@
 import Foundation
 
 enum WelcomeAction: Equatable {
-	case routingHandled
+	case routingHandled(RoutingState)
+	
+	enum RoutingState: Equatable {
+		case login
+		case registration
+		case close
+	}
 }
