@@ -134,7 +134,7 @@ public enum Loc {
     public static let emailSendedToConfrim = Loc.tr("Localizable", "emailSendedToConfrim")
     /// You don't yet have any dictionary.\nTap 'plus' to add
     public static let emptyGroupsPlaceholder = Loc.tr("Localizable", "emptyGroupsPlaceholder")
-    /// You don't have any words yet.\nTap 'plus' in menu to add
+    /// You don't have any words yet.\nTap 'plus' above to add
     public static let emptyWordsPlaceholder = Loc.tr("Localizable", "emptyWordsPlaceholder")
     /// English
     public static let en = Loc.tr("Localizable", "en")
@@ -274,6 +274,10 @@ public enum Loc {
     public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
     /// You can't become student because you already have teacher.
     public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")
+    /// You definitely should add something here
+    public static let youShouldAddWordDescription = Loc.tr("Localizable", "youShouldAddWordDescription")
+    /// Group is empty.
+    public static let youShouldAddWordTitle = Loc.tr("Localizable", "youShouldAddWordTitle")
     /// Cant add empty word. Type something in first field
     public static let youShouldTypeText = Loc.tr("Localizable", "youShouldTypeText")
   }
