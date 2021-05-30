@@ -109,7 +109,7 @@ struct AddWordScene: View {
     }
     
     private func contentTransitionAnimation(delay: Double) -> Animation {
-        .easeOut(duration: 0.2).delay(delay)
+        .spring().speed(1.25).delay(delay)
     }
     
     private var sourceInput: some View {
