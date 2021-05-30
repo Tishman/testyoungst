@@ -9,8 +9,9 @@ import Foundation
 import NetworkService
 import Utilities
 import ComposableArchitecture
+import Coordinator
 
-struct ForgotPasswordState: Equatable {
+struct ForgotPasswordState: Equatable, ClosableState {
 	var email: Field<String> = .init(value: "", status: .default)
 	var code: Field<String> = .init(value: "", status: .default)
 	var password: Field<String> = .init(value: "", status: .default)
@@ -19,6 +20,7 @@ struct ForgotPasswordState: Equatable {
 	var isConfrimPasswordHidden = true
 	var isResetPasswordInit = false
 	var isPasswordChanged = false
+	var isClosed = false
 	var alert: AlertState<ForgotPasswordAction>?
 }
 

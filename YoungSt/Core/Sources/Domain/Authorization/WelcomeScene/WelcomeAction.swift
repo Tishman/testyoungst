@@ -8,10 +8,11 @@
 import Foundation
 
 enum WelcomeAction: Equatable {
-    case login(LoginAction)
-    case registration(RegistrationAction)
-	case loginOpenned(Bool)
-	case registrationOppend(Bool)
-    
-    case viewsClosed
+	case routingHandled(RoutingState)
+	
+	enum RoutingState: Equatable {
+		case login
+		case registration
+		case close
+	}
 }

@@ -9,12 +9,15 @@ import Foundation
 import ComposableArchitecture
 
 struct LoginState: Equatable {
+	enum Routing: Equatable {
+		case forgotPassword
+	}
     var email: String = ""
     var password: String = ""
     var resetPasswordOpened = false
     var showPassword: Bool = false
     var isLoading = false
-	var forgotPasswordState: ForgotPasswordState?
+	var routing: Routing?
     
     var alertState: AlertState<LoginAction>?
 }

@@ -15,15 +15,14 @@ import ComposableArchitecture
 final class AuthorizationModuleDelaration: DIPart, ModuleStoreProvider {
     
     private let environment: WelcomeEnviroment
-    private let input: AuthorizationInput
+    private let input: WelcomeInput
     
-    private init(environment: WelcomeEnviroment, input: AuthorizationInput) {
+    private init(environment: WelcomeEnviroment, input: WelcomeInput) {
         self.environment = environment
         self.input = input
     }
     
     static func load(container: DIContainer) {
-        container.register(WelcomeEnviroment.init)
         
         container.register { env in { input in
             ViewHolder(storeProvider: AuthorizationModuleDelaration(environment: env, input: input)) { store in

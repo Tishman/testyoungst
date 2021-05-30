@@ -85,16 +85,6 @@ struct RegistrationView: View {
             .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
-        .background(confirmCodeLink)
-    }
-    
-    private var confirmCodeLink: some View {
-        WithViewStore(store.scope(state: \.confrimCodeState)) { viewStore in
-            NavigationLink.init(destination: IfLetStore(store.scope(state: \.confrimCodeState, action: RegistrationAction.confrimCode),
-                                                        then: ConfrimEmailScene.init),
-                                isActive: viewStore.binding(get: { $0 != nil }, send: RegistrationAction.confrimCodeClosed),
-                                label: {})
-        }
     }
 }
 

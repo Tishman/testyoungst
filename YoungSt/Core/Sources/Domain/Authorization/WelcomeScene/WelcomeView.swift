@@ -37,14 +37,14 @@ struct WelcomeView: View {
                     
                     VStack(spacing: .spacing(.big)) {
                         WithViewStore(store.stateless) { viewStore in
-                            Button(action: { viewStore.send(.loginOpenned(true)) }, label: {
+							Button(action: { viewStore.send(.routingHandled(.login)) }, label: {
                                 Text(Constants.login)
                             })
                         }
                         .buttonStyle(RoundedButtonStyle(style: .filled))
                         
                         WithViewStore(store.stateless) { viewStore in
-                            Button(action: { viewStore.send(.registrationOppend(true)) }, label: {
+							Button(action: { viewStore.send(.routingHandled(.registration)) }, label: {
                                 Text(Constants.registration)
                             })
                         }
@@ -53,30 +53,8 @@ struct WelcomeView: View {
                     }
                 }
             }
-            .background(registrationLink)
-            .background(loginLink)
-            .fixNavigationLinkForIOS14_5()
             .navigationBarTitleDisplayMode(.inline)
             .makeDefaultNavigationBarTransparent()
-        }
-    }
-    
-    private var registrationLink: some View {
-        WithViewStore(store.scope(state: \.registrationState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.registrationState, action: WelcomeAction.registration),
-                                                   then: RegistrationView.init(store:)),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.registrationOppend),
-                           label: {})
-        }
-    }
-    
-    private var loginLink: some View {
-        WithViewStore(store.scope(state: \.loginState)) { viewStore in
-            NavigationLink(destination: IfLetStore(store.scope(state: \.loginState,
-                                                               action: WelcomeAction.login),
-                                                   then: LoginView.init(store:)),
-                           isActive: viewStore.binding(get: { $0 != nil }, send: WelcomeAction.loginOpenned),
-                           label: {})
         }
     }
 }

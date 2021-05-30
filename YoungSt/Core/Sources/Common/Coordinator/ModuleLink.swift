@@ -10,7 +10,7 @@ import Protocols
 import Utilities
 
 public enum ModuleLink: Equatable {
-    case authorization(AuthorizationInput)
+    case authorization(WelcomeInput)
     case dictionaries(DictionariesInput)
     case profile(ProfileInput)
     case addWord(AddWordInput)
@@ -25,10 +25,8 @@ public struct StudentInviteInput: Equatable {
     public let teacherID: UUID
 }
 
-public enum AuthorizationInput: Identifiable, Hashable {
-    case `default`
-    
-    public var id: Self { return self }
+public struct WelcomeInput: Equatable {
+	public init() {}
 }
 
 public struct DictionariesInput: Hashable {
