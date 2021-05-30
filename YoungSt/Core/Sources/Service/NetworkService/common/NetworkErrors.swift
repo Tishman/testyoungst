@@ -115,7 +115,7 @@ public enum BLError: String, LocalizedError, Equatable {
         }
     }
     
-    init(error: Error) {
+    public init(error: Error) {
         if let selfErr = error as? Self {
             self = selfErr
             return

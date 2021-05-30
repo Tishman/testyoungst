@@ -7,57 +7,35 @@
 
 import Foundation
 import GRPC
+import NetworkService
 
-enum ResetPasswordError: String, Error, GRPCInitable {
-    case unknown
-    case errVerificationNotFoundUser
-    case errIncorrectResetPasswordCode
+enum RegistrationError: LocalizedError {
+    case `default`(BLError)
+	case errVerificationNotConfirmedRegID(UUID)
+	
+	var errorDescription: String? {
+		switch self {
+		case let .default(error):
+			return error.errorDescription
+		case .errVerificationNotConfirmedRegID:
+			return BLError.errVerificationNotConfirmedRegID.errorDescription
+		}
+	}
 }
 
-enum CheckResetPasswordError: String, Error, GRPCInitable {
-    case unknown
-    case errVerificationNotFoundUser
-}
-
-enum InitResetPasswordError: String, Error, GRPCInitable {
-    case unknown
-    case errVerificationNotFoundUser
-}
-
-enum RegistrationError: String, Error, GRPCInitable {
-    case unknown
-    case errUserAlreadyExists
-}
-
-enum LoginError: String, Error, GRPCInitable {
-    case unknown
+enum LoginError: LocalizedError {
+	case `default`(BLError)
     case couldNotExtractSid
     case errVerificationNotConfirmedRegID
-}
-
-enum ConfrimCodeError: String, Error, GRPCInitable {
-	case unknown
-	case errIncorrectConfirmationCode
-}
-
-protocol GRPCInitable: RawRepresentable where RawValue == String {
-    init(error: Error)
-    
-    static var unknown: Self { get }
-}
-
-
-extension GRPCInitable {
-    init(error: Error) {
-        if let selfErr = error as? Self {
-            self = selfErr
-            return
-        }
-        guard let grpc = error as? GRPCStatus else {
-            self = .unknown
-            return
-        }
-        
-        self = grpc.message.flatMap(Self.init(rawValue:)) ?? .unknown
-    }
+	
+	var errorDescription: String? {
+		switch self {
+		case let .default(error):
+			return error.errorDescription
+		case .couldNotExtractSid:
+			return BLError.errInternal.errorDescription
+		case .errVerificationNotConfirmedRegID:
+			return BLError.errVerificationNotConfirmedRegID.errorDescription
+		}
+	}
 }

@@ -34,7 +34,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.routing = .confrimEmail
 		
 	case let .didRecieveRegistartionResult(.failure(value)):
-		state.alert = .init(title: TextState(value.localizedDescription))
+		state.alert = .init(title: TextState(value.errorDescription ?? ""))
+		if value == .errVerificationNotConfirmedRegID {
+			
+		}
 		
 	case let .failedValidtion(value):
 		state.alert = .init(title: TextState(value))

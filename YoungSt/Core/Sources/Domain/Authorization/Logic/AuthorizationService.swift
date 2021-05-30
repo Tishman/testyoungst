@@ -15,7 +15,7 @@ import Utilities
 import Protocols
 
 protocol AuthorizationService: AnyObject {
-    func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError>
+    func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, BLError>
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError>
     func logout() -> AnyPublisher<Void, Error>
     func confirmCode(request: Authorization_ConfirmCodeRequest) -> AnyPublisher<Bool, ConfrimCodeError>
@@ -29,18 +29,39 @@ final class AuthorizationServiceImpl: AuthorizationService {
     private let client: Authorization_AuthorizationClient
     private let credentialsService: CredentialsService
     private let sessionKey = "session"
+	private let userIdKey = "userId"
     
     init(client: Authorization_AuthorizationClient, credentialsService: CredentialsService) {
         self.client = client
         self.credentialsService = credentialsService
     }
     
+	private func wrapToUUID(uuid: UUID) -> AnyPublisher<UUID, RegistrationError> {
+		return Result.failure(RegistrationError.errVerificationNotConfirmedRegID(uuid)).publisher.eraseToAnyPublisher()
+	}
+	
     func register(request: Authorization_RegistrationRequest) -> AnyPublisher<UUID, RegistrationError> {
-        return client.register(request).response.publisher
-            .map(\.userID)
-            .tryMap(UUID.from)
-            .mapError(RegistrationError.init(error:))
-            .eraseToAnyPublisher()
+		let call = client.register(request)
+		return call.response.publisher
+			.map(\.userID)
+			.tryMap(UUID.from)
+			.catch { error -> AnyPublisher<UUID, RegistrationError> in
+				let error = error as? BLError ?? .errUnknown
+				guard error == .errVerificationNotConfirmedRegID
+				else { return Result.failure(RegistrationError.default(error)).publisher.eraseToAnyPublisher() }
+				return call.initialMetadata.publisher
+					.tryMap(extractUserId)
+					.flatMap(wrapToUUID)
+//
+//				return call.initialMetadata.publisher
+//					.tryMap(extractUserId)
+//					.flatMap { Result.failure(RegistrationError.errVerificationNotConfirmedRegID($0)).publisher.eraseToAnyPublisher() }
+			}
+			.eraseToAnyPublisher()
+//            .map(\.userID)
+//            .tryMap(UUID.from)
+//			.mapError(BLError.init(error:))
+//            .eraseToAnyPublisher()
     }
     
     func login(request: Authorization_LoginRequest) -> AnyPublisher<Authorization_LoginResponse, LoginError> {
@@ -76,6 +97,15 @@ final class AuthorizationServiceImpl: AuthorizationService {
         }
         return Result.success(sessionId).publisher.eraseToAnyPublisher()
     }
+	
+	private func extractUserId(headers: HPACKHeaders) throws -> UUID {
+		guard let user = headers[userIdKey].first,
+			  let userId = UUID(uuidString: user)
+		else {
+			throw BLError.errUnknown
+		}
+		return userId
+	}
     
     func logout() -> AnyPublisher<Void, Error> {
         return client.logout(.init()).response.publisher
