@@ -25,11 +25,11 @@ struct GroupInfoScene: View {
     private let editAnimationShapeID = "EditAnimationShape"
     private let deleteAnimationID = "DeleteAnimation"
     private let deleteAnimationShapeID = "DeleteAnimationShape"
-    static let controlsToggle = Animation.spring(response: 0.45, dampingFraction: 0.6)
+    static let controlsToggle = Animation.spring().speed(1.25)
     
     var body: some View {
         GeometryReader { globalProxy in
-            WithViewStore(store.scope(state: \.id)) { viewStore in
+            WithViewStore(store.stateless) { viewStore in
                 ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         topGroupInfo
@@ -47,7 +47,6 @@ struct GroupInfoScene: View {
                         }
                         .padding([.top, .horizontal])
                     }
-                    .onChange(of: viewStore.state) { _ in viewStore.send(.refreshList) }
                     .addRefreshToScrollView { viewStore.send(.refreshList) }
                     
                     WithViewStore(store.scope(state: \.isLoading)) { viewStore in
@@ -100,95 +99,92 @@ struct GroupInfoScene: View {
     
     private var topGroupControls: some View {
         WithViewStore(store.scope(state: \.controlsState)) { viewStore in
-            HStack(spacing: .spacing(.big)) {
-                switch viewStore.state {
-                case let .edit(editInfo):
+            switch viewStore.state {
+            case let .edit(editInfo):
+                HStack {
+                    TextField(Localizable.name, text: viewStore.binding(get: { _ in editInfo.text }, send: GroupInfoAction.editTextChanged))
+                        .frame(minHeight: InaccentButtonStyle.defaultSize)
+                    
                     HStack {
-                        TextField(Localizable.name, text: viewStore.binding(get: { _ in editInfo.text }, send: GroupInfoAction.editTextChanged))
-                            .frame(minHeight: InaccentButtonStyle.defaultSize)
-
-                        HStack {
-                            Spacer()
-                            Button {
-                                withAnimation(Self.controlsToggle) {
-                                    viewStore.send(.editCancelled)
-                                }
-                            } label: {
-                                CrossView()
-                                    .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                        Spacer()
+                        Button {
+                            withAnimation(Self.controlsToggle) {
+                                viewStore.send(.editCancelled)
                             }
-                            .buttonStyle(PlainButtonStyle())
-
-                            Divider()
-
-                            Button {
-                                withAnimation(Self.controlsToggle) {
-                                    viewStore.send(.editCommited)
-                                }
-                            } label: {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                            }
-                            .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                        } label: {
+                            CrossView()
+                                .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
                         }
-                        .opacity(editInfo.isLoading ? 0 : 1)
-                        .overlay(
-                            Group {
-                                if editInfo.isLoading {
-                                    PlainIndicatorView(size: DefaultSize.mediumButton, paddingValue: 0)
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                }
-                            }
-                        )
-                    }
-                    .matchedGeometryEffect(id: editAnimationID, in: namespace, anchor: .leading)
-                    .buttonStyle(PlainInaccentButtonStyle())
-                    .padding(.vertical, .spacing(.medium) + .spacing(.ultraSmall))
-                    .padding(.horizontal)
-                    .bubbledMatched(id: editAnimationShapeID, in: namespace)
-                    .disabled(editInfo.isLoading)
-                    
-                    
-                case let .delete(isLoading):
-                    VStack(alignment: .trailing) {
-                        Text(Localizable.shouldDeleteGroup)
-                            .fixedSize()
+                        .buttonStyle(PlainButtonStyle())
                         
-                        HStack {
-                            Button {
-                                withAnimation(Self.controlsToggle) {
-                                    viewStore.send(.deleteClosed)
-                                }
-                            } label: {
-                                Text(Localizable.cancel)
-                                    .fixedSize()
+                        Divider()
+                        
+                        Button {
+                            withAnimation(Self.controlsToggle) {
+                                viewStore.send(.editCommited)
                             }
-                            
-                            Button { viewStore.send(.removeGroup) } label: {
-                                Text(Localizable.delete)
-                                    .foregroundColor(.red)
-                                    .fixedSize()
-                            }
+                        } label: {
+                            Image(systemName: "checkmark.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
                         }
+                        .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
                     }
-                    .matchedGeometryEffect(id: deleteAnimationID, in: namespace, anchor: .bottomLeading)
+                    .opacity(editInfo.isLoading ? 0 : 1)
                     .overlay(
                         Group {
-                            if isLoading {
-                                IndicatorView()
+                            if editInfo.isLoading {
+                                PlainIndicatorView(size: DefaultSize.mediumButton, paddingValue: 0)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
                             }
                         }
                     )
-                    .buttonStyle(PlainInaccentButtonStyle())
-                    .padding(.vertical, .spacing(.medium) + .spacing(.ultraSmall))
-                    .padding(.horizontal)
-                    .bubbledMatched(id: deleteAnimationShapeID, in: namespace)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .disabled(isLoading)
+                }
+                .matchedGeometryEffect(id: editAnimationID, in: namespace, anchor: .leading)
+                .padding(.vertical, .spacing(.medium) + .spacing(.ultraSmall))
+                .padding(.horizontal)
+                .bubbledMatched(id: editAnimationShapeID, in: namespace)
+                .disabled(editInfo.isLoading)
+                
+            case let .delete(isLoading):
+                VStack(alignment: .trailing) {
+                    Text(Localizable.shouldDeleteGroup)
+                        .fixedSize()
                     
-                case .allVisible:
+                    HStack {
+                        Button {
+                            withAnimation(Self.controlsToggle) {
+                                viewStore.send(.deleteClosed)
+                            }
+                        } label: {
+                            Text(Localizable.cancel)
+                                .fixedSize()
+                        }
+                        
+                        Button { viewStore.send(.removeGroup) } label: {
+                            Text(Localizable.delete)
+                                .foregroundColor(.red)
+                                .fixedSize()
+                        }
+                    }
+                }
+                .matchedGeometryEffect(id: deleteAnimationID, in: namespace, anchor: .bottomLeading)
+                .overlay(
+                    Group {
+                        if isLoading {
+                            IndicatorView()
+                        }
+                    }
+                )
+                .padding(.vertical, .spacing(.medium) + .spacing(.ultraSmall))
+                .padding(.horizontal)
+                .bubbledMatched(id: deleteAnimationShapeID, in: namespace)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .disabled(isLoading)
+                
+            case .allVisible:
+                HStack(spacing: .spacing(.big)) {
                     openWordAddingButton
                     
                     Button {
@@ -200,11 +196,10 @@ struct GroupInfoScene: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                            .matchedGeometryEffect(id: editAnimationID, in: namespace, anchor: .leading)
-                            .padding(.horizontal, .spacing(.ultraBig))
-                            .padding(.vertical, .spacing(.ultraSmall))
                     }
-                    .buttonStyle(PlainInaccentButtonStyle())
+                    .matchedGeometryEffect(id: editAnimationID, in: namespace, anchor: .leading)
+                    .padding(.horizontal, .spacing(.ultraBig))
+                    .padding(.vertical, .spacing(.ultraSmall))
                     .bubbledMatched(id: editAnimationShapeID, in: namespace)
                     
                     Button {
@@ -216,17 +211,17 @@ struct GroupInfoScene: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-                            .matchedGeometryEffect(id: deleteAnimationID, in: namespace)
-                            .padding(.horizontal, .spacing(.ultraBig))
-                            .padding(.vertical, .spacing(.ultraSmall))
                     }
-                    .buttonStyle(PlainInaccentButtonStyle())
+                    .matchedGeometryEffect(id: deleteAnimationID, in: namespace)
+                    .padding(.horizontal, .spacing(.ultraBig))
+                    .padding(.vertical, .spacing(.ultraSmall))
                     .bubbledMatched(id: deleteAnimationShapeID, in: namespace)
                 }
             }
-            .padding(.vertical, .spacing(.small))
-            .padding(.horizontal)
         }
+        .buttonStyle(PlainInaccentButtonStyle())
+        .padding(.vertical, .spacing(.small))
+        .padding(.horizontal)
     }
 }
 
