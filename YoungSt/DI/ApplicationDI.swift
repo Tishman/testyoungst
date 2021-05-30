@@ -17,19 +17,10 @@ import Translation
 import Utilities
 
 final class ApplicationDI: DIFramework {
-    static func load(container: DIContainer) {
-        
-    }
     
-    static let container: DIContainer = {
-        let container = DIContainer()
-        container.append(framework: ApplicationDI.self)
-        container.append(framework: NetworkDIFramework.self)
-        container.append(framework: AuthorizationDIFramework.self)
-        container.append(framework: CoordinatorDIFramework.self)
-        container.append(framework: DictionaryDIFramework.self)
-        container.append(framework: ProfileDIFramework.self)
-        container.append(framework: TranslationServiceDIFramework.self)
+    static func load(container: DIContainer) {
+        container.register(AnalyticService.init)
+            .lifetime(.single)
         
         container.register {
             CancellationBag.bag(id: UUID())
@@ -41,6 +32,17 @@ final class ApplicationDI: DIFramework {
         
         container.register { UserDefaults.standard }
             .as(check: KeyValueStorage.self) {$0}
+    }
+    
+    static let container: DIContainer = {
+        let container = DIContainer()
+        container.append(framework: ApplicationDI.self)
+        container.append(framework: NetworkDIFramework.self)
+        container.append(framework: AuthorizationDIFramework.self)
+        container.append(framework: CoordinatorDIFramework.self)
+        container.append(framework: DictionaryDIFramework.self)
+        container.append(framework: ProfileDIFramework.self)
+        container.append(framework: TranslationServiceDIFramework.self)
         
         #if DEBUG
         if !container.makeGraph().checkIsValid(checkGraphCycles: true) {

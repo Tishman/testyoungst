@@ -14,7 +14,7 @@ import Coordinator
 import Authorization
 import Utilities
 import Resources
-
+import Firebase
 
 @main
 struct YoungStApp: App {
@@ -33,6 +33,8 @@ struct YoungStApp: App {
         self.store = .init(initialState: .init(),
                            reducer: appReducer,
                            environment: container.resolve())
+        
+        container.initializeSingletonObjects()
     }
     
     var body: some Scene {
