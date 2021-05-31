@@ -73,6 +73,8 @@
 
 // GroupInfo
 "shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";
+"youShouldAddWordTitle" = "В группе нет слов.";
+"youShouldAddWordDescription" = "Вам определённо стоит сюда что-то добавить";
 
 // AppScene
 "dictionary" = "Словарь";

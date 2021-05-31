@@ -73,6 +73,8 @@
 
 // GroupInfo
 "shouldDeleteGroup" = "Do you want to delete group?\nThis cannot be undone.";
+"youShouldAddWordTitle" = "Group is empty.";
+"youShouldAddWordDescription" = "You definitely should add something here";
 
 // AppScene
 "dictionary" = "Dictionary";
