@@ -13,8 +13,8 @@ import Coordinator
 
 private extension HorizontalAlignment {
     struct AddWordCenterAlignment: AlignmentID {
-        static func defaultValue(in d: ViewDimensions) -> CGFloat {
-            d[HorizontalAlignment.leading]
+        static func defaultValue(in dimensions: ViewDimensions) -> CGFloat {
+            dimensions[.leading]
         }
     }
     
@@ -30,6 +30,7 @@ struct GroupInfoScene: View {
     @State private var dividerHidden: Bool = true
     
     private let emptyWordsArrowWidth = UIFloat(44)
+    private let emptyWordsArrowDefaultAlpha = 0.66
     
     @Namespace private var namespace
     
@@ -134,7 +135,7 @@ struct GroupInfoScene: View {
                     
                     if viewStore.wordsList.isEmpty {
                         emptyWordsArrowImage
-                            .opacity(viewStore.controlsState.isAllVisible ? 0.66 : 0)
+                            .opacity(viewStore.controlsState.isAllVisible ? emptyWordsArrowDefaultAlpha : 0)
                     }
                 }
                 
