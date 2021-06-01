@@ -6,6 +6,7 @@
 //
 
 import Foundation
+#if !targetEnvironment(macCatalyst) 
 import Firebase
 
 final class AnalyticService {
@@ -15,3 +16,9 @@ final class AnalyticService {
     }
     
 }
+
+#else
+final class AnalyticService {
+    init() {}
+}
+#endif

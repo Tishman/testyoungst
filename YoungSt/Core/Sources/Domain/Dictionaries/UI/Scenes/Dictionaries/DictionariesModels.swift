@@ -120,11 +120,4 @@ struct DictionariesEnvironment {
               userProvider: userProvider,
               wordsService: wordsService)
     }
-    
-    var addWordEnv: AddWordEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              translationService: translationService,
-              wordService: wordsService,
-              groupsService: groupsService)
-    }
 }

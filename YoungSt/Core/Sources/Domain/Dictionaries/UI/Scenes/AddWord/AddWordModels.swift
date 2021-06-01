@@ -107,6 +107,7 @@ extension AddWordInfo {
 enum AddWordAction: Equatable {
     case sourceChanged(String)
     case sourceErrorChanged(String?)
+    case translationChanged(String)
     case descriptionChanged(String)
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
@@ -118,6 +119,7 @@ enum AddWordAction: Equatable {
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed
+    case auditionPressed
     case addPressed
     case routingHandled
     
@@ -131,6 +133,7 @@ struct AddWordEnvironment {
     let translationService: TranslationService
     let wordService: WordsService
     let groupsService: GroupsService
+    let auditionService: AuditionService
     
     var groupsListEnv: GroupsListEnvironment {
         .init(bag: .autoId(childOf: bag), groupsService: groupsService)

@@ -8,11 +8,13 @@
 import SwiftUI
 import ComposableArchitecture
 import Resources
+import Utilities
 
 struct AddWordInputView: View {
     
     let subtitle: String
     let lineLimit: Int
+    let delegate: TextEditingDelegate?
     @Binding var currentText: String
     
     var body: some View {
@@ -21,17 +23,11 @@ struct AddWordInputView: View {
                 .foregroundColor(.secondary)
                 .font(.caption)
             
-            
-            TextEditor(text: $currentText)
+            TextEditingView(text: $currentText, delegate: delegate)
                 .lineLimit(lineLimit)
                 .background(placeholder)
                 .foregroundColor(.primary)
                 .font(.body)
-                .introspectTextView {
-                    $0.backgroundColor = .clear
-                    $0.textContainerInset = .zero
-                    $0.textContainer.lineFragmentPadding = 0
-                }
         }
     }
     
@@ -45,6 +41,6 @@ struct AddWordInputView: View {
 
 struct AddWordInputView_Previews: PreviewProvider {
     static var previews: some View {
-        AddWordInputView(subtitle: Localizable.word, lineLimit: 4, currentText: .constant("Hello"))
+        AddWordInputView(subtitle: Localizable.word, lineLimit: 4, delegate: nil, currentText: .constant("Hello"))
     }
 }

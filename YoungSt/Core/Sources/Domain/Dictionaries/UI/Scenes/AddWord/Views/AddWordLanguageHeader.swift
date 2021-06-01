@@ -17,11 +17,9 @@ struct AddWordLanguageHeader: View {
     
     var body: some View {
         HStack {
-            Spacer()
             
             Text(leftText)
-            
-            Spacer()
+                .frame(maxWidth: .infinity)
             
             Button(action: action) {
                 Asset.Images.arrowsSwap.swiftUI
@@ -31,11 +29,8 @@ struct AddWordLanguageHeader: View {
             }
             .buttonStyle(InaccentButtonStyle())
             
-            Spacer()
-            
             Text(rightText)
-            
-            Spacer()
+                .frame(maxWidth: .infinity)
         }
         .font(.body)
     }

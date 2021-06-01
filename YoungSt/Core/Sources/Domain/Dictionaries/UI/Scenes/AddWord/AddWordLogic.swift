@@ -18,6 +18,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             case translate
             case editWord
             case addWord
+            case initTranslationRequest
         }
         
         switch action {
@@ -26,12 +27,24 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             
         case let .sourceChanged(source):
             state.sourceText = source
-            return .init(value: .sourceErrorChanged(nil))
+            state.isTranslateLoading = true
+            
+            let errorChangedEffect = Effect<AddWordAction, Never>(value: .sourceErrorChanged(nil))
                 .receive(on: DispatchQueue.main.animation())
                 .eraseToEffect()
             
+            let translateRequestInitedEffect = Effect<AddWordAction, Never>(value: .translatePressed)
+                .delay(for: .seconds(2), scheduler: RunLoop.main)
+                .eraseToEffect()
+                .cancellable(id: Cancellable.initTranslationRequest, cancelInFlight: true, bag: env.bag)
+            
+            return .merge(errorChangedEffect, translateRequestInitedEffect)
+            
         case let .sourceErrorChanged(sourceError):
             state.sourceError = sourceError
+            
+        case let .translationChanged(translation):
+            state.translationText = translation
             
         case let .descriptionChanged(description):
             state.descriptionText = description
@@ -49,6 +62,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             state.alertError = nil
             
         case .swapLanguagesPressed:
+            swap(&state.sourceText, &state.translationText)
             state.leftToRight.toggle()
             
         case let .translationDownloaded(result):
@@ -56,14 +70,24 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             
         case .translatePressed:
             struct TranslationID: Hashable {}
-            
             state.isTranslateLoading = true
-            return env.translationService.translate(text: state.sourceText, from: state.sourceLanguage, to: state.destinationLanguage)
-                .mapError(EquatableError.init)
-                .receive(on: DispatchQueue.main)
-                .catchToEffect()
-                .map(AddWordAction.gotTranslation)
-                .cancellable(id: Cancellable.translate, bag: env.bag)
+            
+            return .merge(
+                env.translationService.translate(text: state.sourceText, from: state.currentSource, to: state.currentDestination)
+                    .mapError(EquatableError.init)
+                    .receive(on: DispatchQueue.main)
+                    .catchToEffect()
+                    .map(AddWordAction.gotTranslation)
+                    .cancellable(id: Cancellable.translate, bag: env.bag),
+                .cancel(id: Cancellable.initTranslationRequest)
+            )
+            
+        case .auditionPressed:
+            let text = state.translationText
+            let language = state.currentDestination
+            return Effect.fireAndForget {
+                env.auditionService.speak(text: text, language: language)
+            }
             
         case .addPressed:
             if state.sourceText.isEmpty {
@@ -75,13 +99,18 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             switch state.info.semantic {
             case .addToServer:
                 state.isLoading = true
+                var source = state.sourceText
+                var destination = state.translationText
+                if !state.leftToRight {
+                    swap(&source, &destination)
+                }
                 
                 if let editingWordID = state.info.editingWordID {
                     let request = Dictionary_EditWordRequest.with {
                         $0.id = editingWordID.uuidString
                         $0.userID = state.info.userID.uuidString
-                        $0.source = state.sourceText
-                        $0.destination = state.translationText
+                        $0.source = source
+                        $0.destination = destination
                         $0.description_p = state.descriptionText
                         $0.groupID = state.selectedGroup?.id.uuidString ?? ""
                     }
@@ -98,8 +127,8 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                     let request = Dictionary_AddWordRequest.with {
                         $0.groupID = state.selectedGroup?.id.uuidString ?? ""
                         $0.item = .with {
-                            $0.source = state.sourceText
-                            $0.destination = state.translationText
+                            $0.source = source
+                            $0.destination = destination
                             $0.description_p = state.descriptionText
                         }
                     }

@@ -33,6 +33,7 @@ struct AddWordScene: View {
     @State private var dividerHidden: Bool = true
     @State private var elementsAppeared: Bool = false
     private let addWordInputHeight: CGFloat = UIFloat(130)
+    private let translateIndicatorHeight: CGFloat = UIFloat(14)
     
     var body: some View {
         GeometryReader { globalProxy in
@@ -42,7 +43,7 @@ struct AddWordScene: View {
                         VStack {
                             AddWordLanguageHeader(leftText: viewStore.currentSource.title,
                                                   rightText: viewStore.currentDestination.title) {
-                                viewStore.send(.translatePressed)
+                                viewStore.send(.swapLanguagesPressed)
                             }
                             .padding(.bottom, .spacing(.big))
                             
@@ -118,6 +119,7 @@ struct AddWordScene: View {
                 VStack {
                     AddWordInputView(subtitle: Localizable.word,
                                      lineLimit: 1,
+                                     delegate: AddWordTextDelegate { viewStore.send(.translatePressed) },
                                      currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
                     
@@ -131,11 +133,18 @@ struct AddWordScene: View {
                     Divider()
                     
                     VStack(alignment: .leading, spacing: .spacing(.ultraSmall)) {
-                        Text(Localizable.translation)
-                            .foregroundColor(.secondary)
-                            .font(.caption)
+                        HStack {
+                            Text(Localizable.translation)
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                            if viewStore.isTranslateLoading {
+                                PlainIndicatorView(size: translateIndicatorHeight)
+                            }
+                        }
+                        .frame(minHeight: translateIndicatorHeight)
                         
-                        Text(viewStore.translationText.isEmpty ? Localizable.noTranslation : viewStore.translationText)
+                        TextField(Localizable.noTranslation,
+                                  text: viewStore.binding(get: \.translationText, send: AddWordAction.translationChanged))
                             .alignmentGuide(.translationCenter) { $0[VerticalAlignment.center] }
                             .foregroundColor(viewStore.translationText.isEmpty ? .secondary : .primary)
                             .font(.body)
@@ -148,7 +157,7 @@ struct AddWordScene: View {
                 .frame(maxWidth: .infinity)
                 .bubbled()
                 
-                Button { viewStore.send(.translatePressed) } label: {
+                Button { viewStore.send(.auditionPressed) } label: {
                     Image(systemName: "play.circle.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -165,6 +174,7 @@ struct AddWordScene: View {
         WithViewStore(store.scope(state: \.descriptionText)) { viewStore in
             AddWordInputView(subtitle: Localizable.wordDescription,
                              lineLimit: 4,
+                             delegate: nil,
                              currentText: viewStore.binding(send: AddWordAction.descriptionChanged))
                 .padding()
                 .frame(height: addWordInputHeight)

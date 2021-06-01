@@ -14,7 +14,6 @@ import Coordinator
 import Authorization
 import Utilities
 import Resources
-import Firebase
 
 @main
 struct YoungStApp: App {
