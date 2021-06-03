@@ -31,13 +31,11 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.confrimPassword = value
 		
 	case let .didRecieveRegistartionResult(.success(value)):
-		state.routing = .confrimEmail
+		
+		state.routing = .confrimEmail(.init(userID: value, credentials: .init(email: state.email, passsword: state.password)))
 		
 	case let .didRecieveRegistartionResult(.failure(value)):
-		state.alert = .init(title: TextState(value.errorDescription ?? ""))
-		if value == .errVerificationNotConfirmedRegID {
-			
-		}
+		state.alert = .init(title: TextState(value.localizedDescription))
 		
 	case let .failedValidtion(value):
 		state.alert = .init(title: TextState(value))

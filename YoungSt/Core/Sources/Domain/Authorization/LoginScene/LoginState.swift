@@ -7,10 +7,12 @@
 
 import Foundation
 import ComposableArchitecture
+import Coordinator
 
 struct LoginState: Equatable {
 	enum Routing: Equatable {
 		case forgotPassword
+		case confirmEmail(ConfirmEmailInput)
 	}
     var email: String = ""
     var password: String = ""

@@ -65,7 +65,7 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
             let vc = routingPoints.shareProfile.value(userID)
             present(controller: vc, preferredPresentation: .detail)
         case let .openedStudent(userID):
-            let vc = coordinator.view(for: .dictionaries(.init(userID: userID)))
+			let vc = coordinator.view(for: .dictionaries(.init(userID: userID, welcomeMessageShow: false)))
             present(controller: vc, preferredPresentation: .detail)
         }
     }

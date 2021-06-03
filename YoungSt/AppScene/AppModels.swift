@@ -15,7 +15,7 @@ struct AppState: Equatable {
     enum UIState: Equatable {
         case onboarding
         case authorization
-        case authorized(UUID)
+        case authorized(UUID, Bool)
     }
     
     var uiState: UIState = .authorization

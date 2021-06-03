@@ -29,11 +29,33 @@ public struct WelcomeInput: Equatable {
 	public init() {}
 }
 
+public struct ConfirmEmailInput: Equatable {
+	public let userID: UUID
+	public let credentials: Credentials
+	
+	public init(userID: UUID, credentials: Credentials) {
+		self.userID = userID
+		self.credentials = credentials
+	}
+	
+	public struct Credentials: Equatable {
+		public init(email: String, passsword: String) {
+			self.email = email
+			self.passsword = passsword
+		}
+		
+		public let email: String
+		public let passsword: String
+	}
+}
+
 public struct DictionariesInput: Hashable {
     public let userID: UUID
+	public let welcomeMessageShow: Bool
     
-    public init(userID: UUID) {
+    public init(userID: UUID, welcomeMessageShow: Bool) {
         self.userID = userID
+		self.welcomeMessageShow = welcomeMessageShow
     }
 }
 

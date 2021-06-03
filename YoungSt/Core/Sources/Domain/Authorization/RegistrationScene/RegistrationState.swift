@@ -7,10 +7,11 @@
 
 import Foundation
 import ComposableArchitecture
+import Coordinator
 
 struct RegistrationState: Equatable {
 	enum Routing: Equatable {
-		case confrimEmail
+		case confrimEmail(ConfirmEmailInput)
 	}
 	
     var email: String = ""

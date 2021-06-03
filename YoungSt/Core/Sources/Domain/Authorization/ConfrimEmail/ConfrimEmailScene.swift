@@ -29,22 +29,31 @@ struct ConfrimEmailScene: View {
 	let store: Store<ConfrimEmailState, ConfrimEmailAction>
 	
 	var body: some View {
-		WithViewStore(store) { viewStore in
+		ZStack(alignment: .center) {
+			WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+				if viewStore.state {
+					IndicatorView()
+				}
+			}
 			VStack {
 				Spacer()
 				HeaderDescriptionView(title: Constants.Text.verification,
 									  subtitle: Constants.Text.emailSendedToConfrim)
-				ClearTextEditingView(placholder: Localizable.enterCode,
-									 text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
-									 status: .default)
-					.padding(.top, .spacing(.extraSize))
-					.padding(.horizontal, .spacing(.extraSize))
+				WithViewStore(store) { viewStore in
+					ClearTextEditingView(placholder: Localizable.enterCode,
+										 text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
+										 status: .default)
+						.padding(.top, .spacing(.extraSize))
+						.padding(.horizontal, .spacing(.extraSize))
+				}
 				Spacer()
-				Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
-					Text(Constants.Text.verify)
-				})
-                .buttonStyle(RoundedButtonStyle(style: .filled))
-				.padding(.bottom, .spacing(.extraSize))
+				WithViewStore(store.stateless) { viewStore in
+					Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
+						Text(Constants.Text.verify)
+					})
+					.buttonStyle(RoundedButtonStyle(style: .filled))
+					.padding(.bottom, .spacing(.extraSize))
+				}
 				Spacer()
 			}
 			.alert(store.scope(state: \.alert), dismiss: ConfrimEmailAction.alertOkButtonTapped)
@@ -54,6 +63,6 @@ struct ConfrimEmailScene: View {
 
 struct ConfrimCodeView_Previews: PreviewProvider {
     static var previews: some View {
-		ConfrimEmailScene(store: .init(initialState: .init(userId: "123"), reducer: .empty, environment: ()))
+		ConfrimEmailScene(store: .init(initialState: .init(userId: UUID(uuidString: "123")!, credentails: .init(email: "", passsword: "")), reducer: .empty, environment: ()))
     }
 }

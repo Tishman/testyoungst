@@ -19,12 +19,40 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
 	
 	case let .handleConfrimation(.success(value)):
 		state.isCodeVerified = value
-		state.alert = .init(title: TextState(Localizable.accountCreated),
+		guard let service = enviroment.authorizationService else {
+			state.isLoading = false
+			break
+		}
+		guard value else {
+			state.isLoading = false
+			state.alert = .init(title: TextState(Localizable.incorrectCode),
+								message: nil,
+								dismissButton: .cancel(TextState(Localizable.ok)))
+			break
+		}
+		
+		let loginRequestData = Authorization_LoginRequest.with {
+			$0.email = state.credentails.email
+			$0.password = state.credentails.passsword
+		}
+		
+		return service.login(request: loginRequestData)
+			.receive(on: DispatchQueue.main)
+			.catchToEffect()
+			.map(ConfrimEmailAction.handleLogin)
+		
+	case .handleLogin(.success):
+		state.isLoading = false
+		
+	case let .handleLogin(.failure(error)):
+		state.isLoading = false
+		state.alert = .init(title: TextState(error.localizedDescription),
 							message: nil,
 							dismissButton: .cancel(TextState(Localizable.ok)))
 		
-	case let .handleConfrimation(.failure(value)):
-		state.alert = .init(title: TextState(value.localizedDescription),
+	case let .handleConfrimation(.failure(error)):
+		state.isLoading = false
+		state.alert = .init(title: TextState(error.localizedDescription),
 							message: nil,
 							dismissButton: .cancel(TextState(Localizable.ok)))
 		
@@ -33,13 +61,14 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
 		
 	case .didConfrimButtonTapped:
 		guard let service = enviroment.authorizationService else { return .none }
-		guard !state.code.isEmpty && !state.userId.isEmpty else { return .init(value: .failedValidation(Localizable.fillAllFields)) }
-		let requestData = Authorization_ConfirmCodeRequest.with {
+		guard !state.code.isEmpty && !state.userId.uuidString.isEmpty else { return .init(value: .failedValidation(Localizable.fillAllFields)) }
+		state.isLoading = true
+		let confirmRequestData = Authorization_ConfirmCodeRequest.with {
 			$0.code = state.code
-			$0.userID = state.userId
+			$0.userID = state.userId.uuidString
 		}
 		
-		return service.confirmCode(request: requestData)
+		return service.confirmCode(request: confirmRequestData)
 			.receive(on: DispatchQueue.main)
 			.catchToEffect()
 			.map(ConfrimEmailAction.handleConfrimation)

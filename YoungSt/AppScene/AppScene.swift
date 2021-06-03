@@ -78,8 +78,8 @@ final class AppViewController: UIViewController {
 
     private func handleChange(uiState: AppState.UIState) {
         switch uiState {
-        case let .authorized(userID):
-            setAuthorizedState(userID: userID)
+        case let .authorized(userID, welcomeMessageShow):
+			setAuthorizedState(userID: userID, welcomeMessageShow: welcomeMessageShow)
         case .authorization:
             setLoginState()
         case .onboarding:
@@ -87,9 +87,9 @@ final class AppViewController: UIViewController {
         }
     }
 
-    private func setAuthorizedState(userID: UUID) {
+	private func setAuthorizedState(userID: UUID, welcomeMessageShow: Bool) {
         let container = ApplicationContainerController(coordinator: coordinator,
-                                                       store: .init(initialState: .init(userID: userID),
+													   store: .init(initialState: .init(userID: userID, welcomeMessageShow: welcomeMessageShow),
                                                                     reducer: tabReducer,
                                                                     environment: ()))
         ViewEmbedder.embed(child: container, to: self)

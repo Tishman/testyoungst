@@ -12,6 +12,7 @@ import Coordinator
 import Protocols
 import Combine
 import SwiftLazy
+import Resources
 
 struct DictionariesRoutingPoints {
     let addGroup: AddGroupController.Endpoint
@@ -39,7 +40,13 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
     }
     
     init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {
-        let store = Store(initialState: DictionariesState(userID: input.userID),
+		var alert: AlertState<DictionariesAction>?
+		if input.welcomeMessageShow {
+			alert = .init(title: TextState("Welcome to the club buddy!"),
+						  message: nil,
+						  dismissButton: .cancel(TextState(Localizable.ok)))
+		}
+		let store = Store(initialState: DictionariesState(userID: input.userID, alert: alert),
                           reducer: dictionariesReducer,
                           environment: env)
         self.store = store

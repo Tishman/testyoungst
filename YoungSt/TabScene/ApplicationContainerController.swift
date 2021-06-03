@@ -31,7 +31,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-        self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
+		self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID, welcomeMessageShow: viewStore.welcomeMessageShow)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
 //        let sidebar =
@@ -56,7 +56,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         
         super.init(style: .tripleColumn)
         
-        tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID),
+		tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID, welcomeMessageShow: viewStore.welcomeMessageShow),
                                 Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
                                animated: false)
         
@@ -72,8 +72,8 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         self.delegate = self
     }
     
-    static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {
-        let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
+	static private func createDictionaries(coordinator: Coordinator, userID: UUID, welcomeMessageShow: Bool) -> UINavigationController {
+		let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID, welcomeMessageShow: welcomeMessageShow))))
         let dictItem = TabItem.dictionaries
         dictionaries.tabBarItem = .init(title: dictItem.title,
                                         image: .init(systemName: dictItem.imageName),

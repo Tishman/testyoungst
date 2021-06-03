@@ -44,8 +44,8 @@ enum ForgotPasswordAction: Equatable {
 	case confrimPasswordButtonTapped
 	case didSendCodeButtonTapped
 	case didChangePasswordButtonTapped
-	case handleInitResetPassword(Result<EmptyResponse, InitResetPasswordError>)
-	case handleResetPassword(Result<EmptyResponse, ResetPasswordError>)
+	case handleInitResetPassword(Result<EmptyResponse, EquatableError>)
+	case handleResetPassword(Result<EmptyResponse, EquatableError>)
 	case alertOkButtonTapped
 }
 

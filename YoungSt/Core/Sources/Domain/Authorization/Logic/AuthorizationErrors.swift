@@ -9,7 +9,7 @@ import Foundation
 import GRPC
 import NetworkService
 
-enum RegistrationError: LocalizedError {
+enum RegistrationError: LocalizedError, Equatable {
     case `default`(BLError)
 	case errVerificationNotConfirmedRegID(UUID)
 	
@@ -23,10 +23,10 @@ enum RegistrationError: LocalizedError {
 	}
 }
 
-enum LoginError: LocalizedError {
+enum LoginError: LocalizedError, Equatable {
 	case `default`(BLError)
     case couldNotExtractSid
-    case errVerificationNotConfirmedRegID
+    case errVerificationNotConfirmedRegID(UUID)
 	
 	var errorDescription: String? {
 		switch self {
