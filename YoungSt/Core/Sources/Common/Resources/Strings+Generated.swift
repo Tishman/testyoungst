@@ -108,6 +108,8 @@ public enum Loc {
     public static let confrimPasswordPlaceholder = Loc.tr("Localizable", "confrimPasswordPlaceholder")
     /// Copy
     public static let copy = Loc.tr("Localizable", "copy")
+    /// Create
+    public static let create = Loc.tr("Localizable", "create")
     /// Delete
     public static let delete = Loc.tr("Localizable", "delete")
     /// Dictionaries
@@ -220,6 +222,8 @@ public enum Loc {
     public static let resetPassword = Loc.tr("Localizable", "resetPassword")
     /// Russian
     public static let ru = Loc.tr("Localizable", "ru")
+    /// Save
+    public static let save = Loc.tr("Localizable", "save")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
     /// Settings

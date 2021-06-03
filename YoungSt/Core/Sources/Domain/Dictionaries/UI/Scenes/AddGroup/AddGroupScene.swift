@@ -79,7 +79,7 @@ struct AddGroupScene: View {
                 
                 WithViewStore(store.scope(state: \.isLoading)) { viewStore in
                     Button { viewStore.send(.addGroupPressed) } label: {
-                        Text(Localizable.addGroupAction)
+                        Text(Localizable.create)
                     }
                     .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
                 }

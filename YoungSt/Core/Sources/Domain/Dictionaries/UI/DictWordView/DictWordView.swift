@@ -29,6 +29,7 @@ struct DictWordView: View {
                     Divider()
                     Text(state.translation)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(.secondary)
                 }
             }
             .font(.body)

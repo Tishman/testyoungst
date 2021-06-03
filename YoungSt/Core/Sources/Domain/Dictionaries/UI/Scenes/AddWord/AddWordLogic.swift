@@ -34,7 +34,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 .eraseToEffect()
             
             let translateRequestInitedEffect = Effect<AddWordAction, Never>(value: .translatePressed)
-                .delay(for: .seconds(2), scheduler: RunLoop.main)
+                .delay(for: .seconds(source.isEmpty ? 0 : 1), scheduler: RunLoop.main)
                 .eraseToEffect()
                 .cancellable(id: Cancellable.initTranslationRequest, cancelInFlight: true, bag: env.bag)
             
@@ -64,6 +64,9 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
         case .swapLanguagesPressed:
             swap(&state.sourceText, &state.translationText)
             state.leftToRight.toggle()
+            return .init(value: .sourceErrorChanged(nil))
+                .receive(on: DispatchQueue.main.animation())
+                .eraseToEffect()
             
         case let .translationDownloaded(result):
             state.localTranslationDownloading = false

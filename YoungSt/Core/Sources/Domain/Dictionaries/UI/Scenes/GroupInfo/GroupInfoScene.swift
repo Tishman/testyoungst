@@ -42,7 +42,7 @@ struct GroupInfoScene: View {
     
     var body: some View {
         GeometryReader { globalProxy in
-            WithViewStore(store.stateless) { viewStore in
+            WithViewStore(store.scope(state: \.title)) { viewStore in
                 ZStack {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         topGroupInfo
@@ -50,7 +50,10 @@ struct GroupInfoScene: View {
                         LazyVStack {
                             WithViewStore(store.scope(state: \.wordsList)) { viewStore in
                                 ForEach(viewStore.state) { item in
-                                    DictWordView(state: item.state)
+                                        Button { viewStore.send(.wordSelected(item)) } label: {
+                                            DictWordView(state: item.state)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
                                         .onDelete(tag: item.id, selection: $swappedWord) {
                                             viewStore.send(.deleteWordRequested(item))
                                             return false
@@ -69,6 +72,7 @@ struct GroupInfoScene: View {
                     }
                 }
                 .onAppear { viewStore.send(.viewAppeared) }
+                .navigationTitle(viewStore.state ?? "")
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,
@@ -79,7 +83,6 @@ struct GroupInfoScene: View {
         .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
-        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
     }
     

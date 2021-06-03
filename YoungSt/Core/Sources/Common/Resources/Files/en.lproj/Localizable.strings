@@ -38,6 +38,8 @@
 "sendCode" = "Send code";
 "resetPassword" = "Reset password";
 "update" = "Update";
+"save" = "Save";
+"create" = "Create";
 
 // AddWord
 "addWordTitle" = "Add word";

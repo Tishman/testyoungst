@@ -59,7 +59,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         state.controlsState = .allVisible
         
     case let .deleteWordRequested(item):
-        state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+        state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
                             primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
                             secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
         
@@ -136,6 +136,16 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
                   userID: state.userID,
                   groupSelectionEnabled: false,
                   model: .init(word: nil, group: groupInfo))
+        )
+        
+    case let .wordSelected(item):
+        guard let group = state.itemInfo else { break }
+        
+        state.routing = .addWord(
+            .init(semantic: .addToServer,
+                  userID: state.userID,
+                  groupSelectionEnabled: true,
+                  model: .init(word: item, group: group))
         )
         
     case .editOpened:

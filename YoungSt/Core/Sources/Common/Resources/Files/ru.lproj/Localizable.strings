@@ -38,6 +38,8 @@
 "sendCode" = "Отправить код";
 "resetPassword" = "Изменить пароль";
 "update" = "Обновить";
+"save" = "Сохранить";
+"create" = "Создать";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

@@ -76,7 +76,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             state.alert = .init(title: TextState(errorText))
             
         case let .deleteWordRequested(item):
-            state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+            state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
                                 primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
                                 secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
             

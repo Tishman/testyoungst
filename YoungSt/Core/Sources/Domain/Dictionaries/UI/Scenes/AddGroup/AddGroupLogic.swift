@@ -73,7 +73,8 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
         case let .wordAdded(request):
             let item = Dictionary_AddWordItem.with {
                 $0.source = request.sourceText
-                $0.destination = request.destinationText
+                $0.destination = request.translationText
+                $0.description_p = request.destinationText
             }
             state.items.append(.init(id: .init(), item: item))
             

@@ -38,6 +38,7 @@ public struct TextEditingView: UIViewRepresentable {
         if uiView.text != text {
             uiView.text = text
         }
+        uiView.textContainer.maximumNumberOfLines = lineLimit ?? 0
     }
     
     public func makeCoordinator() -> Coordinator {
