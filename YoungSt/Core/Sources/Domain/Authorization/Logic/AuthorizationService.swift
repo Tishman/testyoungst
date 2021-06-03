@@ -22,6 +22,7 @@ protocol AuthorizationService: AnyObject {
     func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<EmptyResponse, EquatableError>
     func checkResetPassword(request: Authorization_ResetPasswordCheckRequest) -> AnyPublisher<Bool, EquatableError>
     func resetPassword(request: Authorization_ResetPasswordRequest) -> AnyPublisher<EmptyResponse, EquatableError>
+	func resendCode(request: Authorization_ResendCodeRequest) -> AnyPublisher<EmptyResponse, EquatableError>
 }
 
 final class AuthorizationServiceImpl: AuthorizationService {
@@ -120,6 +121,13 @@ final class AuthorizationServiceImpl: AuthorizationService {
 			.mapError(EquatableError.init)
             .eraseToAnyPublisher()
     }
+	
+	func resendCode(request: Authorization_ResendCodeRequest) -> AnyPublisher<EmptyResponse, EquatableError> {
+		return client.resendCode(request).response.publisher
+			.map(toEmpty)
+			.mapError(EquatableError.init)
+			.eraseToAnyPublisher()
+	}
     
     func initResetPassword(request: Authorization_InitResetPasswordRequest) -> AnyPublisher<EmptyResponse, EquatableError> {
         return client.initResetPassword(request).response.publisher
