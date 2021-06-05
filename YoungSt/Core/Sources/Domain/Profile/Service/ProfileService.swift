@@ -74,7 +74,10 @@ final class ProfileServiceImpl: ProfileService {
     
     private func saveOwnProfile(profileInfo: Profile_ProfileInfo) {
         let info = CurrentProfileInfo(firstName: profileInfo.firstName, lastName: profileInfo.lastName)
+        let userInfo = UserInfo(nickname: profileInfo.nickname, email: profileInfo.email)
+        
         credentialsService.save(profile: info)
+        credentialsService.save(userInfo: userInfo)
     }
     
     func getOwnProfileInfo(request: Profile_GetOwnProfileInfoRequest) -> AnyPublisher<Profile_GetOwnProfileInfoResponse, Error> {

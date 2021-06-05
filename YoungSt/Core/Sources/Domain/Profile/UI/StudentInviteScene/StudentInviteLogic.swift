@@ -12,9 +12,12 @@ import Resources
 import NetworkService
 
 private struct StudentInviteLogic {
-    static func handleLoadInfoResponse(teacherProfile: Profile_GetProfileInfoResponse, currentTeacher: Profile_GetTeacherResponse) throws -> StudentInviteAction.CollectInfoResponse {
+    static func handleLoadInfoResponse(teacherProfile: Profile_GetSharedInviteInfoResponse, currentTeacher: Profile_GetTeacherResponse) throws -> StudentInviteAction.CollectInfoResponse {
         
-        let teacherInfo = try ProfileInfo(proto: teacherProfile.profile)
+        guard case let .teacherInvite(profileInfo) = teacherProfile.response else {
+            throw BLError.errInternal
+        }
+        let teacherInfo = try ProfileInfo(proto: profileInfo)
         let alreadyHasTeacher: Bool
         
         switch currentTeacher.response {
@@ -39,12 +42,13 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
     case .viewAppeared:
         state.isLoading = true
         
-        let getProfileRequest = Profile_GetProfileInfoRequest.with {
-            $0.id = state.teacherID.uuidString
+        let getInviteInfoRequest = Profile_GetSharedInviteInfoRequest.with {
+            $0.id = Int64(state.invite.id)
+            $0.password = state.invite.password
         }
         let getTeacherRequest = Profile_GetTeacherRequest()
         
-        return env.profileService.getProfileInfo(request: getProfileRequest)
+        return env.inviteService.getSharedInviteInfo(request: getInviteInfoRequest)
             .combineLatest(env.inviteService.getTeacher(request: getTeacherRequest))
             .tryMap(StudentInviteLogic.handleLoadInfoResponse)
             .mapError(EquatableError.init)
@@ -57,15 +61,15 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
         state.isLoading = false
         switch result {
         case let .success(info):
+            state.profileInfo = info.teacherProfile
             state.title = info.teacherProfile.displayName
             state.nickname = "@\(info.teacherProfile.nickname)"
-            state.avatarSource = .init(profileInfo: info.teacherProfile)
             if info.alreadyHasTeacher {
                 state.error = Localizable.youCantBecomeStudent
                 state.actionType = .close
             } else {
                 state.error = nil
-                state.subtitle = Localizable.youCantBecomeStudent
+                state.subtitle = Localizable.youCanSendRequestToBecomeStudent
                 state.actionType = .requestInvite
             }
         case let .failure(error):
@@ -90,12 +94,15 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
             return .init(value: .closeScene)
         case .requestInvite:
             state.isLoading = true
-            let request = Profile_SendInviteToTeacherRequest.with {
-                $0.teacherID = state.teacherID.uuidString
+            
+            let request = Profile_AcceptSharedTeacherInviteRequest.with {
+                $0.id = Int64(state.invite.id)
+                $0.password = state.invite.password
             }
             
-            return env.inviteService.sendInviteToTeacher(request: request)
+            return env.inviteService.acceptSharedTeacherInvite(request: request)
                 .mapError(EquatableError.init)
+                .map(toEmpty)
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(StudentInviteAction.sendInvite)

@@ -10,12 +10,16 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Loc {
   public enum Errors {
+    /// You already have teacher
+    public static let errAlreadyHaveTeacher = Loc.tr("Errors", "errAlreadyHaveTeacher")
     /// Could not establish internet connection. Check your network config
     public static let errConnectionIssue = Loc.tr("Errors", "errConnectionIssue")
     /// Group not found. Maybe it already deleted?
     public static let errGroupNotFound = Loc.tr("Errors", "errGroupNotFound")
     /// Incorrect confirmation code. Please check again
     public static let errIncorrectConfirmationCode = Loc.tr("Errors", "errIncorrectConfirmationCode")
+    /// Invorrect invite link
+    public static let errIncorrectInvitePassword = Loc.tr("Errors", "errIncorrectInvitePassword")
     /// Incorrect request data
     public static let errIncorrectRequest = Loc.tr("Errors", "errIncorrectRequest")
     /// Incorrect reset code
@@ -38,6 +42,8 @@ public enum Loc {
     public static let errInvalidNickname = Loc.tr("Errors", "errInvalidNickname")
     /// Invalid password
     public static let errInvalidPassword = Loc.tr("Errors", "errInvalidPassword")
+    /// Invite expired
+    public static let errInviteExpired = Loc.tr("Errors", "errInviteExpired")
     /// Invite not found. Maybe it already rejected or accepted?
     public static let errInviteNotFound = Loc.tr("Errors", "errInviteNotFound")
     /// Language not supported yed

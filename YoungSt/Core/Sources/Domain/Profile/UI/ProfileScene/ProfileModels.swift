@@ -122,7 +122,8 @@ struct ProfileEnvironment {
     var currentProfileEnv: CurrentProfileEnvironment {
         .init(bag: .autoId(childOf: bag),
               profileService: profileService,
-              userProvider: userProvider)
+              userProvider: userProvider,
+              credentialsService: credentialsService)
     }
     
     var teacherInfoEnv: TeacherInfoEnvironment {

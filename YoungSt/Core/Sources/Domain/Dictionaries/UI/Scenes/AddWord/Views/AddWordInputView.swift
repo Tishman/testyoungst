@@ -15,7 +15,9 @@ struct AddWordInputView: View {
     let subtitle: String
     let lineLimit: Int
     let delegate: TextEditingDelegate?
+    let characterLimit = 255
     @Binding var currentText: String
+    @Binding var forceFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -23,7 +25,7 @@ struct AddWordInputView: View {
                 .foregroundColor(.secondary)
                 .font(.caption)
             
-            TextEditingView(text: $currentText, delegate: delegate)
+            TextEditingView(text: $currentText, forceFocused: $forceFocused, characterLimit: characterLimit, delegate: delegate)
                 .lineLimit(lineLimit)
                 .background(placeholder)
                 .foregroundColor(.primary)
@@ -41,6 +43,6 @@ struct AddWordInputView: View {
 
 struct AddWordInputView_Previews: PreviewProvider {
     static var previews: some View {
-        AddWordInputView(subtitle: Localizable.word, lineLimit: 4, delegate: nil, currentText: .constant("Hello"))
+        AddWordInputView(subtitle: Localizable.word, lineLimit: 4, delegate: nil, currentText: .constant("Hello"), forceFocused: .constant(false))
     }
 }

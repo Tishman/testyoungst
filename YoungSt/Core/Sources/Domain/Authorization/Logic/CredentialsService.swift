@@ -22,8 +22,11 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
     let userInfoKey = "userInfo"
     let profileInfoKey = "profileInfo"
     
-    let credentialsSubject: PassthroughSubject<Credentials?, Never> = .init()
+    private let credentialsSubject: PassthroughSubject<Credentials?, Never> = .init()
+    private let userInfoSubject: PassthroughSubject<UserInfo?, Never> = .init()
+    
     var credentialsUpdated: AnyPublisher<Credentials?, Never> { credentialsSubject.eraseToAnyPublisher() }
+    var profileUpdated: AnyPublisher<UserInfo?, Never> { userInfoSubject.eraseToAnyPublisher() }
     
     var currentSid: UUID? {
         guard let stringSid = keychain.string(forKey: sessionKey),
@@ -55,9 +58,6 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
         keychain.set(credentials.sessionID.uuidString, forKey: sessionKey)
         keychain.set(credentials.userID.uuidString, forKey: userKey)
         
-        let info = try! encoder.encode(credentials.info)
-        defaults.set(info, forKey: userInfoKey)
-        
         credentialsSubject.send(credentials)
     }
     
@@ -66,12 +66,20 @@ final class CredentialsServiceImpl: CredentialsService, UserProvider, SessionPro
         defaults.set(info, forKey: profileInfoKey)
     }
     
+    func save(userInfo: UserInfo) {
+        let info = try! encoder.encode(userInfo)
+        defaults.set(info, forKey: userInfoKey)
+        
+        userInfoSubject.send(userInfo)
+    }
+    
     func clearCredentials() {
         keychain.removeObject(forKey: sessionKey)
         keychain.removeObject(forKey: userKey)
         defaults.removeObject(forKey: userInfoKey)
         
         credentialsSubject.send(nil)
+        userInfoSubject.send(nil)
     }
     
 }

@@ -40,20 +40,20 @@ final class WordsServiceImpl: WordsService {
     func addWord(request: Dictionary_AddWordRequest) -> AnyPublisher<EmptyResponse, Error> {
         client.addWord(request).response.publisher
             .map(toEmpty)
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
             .eraseToAnyPublisher()
     }
     
     func addWordList(request: Dictionary_AddWordListRequest) -> AnyPublisher<Dictionary_AddWordListResponse, Error> {
         client.addWordList(request).response.publisher
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
             .eraseToAnyPublisher()
     }
     
     func removeWordList(request: Dictionary_RemoveWordListRequest) -> AnyPublisher<EmptyResponse, Error> {
         client.removeWordList(request).response.publisher
             .map(toEmpty)
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.any)) })
             .eraseToAnyPublisher()
     }
     
@@ -66,7 +66,7 @@ final class WordsServiceImpl: WordsService {
     
     func editWord(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {
         client.editWord(request).response.publisher
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated) })
+            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
             .eraseToAnyPublisher()
     }
 }

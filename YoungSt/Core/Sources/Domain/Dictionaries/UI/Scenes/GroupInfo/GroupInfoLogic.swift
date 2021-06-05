@@ -19,15 +19,30 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         case getUserWords
         case deleteWord(UUID)
         case editGroup
+        case groupUpdatedObserver
+        case showLoader
     }
     
     switch action {
     case .viewAppeared:
-        return .init(value: .refreshList)
+        let groupID = state.id
+        let groupChangedObserver = env.dictionaryEventPublisher.dictionaryEventPublisher
+            .filter { $0 == .wordListUpdated(.id(groupID)) }
+            .map(toVoid)
+            .eraseToEffect()
+            .map { GroupInfoAction.silentRefreshList }
+            .cancellable(id: Cancellable.groupUpdatedObserver, cancelInFlight: true, bag: env.bag)
+        
+        return .merge(.init(value: .refreshList), groupChangedObserver)
         
     case .refreshList:
-        state.isLoading = true
-        return .init(value: .silentRefreshList)
+        return .merge(
+            .init(value: .silentRefreshList),
+            Effect(value: .showLoader(true))
+                .delay(for: .milliseconds(700), scheduler: RunLoop.main)
+                .eraseToEffect()
+                .cancellable(id: Cancellable.showLoader, cancelInFlight: true, bag: env.bag)
+        )
         
     case .silentRefreshList:
         let request = Dictionary_GetGroupInfoRequest.with {
@@ -50,7 +65,12 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         case let .failure(error):
             state.alert = .init(title: TextState(error.description))
         }
-        state.isLoading = false
+        
+        return Effect(value: .showLoader(false))
+            .cancellable(id: Cancellable.showLoader, cancelInFlight: true, bag: env.bag)
+        
+    case let .showLoader(isLoading):
+        state.isLoading = isLoading
         
     case .deleteOpened:
         state.controlsState = .delete(isLoading: false)
@@ -159,8 +179,9 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
         
     case .editCommited:
         guard case var .edit(editState) = state.controlsState else { break }
+        let editText = editState.text.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if editState.text.isEmpty || editState.text == state.itemInfo?.state.title {
+        if editText.isEmpty || editText == state.itemInfo?.state.title {
             state.controlsState = .allVisible
         } else {
             state.editState?.isLoading = true
@@ -168,7 +189,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
             
             let request = Dictionary_EditGroupRequest.with {
                 $0.id = state.id.uuidString
-                $0.name = editState.text
+                $0.name = editText
             }
             return env.groupsService.editGroup(request: request)
                 .map(\.group)

@@ -14,8 +14,10 @@ public protocol TextEditingDelegate {
 
 public struct TextEditingView: UIViewRepresentable {
     
-    public init(text: Binding<String>, delegate: TextEditingDelegate?) {
+    public init(text: Binding<String>, forceFocused: Binding<Bool>, characterLimit: Int, delegate: TextEditingDelegate?) {
         self._text = text
+        self._forceFocused = forceFocused
+        self.characterLimit = characterLimit
         self.delegate = delegate
     }
     
@@ -24,12 +26,13 @@ public struct TextEditingView: UIViewRepresentable {
     
     private let delegate: TextEditingDelegate?
     @Binding private var text: String
+    @Binding private var forceFocused: Bool
+    private let characterLimit: Int
     
     public func makeUIView(context: Context) -> UITextView {
         let view = UITextView()
         context.coordinator.initialSetup(textView: view)
         view.font = UIFont.preferredFont(from: font ?? .body)
-        view.textContainer.maximumNumberOfLines = lineLimit ?? 0
         
         return view
     }
@@ -38,7 +41,13 @@ public struct TextEditingView: UIViewRepresentable {
         if uiView.text != text {
             uiView.text = text
         }
-        uiView.textContainer.maximumNumberOfLines = lineLimit ?? 0
+        context.coordinator.lineLimit = lineLimit ?? 100
+        if forceFocused {
+            uiView.becomeFirstResponder()
+            DispatchQueue.main.async {
+                forceFocused = false
+            }
+        }
     }
     
     public func makeCoordinator() -> Coordinator {
@@ -49,6 +58,7 @@ public struct TextEditingView: UIViewRepresentable {
         
         private let delegate: TextEditingDelegate?
         private let view: TextEditingView
+        var lineLimit = 1
         
         init(delegate: TextEditingDelegate?, view: TextEditingView) {
             self.delegate = delegate
@@ -60,6 +70,7 @@ public struct TextEditingView: UIViewRepresentable {
             textView.backgroundColor = .clear
             textView.textContainerInset = .zero
             textView.textContainer.lineFragmentPadding = 0
+            textView.isScrollEnabled = true
         }
         
         public func textViewDidChange(_ textView: UITextView) {
@@ -68,6 +79,22 @@ public struct TextEditingView: UIViewRepresentable {
         
         public func textViewDidEndEditing(_ textView: UITextView) {
             delegate?.onCommit()
+        }
+        
+        public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            let existingLines = textView.text.components(separatedBy: CharacterSet.newlines)
+            let newLines = text.components(separatedBy: CharacterSet.newlines)
+            let linesAfterChange = existingLines.count + newLines.count - 1
+            let newlineNotOverflowed = linesAfterChange <= lineLimit
+            
+            guard let rangeOfTextToReplace = Range(range, in: textView.text) else {
+                return newlineNotOverflowed
+            }
+            let substringToReplace = textView.text[rangeOfTextToReplace]
+            let count = textView.text.count - substringToReplace.count + text.count
+            let charNotOverflowed = count <= view.characterLimit
+            
+            return newlineNotOverflowed && charNotOverflowed
         }
     }
     

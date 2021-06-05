@@ -11,11 +11,20 @@ import Combine
 import Utilities
 import NetworkService
 import Resources
+import Coordinator
+import Protocols
 
 let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment>.combine(
     Reducer { state, action, env in
         enum Cancellable: CaseIterable, Hashable {
             case addGroup
+        }
+        
+        func groupModel() -> DictGroupModel? {
+            guard !state.title.isEmpty else { return nil }
+            return DictGroupModel(id: .init(), // we dont care about group cause it not exists yet
+                                  alias: state.title,
+                                  state: DictGroupInfo(title: state.title, subtitle: ""))
         }
         
         switch action {
@@ -39,14 +48,15 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.isLoading = false
             
         case .addGroupPressed:
-            guard !state.title.isEmpty else {
+            let title = state.title.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !title.isEmpty else {
                 return .init(value: .titleErrorChanged(Localizable.fillAllFields))
                     .receive(on: DispatchQueue.main.animation())
                     .eraseToEffect()
             }
             
             let request = Dictionary_AddGroupRequest.with {
-                $0.name = state.title
+                $0.name = title
                 $0.items = state.items.map(\.item)
                 $0.userID = state.userID.uuidString
             }
@@ -65,18 +75,38 @@ let addGroupReducer = Reducer<AddGroupState, AddGroupAction, AddGroupEnvironment
             state.alertError = .init(title: TextState(error))
             
         case .addWordOpened:
-            state.routing = .addWord
+            state.routing = .addWord(.init(word: nil, group: groupModel()))
             
         case .rountingHandled:
             state.routing = nil
             
         case let .wordAdded(request):
-            let item = Dictionary_AddWordItem.with {
+            let addItem = Dictionary_AddWordItem.with {
                 $0.source = request.sourceText
                 $0.destination = request.translationText
                 $0.description_p = request.destinationText
             }
-            state.items.append(.init(id: .init(), item: item))
+            if var itemToEdit = state.items[id: request.id] {
+                itemToEdit.item = addItem
+                state.items[id: request.id] = itemToEdit
+            } else {
+                state.items.append(.init(id: request.id, item: addItem))
+            }
+            
+        case let .wordAction(id, action: .selected):
+            guard let word = state.items[id: id] else { break }
+            let groupModel = groupModel()
+            let wordModel = DictWordModel(id: id,
+                                          groupID: groupModel?.id ?? .init(),
+                                          state: .init(text: word.item.source,
+                                                       translation: word.item.destination,
+                                                       info: word.item.description_p))
+            
+            let model = AddWordInput.InputModel(word: wordModel, group: groupModel)
+            state.routing = .addWord(model)
+            
+        case let .wordAction(id, action: .removed):
+            state.items.remove(id: id)
             
         case .closeSceneTriggered:
             state.isClosed = true

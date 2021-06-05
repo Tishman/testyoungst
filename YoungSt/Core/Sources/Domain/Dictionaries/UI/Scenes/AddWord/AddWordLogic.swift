@@ -23,7 +23,13 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
         
         switch action {
         case .viewAppeared:
-            break
+            if !state.editingMode && state.isBootstrapping {
+                state.sourceFieldForceFocused = true
+            }
+            state.isBootstrapping = false
+            
+        case let .sourceInputFocusChanged(isForceFocused):
+            state.sourceFieldForceFocused = isForceFocused
             
         case let .sourceChanged(source):
             state.sourceText = source
@@ -57,6 +63,10 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 state.alertError = .init(title: TextState(error.localizedDescription))
             }
             state.isTranslateLoading = false
+            if state.isAddPending {
+                state.isAddPending = false
+                return .init(value: .addPressed)
+            }
             
         case .alertClosePressed:
             state.alertError = nil
@@ -72,7 +82,6 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             state.localTranslationDownloading = false
             
         case .translatePressed:
-            struct TranslationID: Hashable {}
             state.isTranslateLoading = true
             
             return .merge(
@@ -81,8 +90,8 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                     .receive(on: DispatchQueue.main)
                     .catchToEffect()
                     .map(AddWordAction.gotTranslation)
-                    .cancellable(id: Cancellable.translate, bag: env.bag),
-                .cancel(id: Cancellable.initTranslationRequest)
+                    .cancellable(id: Cancellable.translate, cancelInFlight: true, bag: env.bag),
+                .cancel(id: Cancellable.initTranslationRequest, bag: env.bag)
             )
             
         case .auditionPressed:
@@ -93,16 +102,21 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
             }
             
         case .addPressed:
-            if state.sourceText.isEmpty {
+            var source = state.sourceText.trimmingCharacters(in: .whitespacesAndNewlines)
+            if source.isEmpty {
                 return .init(value: .sourceErrorChanged(Localizable.youShouldTypeText))
                     .receive(on: DispatchQueue.main.animation())
                     .eraseToEffect()
             }
             
+            state.isLoading = true
+            if state.isTranslateLoading {
+                state.isAddPending = true
+                break
+            }
+            
             switch state.info.semantic {
             case .addToServer:
-                state.isLoading = true
-                var source = state.sourceText
                 var destination = state.translationText
                 if !state.leftToRight {
                     swap(&source, &destination)
@@ -145,10 +159,11 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 
                 
             case let .addLater(handler):
-                handler.value(.init(sourceText: state.sourceText,
+                handler.value(.init(id: state.info.editingWordID ?? .init(),
+                                    sourceText: source,
                                     translationText: state.translationText,
                                     destinationText: state.descriptionText))
-                return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
+                return .merge(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
             }
             
         case .groupsOpened:

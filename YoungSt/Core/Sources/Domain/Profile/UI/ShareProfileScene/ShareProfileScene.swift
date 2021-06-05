@@ -27,43 +27,49 @@ struct ShareProfileScene: View {
             
             
             WithViewStore(store.scope(state: \.url)) { viewStore in
-                Text(viewStore.state)
-                    .lineLimit(nil)
-                    .font(.callout)
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .bubbled()
-                    .padding(.top, .spacing(.custom(80)))
-                    .padding(.horizontal)
-            }
-            
-            WithViewStore(store.scope(state: \.shareURL)) { viewStore in
-                HStack {
-                    Spacer()
-                    Button { viewStore.send(.copy) } label: {
-                        Text(Localizable.copy)
-                    }
+                if viewStore.state.isEmpty {
+                    IndicatorView()
+                } else {
+                    Text(viewStore.state)
+                        .lineLimit(nil)
+                        .font(.callout)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .bubbled()
+                        .padding(.top, .spacing(.custom(80)))
+                        .padding(.horizontal)
                     
-                    Button { viewStore.send(.shareOpened(true)) } label: {
-                        Text(Localizable.share)
-                    }
-                    .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: ShareProfileAction.shareOpened)) {
-                        IfLetStore(store.scope(state: \.shareURL)) { store in
-                            WithViewStore(store) { viewStore in
-                                ShareSheet(activityItems: [viewStore.state])
+                    WithViewStore(store.scope(state: \.shareURL)) { viewStore in
+                        HStack {
+                            Spacer()
+                            Button { viewStore.send(.copy) } label: {
+                                Text(Localizable.copy)
+                            }
+                            
+                            Button { viewStore.send(.shareOpened(true)) } label: {
+                                Text(Localizable.share)
+                            }
+                            .sheet(isPresented: viewStore.binding(get: { $0 != nil }, send: ShareProfileAction.shareOpened)) {
+                                IfLetStore(store.scope(state: \.shareURL)) { store in
+                                    WithViewStore(store) { viewStore in
+                                        ShareSheet(activityItems: [viewStore.state])
+                                    }
+                                }
                             }
                         }
+                        .buttonStyle(InaccentButtonStyle())
+                        .padding(.horizontal)
                     }
                 }
-                .buttonStyle(InaccentButtonStyle())
-                .padding(.horizontal)
             }
+            
         }
         .background(
             WithViewStore(store.stateless) { viewStore in
                 Color.clear.onAppear { viewStore.send(.viewAppeared) }
             }
         )
+        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
     }
 }
 

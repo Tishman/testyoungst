@@ -49,12 +49,12 @@ final class AddGroupController: UIHostingController<AddGroupScene>, ClosableCont
     
     func handle(routing: AddGroupState.Routing) {
         switch routing {
-        case .addWord:
-            let addWordController = self.routingPoints.addWord.value(
-                .init(semantic: .addLater(handler: .init { [weak viewStore] in viewStore?.send(.wordAdded($0)) }),
-                      userID: viewStore.userID,
-                      groupSelectionEnabled: false)
-            )
+        case let .addWord(model):
+            let input = AddWordInput(semantic: .addLater(handler: .init { [weak viewStore] in viewStore?.send(.wordAdded($0)) }),
+                                     userID: viewStore.userID,
+                                     groupSelectionEnabled: false,
+                                     model: model)
+            let addWordController = self.routingPoints.addWord.value(input)
             present(controller: addWordController, preferredPresentation: .sheet)
         }
     }

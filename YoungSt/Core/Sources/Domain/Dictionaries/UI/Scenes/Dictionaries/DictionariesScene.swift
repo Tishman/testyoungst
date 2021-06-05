@@ -81,14 +81,14 @@ struct DictionariesScene: View {
                         IndicatorView()
                     }
                 }
-                .overlay(
-                    TopHeaderView(width: globalProxy.size.width,
-                                  topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                        .opacity(dividerHidden ? 0 : 1)
-                )
                 .onAppear { viewStore.send(.viewLoaded) }
                 .addRefreshToScrollView { viewStore.send(.refreshList) }
             }
+            .overlay(
+                TopHeaderView(width: globalProxy.size.width,
+                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
+                    .opacity(dividerHidden ? 0 : 1)
+            )
         }
         .onChange(of: contentOffset) { _ in swappedWord = nil }
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
@@ -142,9 +142,6 @@ struct DictionariesScene: View {
                             viewStore.send(.deleteWordRequested(item))
                             return false
                         }
-                    }
-                    .onDelete { indexSet in
-                        print(indexSet)
                     }
                 }
                 .padding(.horizontal)

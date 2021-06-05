@@ -26,7 +26,7 @@ final class GroupsListController: UIHostingController<GroupsListScene>, Closable
     private var bag = Set<AnyCancellable>()
     
     init(userID: UUID, selectedGroup: Binding<DictGroupItem?>, env: GroupsListEnvironment) {
-        let store = Store(initialState: GroupsListState(userID: userID), reducer: groupsListReducer, environment: env)
+        let store = Store(initialState: GroupsListState(userID: userID, selectedItem: selectedGroup.wrappedValue), reducer: groupsListReducer, environment: env)
         self.store = store
         self.viewStore = .init(store)
         self.selectedGroup = selectedGroup
@@ -36,6 +36,7 @@ final class GroupsListController: UIHostingController<GroupsListScene>, Closable
         observeClosing().store(in: &bag)
         
         viewStore.publisher.selectedItem
+            .dropFirst() // viewStore.publisher publish current value on first sink. We need handle only changes
             .sink(receiveValue: { [selectedGroup] selectedItem in
                 selectedGroup.wrappedValue = selectedItem
             })

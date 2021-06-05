@@ -49,14 +49,17 @@ struct AddWordScene: View {
                             
                             if elementsAppeared {
                                 sourceInput
+                                    .animation(.default)
                                     .transition(contentTransition(delay: 0.25))
                                     .animation(contentTransitionAnimation(delay: 0.25))
                                 
                                 descriptionInput
+                                    .animation(.default)
                                     .transition(contentTransition(delay: 0.35))
                                     .animation(contentTransitionAnimation(delay: 0.35))
                                 
                                 groupEditing
+                                    .animation(.default)
                                     .transition(contentTransition(offset: 10, delay: 0.55))
                                     .animation(contentTransitionAnimation(delay: 0.55))
                             }
@@ -120,7 +123,8 @@ struct AddWordScene: View {
                     AddWordInputView(subtitle: Localizable.word,
                                      lineLimit: 1,
                                      delegate: AddWordTextDelegate { viewStore.send(.translatePressed) },
-                                     currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged))
+                                     currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged),
+                                     forceFocused: viewStore.binding(get: \.sourceFieldForceFocused, send: AddWordAction.sourceInputFocusChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
                     
                     if let sourceError = viewStore.sourceError {
@@ -175,7 +179,8 @@ struct AddWordScene: View {
             AddWordInputView(subtitle: Localizable.wordDescription,
                              lineLimit: 4,
                              delegate: nil,
-                             currentText: viewStore.binding(send: AddWordAction.descriptionChanged))
+                             currentText: viewStore.binding(send: AddWordAction.descriptionChanged),
+                             forceFocused: .constant(false))
                 .padding()
                 .frame(height: addWordInputHeight)
                 .frame(maxWidth: .infinity)

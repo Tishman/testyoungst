@@ -59,9 +59,8 @@ final class AuthorizationServiceImpl: AuthorizationService {
                     }
             }
             .handleEvents(receiveOutput: { [credentialsService] (sessionID, userID, response) in
-                credentialsService.save(credentials: .init(userID: userID,
-                                                           info: .init(nickname: response.user.login, email: response.user.email),
-                                                           sessionID: sessionID))
+                credentialsService.save(credentials: .init(userID: userID, sessionID: sessionID))
+                credentialsService.save(userInfo: .init(nickname: response.user.login, email: response.user.email))
             })
             .map { $0.response }
             .mapError(LoginError.init(error:))

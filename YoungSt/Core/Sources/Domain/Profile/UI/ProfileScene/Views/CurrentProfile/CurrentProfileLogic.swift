@@ -14,6 +14,7 @@ import Utilities
 let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, CurrentProfileEnvironment> { state, action, env in
     enum Cancellable: Hashable {
         case updateProfile
+        case profileInfoObserver
     }
     
     switch action {
@@ -25,7 +26,16 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
             state.infoState = .infoProvided(.init(firstName: currentProfile.firstName,
                                                   lastName: currentProfile.lastName))
         }
-        return .init(value: .profileUpdateRequested)
+        
+        return .merge(
+            .init(value: .profileUpdateRequested),
+            env.credentialsService.profileUpdated
+                .compactMap { $0 }
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
+                .map(CurrentProfileAction.userInfoUpdated)
+                .cancellable(id: Cancellable.profileInfoObserver, cancelInFlight: true, bag: env.bag)
+        )
         
     case .profileUpdateRequested:
         let request = Profile_GetOwnProfileInfoRequest()
@@ -49,6 +59,10 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
             print(error)
             break
         }
+        
+    case let .userInfoUpdated(userInfo):
+        state.nickname = userInfo.nickname
+    
     case .editInfoOpened:
         break
     }

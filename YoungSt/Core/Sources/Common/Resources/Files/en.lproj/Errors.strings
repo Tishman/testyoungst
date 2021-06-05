@@ -31,3 +31,6 @@
 "errInvalidNickname" = "Nickname is incorrect";
 "errNicknameAlreadyUsed" = "Nickname already taken. Please choose anoser";
 "errProfileNotFound" = "Profile info not found. Maybe you are not registered?";
+"errInviteExpired" = "Invite expired";
+"errAlreadyHaveTeacher" = "You already have teacher";
+"errIncorrectInvitePassword" = "Invorrect invite link";

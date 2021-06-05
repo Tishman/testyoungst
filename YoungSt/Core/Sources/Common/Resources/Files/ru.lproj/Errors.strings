@@ -31,3 +31,6 @@
 "errInvalidNickname" = "Неверный никнейм";
 "errNicknameAlreadyUsed" = "Никнейм уже занят. Пожалуйста, попробуйте другой";
 "errProfileNotFound" = "Информация о профиле не найдена. Может, вы не зарегестрировались?";
+"errInviteExpired" = "Время действия приглашения истекло";
+"errAlreadyHaveTeacher" = "У вас уже есть учитель";
+"errIncorrectInvitePassword" = "Неверная ссылка на приглашение";

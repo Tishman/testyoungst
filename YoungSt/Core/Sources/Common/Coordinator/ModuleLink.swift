@@ -18,11 +18,11 @@ public enum ModuleLink: Equatable {
 }
 
 public struct StudentInviteInput: Equatable {
-    public init(teacherID: UUID) {
-        self.teacherID = teacherID
+    public init(invite: SharedInvite) {
+        self.invite = invite
     }
     
-    public let teacherID: UUID
+    public let invite: SharedInvite
 }
 
 public struct WelcomeInput: Equatable {
@@ -40,12 +40,14 @@ public struct DictionariesInput: Hashable {
 public struct AddWordInput: Equatable {
     
     public struct AddLaterRequest: Equatable {
-        public init(sourceText: String, translationText: String, destinationText: String) {
+        public init(id: UUID, sourceText: String, translationText: String, destinationText: String) {
+            self.id = id
             self.sourceText = sourceText
             self.translationText = translationText
             self.destinationText = destinationText
         }
         
+        public let id: UUID
         public let sourceText: String
         public let translationText: String
         public let destinationText: String
@@ -73,7 +75,7 @@ public struct AddWordInput: Equatable {
         self.model = model
     }
     
-    public let semantic: Semantic
+    public var semantic: Semantic
     public let userID: UUID
     public let groupSelectionEnabled: Bool
     public let model: InputModel

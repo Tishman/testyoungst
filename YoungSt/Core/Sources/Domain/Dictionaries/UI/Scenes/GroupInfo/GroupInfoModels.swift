@@ -114,6 +114,7 @@ enum GroupInfoAction: Equatable {
     case refreshList
     case silentRefreshList
     case closeSceneTriggered
+    case showLoader(Bool)
     
     case editTextChanged(String)
     case editCancelled
@@ -146,4 +147,5 @@ struct GroupInfoEnvironment {
     let groupsService: GroupsService
     let userProvider: UserProvider
     let wordsService: WordsService
+    let dictionaryEventPublisher: DictionaryEventPublisher
 }

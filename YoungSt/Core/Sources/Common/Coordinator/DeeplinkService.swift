@@ -14,7 +14,17 @@ public protocol DeeplinkService: AnyObject {
 }
 
 public enum Deeplink: Equatable {
-    case studentInvite(teacherID: UUID)
+    case studentInvite(SharedInvite)
+}
+
+public struct SharedInvite: Equatable {
+    public init(id: Int, password: String) {
+        self.id = id
+        self.password = password
+    }
+    
+    public let id: Int
+    public let password: String
 }
 
 final class DeeplinkServiceImpl: DeeplinkService {
@@ -22,8 +32,9 @@ final class DeeplinkServiceImpl: DeeplinkService {
     enum Constants {
         static let scheme = "ygst"
         
-        static let studentInvite = "student-invite"
-        static let teacherID = "teacherID"
+        static let studentInvite = "invite"
+        static let id = "id"
+        static let password = "pwd"
     }
     
     func transform(deeplinkURL: URL) -> Deeplink? {
@@ -33,10 +44,12 @@ final class DeeplinkServiceImpl: DeeplinkService {
               else { return nil }
         switch components.host {
         case Constants.studentInvite:
-            guard let teacherID = components.queryItems?.first(where: { $0.name == Constants.teacherID })?.value,
-                  let teacherUUID = UUID(uuidString: teacherID)
+            guard let idString = components.queryItems?.first(where: { $0.name == Constants.id })?.value,
+                  let id = Int(idString),
+                  let password = components.queryItems?.first(where: { $0.name == Constants.password })?.value
             else { return nil }
-            return .studentInvite(teacherID: teacherUUID)
+            let invite = SharedInvite(id: id, password: password)
+            return .studentInvite(invite)
         default:
             return nil
         }
@@ -46,9 +59,10 @@ final class DeeplinkServiceImpl: DeeplinkService {
         var components = URLComponents()
         components.scheme = Constants.scheme
         switch deeplink {
-        case let .studentInvite(teacherID):
+        case let .studentInvite(invite):
             components.host = Constants.studentInvite
-            components.queryItems = [.init(name: Constants.teacherID, value: teacherID.uuidString.lowercased())]
+            components.queryItems = [.init(name: Constants.id, value: "\(invite.id)"),
+                                     .init(name: Constants.password, value: "\(invite.password)")]
             return components.url!
         }
     }

@@ -22,18 +22,18 @@ struct AddGroupState: Equatable, Previwable, ClosableState {
     var alertError: AlertState<AddGroupAction>?
     var isClosed = false
     
-    enum Routing: Hashable {
-        case addWord
+    enum Routing: Equatable {
+        case addWord(AddWordInput.InputModel)
     }
     var routing: Routing?
     
-    var items: [IdentifiedItem<Dictionary_AddWordItem>] = []
+    var items: IdentifiedArrayOf<IdentifiedItem<Dictionary_AddWordItem>> = []
     
     static var preview: AddGroupState = .init(userID: .init(),
                                               title: "Test name",
-                                              items: [Dictionary_AddWordItem](repeating: wordItemPreview, count: 10).map {
+                                              items: .init([Dictionary_AddWordItem](repeating: wordItemPreview, count: 10).map {
                                                 .init(id: .init(), item: $0)
-                                              })
+                                              }))
     private static let wordItemPreview = Dictionary_AddWordItem.with {
         $0.source = "Test"
         $0.destination = "Name"
@@ -42,7 +42,7 @@ struct AddGroupState: Equatable, Previwable, ClosableState {
 
 struct IdentifiedItem<T: Equatable>: Identifiable, Equatable {
     let id: UUID
-    let item: T
+    var item: T
 }
 
 enum AddGroupAction: Equatable {
@@ -57,9 +57,16 @@ enum AddGroupAction: Equatable {
     case rountingHandled
     case wordAdded(AddWordInput.AddLaterRequest)
     
+    case wordAction(id: UUID, action: WordAction)
+    
     case showAlert(String)
     
     case closeSceneTriggered
+    
+    enum WordAction: Equatable {
+        case selected
+        case removed
+    }
 }
 
 struct AddGroupEnvironment {

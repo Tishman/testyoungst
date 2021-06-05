@@ -9,6 +9,22 @@ import Foundation
 import GRPC
 
 struct ProfileInjectionInterceptorFactory: Profile_ProfileClientInterceptorFactoryProtocol {
+    func makeGetSharedInviteInfoInterceptors() -> [ClientInterceptor<Profile_GetSharedInviteInfoRequest, Profile_GetSharedInviteInfoResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
+    
+    func makeGenerateSharedTeacherInviteInterceptors() -> [ClientInterceptor<Profile_GenerateSharedTeacherInviteRequest, Profile_GenerateSharedTeacherInviteResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
+    
+    func makeAcceptSharedTeacherInviteInterceptors() -> [ClientInterceptor<Profile_AcceptSharedTeacherInviteRequest, Profile_AcceptSharedTeacherInviteResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
+    
+    func makeCancelAllSharedTeacherInvitesInterceptors() -> [ClientInterceptor<Profile_CancelAllSharedTeacherInvitesRequest, Profile_CancelAllSharedTeacherInvitesResponse>] {
+        [CommonInterceptor(dependencies)]
+    }
+    
     func makeGetTeacherInterceptors() -> [ClientInterceptor<Profile_GetTeacherRequest, Profile_GetTeacherResponse>] {
         [CommonInterceptor(dependencies)]
     }
