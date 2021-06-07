@@ -34,6 +34,7 @@ struct YoungStApp: App {
                            environment: container.resolve())
         
         container.initializeSingletonObjects()
+        configureAppearance()
     }
     
     var body: some Scene {
@@ -43,6 +44,10 @@ struct YoungStApp: App {
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
                 .onOpenURL(perform: handle(deeplink:))
         }
+    }
+    
+    func configureAppearance() {
+        UINavigationBar.appearance().tintColor = Asset.Colors.greenDark.color
     }
     
     private func handle(deeplink: URL) {

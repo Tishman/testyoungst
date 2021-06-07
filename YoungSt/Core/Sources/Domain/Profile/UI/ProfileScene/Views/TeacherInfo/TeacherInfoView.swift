@@ -33,7 +33,8 @@ struct TeacherInfoView: View {
                             ProfileInfoView(avatarSource: .init(profileInfo: teacher.profile),
                                             displayName: teacher.profile.displayName,
                                             secondaryDisplayName: teacher.profile.secondaryDisplayName,
-                                            subtitle: teacher.inviteAccepted ? "" : Localizable.teacherNotAcceptedInviteYet)
+                                            subtitle: teacher.inviteAccepted ? "" : Localizable.teacherNotAcceptedInviteYet,
+                                            showChevron: false)
                             Button { viewStore.send(.removeTeacher) } label: {
                                 Text(teacher.inviteAccepted ? Localizable.removeTeacher : Localizable.cancelInvite)
                             }

@@ -42,7 +42,8 @@ struct AddWordScene: View {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         VStack {
                             AddWordLanguageHeader(leftText: viewStore.currentSource.title,
-                                                  rightText: viewStore.currentDestination.title) {
+                                                  rightText: viewStore.currentDestination.title,
+                                                  buttonRotationFlag: viewStore.leftToRight) {
                                 viewStore.send(.swapLanguagesPressed)
                             }
                             .padding(.bottom, .spacing(.big))
