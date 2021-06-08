@@ -44,7 +44,6 @@ final class KeyboardObserver {
     }
     
     @objc private func didHideKeyboard(notification: Notification) {
-//        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
         let properties = KeyboardNotification.AnimationProperties(duration: 0.25)
         isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: false, animationProperties: properties))
     }
