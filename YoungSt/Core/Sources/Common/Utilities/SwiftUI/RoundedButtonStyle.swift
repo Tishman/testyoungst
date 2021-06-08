@@ -11,10 +11,12 @@ import Resources
 public struct RoundedButtonStyle: ButtonStyle {
     
     public static let minHeight: CGFloat = UIFloat(64)
+    private static let minHeightCompact = UIFloat(44)
     
     public init(style: RoundedButtonStyle.StyleType, isLoading: Bool = false) {
         self.style = style
         self.isLoading = isLoading
+        self._keyboardVisible = .init(initialValue: KeyboardObserver.shared.isKeyboardVisible)
     }
     
     public enum StyleType {
@@ -52,6 +54,7 @@ public struct RoundedButtonStyle: ButtonStyle {
     let style: StyleType
     let isLoading: Bool
     
+    @State private var keyboardVisible = false
     @Environment(\.isEnabled) private var isEnabled
     
     public func makeBody(configuration: Self.Configuration) -> some View {
@@ -64,6 +67,13 @@ public struct RoundedButtonStyle: ButtonStyle {
                  lineWidth: 2)
         .scaleEffect(configuration.isPressed ? 0.95 : 1)
         .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isLoading)
+        .frame(maxWidth: keyboardVisible ? .infinity : nil, alignment: .trailing)
+        .padding(.horizontal)
+        .onReceive(KeyboardObserver.shared.keyboardVisibilityChangedPublisher) { notification in
+            withAnimation(.easeOut(duration: notification.animationProperties.duration)) {
+                keyboardVisible = notification.isKeyboardVisible
+            }
+        }
     }
     
     @ViewBuilder private func content(configuration: Self.Configuration) -> some View {
@@ -74,7 +84,8 @@ public struct RoundedButtonStyle: ButtonStyle {
         } else {
             configuration.label
                 .padding()
-                .frame(minWidth: UIFloat(200), minHeight: RoundedButtonStyle.minHeight)
+                .frame(minWidth: UIFloat(keyboardVisible ? 150 : 200),
+                       minHeight: keyboardVisible ? RoundedButtonStyle.minHeightCompact : RoundedButtonStyle.minHeight)
                 .font(.body.weight(.semibold))
                 .foregroundColor(style.textColor.opacity(configuration.isPressed ? 0.4 : 1))
         }
