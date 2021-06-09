@@ -13,16 +13,11 @@ final class KeyboardObserver {
     
     static let shared = KeyboardObserver()
     
-    private var isKeyboardVisibleSubject = CurrentValueSubject<KeyboardNotification, Never>(.init(isKeyboardVisible: false, animationProperties: .init(duration: 0)))
+    private var isKeyboardVisibleSubject = CurrentValueSubject<KeyboardNotification, Never>(.init(isKeyboardVisible: false))
     
     struct KeyboardNotification {
         
         let isKeyboardVisible: Bool
-        let animationProperties: AnimationProperties
-        
-        struct AnimationProperties {
-            let duration: Double
-        }
     }
     
     private init() {
@@ -39,13 +34,11 @@ final class KeyboardObserver {
     }
     
     @objc private func didShowKeyboard(notification: Notification) {
-        let properties = KeyboardNotification.AnimationProperties(duration: 0.25)
-        isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: true, animationProperties: properties))
+        isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: true))
     }
     
     @objc private func didHideKeyboard(notification: Notification) {
-        let properties = KeyboardNotification.AnimationProperties(duration: 0.25)
-        isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: false, animationProperties: properties))
+        isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: false))
     }
     
 }

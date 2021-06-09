@@ -65,12 +65,16 @@ public struct RoundedButtonStyle: ButtonStyle {
         .bubbled(borderColor: style.borderColor.opacity(isEnabled ? 1 : 0.4),
                  foregroundColor: style.foregroundColor.opacity(isEnabled ? 1 : 0.4),
                  lineWidth: 2)
-        .scaleEffect(configuration.isPressed ? 0.95 : 1)
+        .scaleEffect(configuration.isPressed ? 0.97 : 1)
         .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isLoading)
         .frame(maxWidth: keyboardVisible ? .infinity : nil, alignment: .trailing)
         .padding(.horizontal)
+        .onChange(of: configuration.isPressed) { isPressed in
+            guard isPressed else { return }
+            HapticTapFeedback.shared.impactOccured()
+        }
         .onReceive(KeyboardObserver.shared.keyboardVisibilityChangedPublisher) { notification in
-            withAnimation(.easeOut(duration: notification.animationProperties.duration)) {
+            withAnimation(.spring().speed(1.5)) {
                 keyboardVisible = notification.isKeyboardVisible
             }
         }
