@@ -37,7 +37,7 @@ public final class AuthorizationDIFramework: DIFramework {
 		
 		container.register(ConfrimEmailEnviroment.init)
 		container.register {
-            ConfrimEmailController(userId: arg($0), email: arg($1), password: arg($2), env: $3)
+            ConfrimEmailController(input: arg($0), env: $1)
 		}
 		
 		container.register(WelcomeEnviroment.init)

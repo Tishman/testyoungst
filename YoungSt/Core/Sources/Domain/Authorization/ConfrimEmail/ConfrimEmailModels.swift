@@ -11,6 +11,12 @@ import Coordinator
 import Utilities
 import NetworkService
 
+struct ConfrimEmailInput {
+    let userId: UUID
+    let email: String
+    let password: String
+}
+
 struct ConfrimEmailState: Equatable, ClosableState {
 	var code = ""
 	let userId: UUID
