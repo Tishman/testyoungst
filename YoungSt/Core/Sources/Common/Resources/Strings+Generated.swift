@@ -90,9 +90,7 @@ public enum Loc {
     public static let accountCreated = Loc.tr("Localizable", "accountCreated")
     /// Add
     public static let add = Loc.tr("Localizable", "add")
-    /// Add group
-    public static let addGroupAction = Loc.tr("Localizable", "addGroupAction")
-    /// New dictionary
+    /// New vocabulary
     public static let addGroupTitle = Loc.tr("Localizable", "addGroupTitle")
     /// Add to dictionary
     public static let addToDictionary = Loc.tr("Localizable", "addToDictionary")
@@ -118,9 +116,9 @@ public enum Loc {
     public static let create = Loc.tr("Localizable", "create")
     /// Delete
     public static let delete = Loc.tr("Localizable", "delete")
-    /// Dictionaries
+    /// Vocabularies
     public static let dictionaries = Loc.tr("Localizable", "dictionaries")
-    /// Dictionary
+    /// Vocabulary
     public static let dictionary = Loc.tr("Localizable", "dictionary")
     /// Request sent. Wait for your teacher to accept it.
     public static let didSendRequestToBecomeStudent = Loc.tr("Localizable", "didSendRequestToBecomeStudent")
@@ -140,7 +138,7 @@ public enum Loc {
     public static let emailPlaceholder = Loc.tr("Localizable", "emailPlaceholder")
     /// We have sent a confirmation code to your email. Enter the code in the box below to verify your account.
     public static let emailSendedToConfrim = Loc.tr("Localizable", "emailSendedToConfrim")
-    /// You don't yet have any dictionary.\nTap 'plus' to add
+    /// You don't yet have any vocabulary.\nTap 'plus' to add
     public static let emptyGroupsPlaceholder = Loc.tr("Localizable", "emptyGroupsPlaceholder")
     /// You don't have any words yet.\nTap 'plus' above to add
     public static let emptyWordsPlaceholder = Loc.tr("Localizable", "emptyWordsPlaceholder")
@@ -172,7 +170,7 @@ public enum Loc {
     public static let inputTranslationPlacholder = Loc.tr("Localizable", "inputTranslationPlacholder")
     /// First name can't be empty
     public static let invalidFirstName = Loc.tr("Localizable", "invalidFirstName")
-    /// Nickname can't be empty
+    /// Login can't be empty
     public static let invalidNickname = Loc.tr("Localizable", "invalidNickname")
     /// Invites
     public static let invites = Loc.tr("Localizable", "invites")
@@ -188,9 +186,9 @@ public enum Loc {
     public static let loginToReturnTitle = Loc.tr("Localizable", "loginToReturnTitle")
     /// Name
     public static let name = Loc.tr("Localizable", "name")
-    /// Nickname
+    /// Login
     public static let nickname = Loc.tr("Localizable", "nickname")
-    /// Nickname already in use. Choose another
+    /// Login already in use. Choose another
     public static let nicknameAlreadyUsed = Loc.tr("Localizable", "nicknameAlreadyUsed")
     /// No translation
     public static let noTranslation = Loc.tr("Localizable", "noTranslation")
@@ -240,7 +238,7 @@ public enum Loc {
     public static let shareProfileDescription = Loc.tr("Localizable", "shareProfileDescription")
     /// Invite student
     public static let shareProfileTitle = Loc.tr("Localizable", "shareProfileTitle")
-    /// Do you want to delete group?\nThis cannot be undone.
+    /// Do you want to delete vocabulary?\nThis cannot be undone.
     public static let shouldDeleteGroup = Loc.tr("Localizable", "shouldDeleteGroup")
     /// Do you want to delete word? This cannot be undone.
     public static let shouldDeleteWord = Loc.tr("Localizable", "shouldDeleteWord")
@@ -282,13 +280,13 @@ public enum Loc {
     public static let wordDescription = Loc.tr("Localizable", "wordDescription")
     /// Words
     public static let words = Loc.tr("Localizable", "words")
-    /// You can send request to become student. Good luck in learning!
+    /// You can send request to become student.\nGood luck in learning!
     public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
-    /// You can't become student because you already have teacher.
+    /// You already have a teacher.
     public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")
     /// You definitely should add something here
     public static let youShouldAddWordDescription = Loc.tr("Localizable", "youShouldAddWordDescription")
-    /// Group is empty.
+    /// Vocabulary is empty.
     public static let youShouldAddWordTitle = Loc.tr("Localizable", "youShouldAddWordTitle")
     /// Cant add empty word. Type something in first field
     public static let youShouldTypeText = Loc.tr("Localizable", "youShouldTypeText")
