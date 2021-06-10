@@ -68,9 +68,7 @@ final class AuthorizationServiceImpl: AuthorizationService {
 					 response: response)
 			}
 			.handleEvents(receiveOutput: { [credentialsService] (sessionID, userID, response) in
-				credentialsService.save(credentials: .init(userID: userID,
-														   info: .init(nickname: response.user.login, email: response.user.email),
-														   sessionID: sessionID))
+                credentialsService.save(credentials: .init(userID: userID, sessionID: sessionID))
 			})
 			.map { $0.2 }
 			.catch { error -> AnyPublisher<Authorization_LoginResponse, LoginError> in
