@@ -31,6 +31,14 @@ struct GroupInfoState: Equatable, ClosableState {
     let userID: UUID
     var routing: Routing?
     var info: GroupInfo
+    var title: String? {
+        switch info {
+        case let .item(item):
+            return item.state.title
+        case .id:
+            return nil
+        }
+    }
     var controlsState: ControlsState = .allVisible
     var isClosed = false
     
@@ -106,6 +114,7 @@ enum GroupInfoAction: Equatable {
     case refreshList
     case silentRefreshList
     case closeSceneTriggered
+    case showLoader(Bool)
     
     case editTextChanged(String)
     case editCancelled
@@ -126,6 +135,7 @@ enum GroupInfoAction: Equatable {
     case routingHandled
     
     case addWordOpened
+    case wordSelected(DictWordItem)
     case editOpened
     case deleteOpened
     case deleteClosed
@@ -137,4 +147,5 @@ struct GroupInfoEnvironment {
     let groupsService: GroupsService
     let userProvider: UserProvider
     let wordsService: WordsService
+    let dictionaryEventPublisher: DictionaryEventPublisher
 }

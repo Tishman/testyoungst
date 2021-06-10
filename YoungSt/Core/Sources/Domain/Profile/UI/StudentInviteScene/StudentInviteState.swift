@@ -14,8 +14,9 @@ import Coordinator
 
 struct StudentInviteState: Equatable, Previwable, ClosableState {
     
-    let input: StudentInviteInput
-    var teacherID: UUID { input.teacherID }
+    let invite: SharedInvite
+    
+    var profileInfo: ProfileInfo?
     
     var isLoading = false
     var title = ""
@@ -23,7 +24,13 @@ struct StudentInviteState: Equatable, Previwable, ClosableState {
     var subtitle = ""
     var error: String?
     var actionType = ActionType.requestInvite
-    var avatarSource: ProfileAvatarSource
+    
+    var avatarSource: ProfileAvatarSource? {
+        profileInfo.map { info in
+            ProfileAvatarSource(profileInfo: info)
+        }
+    }
+    
     var isClosed = false
     
     enum ActionType {
@@ -33,18 +40,16 @@ struct StudentInviteState: Equatable, Previwable, ClosableState {
     
     static let preview: Self = {
         let id = UUID()
-        return .init(input: .init(teacherID: id),
+        return .init(invite: SharedInvite(id: 0, password: "asd"),
                      title: "Steve Jobs",
                      nickname: "@stevejobs",
-                     subtitle: Localizable.youCantBecomeStudent,
-                     avatarSource: .init(id: id, title: "SJ"))
+                     subtitle: Localizable.youCantBecomeStudent)
     }()
 }
 
 extension StudentInviteState {
     init(input: StudentInviteInput) {
-        self.input = input
-        self.avatarSource = .info(id: input.teacherID, title: "")
+        self.invite = input.invite
     }
 }
 
@@ -57,7 +62,7 @@ enum StudentInviteAction: Equatable {
     }
     
     case infoLoaded(Result<CollectInfoResponse, EquatableError>)
-    case sendInvite(Result<Profile_SendInviteToTeacherResponse, EquatableError>)
+    case sendInvite(Result<EmptyResponse, EquatableError>)
     
     case closeScene
     case performAction

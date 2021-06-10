@@ -44,12 +44,10 @@ final class WelcomeViewController: UIHostingController<WelcomeView>, RoutableCon
 		self.viewStore = .init(store)
 		self.routingPoints = routingPoints
 		super.init(rootView: WelcomeView(store: store))
+        
+        observeRouting().store(in: &bag)
 	}
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		observeRouting().store(in: &bag)
-	}
 	
 	func handle(routing: WelcomeState.Routing) {
 		switch routing {

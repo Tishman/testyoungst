@@ -68,8 +68,8 @@ final class AppViewController: UIViewController {
     
     private func handleChange(deeplink: Deeplink) {
         switch deeplink {
-        case let .studentInvite(teacherID):
-            let studentInviteVC = coordinator.view(for: .studentInvite(.init(teacherID: teacherID)))
+        case let .studentInvite(invite):
+            let studentInviteVC = coordinator.view(for: .studentInvite(.init(invite: invite)))
             topViewController(root: self).present(studentInviteVC, animated: true) { [viewStore] in
                 viewStore.send(.deeplinkHandled)
             }

@@ -15,7 +15,6 @@ import Authorization
 import Utilities
 import Resources
 
-
 @main
 struct YoungStApp: App {
     private let container: DIContainer
@@ -33,6 +32,9 @@ struct YoungStApp: App {
         self.store = .init(initialState: .init(),
                            reducer: appReducer,
                            environment: container.resolve())
+        
+        container.initializeSingletonObjects()
+        configureAppearance()
     }
     
     var body: some Scene {
@@ -42,6 +44,10 @@ struct YoungStApp: App {
                 .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
                 .onOpenURL(perform: handle(deeplink:))
         }
+    }
+    
+    func configureAppearance() {
+        UINavigationBar.appearance().tintColor = Asset.Colors.greenDark.color
     }
     
     private func handle(deeplink: URL) {

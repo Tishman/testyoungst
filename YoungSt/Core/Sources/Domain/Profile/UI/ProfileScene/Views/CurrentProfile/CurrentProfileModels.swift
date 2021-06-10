@@ -53,6 +53,7 @@ enum CurrentProfileAction: Equatable {
     case viewAppeared
     case profileUpdateRequested
     case profileUpdated(Result<Profile_GetOwnProfileInfoResponse, EquatableError>)
+    case userInfoUpdated(UserInfo)
     case editInfoOpened
 }
 
@@ -61,4 +62,5 @@ struct CurrentProfileEnvironment {
     
     let profileService: ProfileService
     let userProvider: UserProvider
+    let credentialsService: CredentialsService
 }

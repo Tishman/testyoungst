@@ -38,6 +38,8 @@
 "sendCode" = "Отправить код";
 "resetPassword" = "Изменить пароль";
 "update" = "Обновить";
+"save" = "Сохранить";
+"create" = "Создать";
 "welcomeMessage" = "Мы рады тебя видеть, друг!";
 
 // AddWord
@@ -56,7 +58,6 @@
 
 // Add group
 "addGroupTitle" = "Новый словарь";
-"addGroupAction" = "Добавить словарь";
 "name" = "Название";
 "unnamed" = "Безымянный";
 
@@ -74,6 +75,8 @@
 
 // GroupInfo
 "shouldDeleteGroup" = "Вы хотите удалить группу? Операцию нельзя отменить.";
+"youShouldAddWordTitle" = "В группе нет слов.";
+"youShouldAddWordDescription" = "Вам определённо стоит сюда что-то добавить";
 
 // AppScene
 "dictionary" = "Словарь";
@@ -103,17 +106,17 @@
 
 // EditProfile
 "nicknameAlreadyUsed" = "Имя пользователя занято. Выберите другое имя";
-"invalidNickname" = "Введите непустое имя пользователя";
-"invalidFirstName" = "Введите непустое имя";
+"invalidNickname" = "Заполните имя пользователя";
+"invalidFirstName" = "Заполните имя";
 "editProfileAction" = "Обновить профиль";
 "editProfileTitle" = "Обновить профиль";
 "firstName" = "Имя";
 "lastName" = "Фамилия";
-"nickname" = "Никнейм";
+"nickname" = "Логин";
 
 // StudentInvite
-"youCantBecomeStudent" = "Вы не можете стать учеником, потому что у вас уже есть учитель.";
-"youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником. Удачи в обучении!";
+"youCantBecomeStudent" = "У вас уже есть учитель.";
+"youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником.\nУдачи в обучении!";
 "didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
 "becomeStudent" = "Стать учеником";
 

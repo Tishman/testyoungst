@@ -29,7 +29,7 @@ public final class ProfileDIFramework: DIFramework {
         
         // Fod module link
         container.register { env in { input in
-            StudentInviteController(input: input, env: env).erased
+            UINavigationController(rootViewController: StudentInviteController(input: input, env: env)).erased
         }}
         
         container.register(ProfileEnvironment.init)

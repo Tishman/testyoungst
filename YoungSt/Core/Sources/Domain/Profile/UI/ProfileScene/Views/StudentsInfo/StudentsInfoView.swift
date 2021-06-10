@@ -44,7 +44,8 @@ struct StudentsInfoView: View {
                             ProfileInfoView(avatarSource: .init(profileInfo: profile),
                                             displayName: profile.displayName,
                                             secondaryDisplayName: profile.secondaryDisplayName,
-                                            subtitle: "")
+                                            subtitle: "",
+                                            showChevron: true)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .contextMenu {

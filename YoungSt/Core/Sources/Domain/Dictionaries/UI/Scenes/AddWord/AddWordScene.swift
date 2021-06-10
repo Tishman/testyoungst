@@ -33,6 +33,7 @@ struct AddWordScene: View {
     @State private var dividerHidden: Bool = true
     @State private var elementsAppeared: Bool = false
     private let addWordInputHeight: CGFloat = UIFloat(130)
+    private let translateIndicatorHeight: CGFloat = UIFloat(14)
     
     var body: some View {
         GeometryReader { globalProxy in
@@ -41,21 +42,25 @@ struct AddWordScene: View {
                     TrackableScrollView(contentOffset: $contentOffset) {
                         VStack {
                             AddWordLanguageHeader(leftText: viewStore.currentSource.title,
-                                                  rightText: viewStore.currentDestination.title) {
-                                viewStore.send(.translatePressed)
+                                                  rightText: viewStore.currentDestination.title,
+                                                  buttonRotationFlag: viewStore.leftToRight) {
+                                viewStore.send(.swapLanguagesPressed)
                             }
                             .padding(.bottom, .spacing(.big))
                             
                             if elementsAppeared {
                                 sourceInput
+                                    .animation(.default)
                                     .transition(contentTransition(delay: 0.25))
                                     .animation(contentTransitionAnimation(delay: 0.25))
                                 
                                 descriptionInput
+                                    .animation(.default)
                                     .transition(contentTransition(delay: 0.35))
                                     .animation(contentTransitionAnimation(delay: 0.35))
                                 
                                 groupEditing
+                                    .animation(.default)
                                     .transition(contentTransition(offset: 10, delay: 0.55))
                                     .animation(contentTransitionAnimation(delay: 0.55))
                             }
@@ -68,7 +73,7 @@ struct AddWordScene: View {
                     }
                     
                     Button { viewStore.send(.addPressed) } label: {
-                        Text(viewStore.editingMode ? Localizable.editWordTitle : Localizable.addWordAction)
+                        Text(Localizable.save)
                     }
                     .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
                     .padding(.bottom)
@@ -109,7 +114,7 @@ struct AddWordScene: View {
     }
     
     private func contentTransitionAnimation(delay: Double) -> Animation {
-        .easeOut(duration: 0.2).delay(delay)
+        .spring().speed(1.25).delay(delay)
     }
     
     private var sourceInput: some View {
@@ -118,7 +123,9 @@ struct AddWordScene: View {
                 VStack {
                     AddWordInputView(subtitle: Localizable.word,
                                      lineLimit: 1,
-                                     currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged))
+                                     delegate: AddWordTextDelegate { viewStore.send(.translatePressed) },
+                                     currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged),
+                                     forceFocused: viewStore.binding(get: \.sourceFieldForceFocused, send: AddWordAction.sourceInputFocusChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
                     
                     if let sourceError = viewStore.sourceError {
@@ -131,11 +138,18 @@ struct AddWordScene: View {
                     Divider()
                     
                     VStack(alignment: .leading, spacing: .spacing(.ultraSmall)) {
-                        Text(Localizable.translation)
-                            .foregroundColor(.secondary)
-                            .font(.caption)
+                        HStack {
+                            Text(Localizable.translation)
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                            if viewStore.isTranslateLoading {
+                                PlainIndicatorView(size: translateIndicatorHeight)
+                            }
+                        }
+                        .frame(minHeight: translateIndicatorHeight)
                         
-                        Text(viewStore.translationText.isEmpty ? Localizable.noTranslation : viewStore.translationText)
+                        TextField(Localizable.noTranslation,
+                                  text: viewStore.binding(get: \.translationText, send: AddWordAction.translationChanged))
                             .alignmentGuide(.translationCenter) { $0[VerticalAlignment.center] }
                             .foregroundColor(viewStore.translationText.isEmpty ? .secondary : .primary)
                             .font(.body)
@@ -148,7 +162,7 @@ struct AddWordScene: View {
                 .frame(maxWidth: .infinity)
                 .bubbled()
                 
-                Button { viewStore.send(.translatePressed) } label: {
+                Button { viewStore.send(.auditionPressed) } label: {
                     Image(systemName: "play.circle.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -165,7 +179,9 @@ struct AddWordScene: View {
         WithViewStore(store.scope(state: \.descriptionText)) { viewStore in
             AddWordInputView(subtitle: Localizable.wordDescription,
                              lineLimit: 4,
-                             currentText: viewStore.binding(send: AddWordAction.descriptionChanged))
+                             delegate: nil,
+                             currentText: viewStore.binding(send: AddWordAction.descriptionChanged),
+                             forceFocused: .constant(false))
                 .padding()
                 .frame(height: addWordInputHeight)
                 .frame(maxWidth: .infinity)

@@ -18,7 +18,9 @@ struct StudentInviteScene: View {
         WithViewStore(store) { viewStore in
             VStack {
                 VStack(spacing: .spacing(.medium)) {
-                    ProfileAvatarView(source: viewStore.avatarSource, size: .big)
+                    if let avatarSource = viewStore.avatarSource {
+                        ProfileAvatarView(source: avatarSource, size: .big)
+                    }
                     
                     VStack {
                         if !viewStore.title.isEmpty {
@@ -29,7 +31,7 @@ struct StudentInviteScene: View {
                             Text(viewStore.nickname)
                                 .foregroundColor(.secondary)
                         }
-                        if viewStore.subtitle.isEmpty {
+                        if !viewStore.subtitle.isEmpty {
                             Text(viewStore.subtitle)
                         }
                         if let error = viewStore.error {
@@ -39,6 +41,7 @@ struct StudentInviteScene: View {
                     }
                 }
                 .multilineTextAlignment(.center)
+                .padding(.top, .spacing(.custom(80)))
                 
                 Spacer()
                 
@@ -49,6 +52,7 @@ struct StudentInviteScene: View {
                 .padding(.bottom)
             }
             .onAppear { viewStore.send(.viewAppeared) }
+            .makeDefaultNavigationBarTransparent()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     CloseButton { viewStore.send(.closeScene) }

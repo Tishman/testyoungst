@@ -27,7 +27,7 @@ public struct PlainIndicatorView: View {
 
     public var body: some View {
         GrowingArc(percent: animatableParameter)
-            .strokeBorder(lineWidth: 3)
+            .strokeBorder(lineWidth: max(size / UIFloat(15), 1))
             .animation(.easeInOut(duration: 2).repeatForever(autoreverses: false),
                        value: animatableParameter)
             .foregroundColor(color)

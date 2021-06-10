@@ -43,6 +43,9 @@ public enum BLError: String, LocalizedError, Equatable {
     case errInvalidNickname
     case errNicknameAlreadyUsed
     case errProfileNotFound
+    case errInviteExpired
+    case errAlreadyHaveTeacher
+    case errIncorrectInvitePassword
     
     public var errorDescription: String? {
         switch self {
@@ -112,6 +115,13 @@ public enum BLError: String, LocalizedError, Equatable {
             return Loc.Errors.errNicknameAlreadyUsed
         case .errProfileNotFound:
             return Loc.Errors.errProfileNotFound
+        case .errInviteExpired:
+            return Loc.Errors.errInviteExpired
+        case .errAlreadyHaveTeacher:
+            return Loc.Errors.errAlreadyHaveTeacher
+        case .errIncorrectInvitePassword:
+            return Loc.Errors.errIncorrectInvitePassword
+            
         }
     }
     

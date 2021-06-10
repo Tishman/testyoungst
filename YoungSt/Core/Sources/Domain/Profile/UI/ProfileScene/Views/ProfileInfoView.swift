@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Utilities
 
 struct ProfileInfoView: View {
     
@@ -14,6 +15,9 @@ struct ProfileInfoView: View {
     let displayName: String
     let secondaryDisplayName: String
     let subtitle: String
+    let showChevron: Bool
+    
+    private let chevronSize = UIFloat(16)
     
     var body: some View {
         HStack(spacing: .spacing(.medium)) {
@@ -32,6 +36,15 @@ struct ProfileInfoView: View {
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
+            }
+            
+            if showChevron {
+                Spacer()
+                Image(systemName: "chevron.forward")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.secondary)
+                    .frame(width: chevronSize, height: chevronSize)
             }
         }
         .padding()

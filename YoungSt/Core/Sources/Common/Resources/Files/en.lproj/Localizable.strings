@@ -38,6 +38,8 @@
 "sendCode" = "Send code";
 "resetPassword" = "Reset password";
 "update" = "Update";
+"save" = "Save";
+"create" = "Create";
 "welcomeMessage" = "We glad to see you, friend!";
 
 // AddWord
@@ -55,8 +57,7 @@
 "shouldDeleteWord" = "Do you want to delete word? This cannot be undone.";
 
 // Add group
-"addGroupTitle" = "New dictionary";
-"addGroupAction" = "Add group";
+"addGroupTitle" = "New vocabulary";
 "name" = "Name";
 "unnamed" = "Unnamed";
 
@@ -65,18 +66,20 @@
 "ru" = "Russian";
 
 // Dictionaries
-"dictionaries" = "Dictionaries";
+"dictionaries" = "Vocabularies";
 "words" = "Words";
 "lastUpdateTime" = "Updated";
-"emptyGroupsPlaceholder" = "You don't yet have any dictionary.\nTap 'plus' to add";
+"emptyGroupsPlaceholder" = "You don't yet have any vocabulary.\nTap 'plus' to add";
 "emptyWordsPlaceholder" = "You don't have any words yet.\nTap 'plus' above to add";
 "add" = "Add";
 
 // GroupInfo
-"shouldDeleteGroup" = "Do you want to delete group?\nThis cannot be undone.";
+"shouldDeleteGroup" = "Do you want to delete vocabulary?\nThis cannot be undone.";
+"youShouldAddWordTitle" = "Vocabulary is empty.";
+"youShouldAddWordDescription" = "You definitely should add something here";
 
 // AppScene
-"dictionary" = "Dictionary";
+"dictionary" = "Vocabulary";
 "profile" = "Profile";
 
 // Groups list
@@ -102,18 +105,18 @@
 "fillInfoDescription" = "You almost done. Fill info about you";
 
 // EditProfile
-"nicknameAlreadyUsed" = "Nickname already in use. Choose another";
-"invalidNickname" = "Nickname can't be empty";
+"nicknameAlreadyUsed" = "Login already in use. Choose another";
+"invalidNickname" = "Login can't be empty";
 "invalidFirstName" = "First name can't be empty";
 "editProfileAction" = "Update profile";
 "editProfileTitle" = "Update profile";
 "firstName" = "First name";
 "lastName" = "Last name";
-"nickname" = "Nickname";
+"nickname" = "Login";
 
 // StudentInvite
-"youCantBecomeStudent" = "You can't become student because you already have teacher.";
-"youCanSendRequestToBecomeStudent" = "You can send request to become student. Good luck in learning!";
+"youCantBecomeStudent" = "You already have a teacher.";
+"youCanSendRequestToBecomeStudent" = "You can send request to become student.\nGood luck in learning!";
 "didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
 "becomeStudent" = "Become student";
 

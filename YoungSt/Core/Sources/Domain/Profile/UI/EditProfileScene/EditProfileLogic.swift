@@ -74,21 +74,27 @@ let editProfileReducer = Reducer<EditProfileState, EditProfileAction, EditProfil
         }
         
     case .editProfileTriggered:
-        guard EditProfileLogic.isFirstNameValid(firstName: state.firstName) else {
+        let firstName = state.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = state.lastName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let nickname = state.nickname.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard EditProfileLogic.isFirstNameValid(firstName: firstName) else {
             state.firstNameError = Localizable.invalidFirstName
             break
         }
         
-        guard EditProfileLogic.isNicknameValid(nickname: state.nickname) else {
+        guard EditProfileLogic.isNicknameValid(nickname: nickname) else {
             state.nicknameError = Localizable.invalidNickname
             break
         }
         
         let request = Profile_UpdateProfileRequest.with {
-            $0.firstName = state.firstName
-            $0.lastName = state.lastName
-            $0.nickname = state.nickname
+            $0.firstName = firstName
+            $0.lastName = lastName
+            $0.nickname = nickname
         }
+        state.isLoading = true
+        
         return env.profileService.updateProfile(request: request)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
@@ -97,6 +103,7 @@ let editProfileReducer = Reducer<EditProfileState, EditProfileAction, EditProfil
             .cancellable(id: Cancellable.updateProfile, bag: env.bag)
         
     case let .profileEdited(result):
+        state.isLoading = false
         switch result {
         case let .success(response):
             return .init(value: .closeSceneTriggered)

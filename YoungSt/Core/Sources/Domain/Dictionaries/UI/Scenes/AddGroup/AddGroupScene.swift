@@ -18,6 +18,7 @@ struct AddGroupScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
+    @State private var swappedWord: UUID?
     
     var body: some View {
         GeometryReader { globalProxy in
@@ -60,11 +61,20 @@ struct AddGroupScene: View {
                         .padding(.horizontal)
                         
                         LazyVStack {
-                            WithViewStore(store.scope(state: \.items)) { viewStore in
-                                ForEach(viewStore.state) {
-                                    DictWordView(state: .init(text: $0.item.source,
-                                                              translation: $0.item.destination,
-                                                              info: $0.item.description_p))
+                            ForEachStore(store.scope(state: \.items, action: AddGroupAction.wordAction)) { store in
+                                WithViewStore(store) { viewStore in
+                                    Button { viewStore.send(.selected) } label: {
+                                        DictWordView(state: .init(text: viewStore.item.source,
+                                                                  translation: viewStore.item.destination,
+                                                                  info: viewStore.item.description_p))
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .onDelete(tag: viewStore.id, selection: $swappedWord) {
+                                        withAnimation {
+                                            viewStore.send(.removed)
+                                        }
+                                        return true
+                                    }
                                 }
                             }
                         }
@@ -79,7 +89,7 @@ struct AddGroupScene: View {
                 
                 WithViewStore(store.scope(state: \.isLoading)) { viewStore in
                     Button { viewStore.send(.addGroupPressed) } label: {
-                        Text(Localizable.addGroupAction)
+                        Text(Localizable.create)
                     }
                     .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
                 }

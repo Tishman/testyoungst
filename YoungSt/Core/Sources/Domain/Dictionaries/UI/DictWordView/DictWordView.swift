@@ -24,13 +24,14 @@ struct DictWordView: View {
             
             HStack {
                 Text(state.text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                
                 if !state.translation.isEmpty {
                     Divider()
                     Text(state.translation)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(.secondary)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .font(.body)
         }
         .padding()

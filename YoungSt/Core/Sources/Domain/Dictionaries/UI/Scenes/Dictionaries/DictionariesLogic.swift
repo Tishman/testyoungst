@@ -20,12 +20,18 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             case getUserWords
             case dictObserving
             case deleteWord(UUID)
+            case showLoader
         }
         
         switch action {
         case .refreshList:
-            state.isLoading = true
-            return .init(value: .silentRefreshList)
+            return .merge(
+                .init(value: .silentRefreshList),
+                Effect(value: .showLoader(true))
+                    .delay(for: .milliseconds(700), scheduler: RunLoop.main)
+                    .eraseToEffect()
+                    .cancellable(id: Cancellable.showLoader, cancelInFlight: true, bag: env.bag)
+                )
             
         case .silentRefreshList:
             let wordsRequest = Dictionary_GetUserWordsRequest.with {
@@ -67,7 +73,12 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             case let .failure(error):
                 state.alert = .init(title: TextState(error.description))
             }
-            state.isLoading = false
+            
+            return Effect(value: .showLoader(false))
+                .cancellable(id: Cancellable.showLoader, cancelInFlight: true, bag: env.bag)
+            
+        case let .showLoader(isLoading):
+            state.isLoading = isLoading
             
         case .alertClosed:
             state.alert = nil
@@ -76,7 +87,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
             state.alert = .init(title: TextState(errorText))
             
         case let .deleteWordRequested(item):
-            state.alert = .init(title: TextState(Localizable.shouldDeleteGroup),
+            state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
                                 primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
                                 secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
             

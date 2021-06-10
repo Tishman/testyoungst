@@ -10,12 +10,16 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Loc {
   public enum Errors {
+    /// You already have teacher
+    public static let errAlreadyHaveTeacher = Loc.tr("Errors", "errAlreadyHaveTeacher")
     /// Could not establish internet connection. Check your network config
     public static let errConnectionIssue = Loc.tr("Errors", "errConnectionIssue")
     /// Group not found. Maybe it already deleted?
     public static let errGroupNotFound = Loc.tr("Errors", "errGroupNotFound")
     /// Incorrect confirmation code. Please check again
     public static let errIncorrectConfirmationCode = Loc.tr("Errors", "errIncorrectConfirmationCode")
+    /// Invorrect invite link
+    public static let errIncorrectInvitePassword = Loc.tr("Errors", "errIncorrectInvitePassword")
     /// Incorrect request data
     public static let errIncorrectRequest = Loc.tr("Errors", "errIncorrectRequest")
     /// Incorrect reset code
@@ -38,6 +42,8 @@ public enum Loc {
     public static let errInvalidNickname = Loc.tr("Errors", "errInvalidNickname")
     /// Invalid password
     public static let errInvalidPassword = Loc.tr("Errors", "errInvalidPassword")
+    /// Invite expired
+    public static let errInviteExpired = Loc.tr("Errors", "errInviteExpired")
     /// Invite not found. Maybe it already rejected or accepted?
     public static let errInviteNotFound = Loc.tr("Errors", "errInviteNotFound")
     /// Language not supported yed
@@ -108,6 +114,8 @@ public enum Loc {
     public static let confrimPasswordPlaceholder = Loc.tr("Localizable", "confrimPasswordPlaceholder")
     /// Copy
     public static let copy = Loc.tr("Localizable", "copy")
+    /// Create
+    public static let create = Loc.tr("Localizable", "create")
     /// Delete
     public static let delete = Loc.tr("Localizable", "delete")
     /// Dictionaries
@@ -220,6 +228,8 @@ public enum Loc {
     public static let resetPassword = Loc.tr("Localizable", "resetPassword")
     /// Russian
     public static let ru = Loc.tr("Localizable", "ru")
+    /// Save
+    public static let save = Loc.tr("Localizable", "save")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
     /// Settings
@@ -276,6 +286,10 @@ public enum Loc {
     public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
     /// You can't become student because you already have teacher.
     public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")
+    /// You definitely should add something here
+    public static let youShouldAddWordDescription = Loc.tr("Localizable", "youShouldAddWordDescription")
+    /// Group is empty.
+    public static let youShouldAddWordTitle = Loc.tr("Localizable", "youShouldAddWordTitle")
     /// Cant add empty word. Type something in first field
     public static let youShouldTypeText = Loc.tr("Localizable", "youShouldTypeText")
   }

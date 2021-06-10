@@ -71,6 +71,7 @@ enum DictionariesAction: Equatable {
     case addWordOpened
     case showAlert(String)
     case wordSelected(DictWordItem)
+    case showLoader(Bool)
     
     case deleteWordRequested(DictWordItem)
     case deleteWordAlertPressed(DictWordItem)
@@ -105,26 +106,4 @@ struct DictionariesEnvironment {
         formatter.timeStyle = .short
         return formatter
     }()
-    
-    var addGroupEnv: AddGroupEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              wordsService: wordsService,
-              groupsService: groupsService,
-              userProvider: userProvider,
-              languageProvider: languageProvider)
-    }
-    
-    var groupInfoEnv: GroupInfoEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              groupsService: groupsService,
-              userProvider: userProvider,
-              wordsService: wordsService)
-    }
-    
-    var addWordEnv: AddWordEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              translationService: translationService,
-              wordService: wordsService,
-              groupsService: groupsService)
-    }
 }

@@ -30,12 +30,15 @@ struct AddWordState: Equatable, Previwable, ClosableState {
     
     var routing: Routing?
     
+    var isBootstrapping = true
+    var sourceFieldForceFocused = false
     var leftToRight = true
     var localTranslationDownloading = false
     
     var isClosed = false
     var isLoading = false
     var isTranslateLoading = false
+    var isAddPending = false
     
     var sourceText = ""
     var sourceError: String?
@@ -105,8 +108,10 @@ extension AddWordInfo {
 }
 
 enum AddWordAction: Equatable {
+    case sourceInputFocusChanged(Bool)
     case sourceChanged(String)
     case sourceErrorChanged(String?)
+    case translationChanged(String)
     case descriptionChanged(String)
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
@@ -118,6 +123,7 @@ enum AddWordAction: Equatable {
     case swapLanguagesPressed
     case alertClosePressed
     case translatePressed
+    case auditionPressed
     case addPressed
     case routingHandled
     
@@ -131,6 +137,7 @@ struct AddWordEnvironment {
     let translationService: TranslationService
     let wordService: WordsService
     let groupsService: GroupsService
+    let auditionService: AuditionService
     
     var groupsListEnv: GroupsListEnvironment {
         .init(bag: .autoId(childOf: bag), groupsService: groupsService)

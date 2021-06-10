@@ -19,6 +19,9 @@ final class TranslationServiceImpl: TranslationService {
     }
     
     func translate(text: String, from sourceLanguage: Languages, to destinationLanguage: Languages) -> AnyPublisher<String, Error> {
+        guard !text.isEmpty else {
+            return Result.success("").publisher.eraseToAnyPublisher()
+        }
         let request = Translator_TranslationRequest.with {
             $0.value = text
             $0.destinationLang = destinationLanguage.rawValue
