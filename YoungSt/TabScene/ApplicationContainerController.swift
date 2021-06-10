@@ -73,7 +73,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     }
     
 	static private func createDictionaries(coordinator: Coordinator, userID: UUID, welcomeMessageShow: Bool) -> UINavigationController {
-		let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID, welcomeMessageShow: welcomeMessageShow))))
+		let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
         let dictItem = TabItem.dictionaries
         dictionaries.tabBarItem = .init(title: dictItem.title,
                                         image: .init(systemName: dictItem.imageName),

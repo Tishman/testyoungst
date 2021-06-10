@@ -11,7 +11,7 @@ import Coordinator
 
 struct RegistrationState: Equatable {
 	enum Routing: Equatable {
-		case confrimEmail(ConfirmEmailInput)
+        case confrimEmail(userId: UUID, email: String, password: String)
 	}
 	
     var email: String = ""
@@ -22,4 +22,5 @@ struct RegistrationState: Equatable {
 	var isPasswordShowed = false
 	var isConfrimPasswordShowed = false
 	var routing: Routing?
+    var isLoading: Bool = false
 }

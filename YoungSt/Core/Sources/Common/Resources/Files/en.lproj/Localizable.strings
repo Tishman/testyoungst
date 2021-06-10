@@ -38,6 +38,7 @@
 "sendCode" = "Send code";
 "resetPassword" = "Reset password";
 "update" = "Update";
+"welcomeMessage" = "We glad to see you, friend!";
 
 // AddWord
 "addWordTitle" = "Add word";

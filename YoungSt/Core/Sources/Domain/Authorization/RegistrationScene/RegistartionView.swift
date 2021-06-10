@@ -43,7 +43,7 @@ struct RegistrationView: View {
                             VStack(spacing: .spacing(.big)) {
                                 ClearTextEditingView(placholder: Constants.emailPlaceholder,
 													 text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
-													 status: .success("sas"))
+													 status: .default)
                                 
                                 ClearTextEditingView(placholder: Constants.usernamePlaceholder,
 													 text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
@@ -51,7 +51,7 @@ struct RegistrationView: View {
                                 
                                 ToggableSecureField(placholder: Constants.passwordPlaceholder,
 													text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-													status: .success("ads"),
+													status: .default,
 													isPasswordHidden: viewStore.isPasswordShowed,
                                                     clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
                                 
@@ -68,14 +68,14 @@ struct RegistrationView: View {
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 
-                WithViewStore(store.stateless) { viewStore in
+                WithViewStore(store) { viewStore in
                     Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
+                    .padding(.bottom)
+                    .greedy(aligningContentTo: .bottom)
                 }
-                .buttonStyle(RoundedButtonStyle(style: .filled))
-                .padding(.bottom)
-                .greedy(aligningContentTo: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,

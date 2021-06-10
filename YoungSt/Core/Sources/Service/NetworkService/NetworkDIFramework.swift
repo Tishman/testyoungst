@@ -16,7 +16,7 @@ public final class NetworkDIFramework: DIFramework {
         
         container.register { () -> ServerConfiguration in
 //            #if DEBUG
-            return .stage
+            return .production
 //            #else
 //            return .production
 //            #endif

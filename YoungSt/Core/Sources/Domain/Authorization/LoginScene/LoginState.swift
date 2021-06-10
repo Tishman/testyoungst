@@ -12,7 +12,7 @@ import Coordinator
 struct LoginState: Equatable {
 	enum Routing: Equatable {
 		case forgotPassword
-		case confirmEmail(ConfirmEmailInput)
+        case confirmEmail(userId: UUID, email: String, password: String)
 	}
     var email: String = ""
     var password: String = ""

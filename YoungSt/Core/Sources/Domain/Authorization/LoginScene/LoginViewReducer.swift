@@ -39,7 +39,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		
 	case let .handleLogin(.failure(.errVerificationNotConfirmedRegID(uuid))):
 		state.isLoading = false
-		state.routing = .confirmEmail(.init(userID: uuid, credentials: .init(email: state.email, passsword: state.password)))
+        state.routing = .confirmEmail(userId: uuid, email: state.email, password: state.password)
 		
 	case let .handleLogin(.failure(error)):
 		state.isLoading = false

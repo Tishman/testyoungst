@@ -13,8 +13,9 @@ import NetworkService
 
 struct ConfrimEmailState: Equatable, ClosableState {
 	var code = ""
-	var userId: UUID
-	var credentails: ConfirmEmailInput.Credentials
+	let userId: UUID
+    let email: String
+    let passsword: String
 	var isCodeVerified: Bool = false
 	var alert: AlertState<ConfrimEmailAction>?
 	var isClosed = false

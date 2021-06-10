@@ -31,10 +31,11 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.confrimPassword = value
 		
 	case let .didRecieveRegistartionResult(.success(value)):
-		
-		state.routing = .confrimEmail(.init(userID: value, credentials: .init(email: state.email, passsword: state.password)))
+        state.isLoading = false
+        state.routing = .confrimEmail(userId: value, email: state.email, password: state.password)
 		
 	case let .didRecieveRegistartionResult(.failure(value)):
+        state.isLoading = false
 		state.alert = .init(title: TextState(value.localizedDescription))
 		
 	case let .failedValidtion(value):
@@ -48,6 +49,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 			return .init(value: .failedValidtion(Localizable.fillAllFields))
 		}
 		guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
+        state.isLoading = true
 		
 		let requestData = Authorization_RegistrationRequest.with {
 			$0.email = state.email

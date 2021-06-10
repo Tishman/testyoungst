@@ -57,8 +57,8 @@ final class LoginController: UIHostingController<LoginView>, RoutableController 
 		case .forgotPassword:
 			let vc = routingPoints.forgotPassword.value
 			present(controller: vc, preferredPresentation: .pushInCurrent)
-		case let .confirmEmail(input):
-			let vc = routingPoints.confirmEmail.value(input)
+		case let .confirmEmail(userId: userId, email: email, password: password):
+            let vc = routingPoints.confirmEmail.value(userId, email, password)
 			present(controller: vc, preferredPresentation: .pushInCurrent)
 		}
 	}

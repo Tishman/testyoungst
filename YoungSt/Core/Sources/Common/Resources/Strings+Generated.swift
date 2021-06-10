@@ -134,7 +134,7 @@ public enum Loc {
     public static let emailSendedToConfrim = Loc.tr("Localizable", "emailSendedToConfrim")
     /// You don't yet have any dictionary.\nTap 'plus' to add
     public static let emptyGroupsPlaceholder = Loc.tr("Localizable", "emptyGroupsPlaceholder")
-    /// You don't have any words yet.\nTap 'plus' in menu to add
+    /// You don't have any words yet.\nTap 'plus' above to add
     public static let emptyWordsPlaceholder = Loc.tr("Localizable", "emptyWordsPlaceholder")
     /// English
     public static let en = Loc.tr("Localizable", "en")
@@ -262,6 +262,8 @@ public enum Loc {
     public static let verify = Loc.tr("Localizable", "verify")
     /// Welcome back
     public static let welcomeBackTitle = Loc.tr("Localizable", "welcomeBackTitle")
+    /// We glad to see you, friend!
+    public static let welcomeMessage = Loc.tr("Localizable", "welcomeMessage")
     /// Welcome
     public static let welcomeTitle = Loc.tr("Localizable", "welcomeTitle")
     /// Word

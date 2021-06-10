@@ -40,13 +40,7 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
     }
     
     init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {
-		var alert: AlertState<DictionariesAction>?
-		if input.welcomeMessageShow {
-			alert = .init(title: TextState("Welcome to the club buddy!"),
-						  message: nil,
-						  dismissButton: .cancel(TextState(Localizable.ok)))
-		}
-		let store = Store(initialState: DictionariesState(userID: input.userID, alert: alert),
+		let store = Store(initialState: DictionariesState(userID: input.userID),
                           reducer: dictionariesReducer,
                           environment: env)
         self.store = store

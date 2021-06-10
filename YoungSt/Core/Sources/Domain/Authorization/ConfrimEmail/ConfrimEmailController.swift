@@ -15,7 +15,7 @@ import SwiftLazy
 import Utilities
 
 final class ConfrimEmailController: UIHostingController<ConfrimEmailScene>, ClosableController {
-	typealias Endpoint = Provider1<ConfrimEmailController, ConfirmEmailInput>
+	typealias Endpoint = Provider3<ConfrimEmailController, UUID, String, String>
 	
 	var closePublisher: AnyPublisher<Bool, Never> {
 		viewStore.publisher.isClosed.eraseToAnyPublisher()
@@ -25,8 +25,8 @@ final class ConfrimEmailController: UIHostingController<ConfrimEmailScene>, Clos
 	private let viewStore: ViewStore<ConfrimEmailState, ConfrimEmailAction>
 	private var bag = Set<AnyCancellable>()
 	
-	init(input: ConfirmEmailInput, env: ConfrimEmailEnviroment) {
-		let store = Store(initialState: ConfrimEmailState(userId: input.userID, credentails: input.credentials),
+    init(userId: UUID, email: String, password: String, env: ConfrimEmailEnviroment) {
+        let store = Store(initialState: .init(userId: userId, email: email, passsword: password),
 						  reducer: confrimEmailReducer,
 						  environment: env)
 		self.store = store

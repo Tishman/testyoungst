@@ -28,7 +28,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnviroment>.combine (
             state.uiState = .authorization
             
         case let .authorized(userID):
-			state.uiState = .authorized(userID, true)
+            state.uiState = .authorized(userID)
             
             if let deeplink = state.pendingDeeplink {
                 state.pendingDeeplink = nil

@@ -38,6 +38,7 @@
 "sendCode" = "Отправить код";
 "resetPassword" = "Изменить пароль";
 "update" = "Обновить";
+"welcomeMessage" = "Мы рады тебя видеть, друг!";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

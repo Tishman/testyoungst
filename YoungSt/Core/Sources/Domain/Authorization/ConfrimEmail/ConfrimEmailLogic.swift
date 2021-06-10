@@ -32,8 +32,8 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
 		}
 		
 		let loginRequestData = Authorization_LoginRequest.with {
-			$0.email = state.credentails.email
-			$0.password = state.credentails.passsword
+			$0.email = state.email
+			$0.password = state.passsword
 		}
 		
 		return service.login(request: loginRequestData)
@@ -61,7 +61,7 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
 		
 	case .didConfrimButtonTapped:
 		guard let service = enviroment.authorizationService else { return .none }
-		guard !state.code.isEmpty && !state.userId.uuidString.isEmpty else { return .init(value: .failedValidation(Localizable.fillAllFields)) }
+		guard !state.code.isEmpty else { return .init(value: .failedValidation(Localizable.fillAllFields)) }
 		state.isLoading = true
 		let confirmRequestData = Authorization_ConfirmCodeRequest.with {
 			$0.code = state.code
