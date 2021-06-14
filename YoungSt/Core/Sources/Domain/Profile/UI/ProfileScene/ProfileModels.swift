@@ -79,6 +79,7 @@ struct ProfileState: Equatable, Previwable {
     
     var teacherInfoState: TeacherInfoState = .loading
     var studentsInfoState: StudentsInfoState = .init()
+    var settingsState = SettingsState()
     
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
 }
@@ -93,7 +94,7 @@ enum ProfileAction: Equatable {
     case currentProfile(CurrentProfileAction)
     case teacherInfo(TeacherInfoAction)
     case studentsInfo(StudentsInfoAction)
-    case shareProfile(ShareProfileAction)
+    case settings(SettingsAction)
     
     
     enum DetailState: Equatable {
@@ -105,8 +106,6 @@ enum ProfileAction: Equatable {
     }
     
     case changeDetail(DetailState)
-    
-    case logout
 }
 
 struct ProfileEnvironment {
@@ -134,5 +133,10 @@ struct ProfileEnvironment {
     var studentsInfoEnv: StudentsInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               inviteService: inviteService)
+    }
+    
+    var settingsEnv: SettingsEnvironment {
+        .init(bag: .autoId(childOf: bag),
+              credentialsService: credentialsService)
     }
 }

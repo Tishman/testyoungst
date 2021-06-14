@@ -15,83 +15,73 @@ struct DictionariesScene: View {
     
     let store: Store<DictionariesState, DictionariesAction>
     
-    @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
     @State private var swappedWord: UUID?
     
     var body: some View {
-        GeometryReader { globalProxy in
-            WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                ZStack {
-                    TrackableScrollView(contentOffset: $contentOffset) {
-                        VStack {
+        WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+            ZStack {
+                ScrollView {
+                    VStack {
+                        
+                        HStack {
+                            Text(Localizable.dictionaries)
+                                .font(.title2)
+                            Spacer()
                             
-                            HStack {
-                                Text(Localizable.dictionaries)
-                                    .font(.title2)
-                                Spacer()
-                                
-                                WithViewStore(store.scope(state: \.groups.isEmpty)) { viewStore in
-                                    if !viewStore.state {
-                                        Button { viewStore.send(.changeDetail(.addGroup)) } label: {
-                                            Label(Localizable.add, systemImage: "plus.app")
-                                        }
+                            WithViewStore(store.scope(state: \.groups.isEmpty)) { viewStore in
+                                if !viewStore.state {
+                                    Button { viewStore.send(.changeDetail(.addGroup)) } label: {
+                                        Label(Localizable.add, systemImage: "plus.app")
                                     }
                                 }
                             }
-                            .padding(.horizontal)
-                            
-
-                            groupsList
-
-                            HStack {
-                                Text(Localizable.words)
-                                    .font(.title2)
-
-                                Spacer()
-                                
-                                Button { viewStore.send(.addWordOpened) } label: {
-                                    Label(Localizable.add, systemImage: "plus.app")
-                                }
-                            }
-                            .padding([.horizontal, .top])
-                            
-                            IfLetStore(store.scope(state: \.lastUpdate)) { store in
-                                WithViewStore(store) { viewStore in
-                                    HStack {
-                                        Spacer()
-                                        Text(Localizable.lastUpdateTime)
-                                        Text(viewStore.state)
-                                            .padding(.spacing(.ultraSmall))
-                                            .padding(.horizontal, .spacing(.ultraSmall))
-                                            .bubbled()
-                                    }
-                                    .font(.caption)
-                                    .padding(.horizontal)
-                                    .padding(.top, .spacing(.ultraSmall))
-                                }
-                            }
-                            
-                            wordsList
                         }
-                        .padding(.top, .spacing(.medium))
-                    }
+                        .padding(.horizontal)
+                        
 
-                    if viewStore.state {
-                        IndicatorView()
+                        groupsList
+
+                        HStack {
+                            Text(Localizable.words)
+                                .font(.title2)
+
+                            Spacer()
+                            
+                            Button { viewStore.send(.addWordOpened) } label: {
+                                Label(Localizable.add, systemImage: "plus.app")
+                            }
+                        }
+                        .padding([.horizontal, .top])
+                        
+                        IfLetStore(store.scope(state: \.lastUpdate)) { store in
+                            WithViewStore(store) { viewStore in
+                                HStack {
+                                    Spacer()
+                                    Text(Localizable.lastUpdateTime)
+                                    Text(viewStore.state)
+                                        .padding(.spacing(.ultraSmall))
+                                        .padding(.horizontal, .spacing(.ultraSmall))
+                                        .bubbled()
+                                }
+                                .font(.caption)
+                                .padding(.horizontal)
+                                .padding(.top, .spacing(.ultraSmall))
+                            }
+                        }
+                        
+                        wordsList
                     }
+                    .padding(.top, .spacing(.medium))
                 }
-                .onAppear { viewStore.send(.viewLoaded) }
-                .addRefreshToScrollView { viewStore.send(.refreshList) }
+
+                if viewStore.state {
+                    IndicatorView()
+                }
             }
-            .overlay(
-                TopHeaderView(width: globalProxy.size.width,
-                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                    .opacity(dividerHidden ? 0 : 1)
-            )
+            .onAppear { viewStore.send(.viewLoaded) }
+            .addRefreshToScrollView { viewStore.send(.refreshList) }
         }
-        .onChange(of: contentOffset) { _ in swappedWord = nil }
-        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationBarTitleDisplayMode(.inline)
     }

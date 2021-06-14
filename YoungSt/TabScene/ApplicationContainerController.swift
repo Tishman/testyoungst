@@ -34,21 +34,6 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
-//        let sidebar =
-//            WithViewStore(store) { viewStore in
-//                List {
-//                    Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
-//                        Label(TabItem.dictionaries.title, systemImage: TabItem.dictionaries.imageName)
-//                    }
-//                    Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
-//                        Label(TabItem.profile.title, systemImage: TabItem.profile.imageName)
-//                    }
-//                }
-//            }
-//            .listStyle(SidebarListStyle())
-//            .navigationTitle("YoungSt")
-//            .navigationBarTitleDisplayMode(.large)
-//            .uiKitHosted
         let sidebar = SidebarViewController(store: store)
         let sidebarNav = UINavigationController(rootViewController: sidebar)
         
@@ -60,8 +45,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
                                 Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
                                animated: false)
         
-        preferredDisplayMode = .oneBesideSecondary
-        preferredSplitBehavior = .tile
+        configureDisplayMode(size: nil)
         
         setViewController(sidebarNav, for: .primary)
         updateSelectedTab(tab: viewStore.selectedTab)
@@ -70,6 +54,28 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         setViewController(tab, for: .compact)
         
         self.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureDisplayMode(size: view.bounds.size)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        configureDisplayMode(size: size)
+    }
+    
+    private func configureDisplayMode(size: CGSize?) {
+        let mediumIPadPortraitWidth: CGFloat = 834
+        switch size?.width {
+        case .some((mediumIPadPortraitWidth + 1)...):
+            preferredDisplayMode = .oneBesideSecondary
+            preferredSplitBehavior = .tile
+        default:
+            preferredDisplayMode = .twoDisplaceSecondary
+            preferredSplitBehavior = .displace
+        }
     }
     
     static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {

@@ -15,103 +15,84 @@ import Coordinator
 struct AddGroupScene: View {
     
     let store: Store<AddGroupState, AddGroupAction>
-    
-    @State private var contentOffset: CGFloat = 0
-    @State private var dividerHidden: Bool = true
     @State private var swappedWord: UUID?
     
     var body: some View {
-        GeometryReader { globalProxy in
-            ZStack {
-                TrackableScrollView(contentOffset: $contentOffset) {
-                    VStack(spacing: .spacing(.big)) {
-                        topGroupPreview
-                            .frame(maxWidth: .infinity, alignment: .center)
+        ZStack {
+            ScrollView {
+                VStack(spacing: .spacing(.big)) {
+                    topGroupPreview
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    VStack {
+                        WithViewStore(store.scope(state: \.title)) { viewStore in
+                            TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
+                        }
+                        .padding()
+                        .bubbled()
                         
-                        VStack {
-                            WithViewStore(store.scope(state: \.title)) { viewStore in
-                                TextField(Localizable.name, text: viewStore.binding(send: AddGroupAction.titleChanged))
-                            }
-                            .padding()
-                            .bubbled()
-                            
-                            IfLetStore(store.scope(state: \.titleError)) { store in
-                                WithViewStore(store) { viewStore in
-                                    Text(viewStore.state)
-                                        .foregroundColor(.red)
-                                        .font(.caption)
-                                        .padding(.leading)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
+                        IfLetStore(store.scope(state: \.titleError)) { store in
+                            WithViewStore(store) { viewStore in
+                                Text(viewStore.state)
+                                    .foregroundColor(.red)
+                                    .font(.caption)
+                                    .padding(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
-                        
-                        WithViewStore(store.stateless) { viewStore in
-                            Button { viewStore.send(.addWordOpened) } label: {
-                                HStack(spacing: .spacing(.big)) {
-                                    Image(systemName: "plus.app.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                    Text(Localizable.addWordTitle)
-                                }
+                    }
+                    
+                    WithViewStore(store.stateless) { viewStore in
+                        Button { viewStore.send(.addWordOpened) } label: {
+                            HStack(spacing: .spacing(.big)) {
+                                Image(systemName: "plus.app.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                Text(Localizable.addWordTitle)
                             }
-                            .frame(height: UIFloat(35))
-                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .padding(.horizontal)
-                        
-                        LazyVStack {
-                            ForEachStore(store.scope(state: \.items, action: AddGroupAction.wordAction)) { store in
-                                WithViewStore(store) { viewStore in
-                                    Button { viewStore.send(.selected) } label: {
-                                        DictWordView(state: .init(text: viewStore.item.source,
-                                                                  translation: viewStore.item.destination,
-                                                                  info: viewStore.item.description_p))
+                        .frame(height: UIFloat(35))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.horizontal)
+                    
+                    LazyVStack {
+                        ForEachStore(store.scope(state: \.items, action: AddGroupAction.wordAction)) { store in
+                            WithViewStore(store) { viewStore in
+                                Button { viewStore.send(.selected) } label: {
+                                    DictWordView(state: .init(text: viewStore.item.source,
+                                                              translation: viewStore.item.destination,
+                                                              info: viewStore.item.description_p))
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .onDelete(tag: viewStore.id, selection: $swappedWord) {
+                                    withAnimation {
+                                        viewStore.send(.removed)
                                     }
-                                    .buttonStyle(PlainButtonStyle())
-                                    .onDelete(tag: viewStore.id, selection: $swappedWord) {
-                                        withAnimation {
-                                            viewStore.send(.removed)
-                                        }
-                                        return true
-                                    }
+                                    return true
                                 }
                             }
                         }
                     }
-                    .padding()
-                    .padding(.bottom, RoundedButtonStyle.minHeight)
-                    .padding(.bottom)
                 }
-                .introspectScrollView {
-                    $0.keyboardDismissMode = .interactive
-                }
-                
-                WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                    Button { viewStore.send(.addGroupPressed) } label: {
-                        Text(Localizable.create)
-                    }
-                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
-                }
+                .padding()
+                .padding(.bottom, RoundedButtonStyle.minHeight)
                 .padding(.bottom)
-                .greedy(aligningContentTo: .bottom)
             }
-            .overlay(
-                TopHeaderView(width: globalProxy.size.width,
-                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                    .opacity(dividerHidden ? 0 : 1)
-            )
+            .introspectScrollView {
+                $0.keyboardDismissMode = .interactive
+            }
             
             WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                if viewStore.state {
-                    IndicatorView()
-                        .position(x: globalProxy.size.width / 2,
-                                  y: globalProxy.size.height / 2)
+                Button { viewStore.send(.addGroupPressed) } label: {
+                    Text(Localizable.create)
                 }
+                .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
             }
+            .padding(.bottom)
+            .greedy(aligningContentTo: .bottom)
         }
         .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
-        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationTitle(Localizable.addGroupTitle)
         .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)
