@@ -13,6 +13,12 @@ import Resources
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
 	switch action {
+    case let .loginInputFocusChanged(isFocused):
+        state.loginFieldForceFocused = isFocused
+        
+    case let .passwordInputFocusChanged(isFocused):
+        state.passwordFieldForceFocused = isFocused
+    
 	case let .emailChanged(value):
 		state.email = value
 		
@@ -55,7 +61,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		state.routing = .forgotPassword
 		
 	case .showPasswordButtonTapped:
-		state.showPassword.toggle()
+		state.isSecure.toggle()
 		
 	case .routingHandled:
 		state.routing = nil

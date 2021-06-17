@@ -21,4 +21,8 @@ struct RegistrationState: Equatable {
 	var isPasswordShowed = false
 	var isConfrimPasswordShowed = false
 	var routing: Routing?
+    var emailFieldForceFocused: Bool = false
+    var usernameFieldForceFocused: Bool = false
+    var passwordFieldForceFocused: Bool = false
+    var confirmPasswordFieldForceFocused: Bool = false
 }

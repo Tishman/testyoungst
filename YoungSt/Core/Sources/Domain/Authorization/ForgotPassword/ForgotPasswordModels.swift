@@ -22,6 +22,10 @@ struct ForgotPasswordState: Equatable, ClosableState {
 	var isPasswordChanged = false
 	var isClosed = false
 	var alert: AlertState<ForgotPasswordAction>?
+    var emailFieldForceFocused: Bool = false
+    var codeFieldForceFocused: Bool = false
+    var passwordFieldForceFocused: Bool = false
+    var confirmPasswordFieldForceFocused: Bool = false
 }
 
 extension ForgotPasswordState {
@@ -47,6 +51,10 @@ enum ForgotPasswordAction: Equatable {
 	case handleInitResetPassword(Result<EmptyResponse, InitResetPasswordError>)
 	case handleResetPassword(Result<EmptyResponse, ResetPasswordError>)
 	case alertOkButtonTapped
+    case emailInputFocusChanged(Bool)
+    case codeInputFocusChanged(Bool)
+    case passwordInputFocusChanged(Bool)
+    case confirmPasswordInputFocusChanged(Bool)
 }
 
 struct ForgotPasswordEnviroment {

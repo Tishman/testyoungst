@@ -12,6 +12,9 @@ import Resources
 
 let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, ConfrimEmailEnviroment> { state, action, enviroment in
 	switch action {
+    case let .codeInputFocusChanged(isFocused):
+        state.codeFieldForceFocused = isFocused
+    
 	case let .failedValidation(value):
 		state.alert = .init(title: TextState(value),
 							message: nil,

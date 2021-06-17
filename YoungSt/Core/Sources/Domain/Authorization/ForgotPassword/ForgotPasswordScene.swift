@@ -30,23 +30,37 @@ struct ForgotPasswordScene: View {
 						HeaderDescriptionView(title: Localizable.forgotPasswordTitle, subtitle: Localizable.forgotPasswordSubtitle)
 						
 						WithViewStore(store) { viewStore in
-							ClearTextEditingView(placholder: Localizable.emailPlaceholder,
-												 text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
-												 status: viewStore.email.status)
+                            AuthTextInput(text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
+                                          forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: ForgotPasswordAction.emailInputFocusChanged),
+                                          isSecureMode: .constant(false),
+                                          isClearMode: true,
+                                          placeholder: Localizable.emailPlaceholder,
+                                          status: viewStore.email.status,
+                                          delegate: nil)
 							if viewStore.isResetPasswordInit {
-								ClearTextEditingView(placholder: Localizable.enterCode,
-													 text: viewStore.binding(get: \.code.value, send: ForgotPasswordAction.didCodeEditing),
-													 status: viewStore.code.status)
-								ToggableSecureField(placholder: Localizable.passwordPlaceholder,
-													text: viewStore.binding(get: \.password.value, send: ForgotPasswordAction.didPasswordEditing),
-													status: viewStore.password.status,
-													isPasswordHidden: viewStore.isPasswordHidden,
-													clouser: { viewStore.send(.passwordButtonTapped) })
-								ToggableSecureField(placholder: Localizable.confrimPasswordPlaceholder,
-													text: viewStore.binding(get: \.confrimPassword.value, send: ForgotPasswordAction.didConrimPasswordEditing),
-													status: viewStore.confrimPassword.status,
-													isPasswordHidden: viewStore.isConfrimPasswordHidden,
-													clouser: { viewStore.send(.confrimPasswordButtonTapped) })
+                                AuthTextInput(text: viewStore.binding(get: \.code.value, send: ForgotPasswordAction.didCodeEditing),
+                                              forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
+                                              isSecureMode: .constant(false),
+                                              isClearMode: true,
+                                              placeholder: Localizable.enterCode,
+                                              status: viewStore.code.status,
+                                              delegate: nil)
+                                
+                                AuthTextInput(text: viewStore.binding(get: \.password.value, send: ForgotPasswordAction.didPasswordEditing),
+                                              forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: ForgotPasswordAction.passwordInputFocusChanged),
+                                              isSecureMode: viewStore.binding(get: \.isPasswordHidden, send: ForgotPasswordAction.confrimPasswordButtonTapped),
+                                              isClearMode: false,
+                                              placeholder: Localizable.passwordPlaceholder,
+                                              status: viewStore.password.status,
+                                              delegate: nil)
+                                
+                                AuthTextInput(text: viewStore.binding(get: \.confrimPassword.value, send: ForgotPasswordAction.didConrimPasswordEditing),
+                                              forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
+                                              isSecureMode: viewStore.binding(get: \.isConfrimPasswordHidden, send: ForgotPasswordAction.confrimPasswordButtonTapped),
+                                              isClearMode: false,
+                                              placeholder: Localizable.confrimPasswordPlaceholder,
+                                              status: viewStore.confrimPassword.status,
+                                              delegate: nil)
 							}
 						}
 						.padding(.top)

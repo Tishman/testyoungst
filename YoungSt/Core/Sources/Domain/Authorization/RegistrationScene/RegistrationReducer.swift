@@ -12,10 +12,22 @@ import Utilities
 import Resources
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
 	switch action {
-	case .showPasswordButtonTapped(.password):
+    case let .emailInputFocusChanged(isFocused):
+        state.emailFieldForceFocused = isFocused
+        
+    case let .userNameInputFocusChanged(isFocused):
+        state.usernameFieldForceFocused = isFocused
+        
+    case let .passwordInputFocusChanged(isFocused):
+        state.passwordFieldForceFocused = isFocused
+        
+    case let .confirmPasswordInputFocusChanged(isFocused):
+        state.confirmPasswordFieldForceFocused = isFocused
+    
+	case .showPasswordButtonTapped:
 		state.isPasswordShowed.toggle()
 		
-	case .showPasswordButtonTapped(.confrimPassword):
+    case .showConfrimPasswordButtonTapped:
 		state.isConfrimPasswordShowed.toggle()
 		
 	case let .didEmailChanged(value):

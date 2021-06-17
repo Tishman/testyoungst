@@ -34,9 +34,13 @@ struct ConfrimEmailScene: View {
 				Spacer()
 				HeaderDescriptionView(title: Constants.Text.verification,
 									  subtitle: Constants.Text.emailSendedToConfrim)
-				ClearTextEditingView(placholder: Localizable.enterCode,
-									 text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
-									 status: .default)
+                    AuthTextInput(text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
+                                  forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ConfrimEmailAction.codeInputFocusChanged),
+                                  isSecureMode: .constant(false),
+                                  isClearMode: true,
+                                  placeholder: Localizable.enterCode,
+                                  status: .default,
+                                  delegate: nil)
 					.padding(.top, .spacing(.extraSize))
 					.padding(.horizontal, .spacing(.extraSize))
 				Spacer()

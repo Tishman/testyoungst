@@ -41,25 +41,37 @@ struct RegistrationView: View {
                         
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.big)) {
-                                ClearTextEditingView(placholder: Constants.emailPlaceholder,
-													 text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
-													 status: .success("sas"))
+                                AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
+                                              forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
+                                              isSecureMode: .constant(false),
+                                              isClearMode: true,
+                                              placeholder: Localizable.emailPlaceholder,
+                                              status: .default,
+                                              delegate: nil)
                                 
-                                ClearTextEditingView(placholder: Constants.usernamePlaceholder,
-													 text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
-													 status: .default)
+                                AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
+                                              forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
+                                              isSecureMode: .constant(false),
+                                              isClearMode: true,
+                                              placeholder: Localizable.usernamePlaceholder,
+                                              status: .default,
+                                              delegate: nil)
                                 
-                                ToggableSecureField(placholder: Constants.passwordPlaceholder,
-													text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-													status: .success("ads"),
-													isPasswordHidden: viewStore.isPasswordShowed,
-                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
+                                AuthTextInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
+                                              forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
+                                              isSecureMode: viewStore.binding(get: \.isPasswordShowed, send: RegistrationAction.showPasswordButtonTapped),
+                                              isClearMode: false,
+                                              placeholder: Localizable.passwordPlaceholder,
+                                              status: .default,
+                                              delegate: nil)
                                 
-                                ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
-													text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
-													status: .default,
-													isPasswordHidden: viewStore.isConfrimPasswordShowed,
-                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
+                                AuthTextInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+                                              forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
+                                              isSecureMode: viewStore.binding(get: \.isConfrimPasswordShowed, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                              isClearMode: false,
+                                              placeholder: Localizable.confrimPasswordPlaceholder,
+                                              status: .default,
+                                              delegate: nil)
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))

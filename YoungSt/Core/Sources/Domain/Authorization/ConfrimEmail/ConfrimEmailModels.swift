@@ -15,6 +15,7 @@ struct ConfrimEmailState: Equatable, ClosableState {
 	var isCodeVerified: Bool = false
 	var alert: AlertState<ConfrimEmailAction>?
 	var isClosed = false
+    var codeFieldForceFocused = false
 }
 
 enum ConfrimEmailAction: Equatable {
@@ -23,6 +24,7 @@ enum ConfrimEmailAction: Equatable {
 	case didConfrimButtonTapped
 	case handleConfrimation(Result<Bool, ConfrimCodeError>)
 	case alertOkButtonTapped
+    case codeInputFocusChanged(Bool)
 }
 
 struct ConfrimEmailEnviroment {

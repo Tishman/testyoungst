@@ -17,11 +17,11 @@ enum RegistrationAction: Equatable {
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
 	case failedValidtion(String)
 	case alertClosed
-	case showPasswordButtonTapped(SecureFieldType)
+	case showPasswordButtonTapped
+    case showConfrimPasswordButtonTapped
 	case routingHandled
-	
-	enum SecureFieldType {
-		case password
-		case confrimPassword
-	}
+    case emailInputFocusChanged(Bool)
+    case userNameInputFocusChanged(Bool)
+    case passwordInputFocusChanged(Bool)
+    case confirmPasswordInputFocusChanged(Bool)
 }

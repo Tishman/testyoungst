@@ -15,9 +15,11 @@ struct LoginState: Equatable {
     var email: String = ""
     var password: String = ""
     var resetPasswordOpened = false
-    var showPassword: Bool = false
+    var isSecure: Bool = false
     var isLoading = false
 	var routing: Routing?
+    var loginFieldForceFocused: Bool = false
+    var passwordFieldForceFocused: Bool = false
     
     var alertState: AlertState<LoginAction>?
 }
