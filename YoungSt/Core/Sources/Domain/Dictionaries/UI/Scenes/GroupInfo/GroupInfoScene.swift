@@ -25,9 +25,7 @@ struct GroupInfoScene: View {
     
     let store: Store<GroupInfoState, GroupInfoAction>
     
-    @State private var contentOffset: CGFloat = 0
     @State private var swappedWord: UUID?
-    @State private var dividerHidden: Bool = true
     
     private let emptyWordsArrowWidth = UIFloat(44)
     private let emptyWordsArrowDefaultAlpha = 0.66
@@ -41,47 +39,38 @@ struct GroupInfoScene: View {
     static let controlsToggle = Animation.spring().speed(1.25)
     
     var body: some View {
-        GeometryReader { globalProxy in
-            WithViewStore(store.scope(state: \.title)) { viewStore in
-                ZStack {
-                    TrackableScrollView(contentOffset: $contentOffset) {
-                        topGroupInfo
-                        
-                        LazyVStack {
-                            WithViewStore(store.scope(state: \.wordsList)) { viewStore in
-                                ForEach(viewStore.state) { item in
-                                        Button { viewStore.send(.wordSelected(item)) } label: {
-                                            DictWordView(state: item.state)
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
-                                        .onDelete(tag: item.id, selection: $swappedWord) {
-                                            viewStore.send(.deleteWordRequested(item))
-                                            return false
-                                        }
-                                }
+        WithViewStore(store.scope(state: \.title)) { viewStore in
+            ZStack {
+                ScrollView {
+                    topGroupInfo
+                    
+                    LazyVStack {
+                        WithViewStore(store.scope(state: \.wordsList)) { viewStore in
+                            ForEach(viewStore.state) { item in
+                                    Button { viewStore.send(.wordSelected(item)) } label: {
+                                        DictWordView(state: item.state)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .onDelete(tag: item.id, selection: $swappedWord) {
+                                        viewStore.send(.deleteWordRequested(item))
+                                        return false
+                                    }
                             }
                         }
-                        .padding([.top, .horizontal])
                     }
-                    .addRefreshToScrollView { viewStore.send(.refreshList) }
-                    
-                    WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                        if viewStore.state {
-                            IndicatorView()
-                        }
+                    .padding([.top, .horizontal])
+                }
+                .addRefreshToScrollView { viewStore.send(.refreshList) }
+                
+                WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+                    if viewStore.state {
+                        IndicatorView()
                     }
                 }
-                .onAppear { viewStore.send(.viewAppeared) }
-                .navigationTitle(viewStore.state ?? "")
             }
-            .overlay(
-                TopHeaderView(width: globalProxy.size.width,
-                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                    .opacity(dividerHidden ? 0 : 1)
-            )
+            .onAppear { viewStore.send(.viewAppeared) }
+            .navigationTitle(viewStore.state ?? "")
         }
-        .onChange(of: contentOffset) { _ in swappedWord = nil }
-        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationBarTitleDisplayMode(.inline)
     }

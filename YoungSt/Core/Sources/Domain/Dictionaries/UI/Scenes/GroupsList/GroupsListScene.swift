@@ -13,53 +13,43 @@ import Utilities
 struct GroupsListScene: View {
     
     let store: Store<GroupsListState, GroupsListAction>
-    @State private var contentOffset: CGFloat = 0
-    @State private var dividerHidden: Bool = true
     
     var body: some View {
-        GeometryReader { globalProxy in
-            WithViewStore(store) { viewStore in
-                ZStack {
-                    TrackableScrollView(contentOffset: $contentOffset) {
-                        LazyVStack(spacing: .spacing(.medium)) {
-                            ForEach(viewStore.groups) { group in
-                                Button { viewStore.send(.groupSelected(group)) } label: {
-                                    HStack(spacing: .spacing(.regular)) {
-                                        DictGroupView(id: group.id,
-                                                      size: .small,
-                                                      state: .init(title: group.state.title,
-                                                                   subtitle: ""))
+        WithViewStore(store) { viewStore in
+            ZStack {
+                ScrollView {
+                    LazyVStack(spacing: .spacing(.medium)) {
+                        ForEach(viewStore.groups) { group in
+                            Button { viewStore.send(.groupSelected(group)) } label: {
+                                HStack(spacing: .spacing(.regular)) {
+                                    DictGroupView(id: group.id,
+                                                  size: .small,
+                                                  state: .init(title: group.state.title,
+                                                               subtitle: ""))
+                                    
+                                    VStack(alignment: .leading, spacing: .spacing(.medium)) {
+                                        Text(group.state.title)
+                                            .foregroundColor(.primary)
                                         
-                                        VStack(alignment: .leading, spacing: .spacing(.medium)) {
-                                            Text(group.state.title)
-                                                .foregroundColor(.primary)
-                                            
-                                            Text(group.state.subtitle)
-                                                .foregroundColor(.secondary)
-                                        }
+                                        Text(group.state.subtitle)
+                                            .foregroundColor(.secondary)
                                     }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding()
                     }
-                    
-                    if viewStore.isLoading {
-                        IndicatorView()
-                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding()
                 }
-                .onAppear { viewStore.send(.viewAppeared) }
+                
+                if viewStore.isLoading {
+                    IndicatorView()
+                }
             }
-            .overlay(
-                TopHeaderView(width: globalProxy.size.width,
-                              topSafeAreaInset: globalProxy.safeAreaInsets.top)
-                    .opacity(dividerHidden ? 0 : 1)
-            )
+            .onAppear { viewStore.send(.viewAppeared) }
         }
         .alert(store.scope(state: \.alertError), dismiss: GroupsListAction.closeSceneTriggered)
-        .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationTitle(Localizable.addToDictionary)
         .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)

@@ -26,38 +26,43 @@ struct DeleteModifier<ID: Hashable>: ViewModifier {
     @State private var initialOffset: CGSize = .zero
     @State private var willDeleteIfReleased = false
     @State private var contentWidth: CGFloat = 0.0
-    private let contentWidthReader = GeometryPreferenceReader(key: AppendValue<ItemWidth>.self) { [$0.size.width] }
    
     func body(content: Content) -> some View {
         content
-            .read(contentWidthReader)
-            .fetchReaded(contentWidthReader) { contentWidth = $0.max() ?? 0 }
             .background(
-                Button(action: delete) {
-                    HStack(spacing: 0) {
-                        VStack(spacing: .spacing(.small)) {
-                            Image(systemName: "trash")
-                                .foregroundColor(.white)
-                                .font(.title2.bold())
-                                .layoutPriority(-1)
+                GeometryReader { proxy in
+                    Button(action: delete) {
+                        HStack(spacing: 0) {
+                            VStack(spacing: .spacing(.small)) {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.white)
+                                    .font(.title2.bold())
+                                    .layoutPriority(-1)
+                                
+                                Text(Localizable.delete)
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 11).bold())
+                            }
+                            .fixedSize()
+                            .padding(.horizontal, .spacing(.medium))
                             
-                            Text(Localizable.delete)
-                                .foregroundColor(.white)
-                                .font(.system(size: 11).bold())
+                            if willDeleteIfReleased {
+                                Spacer()
+                            }
                         }
-                        .fixedSize()
-                        .padding(.horizontal, .spacing(.medium))
-                        
-                        if willDeleteIfReleased {
-                            Spacer()
+                    }
+                    .frame(width: max(-offset.width - buttonPadding, 0))
+                    .frame(maxHeight: .infinity)
+                    .background(Color.red)
+                    .clipShape(RoundedRectangle(cornerRadius: .corner(.big)))
+                    .offset(x: proxy.size.width + buttonPadding)
+                    .onChange(of: proxy.frame(in: .global).origin.y) { _ in
+                        if offset != .zero {
+                            openedIdentifier = nil
+                            closeSwap()
                         }
                     }
                 }
-                .frame(maxHeight: .infinity)
-                .frame(width: max(-offset.width, 0))
-                .background(Color.red)
-                .clipShape(RoundedRectangle(cornerRadius: .corner(.big)))
-                .offset(x: (contentWidth-offset.width) / 2 + buttonPadding)
             )
             .offset(x: offset.width, y: 0)
             .animation(.interactiveSpring(response: 0.25), value: offset)
@@ -67,7 +72,7 @@ struct DeleteModifier<ID: Hashable>: ViewModifier {
                 }
             }
             .highPriorityGesture (
-                DragGesture()
+                DragGesture(minimumDistance: 15)
                     .onChanged { gesture in
                         openedIdentifier = identifier
                         if gesture.translation.width + initialOffset.width <= 0 {

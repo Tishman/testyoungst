@@ -34,21 +34,6 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
 		self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID, welcomeMessageShow: viewStore.welcomeMessageShow)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
-//        let sidebar =
-//            WithViewStore(store) { viewStore in
-//                List {
-//                    Button { viewStore.send(.selectedTabShanged(.dictionaries)) } label: {
-//                        Label(TabItem.dictionaries.title, systemImage: TabItem.dictionaries.imageName)
-//                    }
-//                    Button { viewStore.send(.selectedTabShanged(.profile)) } label: {
-//                        Label(TabItem.profile.title, systemImage: TabItem.profile.imageName)
-//                    }
-//                }
-//            }
-//            .listStyle(SidebarListStyle())
-//            .navigationTitle("YoungSt")
-//            .navigationBarTitleDisplayMode(.large)
-//            .uiKitHosted
         let sidebar = SidebarViewController(store: store)
         let sidebarNav = UINavigationController(rootViewController: sidebar)
         
@@ -60,8 +45,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
                                 Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
                                animated: false)
         
-        preferredDisplayMode = .oneBesideSecondary
-        preferredSplitBehavior = .tile
+        configureDisplayMode(size: nil)
         
         setViewController(sidebarNav, for: .primary)
         updateSelectedTab(tab: viewStore.selectedTab)
@@ -72,8 +56,30 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         self.delegate = self
     }
     
-	static private func createDictionaries(coordinator: Coordinator, userID: UUID, welcomeMessageShow: Bool) -> UINavigationController {
-		let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureDisplayMode(size: view.bounds.size)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        configureDisplayMode(size: size)
+    }
+    
+    private func configureDisplayMode(size: CGSize?) {
+        let mediumIPadPortraitWidth: CGFloat = 834
+        switch size?.width {
+        case .some((mediumIPadPortraitWidth + 1)...):
+            preferredDisplayMode = .oneBesideSecondary
+            preferredSplitBehavior = .tile
+        default:
+            preferredDisplayMode = .twoDisplaceSecondary
+            preferredSplitBehavior = .displace
+        }
+    }
+    
+    static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {
+        let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
         let dictItem = TabItem.dictionaries
         dictionaries.tabBarItem = .init(title: dictItem.title,
                                         image: .init(systemName: dictItem.imageName),

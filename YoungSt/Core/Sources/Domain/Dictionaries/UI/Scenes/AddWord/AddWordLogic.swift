@@ -129,7 +129,11 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                         $0.source = source
                         $0.destination = destination
                         $0.description_p = state.descriptionText
-                        $0.groupID = state.selectedGroup?.id.uuidString ?? ""
+                        if let groupId = state.selectedGroup?.id.uuidString {
+                            $0.addDestination = .toGroupID(groupId)
+                        } else {
+                            $0.addDestination = .toRootGroupOfUser(state.info.userID.uuidString)
+                        }
                     }
                     return env.wordService.editWord(request: request)
                         .mapError(EquatableError.init)
@@ -142,7 +146,11 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment>.co
                 } else {
                     
                     let request = Dictionary_AddWordRequest.with {
-                        $0.groupID = state.selectedGroup?.id.uuidString ?? ""
+                        if let groupId = state.selectedGroup?.id.uuidString {
+                            $0.addDestination = .toGroupID(groupId)
+                        } else {
+                            $0.addDestination = .toRootGroupOfUser(state.info.userID.uuidString)
+                        }
                         $0.item = .with {
                             $0.source = source
                             $0.destination = destination

@@ -184,6 +184,12 @@ public enum Loc {
     public static let loginOrRegisterAccountSubtitle = Loc.tr("Localizable", "loginOrRegisterAccountSubtitle")
     /// Log in to your account to return to our ranks!
     public static let loginToReturnTitle = Loc.tr("Localizable", "loginToReturnTitle")
+    /// Log out
+    public static let logoutAlertConfirmationAction = Loc.tr("Localizable", "logoutAlertConfirmationAction")
+    /// Are you sure you want to log out?
+    public static let logoutAlertConfirmationTitle = Loc.tr("Localizable", "logoutAlertConfirmationTitle")
+    /// Logout
+    public static let logoutButtonTitle = Loc.tr("Localizable", "logoutButtonTitle")
     /// Name
     public static let name = Loc.tr("Localizable", "name")
     /// Login

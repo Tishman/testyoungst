@@ -125,3 +125,8 @@
 "shareProfileDescription" = "Bring your students and learn together!";
 "copy" = "Copy";
 "share" = "Share";
+
+// Setting
+"logoutButtonTitle" = "Logout";
+"logoutAlertConfirmationTitle" = "Are you sure you want to log out?";
+"logoutAlertConfirmationAction" = "Log out";

@@ -19,6 +19,9 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
     studentsInfoReducer
         .pullback(state: \.studentsInfoState, action: /ProfileAction.studentsInfo, environment: \.studentsInfoEnv),
     
+    settingsReducer
+        .pullback(state: \.settingsState, action: /ProfileAction.settings, environment: \.settingsEnv),
+    
     Reducer { state, action, env in
         
         let currentProfileTypeKey = "currentProfileTypeKey"
@@ -65,10 +68,7 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .currentProfile(.editInfoOpened):
             return .init(value: .changeDetail(.fillInfo))
             
-        case .logout:
-            env.credentialsService.clearCredentials()
-            
-        case .currentProfile, .teacherInfo, .studentsInfo, .shareProfile:
+        case .currentProfile, .teacherInfo, .studentsInfo, .settings:
             break
         }
         return .none

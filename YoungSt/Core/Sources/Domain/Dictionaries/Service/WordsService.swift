@@ -9,6 +9,7 @@ import Foundation
 import NetworkService
 import Utilities
 import Combine
+import Protocols
 
 public protocol WordsService: AnyObject {
     func getUserWords(request: Dictionary_GetUserWordsRequest) -> AnyPublisher<Dictionary_GetUserWordsResponse, Error>
@@ -40,13 +41,19 @@ final class WordsServiceImpl: WordsService {
     func addWord(request: Dictionary_AddWordRequest) -> AnyPublisher<EmptyResponse, Error> {
         client.addWord(request).response.publisher
             .map(toEmpty)
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
+            .handleEvents(receiveOutput: { _ in
+                let event = request.toGroupID.isEmpty ? DictionaryEvent.GroupID.any : .init(id: request.toGroupID)
+                self.dictEventPublisher.send(event: .wordListUpdated(event))
+            })
             .eraseToAnyPublisher()
     }
     
     func addWordList(request: Dictionary_AddWordListRequest) -> AnyPublisher<Dictionary_AddWordListResponse, Error> {
         client.addWordList(request).response.publisher
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
+            .handleEvents(receiveOutput: { _ in
+                let event = request.toGroupID.isEmpty ? DictionaryEvent.GroupID.any : .init(id: request.toGroupID)
+                self.dictEventPublisher.send(event: .wordListUpdated(event))
+            })
             .eraseToAnyPublisher()
     }
     
@@ -66,7 +73,10 @@ final class WordsServiceImpl: WordsService {
     
     func editWord(request: Dictionary_EditWordRequest) -> AnyPublisher<Dictionary_EditWordResponse, Error> {
         client.editWord(request).response.publisher
-            .handleEvents(receiveOutput: { _ in self.dictEventPublisher.send(event: .wordListUpdated(.init(id: request.groupID))) })
+            .handleEvents(receiveOutput: { _ in
+                let event = request.toGroupID.isEmpty ? DictionaryEvent.GroupID.any : .init(id: request.toGroupID)
+                self.dictEventPublisher.send(event: .wordListUpdated(event))
+            })
             .eraseToAnyPublisher()
     }
 }

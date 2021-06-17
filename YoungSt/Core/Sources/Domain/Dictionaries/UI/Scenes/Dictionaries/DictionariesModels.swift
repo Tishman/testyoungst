@@ -28,6 +28,7 @@ struct DictionariesState: Equatable, Previwable {
     
     let userID: UUID
     
+    var rootGroupID: UUID?
     var groups: [DictGroupItem] = []
     var words: [DictWordItem] = []
     var deletingWords: Set<UUID> = []

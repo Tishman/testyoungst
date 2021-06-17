@@ -125,3 +125,8 @@
 "shareProfileDescription" = "Пригласите ваших учеников и изучайте язык вместе!";
 "copy" = "Копировать";
 "share" = "Поделиться";
+
+// Setting
+"logoutButtonTitle" = "Выйти";
+"logoutAlertConfirmationTitle" = "Вы действительно хотите выйти?";
+"logoutAlertConfirmationAction" = "Выйти";
