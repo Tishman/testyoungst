@@ -42,10 +42,10 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		state.confrimPassword.status = .default
 		
 	case .passwordButtonTapped:
-		state.isPasswordHidden.toggle()
+		state.isPasswordShowed.toggle()
 		
 	case .confrimPasswordButtonTapped:
-		state.isConfrimPasswordHidden.toggle()
+		state.isConfrimPasswordShowed.toggle()
 		
 	case .didChangePasswordButtonTapped:
 		guard ForgotPasswordLogic.isFieldNotEmpty(field: &state.email) &&

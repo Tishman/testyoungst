@@ -16,8 +16,8 @@ struct ForgotPasswordState: Equatable, ClosableState {
 	var code: Field<String> = .init(value: "", status: .default)
 	var password: Field<String> = .init(value: "", status: .default)
 	var confrimPassword: Field<String> = .init(value: "", status: .default)
-	var isPasswordHidden = true
-	var isConfrimPasswordHidden = true
+	var isPasswordShowed = false
+	var isConfrimPasswordShowed = false
 	var isResetPasswordInit = false
 	var isPasswordChanged = false
 	var isClosed = false
