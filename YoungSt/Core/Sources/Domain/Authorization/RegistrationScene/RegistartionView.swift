@@ -53,13 +53,13 @@ struct RegistrationView: View {
                                 AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
                                                 status: .constant(.default),
-                                                isSecure: viewStore.binding(get: \.isPasswordShowed, send: RegistrationAction.showPasswordButtonTapped),
+                                                isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordButtonTapped),
                                                 placeholder: Localizable.passwordPlaceholder)
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
                                                 status: .constant(.default),
-                                                isSecure: viewStore.binding(get: \.isConfrimPasswordShowed, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                                isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordButtonTapped),
                                                 placeholder: Localizable.confrimPasswordPlaceholder)
                             }
                         }

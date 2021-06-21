@@ -27,6 +27,7 @@ struct AuthTextInput: View {
                 Button(action: { text = "" }) {
                     Image(uiImage: Asset.Images.cross.image)
                 }
+                .opacity(text.isEmpty ? 0 : 1)
             }
         }
         .inputField(focused: $forceFocused, status: status)

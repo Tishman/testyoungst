@@ -44,7 +44,7 @@ struct ConfrimEmailScene: View {
 				Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
 					Text(Constants.Text.verify)
 				})
-                .buttonStyle(RoundedButtonStyle(style: .filled))
+                .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}

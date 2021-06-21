@@ -26,11 +26,11 @@ struct AuthSecureInput: View {
                           placeholder: placeholder)
             if isSecure {
                 Button(action: { isSecure.toggle() }) {
-                    Image(uiImage: Asset.Images.eye.image)
+                    Image(uiImage: Asset.Images.emptyEye.image)
                 }
             } else {
                 Button(action: { isSecure.toggle() }) {
-                    Image(uiImage: Asset.Images.emptyEye.image)
+                    Image(uiImage: Asset.Images.eye.image)
                 }
             }
         }

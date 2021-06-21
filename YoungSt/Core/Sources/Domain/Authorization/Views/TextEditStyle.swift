@@ -11,7 +11,7 @@ import Utilities
 
 struct InputFieldModifier: ViewModifier {
     @Binding var focused: Bool
-    var status: TextEditStatus
+    let status: TextEditStatus
     
     func body(content: Content) -> some View {
         VStack(alignment: .leading) {
@@ -26,18 +26,19 @@ struct InputFieldModifier: ViewModifier {
         }
     }
     
+    @ViewBuilder
     private func statusMessage(_ status: TextEditStatus) -> some View {
         switch status {
         case let .success(value):
-            return AnyView(Text(value)
-                            .foregroundColor(.green)
-                            .font(.subheadline))
+            Text(value)
+                .foregroundColor(.green)
+                .font(.subheadline)
         case let .error(value):
-            return AnyView(Text(value)
-                            .foregroundColor(.red)
-                            .font(.subheadline))
+            Text(value)
+                .foregroundColor(.red)
+                .font(.subheadline)
         case .default:
-            return AnyView(EmptyView())
+            EmptyView()
         }
     }
     

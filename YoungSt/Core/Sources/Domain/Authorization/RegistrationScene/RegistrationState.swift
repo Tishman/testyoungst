@@ -19,8 +19,8 @@ struct RegistrationState: Equatable {
     var password: String = ""
     var confrimPassword: String = ""
     var alert: AlertState<RegistrationAction>?
-	var isPasswordShowed = false
-	var isConfrimPasswordShowed = false
+	var isPasswordSecure = true
+	var isConfirmSecure = true
 	var routing: Routing?
     var isLoading: Bool = false
     var emailFieldForceFocused: Bool = false

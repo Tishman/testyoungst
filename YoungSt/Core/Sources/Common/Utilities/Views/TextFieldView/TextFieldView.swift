@@ -89,15 +89,6 @@ public struct TextFieldView: UIViewRepresentable {
             return textLimit(existingText: textField.text, newText: string)
         }
         
-        private func rightViewModeAppearance(_ textField: UITextField, range: NSRange, replacementString string: String) {
-            let textFieldRange = NSRange(location: 0, length: textField.text?.count ?? 0)
-            if NSEqualRanges(range, textFieldRange) && string.count == 0 {
-                textField.rightViewMode = .never
-            } else {
-                textField.rightViewMode = .whileEditing
-            }
-        }
-        
         private func textLimit(existingText: String?, newText: String) -> Bool {
             let text = existingText ?? ""
             let isAtLimit = text.count + newText.count <= view.charecterLimit

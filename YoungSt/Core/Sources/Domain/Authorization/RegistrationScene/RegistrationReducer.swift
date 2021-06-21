@@ -25,10 +25,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
         state.confirmPasswordFieldForceFocused = isFocused
     
 	case .showPasswordButtonTapped:
-		state.isPasswordShowed.toggle()
+		state.isPasswordSecure.toggle()
 		
     case .showConfrimPasswordButtonTapped:
-		state.isConfrimPasswordShowed.toggle()
+		state.isConfirmSecure.toggle()
 		
 	case let .didEmailChanged(value):
 		state.email = value
