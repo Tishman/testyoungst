@@ -43,35 +43,24 @@ struct RegistrationView: View {
                             VStack(spacing: .spacing(.big)) {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
                                               forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
-                                              isSecureMode: .constant(false),
-                                              isClearMode: true,
-                                              placeholder: Localizable.emailPlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                              status: .constant(.default), placeholder: Localizable.emailPlaceholder)
                                 
                                 AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
                                               forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
-                                              isSecureMode: .constant(false),
-                                              isClearMode: true,
-                                              placeholder: Localizable.usernamePlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                              status: .constant(.default),
+                                              placeholder: Localizable.usernamePlaceholder)
                                 
-                                AuthTextInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-                                              forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
-                                              isSecureMode: viewStore.binding(get: \.isPasswordShowed, send: RegistrationAction.showPasswordButtonTapped),
-                                              isClearMode: false,
-                                              placeholder: Localizable.passwordPlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
+                                                forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isPasswordShowed, send: RegistrationAction.showPasswordButtonTapped),
+                                                placeholder: Localizable.passwordPlaceholder)
                                 
-                                AuthTextInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
-                                              forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
-                                              isSecureMode: viewStore.binding(get: \.isConfrimPasswordShowed, send: RegistrationAction.showConfrimPasswordButtonTapped),
-                                              isClearMode: false,
-                                              placeholder: Localizable.confrimPasswordPlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+                                                forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isConfrimPasswordShowed, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                                placeholder: Localizable.confrimPasswordPlaceholder)
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))

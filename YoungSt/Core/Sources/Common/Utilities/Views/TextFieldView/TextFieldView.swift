@@ -10,37 +10,28 @@ import SwiftUI
 import UIKit
 import Resources
 
-public protocol TextFieldViewDelegate {
-    func onEditingChanged(isEditing: Bool)
-}
-
 public struct TextFieldView: UIViewRepresentable {
     @Binding private var text: String
     @Binding private var forceFocused: Bool
-    @Binding private var isSecureMode: Bool
-    private let isClearMode: Bool
+    @Binding private var isSecure: Bool
     private let placeholder: String?
     private let charecterLimit: Int
-    private let delegate: TextFieldViewDelegate?
     
     public init(text: Binding<String>,
                 forceFocused: Binding<Bool>,
-                isSecureMode: Binding<Bool>,
-                isClearMode: Bool,
+                isSecure: Binding<Bool>,
                 charecterLimit: Int,
-                placeholder: String?,
-                delegate: TextFieldViewDelegate?) {
+                placeholder: String?) {
         self._text = text
         self._forceFocused = forceFocused
-        self._isSecureMode = isSecureMode
-        self.isClearMode = isClearMode
         self.placeholder = placeholder
         self.charecterLimit = charecterLimit
-        self.delegate = delegate
+        self._isSecure = isSecure
     }
     
     public func makeUIView(context: Context) -> UIViewType {
-        let textField = UITextField()
+        let textField = UITextField(frame: .zero)
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         context.coordinator.initalSetup(textField: textField)
         textField.placeholder = placeholder
         return textField
@@ -51,53 +42,60 @@ public struct TextFieldView: UIViewRepresentable {
             uiView.text = text
         }
         
-        uiView.isSecureTextEntry = isSecureMode
-        
+        uiView.isSecureTextEntry = isSecure
+
         if forceFocused {
             uiView.becomeFirstResponder()
-            DispatchQueue.main.async {
-                forceFocused = false
-            }
         }
     }
     
     public func makeCoordinator() -> Coordinator {
-        .init(delegate: delegate, view: self)
+        .init(view: self)
     }
     
     public final class Coordinator: NSObject, UITextFieldDelegate {
-        private let delegate: TextFieldViewDelegate?
         private let view: TextFieldView
         
-        init(delegate: TextFieldViewDelegate?, view: TextFieldView) {
-            self.delegate = delegate
+        init(view: TextFieldView) {
             self.view = view
         }
         
         func initalSetup(textField: UITextField) {
             textField.delegate = self
-            textField.backgroundColor = .clear
             textField.font = .preferredFont(forTextStyle: .body)
-            if view.isClearMode {
-                textField.clearButtonMode = .whileEditing
-            }
-            textField.layer.borderWidth = 1
-            textField.layer.cornerRadius = 10
-            textField.layer.borderColor = Asset.Colors.grayLight.color.cgColor
+            textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         }
         
-        public func textFieldDidBeginEditing(_ textField: UITextField) {
-            delegate?.onEditingChanged(isEditing: true)
+        @objc private func textFieldDidChange(_ textField: UITextField) {
             view.text = textField.text ?? ""
         }
         
-        public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            textLimit(existingText: textField.text, newText: string)
+        public func textFieldDidBeginEditing(_ textField: UITextField) {
+            view.forceFocused = true
+        }
+        
+        public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+            view.forceFocused = false
+            textField.resignFirstResponder()
+            return true
         }
         
         public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            delegate?.onEditingChanged(isEditing: false)
+            textField.resignFirstResponder()
             return true
+        }
+        
+        public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            return textLimit(existingText: textField.text, newText: string)
+        }
+        
+        private func rightViewModeAppearance(_ textField: UITextField, range: NSRange, replacementString string: String) {
+            let textFieldRange = NSRange(location: 0, length: textField.text?.count ?? 0)
+            if NSEqualRanges(range, textFieldRange) && string.count == 0 {
+                textField.rightViewMode = .never
+            } else {
+                textField.rightViewMode = .whileEditing
+            }
         }
         
         private func textLimit(existingText: String?, newText: String) -> Bool {

@@ -36,11 +36,8 @@ struct ConfrimEmailScene: View {
 									  subtitle: Constants.Text.emailSendedToConfrim)
                     AuthTextInput(text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
                                   forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ConfrimEmailAction.codeInputFocusChanged),
-                                  isSecureMode: .constant(false),
-                                  isClearMode: true,
-                                  placeholder: Localizable.enterCode,
-                                  status: .default,
-                                  delegate: nil)
+                                  status: .constant(.default),
+                                  placeholder: Localizable.enterCode)
 					.padding(.top, .spacing(.extraSize))
 					.padding(.horizontal, .spacing(.extraSize))
 				Spacer()

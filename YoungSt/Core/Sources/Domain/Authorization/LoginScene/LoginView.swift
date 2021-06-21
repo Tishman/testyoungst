@@ -28,19 +28,15 @@ struct LoginView: View {
                             VStack(spacing: .spacing(.ultraBig)) {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: LoginAction.emailChanged),
                                               forceFocused: viewStore.binding(get: \.loginFieldForceFocused, send: LoginAction.loginInputFocusChanged),
-                                              isSecureMode: .constant(false),
-                                              isClearMode: true,
-                                              placeholder: Localizable.emailPlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                              status: .constant(.default),
+                                              placeholder: Localizable.emailPlaceholder)
                                 
-                                AuthTextInput(text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
-                                              forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: LoginAction.passwordInputFocusChanged),
-                                              isSecureMode: viewStore.binding(get: \.isSecure, send: LoginAction.showPasswordButtonTapped),
-                                              isClearMode: false,
-                                              placeholder: Localizable.passwordPlaceholder,
-                                              status: .default,
-                                              delegate: nil)
+                                AuthSecureInput(text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                                                forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: LoginAction.passwordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isSecure, send: LoginAction.showPasswordButtonTapped),
+                                                placeholder: Localizable.passwordPlaceholder)
+
 								Button(action: { viewStore.send(.forgotPasswordTapped) }, label: {
 									Text(Localizable.forgotPasswordTitle)
 										.font(.callout)

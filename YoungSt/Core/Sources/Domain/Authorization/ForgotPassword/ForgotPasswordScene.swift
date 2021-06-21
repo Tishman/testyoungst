@@ -32,35 +32,23 @@ struct ForgotPasswordScene: View {
 						WithViewStore(store) { viewStore in
                             AuthTextInput(text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
                                           forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: ForgotPasswordAction.emailInputFocusChanged),
-                                          isSecureMode: .constant(false),
-                                          isClearMode: true,
-                                          placeholder: Localizable.emailPlaceholder,
-                                          status: viewStore.email.status,
-                                          delegate: nil)
+                                          status: .constant(.default),
+                                          placeholder: Localizable.emailPlaceholder)
 							if viewStore.isResetPasswordInit {
                                 AuthTextInput(text: viewStore.binding(get: \.code.value, send: ForgotPasswordAction.didCodeEditing),
                                               forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
-                                              isSecureMode: .constant(false),
-                                              isClearMode: true,
-                                              placeholder: Localizable.enterCode,
-                                              status: viewStore.code.status,
-                                              delegate: nil)
-                                
+                                              status: .constant(.default),
+                                              placeholder: Localizable.enterCode)
+
                                 AuthTextInput(text: viewStore.binding(get: \.password.value, send: ForgotPasswordAction.didPasswordEditing),
                                               forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: ForgotPasswordAction.passwordInputFocusChanged),
-                                              isSecureMode: viewStore.binding(get: \.isPasswordHidden, send: ForgotPasswordAction.confrimPasswordButtonTapped),
-                                              isClearMode: false,
-                                              placeholder: Localizable.passwordPlaceholder,
-                                              status: viewStore.password.status,
-                                              delegate: nil)
-                                
+                                              status: .constant(.default),
+                                              placeholder: Localizable.passwordPlaceholder)
+
                                 AuthTextInput(text: viewStore.binding(get: \.confrimPassword.value, send: ForgotPasswordAction.didConrimPasswordEditing),
                                               forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
-                                              isSecureMode: viewStore.binding(get: \.isConfrimPasswordHidden, send: ForgotPasswordAction.confrimPasswordButtonTapped),
-                                              isClearMode: false,
-                                              placeholder: Localizable.confrimPasswordPlaceholder,
-                                              status: viewStore.confrimPassword.status,
-                                              delegate: nil)
+                                              status: .constant(.default),
+                                              placeholder: Localizable.confrimPasswordPlaceholder)
 							}
 						}
 						.padding(.top)

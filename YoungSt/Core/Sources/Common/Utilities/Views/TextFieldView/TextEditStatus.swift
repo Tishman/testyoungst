@@ -8,12 +8,12 @@
 import SwiftUI
 import Resources
 
-enum TextEditStatus: Equatable {
+public enum TextEditStatus: Equatable {
 	case error(String)
 	case success(String)
 	case `default`
 	
-	var foregroundColor: Color {
+	public var foregroundColor: Color {
 		switch self {
 		case .default:
 			return Asset.Colors.greenLightly.color.swiftuiColor
@@ -24,7 +24,7 @@ enum TextEditStatus: Equatable {
 		}
 	}
 	
-	var iconColor: Color {
+	public var iconColor: Color {
 		switch self {
 		case .default:
 			return Asset.Colors.greenDark.color.swiftuiColor
