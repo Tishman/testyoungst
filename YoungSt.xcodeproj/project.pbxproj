@@ -192,6 +192,7 @@
 				0C3492172592001900F729C4 /* Frameworks */,
 				0C3492182592001900F729C4 /* Resources */,
 				FD60520B266391DB006218BF /* Upload crashlytics symbols */,
+				0E1AC3DA26723CE500A439FE /* Swiftgen */,
 			);
 			buildRules = (
 			);
@@ -272,6 +273,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0E1AC3DA26723CE500A439FE /* Swiftgen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftgen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftgen >/dev/null; then\n  swiftgen\nelse\n  echo \"warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+		};
 		FD60520B266391DB006218BF /* Upload crashlytics symbols */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

@@ -40,6 +40,7 @@
 "update" = "Update";
 "save" = "Save";
 "create" = "Create";
+"welcomeMessage" = "We glad to see you, friend!";
 
 // AddWord
 "addWordTitle" = "Add word";

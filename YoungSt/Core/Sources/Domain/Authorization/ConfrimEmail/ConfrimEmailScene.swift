@@ -11,18 +11,18 @@ import Resources
 import Utilities
 
 enum Constants {
-	enum Colors {
-		static let greenDark = Asset.Colors.greenDark.color.swiftuiColor
-	}
-	
-	enum Text {
-		static let verification = Localizable.verification
-		static let verify = Localizable.verify
-		static let emailSendedToConfrim = Localizable.emailSendedToConfrim
-		static let enterCode = Localizable.enterCode
-		static let incorrectData = Localizable.incorrectDataTitle
-		static let ok = Localizable.ok
-	}
+    enum Colors {
+        static let greenDark = Asset.Colors.greenDark.color.swiftuiColor
+    }
+
+    enum Text {
+        static let verification = Localizable.verification
+        static let verify = Localizable.verify
+        static let emailSendedToConfrim = Localizable.emailSendedToConfrim
+        static let enterCode = Localizable.enterCode
+        static let incorrectData = Localizable.incorrectDataTitle
+        static let ok = Localizable.ok
+    }
 }
 
 struct ConfrimEmailScene: View {
@@ -55,6 +55,6 @@ struct ConfrimEmailScene: View {
 
 struct ConfrimCodeView_Previews: PreviewProvider {
     static var previews: some View {
-		ConfrimEmailScene(store: .init(initialState: .init(userId: "123"), reducer: .empty, environment: ()))
+        ConfrimEmailScene(store: .init(initialState: .init(userId: UUID(), email: "", passsword: ""), reducer: .empty, environment: ()))
     }
 }

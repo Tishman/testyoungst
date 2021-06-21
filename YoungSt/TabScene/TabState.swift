@@ -12,6 +12,7 @@ struct TabState: Equatable {
     
     var selectedTab: TabItem = .dictionaries
     var addWordOpened = false
+	var welcomeMessageShow = false
 }
 
 enum TabAction: Equatable {

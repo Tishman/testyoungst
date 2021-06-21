@@ -40,16 +40,16 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 			.catchToEffect()
 			.map(LoginAction.handleLogin)
 		
-	case let .handleLogin(result):
-		switch result {
-		case let .success(response):
-			// Should be handled by main application
-			break
-			
-		case let .failure(error):
-			state.isLoading = false
-			state.alertState = .init(title: TextState(error.localizedDescription))
-		}
+	case .handleLogin(.success):
+		break
+		
+	case let .handleLogin(.failure(.errVerificationNotConfirmedRegID(uuid))):
+		state.isLoading = false
+        state.routing = .confirmEmail(userId: uuid, email: state.email, password: state.password)
+		
+	case let .handleLogin(.failure(error)):
+		state.isLoading = false
+		state.alertState = .init(title: TextState(error.localizedDescription))
 		
 	case let .failedValidtion(value):
 		state.alertState = .init(title: TextState(value))

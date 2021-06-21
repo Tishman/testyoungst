@@ -16,6 +16,7 @@ import Coordinator
 
 struct LoginRoutingPoints {
 	let forgotPassword: ForgotPasswordController.Endpoint
+	let confirmEmail: ConfrimEmailController.Endpoint
 }
 
 final class LoginController: UIHostingController<LoginView>, RoutableController {
@@ -55,7 +56,10 @@ final class LoginController: UIHostingController<LoginView>, RoutableController 
 		switch routing {
 		case .forgotPassword:
 			let vc = routingPoints.forgotPassword.value
-			present(controller: vc, preferredPresentation: .detail)
+			present(controller: vc, preferredPresentation: .pushInCurrent)
+		case let .confirmEmail(userId: userId, email: email, password: password):
+            let vc = routingPoints.confirmEmail.value(.init(userId: userId, email: email, password: password))
+			present(controller: vc, preferredPresentation: .pushInCurrent)
 		}
 	}
 	

@@ -7,10 +7,11 @@
 
 import Foundation
 import ComposableArchitecture
+import Coordinator
 
 struct RegistrationState: Equatable {
 	enum Routing: Equatable {
-		case confrimEmail
+        case confrimEmail(userId: UUID, email: String, password: String)
 	}
 	
     var email: String = ""
@@ -21,6 +22,7 @@ struct RegistrationState: Equatable {
 	var isPasswordShowed = false
 	var isConfrimPasswordShowed = false
 	var routing: Routing?
+    var isLoading: Bool = false
     var emailFieldForceFocused: Bool = false
     var usernameFieldForceFocused: Bool = false
     var passwordFieldForceFocused: Bool = false

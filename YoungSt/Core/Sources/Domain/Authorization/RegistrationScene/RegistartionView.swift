@@ -69,14 +69,14 @@ struct RegistrationView: View {
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 
-                WithViewStore(store.stateless) { viewStore in
+                WithViewStore(store) { viewStore in
                     Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
+                    .padding(.bottom)
+                    .greedy(aligningContentTo: .bottom)
                 }
-                .buttonStyle(RoundedButtonStyle(style: .filled))
-                .padding(.bottom)
-                .greedy(aligningContentTo: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,
