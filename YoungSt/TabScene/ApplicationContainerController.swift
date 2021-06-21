@@ -31,7 +31,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-		self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID, welcomeMessageShow: viewStore.welcomeMessageShow)
+		self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         
         let sidebar = SidebarViewController(store: store)
@@ -41,7 +41,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         
         super.init(style: .tripleColumn)
         
-		tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID, welcomeMessageShow: viewStore.welcomeMessageShow),
+		tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID),
                                 Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
                                animated: false)
         
