@@ -50,6 +50,12 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
         observeRouting().store(in: &bag)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     func handle(routing: DictionariesState.Routing) {
         switch routing {
         case let .addWord(input):

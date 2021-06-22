@@ -21,7 +21,7 @@ private struct StudentInviteLogic {
         let alreadyHasTeacher: Bool
         
         switch currentTeacher.response {
-        case .teacher:
+        case .teacher, .outcomingInvite:
             alreadyHasTeacher = true
         default:
             alreadyHasTeacher = false
@@ -46,10 +46,9 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
             $0.id = Int64(state.invite.id)
             $0.password = state.invite.password
         }
-        let getTeacherRequest = Profile_GetTeacherRequest()
         
         return env.inviteService.getSharedInviteInfo(request: getInviteInfoRequest)
-            .combineLatest(env.inviteService.getTeacher(request: getTeacherRequest))
+            .combineLatest(env.inviteService.getTeacher())
             .tryMap(StudentInviteLogic.handleLoadInfoResponse)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
@@ -62,8 +61,8 @@ let studentInviteReducer = Reducer<StudentInviteState, StudentInviteAction, Stud
         switch result {
         case let .success(info):
             state.profileInfo = info.teacherProfile
-            state.title = info.teacherProfile.displayName
-            state.nickname = "@\(info.teacherProfile.nickname)"
+            state.title = info.teacherProfile.primaryField
+            state.nickname = info.teacherProfile.secondaryField
             if info.alreadyHasTeacher {
                 state.error = Localizable.youCantBecomeStudent
                 state.actionType = .close

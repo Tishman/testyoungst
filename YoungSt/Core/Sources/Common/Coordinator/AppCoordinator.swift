@@ -16,6 +16,7 @@ struct AppCoordinator: Coordinator {
     let profileProvider: (ProfileInput, Coordinator) -> UIViewController
     let addWordProvider: (AddWordInput) -> UIViewController
     let studentInviteProvider: (StudentInviteInput) -> UIViewController
+    let settingsProvider: (SettingsInput) -> UIViewController
     
     func view(for link: ModuleLink) -> UIViewController {
         switch link {
@@ -29,6 +30,8 @@ struct AppCoordinator: Coordinator {
             return addWordProvider(input)
         case let .studentInvite(input):
             return studentInviteProvider(input)
+        case let .settings(input):
+            return settingsProvider(input)
         }
     }
 }

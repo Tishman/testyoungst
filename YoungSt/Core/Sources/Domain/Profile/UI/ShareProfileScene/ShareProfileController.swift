@@ -14,7 +14,7 @@ import Coordinator
 
 final class ShareProfileController: UIHostingController<ShareProfileScene>, ClosableController {
     
-    typealias Endpoint = Provider1<ShareProfileController, UUID>
+    typealias Endpoint = Provider<ShareProfileController>
     
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     
@@ -22,8 +22,8 @@ final class ShareProfileController: UIHostingController<ShareProfileScene>, Clos
     private let viewStore: ViewStore<ShareProfileState, ShareProfileAction>
     private var bag = Set<AnyCancellable>()
     
-    init(userID: UUID, env: ShareProfileEnvironment) {
-        let store = Store(initialState: ShareProfileState(userID: userID), reducer: shareProfileReducer, environment: env)
+    init(env: ShareProfileEnvironment) {
+        let store = Store(initialState: ShareProfileState(), reducer: shareProfileReducer, environment: env)
         self.store = store
         self.viewStore = .init(store)
         super.init(rootView: ShareProfileScene(store: store))

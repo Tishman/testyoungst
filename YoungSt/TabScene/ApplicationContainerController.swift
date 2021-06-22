@@ -23,6 +23,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     
     private let dictionaries: UIViewController
     private let profile: UIViewController
+    private let settings: UIViewController
     private let tab: UITabBarController
     
     init(coordinator: Coordinator, store: Store<TabState, TabAction>) {
@@ -33,6 +34,8 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         
         self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
+        self.settings = UINavigationController(rootViewController: coordinator.view(for: .settings(.init())))
+        settings.tabBarItem = Self.tabBarItem(from: .settings)
         
         let sidebar = SidebarViewController(store: store)
         let sidebarNav = UINavigationController(rootViewController: sidebar)
@@ -42,7 +45,8 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         super.init(style: .tripleColumn)
         
         tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID),
-                                Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)],
+                                Self.createProfiles(coordinator: coordinator, userID: viewStore.userID),
+                                settings],
                                animated: false)
         
         configureDisplayMode(size: nil)
@@ -80,20 +84,20 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     
     static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {
         let dictionaries = UINavigationController(rootViewController: coordinator.view(for: .dictionaries(.init(userID: userID))))
-        let dictItem = TabItem.dictionaries
-        dictionaries.tabBarItem = .init(title: dictItem.title,
-                                        image: .init(systemName: dictItem.imageName),
-                                        selectedImage: .init(systemName: dictItem.accentImageName))
+        dictionaries.tabBarItem = tabBarItem(from: .dictionaries)
         return dictionaries
     }
     
     static private func createProfiles(coordinator: Coordinator, userID: UUID) -> UINavigationController {
         let profile = UINavigationController(rootViewController: coordinator.view(for: .profile(.init(userID: userID))))
-        let profileItem = TabItem.profile
-        profile.tabBarItem = .init(title: profileItem.title,
-                                   image: .init(systemName: profileItem.imageName),
-                                   selectedImage: .init(systemName: profileItem.accentImageName))
+        profile.tabBarItem = tabBarItem(from: .profile)
         return profile
+    }
+    
+    static private func tabBarItem(from tabItem: TabItem) -> UITabBarItem {
+        .init(title: tabItem.title,
+              image: .init(systemName: tabItem.imageName),
+              selectedImage: .init(systemName: tabItem.accentImageName))
     }
     
     func resetSplitDetailToEmpty(caller: UIViewController) {
@@ -144,6 +148,8 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
             setViewController(dictionaries, for: .supplementary)
         case .profile:
             setViewController(profile, for: .supplementary)
+        case .settings:
+            setViewController(settings, for: .supplementary)
         }
     }
     

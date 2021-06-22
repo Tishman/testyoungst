@@ -7,7 +7,4 @@
 
 import Foundation
 
-public struct EmptyResponse: Hashable, Equatable {}
-
 public func toVoid<T>(_ any: T) -> Void {}
-public func toEmpty<T>(_ any: T) -> EmptyResponse { .init() }

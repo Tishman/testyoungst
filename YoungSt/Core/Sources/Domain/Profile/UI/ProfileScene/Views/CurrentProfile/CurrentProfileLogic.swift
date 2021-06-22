@@ -38,8 +38,7 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
         )
         
     case .profileUpdateRequested:
-        let request = Profile_GetOwnProfileInfoRequest()
-        return env.profileService.getOwnProfileInfo(request: request)
+        return env.profileService.getOwnProfileInfo()
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
