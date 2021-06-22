@@ -11,18 +11,18 @@ import Resources
 import Utilities
 
 enum Constants {
-	enum Colors {
-		static let greenDark = Asset.Colors.greenDark.color.swiftuiColor
-	}
-	
-	enum Text {
-		static let verification = Localizable.verification
-		static let verify = Localizable.verify
-		static let emailSendedToConfrim = Localizable.emailSendedToConfrim
-		static let enterCode = Localizable.enterCode
-		static let incorrectData = Localizable.incorrectDataTitle
-		static let ok = Localizable.ok
-	}
+    enum Colors {
+        static let greenDark = Asset.Colors.greenDark.color.swiftuiColor
+    }
+
+    enum Text {
+        static let verification = Localizable.verification
+        static let verify = Localizable.verify
+        static let emailSendedToConfrim = Localizable.emailSendedToConfrim
+        static let enterCode = Localizable.enterCode
+        static let incorrectData = Localizable.incorrectDataTitle
+        static let ok = Localizable.ok
+    }
 }
 
 struct ConfrimEmailScene: View {
@@ -34,16 +34,17 @@ struct ConfrimEmailScene: View {
 				Spacer()
 				HeaderDescriptionView(title: Constants.Text.verification,
 									  subtitle: Constants.Text.emailSendedToConfrim)
-				ClearTextEditingView(placholder: Localizable.enterCode,
-									 text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
-									 status: .default)
+                    AuthTextInput(text: viewStore.binding(get: \.code, send: ConfrimEmailAction.didCodeStartEnter),
+                                  forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ConfrimEmailAction.codeInputFocusChanged),
+                                  status: .constant(.default),
+                                  placeholder: Localizable.enterCode)
 					.padding(.top, .spacing(.extraSize))
 					.padding(.horizontal, .spacing(.extraSize))
 				Spacer()
 				Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
 					Text(Constants.Text.verify)
 				})
-                .buttonStyle(RoundedButtonStyle(style: .filled))
+                .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}
@@ -54,6 +55,6 @@ struct ConfrimEmailScene: View {
 
 struct ConfrimCodeView_Previews: PreviewProvider {
     static var previews: some View {
-		ConfrimEmailScene(store: .init(initialState: .init(userId: "123"), reducer: .empty, environment: ()))
+        ConfrimEmailScene(store: .init(initialState: .init(userId: UUID(), email: "", passsword: ""), reducer: .empty, environment: ()))
     }
 }

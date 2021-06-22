@@ -15,7 +15,7 @@ import Coordinator
 import SwiftLazy
 
 struct RegistrationRoutingPoints {
-	let confrimPassword: ConfrimEmailController.Endpoint
+	let confirmEmail: ConfrimEmailController.Endpoint
 }
 
 final class RegistrationController: UIHostingController<RegistrationView>, RoutableController {
@@ -53,8 +53,8 @@ final class RegistrationController: UIHostingController<RegistrationView>, Routa
 	
 	func handle(routing: RegistrationState.Routing) {
 		switch routing {
-		case .confrimEmail:
-			let vc = routingPoints.confrimPassword.value
+        case let .confrimEmail(userId: userId, email: email, password: password):
+            let vc = routingPoints.confirmEmail.value(.init(userId: userId, email: email, password: password))
 			present(controller: vc, preferredPresentation: .detail)
 		}
 	}

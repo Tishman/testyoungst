@@ -12,11 +12,23 @@ import Utilities
 import Resources
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
 	switch action {
-	case .showPasswordButtonTapped(.password):
-		state.isPasswordShowed.toggle()
+    case let .emailInputFocusChanged(isFocused):
+        state.emailFieldForceFocused = isFocused
+        
+    case let .userNameInputFocusChanged(isFocused):
+        state.usernameFieldForceFocused = isFocused
+        
+    case let .passwordInputFocusChanged(isFocused):
+        state.passwordFieldForceFocused = isFocused
+        
+    case let .confirmPasswordInputFocusChanged(isFocused):
+        state.confirmPasswordFieldForceFocused = isFocused
+    
+	case .showPasswordButtonTapped:
+		state.isPasswordSecure.toggle()
 		
-	case .showPasswordButtonTapped(.confrimPassword):
-		state.isConfrimPasswordShowed.toggle()
+    case .showConfrimPasswordButtonTapped:
+		state.isConfirmSecure.toggle()
 		
 	case let .didEmailChanged(value):
 		state.email = value
@@ -31,9 +43,11 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.confrimPassword = value
 		
 	case let .didRecieveRegistartionResult(.success(value)):
-		state.routing = .confrimEmail
+        state.isLoading = false
+        state.routing = .confrimEmail(userId: value, email: state.email, password: state.password)
 		
 	case let .didRecieveRegistartionResult(.failure(value)):
+        state.isLoading = false
 		state.alert = .init(title: TextState(value.localizedDescription))
 		
 	case let .failedValidtion(value):
@@ -47,6 +61,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 			return .init(value: .failedValidtion(Localizable.fillAllFields))
 		}
 		guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
+        state.isLoading = true
 		
 		let requestData = Authorization_RegistrationRequest.with {
 			$0.email = state.email

@@ -18,4 +18,6 @@ enum LoginAction: Equatable {
 	case alertClosed
 	case failedValidtion(String)
 	case routingHandled
+    case loginInputFocusChanged(Bool)
+    case passwordInputFocusChanged(Bool)
 }

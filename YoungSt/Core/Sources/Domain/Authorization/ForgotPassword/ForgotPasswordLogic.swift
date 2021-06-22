@@ -13,6 +13,18 @@ import Utilities
 
 let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, ForgotPasswordEnviroment> { state, action, enviroment in
 	switch action {
+    case let .emailInputFocusChanged(isFocused):
+        state.emailFieldForceFocused = isFocused
+        
+    case let .codeInputFocusChanged(isFocused):
+        state.emailFieldForceFocused = isFocused
+        
+    case let .passwordInputFocusChanged(isFocused):
+        state.passwordFieldForceFocused = isFocused
+        
+    case let .confirmPasswordInputFocusChanged(isFocused):
+        state.confirmPasswordFieldForceFocused = isFocused
+    
 	case let .didEmailEditing(value):
 		state.email.value = value
 		state.email.status = .default
@@ -30,10 +42,10 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		state.confrimPassword.status = .default
 		
 	case .passwordButtonTapped:
-		state.isPasswordHidden.toggle()
+		state.isPasswordSecure.toggle()
 		
 	case .confrimPasswordButtonTapped:
-		state.isConfrimPasswordHidden.toggle()
+		state.isConfirmSecure.toggle()
 		
 	case .didChangePasswordButtonTapped:
 		guard ForgotPasswordLogic.isFieldNotEmpty(field: &state.email) &&

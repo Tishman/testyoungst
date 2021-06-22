@@ -16,12 +16,16 @@ struct ForgotPasswordState: Equatable, ClosableState {
 	var code: Field<String> = .init(value: "", status: .default)
 	var password: Field<String> = .init(value: "", status: .default)
 	var confrimPassword: Field<String> = .init(value: "", status: .default)
-	var isPasswordHidden = true
-	var isConfrimPasswordHidden = true
+	var isPasswordSecure = true
+	var isConfirmSecure = true
 	var isResetPasswordInit = false
 	var isPasswordChanged = false
 	var isClosed = false
 	var alert: AlertState<ForgotPasswordAction>?
+    var emailFieldForceFocused: Bool = false
+    var codeFieldForceFocused: Bool = false
+    var passwordFieldForceFocused: Bool = false
+    var confirmPasswordFieldForceFocused: Bool = false
 }
 
 extension ForgotPasswordState {
@@ -44,9 +48,13 @@ enum ForgotPasswordAction: Equatable {
 	case confrimPasswordButtonTapped
 	case didSendCodeButtonTapped
 	case didChangePasswordButtonTapped
-	case handleInitResetPassword(Result<EmptyResponse, InitResetPasswordError>)
-	case handleResetPassword(Result<EmptyResponse, ResetPasswordError>)
+	case handleInitResetPassword(Result<EmptyResponse, EquatableError>)
+	case handleResetPassword(Result<EmptyResponse, EquatableError>)
 	case alertOkButtonTapped
+    case emailInputFocusChanged(Bool)
+    case codeInputFocusChanged(Bool)
+    case passwordInputFocusChanged(Bool)
+    case confirmPasswordInputFocusChanged(Bool)
 }
 
 struct ForgotPasswordEnviroment {

@@ -32,7 +32,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         let viewStore = ViewStore(store)
         self.viewStore = viewStore
         
-        self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
+		self.dictionaries = Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID)
         self.profile = Self.createProfiles(coordinator: coordinator, userID: viewStore.userID)
         self.settings = UINavigationController(rootViewController: coordinator.view(for: .settings(.init())))
         settings.tabBarItem = Self.tabBarItem(from: .settings)

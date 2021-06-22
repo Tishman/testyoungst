@@ -13,6 +13,12 @@ import Resources
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
 	switch action {
+    case let .loginInputFocusChanged(isFocused):
+        state.loginFieldForceFocused = isFocused
+        
+    case let .passwordInputFocusChanged(isFocused):
+        state.passwordFieldForceFocused = isFocused
+    
 	case let .emailChanged(value):
 		state.email = value
 		
@@ -34,16 +40,16 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 			.catchToEffect()
 			.map(LoginAction.handleLogin)
 		
-	case let .handleLogin(result):
-		switch result {
-		case let .success(response):
-			// Should be handled by main application
-			break
-			
-		case let .failure(error):
-			state.isLoading = false
-			state.alertState = .init(title: TextState(error.localizedDescription))
-		}
+	case .handleLogin(.success):
+		break
+		
+	case let .handleLogin(.failure(.errVerificationNotConfirmedRegID(uuid))):
+		state.isLoading = false
+        state.routing = .confirmEmail(userId: uuid, email: state.email, password: state.password)
+		
+	case let .handleLogin(.failure(error)):
+		state.isLoading = false
+		state.alertState = .init(title: TextState(error.localizedDescription))
 		
 	case let .failedValidtion(value):
 		state.alertState = .init(title: TextState(value))
@@ -55,7 +61,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		state.routing = .forgotPassword
 		
 	case .showPasswordButtonTapped:
-		state.showPassword.toggle()
+		state.isSecure.toggle()
 		
 	case .routingHandled:
 		state.routing = nil

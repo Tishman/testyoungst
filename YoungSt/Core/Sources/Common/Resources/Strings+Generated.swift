@@ -294,6 +294,8 @@ public enum Loc {
     public static let verify = Loc.tr("Localizable", "verify")
     /// Welcome back
     public static let welcomeBackTitle = Loc.tr("Localizable", "welcomeBackTitle")
+    /// We glad to see you, friend!
+    public static let welcomeMessage = Loc.tr("Localizable", "welcomeMessage")
     /// Welcome
     public static let welcomeTitle = Loc.tr("Localizable", "welcomeTitle")
     /// Word

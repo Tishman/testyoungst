@@ -10,20 +10,6 @@ import ComposableArchitecture
 import Resources
 import Utilities
 
-extension LoginView {
-    enum Constants {
-        static let emailPlaceholder = Localizable.emailPlaceholder
-        static let passwordPlaceholder = Localizable.passwordPlaceholder
-        static let welcomeBackTitle = Localizable.welcomeBackTitle
-        static let loginToReturnTitle = Localizable.loginToReturnTitle
-        static let loginButtonTitle = Localizable.loginButtonTitle
-        static let registrationButtonTitle = Localizable.registrationButtonTitle
-        static let incorrectData = Localizable.incorrectDataTitle
-        static let ok = Localizable.ok
-		static let forgotPassword = Localizable.forgotPasswordTitle
-    }
-}
-
 struct LoginView: View {
     let store: Store<LoginState, LoginAction>
     
@@ -35,22 +21,24 @@ struct LoginView: View {
             ZStack {
                 TrackableScrollView(contentOffset: $contentOffset) {
                     VStack {
-                        HeaderDescriptionView(title: Constants.welcomeBackTitle, subtitle: Constants.loginToReturnTitle)
+                        HeaderDescriptionView(title: Localizable.welcomeBackTitle, subtitle: Localizable.loginToReturnTitle)
                             .padding(.top, .spacing(.big))
                         
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.ultraBig)) {
-                                TextEditingView(placholder: Constants.emailPlaceholder,
-												text: viewStore.binding(get: \.email, send: LoginAction.emailChanged),
-												status: .default)
+                                AuthTextInput(text: viewStore.binding(get: \.email, send: LoginAction.emailChanged),
+                                              forceFocused: viewStore.binding(get: \.loginFieldForceFocused, send: LoginAction.loginInputFocusChanged),
+                                              status: .constant(.default),
+                                              placeholder: Localizable.emailPlaceholder)
                                 
-                                ToggableSecureField(placholder: Constants.passwordPlaceholder,
-													text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
-													status: .default,
-													isPasswordHidden: viewStore.showPassword,
-                                                    clouser: { viewStore.send(.showPasswordButtonTapped) })
+                                AuthSecureInput(text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                                                forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: LoginAction.passwordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isSecure, send: LoginAction.showPasswordButtonTapped),
+                                                placeholder: Localizable.passwordPlaceholder)
+
 								Button(action: { viewStore.send(.forgotPasswordTapped) }, label: {
-									Text(Constants.forgotPassword)
+									Text(Localizable.forgotPasswordTitle)
 										.font(.callout)
 										.foregroundColor(Asset.Colors.grayLight.color.swiftuiColor)
 								})
@@ -70,7 +58,7 @@ struct LoginView: View {
                 
                 WithViewStore(store.stateless) { viewStore in
                     Button(action: { viewStore.send(.loginTapped) }, label: {
-                        Text(Constants.loginButtonTitle)
+                        Text(Localizable.loginButtonTitle)
                     })
                 }
                 .buttonStyle(RoundedButtonStyle(style: .filled))

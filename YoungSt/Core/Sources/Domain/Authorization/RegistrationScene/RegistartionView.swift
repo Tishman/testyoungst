@@ -41,25 +41,26 @@ struct RegistrationView: View {
                         
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.big)) {
-                                ClearTextEditingView(placholder: Constants.emailPlaceholder,
-													 text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
-													 status: .success("sas"))
+                                AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
+                                              forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
+                                              status: .constant(.default), placeholder: Localizable.emailPlaceholder)
                                 
-                                ClearTextEditingView(placholder: Constants.usernamePlaceholder,
-													 text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
-													 status: .default)
+                                AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
+                                              forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
+                                              status: .constant(.default),
+                                              placeholder: Localizable.usernamePlaceholder)
                                 
-                                ToggableSecureField(placholder: Constants.passwordPlaceholder,
-													text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
-													status: .success("ads"),
-													isPasswordHidden: viewStore.isPasswordShowed,
-                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.password)) })
+                                AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
+                                                forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordButtonTapped),
+                                                placeholder: Localizable.passwordPlaceholder)
                                 
-                                ToggableSecureField(placholder: Constants.confrimPasswordPlaceholder,
-													text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
-													status: .default,
-													isPasswordHidden: viewStore.isConfrimPasswordShowed,
-                                                    clouser: { viewStore.send(.showPasswordButtonTapped(.confrimPassword)) })
+                                AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+                                                forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
+                                                status: .constant(.default),
+                                                isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                                placeholder: Localizable.confrimPasswordPlaceholder)
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))
@@ -68,14 +69,14 @@ struct RegistrationView: View {
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 
-                WithViewStore(store.stateless) { viewStore in
+                WithViewStore(store) { viewStore in
                     Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
+                    .padding(.bottom)
+                    .greedy(aligningContentTo: .bottom)
                 }
-                .buttonStyle(RoundedButtonStyle(style: .filled))
-                .padding(.bottom)
-                .greedy(aligningContentTo: .bottom)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,
