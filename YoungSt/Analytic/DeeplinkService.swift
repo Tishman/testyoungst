@@ -6,26 +6,9 @@
 //
 
 import Foundation
-
-public protocol DeeplinkService: AnyObject {
-    func transform(deeplinkURL: URL) -> Deeplink?
-    
-    func transform(deeplink: Deeplink) -> URL
-}
-
-public enum Deeplink: Equatable {
-    case studentInvite(SharedInvite)
-}
-
-public struct SharedInvite: Equatable {
-    public init(id: Int, password: String) {
-        self.id = id
-        self.password = password
-    }
-    
-    public let id: Int
-    public let password: String
-}
+import Coordinator
+import Protocols
+import FirebaseDynamicLinks
 
 final class DeeplinkServiceImpl: DeeplinkService {
     
@@ -37,12 +20,28 @@ final class DeeplinkServiceImpl: DeeplinkService {
         static let password = "pwd"
     }
     
+    func handle(customSchemeURL: URL) -> URL? {
+        return DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: customSchemeURL)?.url
+    }
+    
+    @discardableResult
+    func handle(remoteLink: URL, handler: @escaping (URL?) -> Void) -> Bool {
+        DynamicLinks.dynamicLinks().handleUniversalLink(remoteLink) { link, err in
+            if let err = err {
+                print(err)
+            }
+            if let url = link?.url {
+                handler(url)
+            } else {
+                handler(nil)
+            }
+        }
+    }
+    
     func transform(deeplinkURL: URL) -> Deeplink? {
-        guard let scheme = deeplinkURL.scheme,
-              scheme == Constants.scheme,
-              let components = URLComponents(url: deeplinkURL, resolvingAgainstBaseURL: false)
+        guard let components = URLComponents(url: deeplinkURL, resolvingAgainstBaseURL: false)
               else { return nil }
-        switch components.host {
+        switch deeplinkURL.lastPathComponent {
         case Constants.studentInvite:
             guard let idString = components.queryItems?.first(where: { $0.name == Constants.id })?.value,
                   let id = Int(idString),

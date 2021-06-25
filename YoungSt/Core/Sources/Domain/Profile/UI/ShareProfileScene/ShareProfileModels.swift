@@ -11,6 +11,7 @@ import Resources
 import Utilities
 import Coordinator
 import NetworkService
+import Protocols
 
 struct ShareProfileState: Equatable, ClosableState {
     var url: String = ""

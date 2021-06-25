@@ -14,8 +14,5 @@ public final class CoordinatorDIFramework: DIFramework {
         container.register(AppCoordinator.init)
             .as(check: Coordinator.self) {$0}
             .lifetime(.perContainer(.weak))
-        
-        container.register(DeeplinkServiceImpl.init)
-            .as(check: DeeplinkService.self) {$0}
     }
 }

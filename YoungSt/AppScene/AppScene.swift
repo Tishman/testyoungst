@@ -11,6 +11,7 @@ import Coordinator
 import ComposableArchitecture
 import Combine
 import Resources
+import Protocols
 
 struct AppScene: UIViewControllerRepresentable {
     

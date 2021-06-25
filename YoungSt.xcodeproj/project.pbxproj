@@ -9,32 +9,35 @@
 /* Begin PBXBuildFile section */
 		0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C34921D2592001900F729C4 /* YoungStApp.swift */; };
 		0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3492242592001C00F729C4 /* Preview Assets.xcassets */; };
-		0C46219125938835006B1701 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* GRDB */; };
-		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
-		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
+		0C46219125938835006B1701 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* SwiftPackageProductDependency */; };
+		0CA5EDFF2592617E0006F066 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */; };
+		477CD6AB25FBB58B00BB45B8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */; };
 		4783769B25FB9183000B11B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4783769A25FB9183000B11B7 /* Assets.xcassets */; };
 		47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0A4D3260A2EB600DFDBA5 /* ApplicationDI.swift */; };
-		47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* Authorization */; };
-		FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* Mocks */; };
-		FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* NetworkService */; };
-		FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* Protocols */; };
-		FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* Utilities */; };
-		FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* DITranquillity */; };
+		47BF2A8C2618C52D008FDB1F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */; };
+		FD10AC4525FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */; };
+		FD10AC4925FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */; };
+		FD10AC4B25FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */; };
+		FD10AC4D25FE31FD001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */; };
+		FD10AC5225FE3276001FFF11 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */; };
 		FD275011263FEE5E00B12EDB /* ApplicationContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275010263FEE5E00B12EDB /* ApplicationContainerController.swift */; };
 		FD275013263FEE8F00B12EDB /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275012263FEE8F00B12EDB /* TabItem.swift */; };
 		FD275015263FF5B000B12EDB /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275014263FF5B000B12EDB /* TabState.swift */; };
 		FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD275016263FFC5700B12EDB /* TabLogic.swift */; };
-		FD36B123266650A700D845D9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FD36B122266650A700D845D9 /* FirebaseAnalytics */; };
+		FD36B123266650A700D845D9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = FD36B122266650A700D845D9 /* SwiftPackageProductDependency */; };
 		FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337CC263E9EFB00FA6DCE /* AppScene.swift */; };
-		FD4337CF263EA21900FA6DCE /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* Profile */; };
+		FD4337CF263EA21900FA6DCE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */; };
 		FD4337D3263EA4FB00FA6DCE /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D2263EA4FB00FA6DCE /* AppModels.swift */; };
 		FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4337D4263EA50F00FA6DCE /* AppLogic.swift */; };
-		FD5111362618ADC500A90101 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* Coordinator */; };
-		FD51C9B826440C8900047726 /* Translation in Frameworks */ = {isa = PBXBuildFile; productRef = FD51C9B726440C8900047726 /* Translation */; };
+		FD5111362618ADC500A90101 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD5111352618ADC500A90101 /* SwiftPackageProductDependency */; };
+		FD51C9B826440C8900047726 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD51C9B726440C8900047726 /* SwiftPackageProductDependency */; };
 		FD60520526638F1A006218BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD60520426638F1A006218BF /* GoogleService-Info.plist */; };
-		FD60520A26639171006218BF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = FD60520926639171006218BF /* FirebaseCrashlytics */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FD60520A26639171006218BF /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD60520926639171006218BF /* SwiftPackageProductDependency */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FD60520E26639446006218BF /* AnalyticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD60520D26639446006218BF /* AnalyticService.swift */; };
-		FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */; };
+		FD8D2AD3263AF7A4002C0DD2 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */; };
+		FDE99B292685BC89003E9CC1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FDE99B282685BC89003E9CC1 /* SwiftPackageProductDependency */; };
+		FDE99B2B2685C739003E9CC1 /* DeeplinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE99B2A2685C739003E9CC1 /* DeeplinkService.swift */; };
+		FDE99B2D2685CA69003E9CC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE99B2C2685CA69003E9CC1 /* AppDelegate.swift */; };
 		FDF9DA65265F8FD90089FDAD /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF9DA64265F8FD90089FDAD /* SidebarViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +59,8 @@
 		FD60520426638F1A006218BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD60520D26639446006218BF /* AnalyticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
 		FDD32C1F2657BE97001DE446 /* YoungSt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YoungSt.entitlements; sourceTree = "<group>"; };
+		FDE99B2A2685C739003E9CC1 /* DeeplinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkService.swift; sourceTree = "<group>"; };
+		FDE99B2C2685CA69003E9CC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FDF9DA64265F8FD90089FDAD /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,21 +69,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD10AC4925FE31FD001FFF11 /* NetworkService in Frameworks */,
-				FD8D2AD3263AF7A4002C0DD2 /* Dictionaries in Frameworks */,
-				FD10AC4525FE31FD001FFF11 /* Mocks in Frameworks */,
-				FD4337CF263EA21900FA6DCE /* Profile in Frameworks */,
-				477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */,
-				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
-				FD51C9B826440C8900047726 /* Translation in Frameworks */,
-				FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */,
-				FD36B123266650A700D845D9 /* FirebaseAnalytics in Frameworks */,
-				0C46219125938835006B1701 /* GRDB in Frameworks */,
-				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
-				FD5111362618ADC500A90101 /* Coordinator in Frameworks */,
-				FD60520A26639171006218BF /* FirebaseCrashlytics in Frameworks */,
-				47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */,
-				0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */,
+				FD10AC4925FE31FD001FFF11 /* BuildFile in Frameworks */,
+				FD8D2AD3263AF7A4002C0DD2 /* BuildFile in Frameworks */,
+				FD10AC4525FE31FD001FFF11 /* BuildFile in Frameworks */,
+				FD4337CF263EA21900FA6DCE /* BuildFile in Frameworks */,
+				477CD6AB25FBB58B00BB45B8 /* BuildFile in Frameworks */,
+				FD10AC4D25FE31FD001FFF11 /* BuildFile in Frameworks */,
+				FD51C9B826440C8900047726 /* BuildFile in Frameworks */,
+				FD10AC5225FE3276001FFF11 /* BuildFile in Frameworks */,
+				FD36B123266650A700D845D9 /* BuildFile in Frameworks */,
+				0C46219125938835006B1701 /* BuildFile in Frameworks */,
+				FD10AC4B25FE31FD001FFF11 /* BuildFile in Frameworks */,
+				FDE99B292685BC89003E9CC1 /* BuildFile in Frameworks */,
+				FD5111362618ADC500A90101 /* BuildFile in Frameworks */,
+				FD60520A26639171006218BF /* BuildFile in Frameworks */,
+				47BF2A8C2618C52D008FDB1F /* BuildFile in Frameworks */,
+				0CA5EDFF2592617E0006F066 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,7 +97,6 @@
 				4783769825FB90A9000B11B7 /* Core */,
 				0C34921C2592001900F729C4 /* YoungSt */,
 				0C34921B2592001900F729C4 /* Products */,
-				FD36B121266650A700D845D9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +117,7 @@
 				FD4337CB263E9EDC00FA6DCE /* AppScene */,
 				47A0A4D2260A2EAC00DFDBA5 /* DI */,
 				0C34921D2592001900F729C4 /* YoungStApp.swift */,
+				FDE99B2C2685CA69003E9CC1 /* AppDelegate.swift */,
 				FD60520C2663943D006218BF /* Analytic */,
 				0C3492262592001C00F729C4 /* Info.plist */,
 				FD60520426638F1A006218BF /* GoogleService-Info.plist */,
@@ -148,13 +154,6 @@
 			path = TabScene;
 			sourceTree = "<group>";
 		};
-		FD36B121266650A700D845D9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		FD4337CB263E9EDC00FA6DCE /* AppScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +167,7 @@
 		FD60520C2663943D006218BF /* Analytic */ = {
 			isa = PBXGroup;
 			children = (
+				FDE99B2A2685C739003E9CC1 /* DeeplinkService.swift */,
 				FD60520D26639446006218BF /* AnalyticService.swift */,
 			);
 			path = Analytic;
@@ -199,21 +199,22 @@
 			);
 			name = YoungSt;
 			packageProductDependencies = (
-				0CA5EDFE2592617E0006F066 /* SwiftProtobuf */,
-				0C46219025938835006B1701 /* GRDB */,
-				477CD6AA25FBB58B00BB45B8 /* Resources */,
-				FD10AC4425FE31FD001FFF11 /* Mocks */,
-				FD10AC4825FE31FD001FFF11 /* NetworkService */,
-				FD10AC4A25FE31FD001FFF11 /* Protocols */,
-				FD10AC4C25FE31FD001FFF11 /* Utilities */,
-				FD10AC5125FE3276001FFF11 /* DITranquillity */,
-				FD5111352618ADC500A90101 /* Coordinator */,
-				47BF2A8B2618C52D008FDB1F /* Authorization */,
-				FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */,
-				FD4337CE263EA21900FA6DCE /* Profile */,
-				FD51C9B726440C8900047726 /* Translation */,
-				FD60520926639171006218BF /* FirebaseCrashlytics */,
-				FD36B122266650A700D845D9 /* FirebaseAnalytics */,
+				0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */,
+				0C46219025938835006B1701 /* SwiftPackageProductDependency */,
+				477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */,
+				FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */,
+				FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */,
+				FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */,
+				FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */,
+				FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */,
+				FD5111352618ADC500A90101 /* SwiftPackageProductDependency */,
+				47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */,
+				FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */,
+				FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */,
+				FD51C9B726440C8900047726 /* SwiftPackageProductDependency */,
+				FD60520926639171006218BF /* SwiftPackageProductDependency */,
+				FD36B122266650A700D845D9 /* SwiftPackageProductDependency */,
+				FDE99B282685BC89003E9CC1 /* SwiftPackageProductDependency */,
 			);
 			productName = YoungSt;
 			productReference = 0C34921A2592001900F729C4 /* YoungSt.app */;
@@ -243,11 +244,11 @@
 			);
 			mainGroup = 0C3492112592001900F729C4;
 			packageReferences = (
-				0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
-				0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
-				0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
-				FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */,
-				FD60520626639171006218BF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0C34922D2592008500F729C4 /* RemoteSwiftPackageReference */,
+				0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */,
+				0C46218F25938835006B1701 /* RemoteSwiftPackageReference */,
+				FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */,
+				FD60520626639171006218BF /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 0C34921B2592001900F729C4 /* Products */;
 			projectDirPath = "";
@@ -300,12 +301,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD4337D5263EA50F00FA6DCE /* AppLogic.swift in Sources */,
+				FDE99B2B2685C739003E9CC1 /* DeeplinkService.swift in Sources */,
 				FD275015263FF5B000B12EDB /* TabState.swift in Sources */,
 				FD4337CD263E9EFB00FA6DCE /* AppScene.swift in Sources */,
 				FD275013263FEE8F00B12EDB /* TabItem.swift in Sources */,
 				FD275011263FEE5E00B12EDB /* ApplicationContainerController.swift in Sources */,
 				FDF9DA65265F8FD90089FDAD /* SidebarViewController.swift in Sources */,
 				FD275017263FFC5800B12EDB /* TabLogic.swift in Sources */,
+				FDE99B2D2685CA69003E9CC1 /* AppDelegate.swift in Sources */,
 				FD60520E26639446006218BF /* AnalyticService.swift in Sources */,
 				47A0A4D4260A2EB600DFDBA5 /* ApplicationDI.swift in Sources */,
 				0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */,
@@ -441,7 +444,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
 				DEVELOPMENT_TEAM = TXT5Y2EP72;
@@ -472,7 +475,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
 				DEVELOPMENT_TEAM = TXT5Y2EP72;
 				ENABLE_PREVIEWS = YES;
@@ -517,7 +520,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		0C34922D2592008500F729C4 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
@@ -525,7 +528,7 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+		0C46218F25938835006B1701 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/GRDB.swift.git";
 			requirement = {
@@ -533,7 +536,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
+		0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf.git";
 			requirement = {
@@ -541,7 +544,7 @@
 				minimumVersion = 1.14.0;
 			};
 		};
-		FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */ = {
+		FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivlevAstef/DITranquillity.git";
 			requirement = {
@@ -549,7 +552,7 @@
 				minimumVersion = 4.2.0;
 			};
 		};
-		FD60520626639171006218BF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		FD60520626639171006218BF /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
@@ -560,70 +563,75 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C46219025938835006B1701 /* GRDB */ = {
+		0C46219025938835006B1701 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			package = 0C46218F25938835006B1701 /* RemoteSwiftPackageReference */;
 			productName = GRDB;
 		};
-		0CA5EDFE2592617E0006F066 /* SwiftProtobuf */ = {
+		0CA5EDFE2592617E0006F066 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			package = 0CA5EDFD2592617D0006F066 /* RemoteSwiftPackageReference */;
 			productName = SwiftProtobuf;
 		};
-		477CD6AA25FBB58B00BB45B8 /* Resources */ = {
+		477CD6AA25FBB58B00BB45B8 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Resources;
 		};
-		47BF2A8B2618C52D008FDB1F /* Authorization */ = {
+		47BF2A8B2618C52D008FDB1F /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Authorization;
 		};
-		FD10AC4425FE31FD001FFF11 /* Mocks */ = {
+		FD10AC4425FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Mocks;
 		};
-		FD10AC4825FE31FD001FFF11 /* NetworkService */ = {
+		FD10AC4825FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkService;
 		};
-		FD10AC4A25FE31FD001FFF11 /* Protocols */ = {
+		FD10AC4A25FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Protocols;
 		};
-		FD10AC4C25FE31FD001FFF11 /* Utilities */ = {
+		FD10AC4C25FE31FD001FFF11 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Utilities;
 		};
-		FD10AC5125FE3276001FFF11 /* DITranquillity */ = {
+		FD10AC5125FE3276001FFF11 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */;
+			package = FD10AC5025FE3276001FFF11 /* RemoteSwiftPackageReference */;
 			productName = DITranquillity;
 		};
-		FD36B122266650A700D845D9 /* FirebaseAnalytics */ = {
+		FD36B122266650A700D845D9 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FD60520626639171006218BF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = FD60520626639171006218BF /* RemoteSwiftPackageReference */;
 			productName = FirebaseAnalytics;
 		};
-		FD4337CE263EA21900FA6DCE /* Profile */ = {
+		FD4337CE263EA21900FA6DCE /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Profile;
 		};
-		FD5111352618ADC500A90101 /* Coordinator */ = {
+		FD5111352618ADC500A90101 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Coordinator;
 		};
-		FD51C9B726440C8900047726 /* Translation */ = {
+		FD51C9B726440C8900047726 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Translation;
 		};
-		FD60520926639171006218BF /* FirebaseCrashlytics */ = {
+		FD60520926639171006218BF /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FD60520626639171006218BF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = FD60520626639171006218BF /* RemoteSwiftPackageReference */;
 			productName = FirebaseCrashlytics;
 		};
-		FD8D2AD2263AF7A4002C0DD2 /* Dictionaries */ = {
+		FD8D2AD2263AF7A4002C0DD2 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Dictionaries;
+		};
+		FDE99B282685BC89003E9CC1 /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD60520626639171006218BF /* RemoteSwiftPackageReference */;
+			productName = FirebaseDynamicLinks;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -32,6 +32,9 @@ final class ApplicationDI: DIFramework {
         
         container.register { UserDefaults.standard }
             .as(check: KeyValueStorage.self) {$0}
+        
+        container.register(DeeplinkServiceImpl.init)
+            .as(check: DeeplinkService.self) {$0}
     }
     
     static let container: DIContainer = {

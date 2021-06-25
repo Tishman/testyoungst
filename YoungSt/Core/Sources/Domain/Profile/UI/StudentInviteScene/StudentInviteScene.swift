@@ -22,7 +22,7 @@ struct StudentInviteScene: View {
                         ProfileAvatarView(source: avatarSource, size: .big)
                     }
                     
-                    VStack {
+                    VStack(spacing: .spacing(.medium)) {
                         if !viewStore.title.isEmpty {
                             Text(viewStore.title)
                                 .font(.title.bold())
