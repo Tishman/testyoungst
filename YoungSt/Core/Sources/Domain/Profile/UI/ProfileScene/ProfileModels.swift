@@ -57,6 +57,7 @@ struct ProfileState: Equatable, Previwable {
 
 enum ProfileAction: Equatable {
     case viewAppeared
+    case refresh
     case profileTypeChanged(ProfileState.ProfileTypeState)
     
     case currentProfile(CurrentProfileAction)

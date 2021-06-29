@@ -27,6 +27,14 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .viewAppeared:
             state.profileType = env.storage[currentProfileTypeKey] ?? .student
             
+        case .refresh:
+            switch state.profileType {
+            case .student:
+                return .init(value: .teacherInfo(.reload))
+            case .teacher:
+                return .init(value: .studentsInfo(.updateList))
+            }
+            
         case let .profileTypeChanged(newProfileType):
             state.profileType = newProfileType
             env.storage[currentProfileTypeKey] = newProfileType

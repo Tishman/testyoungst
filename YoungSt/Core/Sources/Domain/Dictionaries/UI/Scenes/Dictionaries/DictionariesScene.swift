@@ -68,14 +68,13 @@ struct DictionariesScene: View {
                     }
                     .padding(.top, .spacing(.medium))
                 }
-                .fixFlickering()
 
                 if viewStore.state {
                     IndicatorView()
                 }
             }
             .onAppear { viewStore.send(.viewLoaded) }
-            .addRefreshToScrollView { viewStore.send(.refreshList) }
+            .refreshable { viewStore.send(.refreshList) }
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationBarTitleDisplayMode(.inline)

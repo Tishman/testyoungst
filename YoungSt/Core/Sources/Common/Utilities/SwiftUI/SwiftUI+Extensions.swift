@@ -26,8 +26,29 @@ public extension View {
         .init(rootView: self)
     }
     
-    func addRefreshToScrollView(handler: @escaping () -> Void) -> some View {
-        self.introspectScrollView { scrollView in
+    func refreshable(handler: @escaping () -> Void) -> some View {
+        #if targetEnvironment(macCatalyst)
+        return self
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: handler) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .buttonStyle(defaultButtonStyle)
+                    .keyboardShortcut("r", modifiers: .command)
+                }
+            }
+            .overlay(
+                Button(action: handler) {
+                    Color.clear
+                        .frame(width: 0, height: 0)
+                }
+                .opacity(0)
+                .buttonStyle(defaultButtonStyle)
+                .keyboardShortcut("r", modifiers: .command)
+            )
+        #else
+        return introspectScrollView { scrollView in
             guard UIDevice.current.userInterfaceIdiom != .mac else { return }
             let refresh: UIRefreshControl
             if let existed = scrollView.refreshControl {
@@ -40,8 +61,8 @@ public extension View {
                 scrollView.refreshControl = refresh
             }
         }
+        #endif
     }
-    
     
     /// Due to bug in SwiftUI in iOS 14.5 we ARE NOT ALLOWED TO GAVE EXACT 2 NavigationLink.
     /// It can be 0,1 or 3+

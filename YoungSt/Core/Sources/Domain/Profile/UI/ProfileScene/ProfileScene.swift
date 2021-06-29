@@ -15,7 +15,7 @@ struct ProfileScene: View {
     let store: Store<ProfileState, ProfileAction>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store.stateless) { viewStore in
             ScrollView {
                 VStack {
                     CurrentProfileView(store: store.scope(state: \.currentProfileState, action: ProfileAction.currentProfile))
@@ -26,18 +26,20 @@ struct ProfileScene: View {
                     tabContent
                 }
             }
-            .fixFlickering()
             .onAppear { viewStore.send(.viewAppeared) }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    if viewStore.currentProfileState.isInfoProvided {
-                        Button { viewStore.send(.changeDetail(.editProfile)) } label: {
-                            Image(systemName: "pencil.circle")
+                    WithViewStore(store.scope(state: \.currentProfileState.isInfoProvided)) { viewStore in
+                        if viewStore.state {
+                            Button { viewStore.send(.changeDetail(.editProfile)) } label: {
+                                Image(systemName: "pencil.circle")
+                            }
+                            .buttonStyle(defaultButtonStyle)
                         }
-                        .buttonStyle(defaultButtonStyle)
                     }
                 }
             }
+            .refreshable { viewStore.send(.refresh) }
         }
         .navigationBarTitleDisplayMode(.inline)
     }
