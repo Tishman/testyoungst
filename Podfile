@@ -2,6 +2,7 @@
 require 'cocoapods-catalyst-support'
 
 platform :ios, '14.1'
+inhibit_all_warnings!
 
 target 'YoungSt' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -22,4 +23,10 @@ end
 
 post_install do |installer|
   installer.configure_catalyst
+
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.1'
+    end
+  end
 end
