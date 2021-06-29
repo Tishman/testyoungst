@@ -36,7 +36,7 @@ struct DictionariesScene: View {
                                     }
                                     .padding(.all, .spacing(.ultraSmall))
                                     .contentShape(RoundedRectangle(cornerRadius: .corner(.small), style: .continuous))
-                                    .hoverEffect()
+                                    .hoverEffectForIOS()
                                 }
                             }
                         }
@@ -78,6 +78,7 @@ struct DictionariesScene: View {
             .addRefreshToScrollView { viewStore.send(.refreshList) }
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var groupsList: some View {

@@ -51,6 +51,16 @@ public extension View {
             .background(NavigationLink(destination: EmptyView(), label: {}))
             .background(NavigationLink(destination: EmptyView(), label: {}))
     }
+    
+    
+    /// Default hover effect breaks buttons in catalyst
+    func hoverEffectForIOS() -> some View {
+        #if !targetEnvironment(macCatalyst)
+        return hoverEffect()
+        #else
+        return self
+        #endif
+    }
 }
 
 public extension Color {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Resources
 
 public struct HeaderActionButton: View {
     
@@ -25,10 +26,11 @@ public struct HeaderActionButton: View {
         Button(action: action) {
             Label(title, systemImage: systemImage)
                 .frame(maxWidth: .infinity, minHeight: minRowHeight)
+                .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
+        .buttonStyle(defaultButtonStyle)
         .bubbled()
-        .hoverEffect()
-        .buttonStyle(DefaultButtonStyle())
+        .hoverEffectForIOS()
     }
     
 }

@@ -61,10 +61,10 @@ public extension View {
     
     func makeDefaultNavigationBarTransparent() -> some View {
         self.introspectNavigationController {
-                $0.navigationBar.backgroundColor = .clear
-                $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
-                $0.navigationBar.shadowImage = UIImage()
-            }
+            $0.navigationBar.backgroundColor = .clear
+            $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            $0.navigationBar.shadowImage = UIImage()
+        }
     }
     
 }

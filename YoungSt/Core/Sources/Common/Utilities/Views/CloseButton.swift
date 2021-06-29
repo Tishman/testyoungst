@@ -20,8 +20,8 @@ public struct CloseButton: View {
         Button(action: action) {
             CrossView()
         }
-        .frame(width: DefaultSize.navigationBarButton,
-               height: DefaultSize.navigationBarButton)
+        .buttonStyle(defaultButtonStyle)
+        .frame(width: DefaultSize.navigationBarButton, height: DefaultSize.navigationBarButton)
     }
 }
 

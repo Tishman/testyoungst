@@ -85,7 +85,7 @@ public struct TextEditingView: UIViewRepresentable {
             let existingLines = textView.text.components(separatedBy: CharacterSet.newlines)
             let newLines = text.components(separatedBy: CharacterSet.newlines)
             let linesAfterChange = existingLines.count + newLines.count - 1
-            let newlineNotOverflowed = linesAfterChange <= lineLimit
+            let newlineNotOverflowed = linesAfterChange <= lineLimit || lineLimit == 0
             
             guard let rangeOfTextToReplace = Range(range, in: textView.text) else {
                 return newlineNotOverflowed

@@ -53,6 +53,15 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
         observeClosing().store(in: &bag)
     }
     
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        if let navigationController = parent as? UINavigationController {
+            navigationController.navigationBar.backgroundColor = .clear
+            navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController.navigationBar.shadowImage = UIImage()
+        }
+    }
+    
     func handle(routing: AddWordState.Routing) {
         switch routing {
         case let .groupsList(userID):

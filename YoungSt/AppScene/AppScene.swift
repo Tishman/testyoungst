@@ -50,6 +50,14 @@ final class AppViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        #if targetEnvironment(macCatalyst)
+        for window in UIApplication.shared.windows {
+            guard let titlebar = window.windowScene?.titlebar else { continue }
+            titlebar.titleVisibility = .hidden
+            titlebar.toolbar = nil
+        }
+        #endif
+        
         viewStore.publisher.map(\.uiState)
             .removeDuplicates()
             .sink { [weak self] newUIState in

@@ -44,6 +44,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
         
         super.init(style: .tripleColumn)
         
+        self.primaryBackgroundStyle = .sidebar
         tab.setViewControllers([Self.createDictionaries(coordinator: coordinator, userID: viewStore.userID),
                                 Self.createProfiles(coordinator: coordinator, userID: viewStore.userID),
                                 settings],
@@ -71,6 +72,11 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
     }
     
     private func configureDisplayMode(size: CGSize?) {
+        #if targetEnvironment(macCatalyst)
+        preferredSplitBehavior = .tile
+        preferredDisplayMode = .twoBesideSecondary
+        preferredPrimaryColumnWidth = UIFloat(320)
+        #else
         let mediumIPadPortraitWidth: CGFloat = 834
         switch size?.width {
         case .some((mediumIPadPortraitWidth + 1)...):
@@ -80,6 +86,7 @@ final class ApplicationContainerController: UISplitViewController, UISplitViewCo
             preferredDisplayMode = .twoDisplaceSecondary
             preferredSplitBehavior = .displace
         }
+        #endif
     }
     
     static private func createDictionaries(coordinator: Coordinator, userID: UUID) -> UINavigationController {

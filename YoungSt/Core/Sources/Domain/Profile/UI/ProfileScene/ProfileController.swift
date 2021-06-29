@@ -54,11 +54,6 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
         observeRouting().store(in: &bag)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
     func handle(routing: ProfileState.Route) {
         switch routing {
         case .editProfile:

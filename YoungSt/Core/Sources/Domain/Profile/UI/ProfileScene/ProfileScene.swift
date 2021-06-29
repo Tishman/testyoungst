@@ -34,11 +34,12 @@ struct ProfileScene: View {
                         Button { viewStore.send(.changeDetail(.editProfile)) } label: {
                             Image(systemName: "pencil.circle")
                         }
+                        .buttonStyle(defaultButtonStyle)
                     }
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var topControls: some View {
