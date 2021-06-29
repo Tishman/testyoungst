@@ -21,20 +21,28 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
     Reducer { state, action, env in
         
         enum Cancellable: Hashable {
+            case observeStudents
             case updateStudets
             case removeStudent(UUID)
         }
         
         switch action {
         case .viewAppeared:
-            return .init(value: .updateList)
+            let observeStudentEvents = env.profileEventPublisher.publisher
+                .filter { $0 == .studentsInfoUpdated }
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
+                .map { _ in StudentsInfoAction.updateList }
+                .cancellable(id: Cancellable.observeStudents, cancelInFlight: true, bag: env.bag)
+            
+            return .merge(.init(value: .updateList), observeStudentEvents)
             
         case .updateList:
             state.isLoading = true
             
             return env.inviteService.getStudents()
                 .mapError(EquatableError.init)
-                .receive(on: DispatchQueue.main)
+                .receive(on: DispatchQueue.main.animation())
                 .catchToEffect()
                 .map(StudentsInfoAction.studentInfoUpdated)
                 .cancellable(id: Cancellable.updateStudets, bag: env.bag)

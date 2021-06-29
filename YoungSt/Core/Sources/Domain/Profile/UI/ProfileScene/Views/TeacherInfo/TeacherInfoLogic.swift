@@ -39,24 +39,33 @@ let teacherInfoReducer = Reducer<TeacherInfoState, TeacherInfoAction, TeacherInf
     enum Cancellable: Hashable {
         case loadTeacher
         case removeTeacher
+        case observeTeacher
         case acceptInvite(UUID)
         case rejectInvite(UUID)
     }
     
     switch action {
     case .viewAppeared:
-        return .init(value: .reload)
+        let observeTeacherEvents = env.profileEventPublisher.publisher
+            .filter { $0 == .teacherInfoUpdated }
+            .receive(on: DispatchQueue.main)
+            .eraseToEffect()
+            .map { _ in TeacherInfoAction.reload }
+            .cancellable(id: Cancellable.observeTeacher, cancelInFlight: true, bag: env.bag)
+        
+        return .merge(.init(value: .reload), observeTeacherEvents)
         
     case .reload:
-        state.isLoading = false
+        state.isLoading = true
         return env.inviteService.getTeacher()
             .mapError(EquatableError.init)
-            .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.main.animation())
             .catchToEffect()
             .map(TeacherInfoAction.teacherLoaded)
             .cancellable(id: Cancellable.loadTeacher, bag: env.bag)
         
     case let .teacherLoaded(result):
+        state.isLoading = false
         switch result {
         case let .success(teacher):
             state.uiState = TeacherInfoLogic.createState(from: teacher)

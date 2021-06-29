@@ -53,7 +53,8 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .cancellable(id: Cancellable.getUserLists, bag: env.bag)
             
         case .viewLoaded:
-            let dictChangedPublisher = env.dictionaryEventPublisher.dictionaryEventPublisher
+            let dictChangedPublisher = env.dictionaryEventPublisher.publisher
+                .receive(on: DispatchQueue.main)
                 .eraseToEffect()
                 .map { _ in DictionariesAction.silentRefreshList }
                 .cancellable(id: Cancellable.dictObserving, bag: env.bag)

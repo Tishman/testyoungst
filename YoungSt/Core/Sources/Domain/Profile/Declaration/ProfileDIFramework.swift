@@ -9,6 +9,7 @@ import Foundation
 import DITranquillity
 import UIKit
 import Coordinator
+import Protocols
 
 public final class ProfileDIFramework: DIFramework {
     
@@ -61,6 +62,10 @@ public final class ProfileDIFramework: DIFramework {
         
         container.register(InviteServiceImpl.init)
             .as(check: InviteService.self) {$0}
+        
+        container.register(ProfileEventPublisherImpl.init)
+            .as(check: ProfileEventPublisher.self) {$0}
+            .lifetime(.perContainer(.weak))
     }
     
 }

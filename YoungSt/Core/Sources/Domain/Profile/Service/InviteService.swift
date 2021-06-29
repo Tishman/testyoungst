@@ -29,28 +29,53 @@ protocol InviteService: AnyObject {
 }
 
 final class InviteServiceImpl: InviteService {
+    
+    private let profileEventPublisher: ProfileEventPublisherImpl
+    private let client: Profile_ProfileClientProtocol
+    
+    init(client: Profile_ProfileClientProtocol, profileEventPublisher: ProfileEventPublisherImpl) {
+        self.client = client
+        self.profileEventPublisher = profileEventPublisher
+    }
+    
     func getTeacher() -> AnyPublisher<Profile_GetTeacherResponse, Error> {
         client.getTeacher(.init()).response.publisher.eraseToAnyPublisher()
     }
     
     func removeTeacher(request: Profile_RemoveTeacherRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.removeTeacher(request).response.publisher.eraseToAnyPublisher()
+        client.removeTeacher(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.profileEventPublisher.send(event: .teacherInfoUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func sendInviteToTeacher(request: Profile_SendInviteToTeacherRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.sendInviteToTeacher(request).response.publisher.eraseToAnyPublisher()
+        client.sendInviteToTeacher(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.profileEventPublisher.send(event: .teacherInfoUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func sendInviteToStudent(request: Profile_SendInviteToStudentRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.sendInviteToStudent(request).response.publisher.eraseToAnyPublisher()
+        client.sendInviteToStudent(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.profileEventPublisher.send(event: .studentsInfoUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func acceptInvite(request: Profile_AcceptInviteRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.acceptInvite(request).response.publisher.eraseToAnyPublisher()
+        client.acceptInvite(request).response.publisher
+            .handleEvents(receiveOutput: { _ in
+                self.profileEventPublisher.send(event: .teacherInfoUpdated)
+                self.profileEventPublisher.send(event: .studentsInfoUpdated)
+            })
+            .eraseToAnyPublisher()
     }
     
     func rejectInvite(request: Profile_RejectInviteRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.rejectInvite(request).response.publisher.eraseToAnyPublisher()
+        client.rejectInvite(request).response.publisher
+            .handleEvents(receiveOutput: { _ in
+                self.profileEventPublisher.send(event: .teacherInfoUpdated)
+                self.profileEventPublisher.send(event: .studentsInfoUpdated)
+            })
+            .eraseToAnyPublisher()
     }
     
     func generateSharedTeacherInvite(request: Profile_GenerateSharedTeacherInviteRequest) -> AnyPublisher<Profile_GenerateSharedTeacherInviteResponse, Error> {
@@ -62,7 +87,9 @@ final class InviteServiceImpl: InviteService {
     }
     
     func acceptSharedTeacherInvite(request: Profile_AcceptSharedTeacherInviteRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.acceptSharedTeacherInvite(request).response.publisher.eraseToAnyPublisher()
+        client.acceptSharedTeacherInvite(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.profileEventPublisher.send(event: .teacherInfoUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func cancelAllSharedTeacherInvites() -> AnyPublisher<EmptyResponse, Error> {
@@ -74,7 +101,9 @@ final class InviteServiceImpl: InviteService {
     }
     
     func removeStudent(request: Profile_RemoveStudentRequest) -> AnyPublisher<EmptyResponse, Error> {
-        client.removeStudent(request).response.publisher.eraseToAnyPublisher()
+        client.removeStudent(request).response.publisher
+            .handleEvents(receiveOutput: { _ in self.profileEventPublisher.send(event: .teacherInfoUpdated) })
+            .eraseToAnyPublisher()
     }
     
     func getProfileInfo(request: Profile_GetProfileInfoRequest) -> AnyPublisher<Profile_GetProfileInfoResponse, Error> {
@@ -91,13 +120,6 @@ final class InviteServiceImpl: InviteService {
     
     func searchUsers(request: Profile_SearchUsersRequest) -> AnyPublisher<Profile_SearchUsersResponse, Error> {
         client.searchUsers(request).response.publisher.eraseToAnyPublisher()
-    }
-    
-    
-    private let client: Profile_ProfileClientProtocol
-    
-    init(client: Profile_ProfileClientProtocol) {
-        self.client = client
     }
     
     

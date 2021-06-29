@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Resources
 import Utilities
 import NetworkService
+import Protocols
 
 struct StudentsInfoState: Equatable {
     
@@ -21,7 +22,7 @@ struct StudentsInfoState: Equatable {
     var alert: AlertState<StudentsInfoAction>?
     
     var shouldShowLoader: Bool {
-        isLoading && incomingInvites.isEmpty && students.isEmpty
+        isLoading && !hasInvites && students.isEmpty
     }
     
     var hasInvites: Bool {
@@ -56,6 +57,7 @@ struct StudentsInfoEnvironment {
     let bag: CancellationBag
     
     let inviteService: InviteService
+    let profileEventPublisher: ProfileEventPublisher
     
     var incomingStudentInviteEnv: IncomingStudentInviteEnvironment {
         .init(bag: bag,

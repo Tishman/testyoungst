@@ -83,6 +83,7 @@ struct ProfileEnvironment {
     let storage: KeyValueStorage
     let deeplinkService: DeeplinkService
     let credentialsService: CredentialsService
+    let profileEventPublisher: ProfileEventPublisher
     
     var currentProfileEnv: CurrentProfileEnvironment {
         .init(bag: .autoId(childOf: bag),
@@ -93,11 +94,13 @@ struct ProfileEnvironment {
     
     var teacherInfoEnv: TeacherInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
-              inviteService: inviteService)
+              inviteService: inviteService,
+              profileEventPublisher: profileEventPublisher)
     }
     
     var studentsInfoEnv: StudentsInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
-              inviteService: inviteService)
+              inviteService: inviteService,
+              profileEventPublisher: profileEventPublisher)
     }
 }

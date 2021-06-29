@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Resources
 import Utilities
 import NetworkService
+import Protocols
 
 struct TeacherInfoState: Equatable, Previwable {
     var alert: AlertState<TeacherInfoAction>?
@@ -95,4 +96,5 @@ struct TeacherInfoEnvironment {
     let bag: CancellationBag
     
     let inviteService: InviteService
+    let profileEventPublisher: ProfileEventPublisher
 }
