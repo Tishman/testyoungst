@@ -22,6 +22,7 @@ public protocol RoutableController: AnyObject {
     
     func present(controller: UIViewController, preferredPresentation: PreferredPresentation)
     func handle(routing: Routing)
+    func resetRouting()
 }
 
 public extension RoutableController {
@@ -29,8 +30,15 @@ public extension RoutableController {
     func observeRouting() -> AnyCancellable {
         routePublisher
             .compactMap { $0 }
+            .handleEvents(receiveOutput: { _ in
+                DispatchQueue.main.async { [weak self] in
+                    self?.resetRouting()
+                }
+            })
             .sink(receiveValue: { [weak self] in self?.handle(routing: $0) })
     }
+    
+    
 }
 
 public extension RoutableController where Self: UIViewController {

@@ -33,12 +33,11 @@ final class SearchStudentController: UIHostingController<SearchStudentScene>, Cl
     }
     
     var routePublisher: AnyPublisher<SearchStudentState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.routingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
     }
     
     private var bag = Set<AnyCancellable>()

@@ -25,12 +25,11 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
     typealias Endpoint = Provider1<ProfileController, ProfileInput>
     
     var routePublisher: AnyPublisher<ProfileState.Route?, Never> {
-        viewStore.publisher.route
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.changeDetail(.closed))
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.route.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.changeDetail(.closed))
     }
     
     private let store: Store<ProfileState, ProfileAction>

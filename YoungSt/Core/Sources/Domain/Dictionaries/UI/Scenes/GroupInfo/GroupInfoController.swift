@@ -24,12 +24,11 @@ final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableCo
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     
     var routePublisher: AnyPublisher<GroupInfoState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.routingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
     }
     
     private let store: Store<GroupInfoState, GroupInfoAction>

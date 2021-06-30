@@ -31,7 +31,16 @@ struct AddWordScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
-    @State private var elementsAppeared: Bool = false
+    
+    @State private var elementsAppeared: Bool = {
+        #if targetEnvironment(macCatalyst)
+        // Disabling animationed transition for catalyst
+        return true
+        #else
+        return false
+        #endif
+    }()
+    
     private let addWordInputHeight: CGFloat = UIFloat(130)
     private let translateIndicatorHeight: CGFloat = UIFloat(14)
     

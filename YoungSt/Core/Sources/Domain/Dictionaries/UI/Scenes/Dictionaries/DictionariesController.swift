@@ -31,12 +31,11 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
     private var bag = Set<AnyCancellable>()
     
     var routePublisher: AnyPublisher<DictionariesState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.changeDetail(.closed))
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.changeDetail(.closed))
     }
     
     init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {

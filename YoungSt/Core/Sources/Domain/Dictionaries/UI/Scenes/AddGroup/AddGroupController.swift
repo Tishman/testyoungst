@@ -23,12 +23,11 @@ final class AddGroupController: UIHostingController<AddGroupScene>, ClosableCont
     
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     var routePublisher: AnyPublisher<AddGroupState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] routing in
-                guard let viewStore = viewStore, routing != nil else { return }
-                viewStore.send(.rountingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.rountingHandled)
     }
     
     private let store: Store<AddGroupState, AddGroupAction>

@@ -28,13 +28,12 @@ final class WelcomeViewController: UIHostingController<WelcomeView>, RoutableCon
 	private var bag = Set<AnyCancellable>()
 	
 	var routePublisher: AnyPublisher<WelcomeState.Routing?, Never> {
-		viewStore.publisher.routing
-			.handleEvents(receiveOutput: { [weak viewStore] point in
-				guard let viewStore = viewStore, point != nil else { return }
-				viewStore.send(.routingHandled(.close))
-			})
-			.eraseToAnyPublisher()
+		viewStore.publisher.routing.eraseToAnyPublisher()
 	}
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled(.close))
+    }
 	
 	init(input: WelcomeInput, env: WelcomeEnviroment, routingPoints: WelcomeRoutingPoints) {
 		let store = Store(initialState: WelcomeState(),
