@@ -281,6 +281,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/swiftgen.yml",
 			);
 			name = Swiftgen;
 			outputFileListPaths = (

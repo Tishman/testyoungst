@@ -26,7 +26,7 @@ final class ConfrimEmailController: UIHostingController<ConfrimEmailScene>, Clos
 	private var bag = Set<AnyCancellable>()
 	
     init(input: ConfrimEmailInput, env: ConfrimEmailEnviroment) {
-        let store = Store(initialState: .init(userId: input.userId, email: input.email, passsword: input.password),
+        let store = Store(initialState: ConfrimEmailState(userId: input.userId, email: input.email, passsword: input.password),
 						  reducer: confrimEmailReducer,
 						  environment: env)
 		self.store = store

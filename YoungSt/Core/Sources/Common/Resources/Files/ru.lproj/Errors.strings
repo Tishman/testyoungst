@@ -10,7 +10,7 @@
 "errNicknameAlreadyTaken" = "Имя пользователя занято. Пожалуйста, выберите другое";
 "errIncorrectResetPasswordCode" = "Неверный код сброса пароля";
 "errInvalidFormat" = "Неверный формат данных";
-"errInvalidEmail" = "Неверный email email";
+"errInvalidEmail" = "Неверный email";
 "errInvalidLogin" = "Неверный login";
 "errInvalidPassword" = "Неверный пароль";
 "errIncorrectConfirmationCode" = "Неверный код подтверждения. Пожалуйста, проверьте ещё раз";

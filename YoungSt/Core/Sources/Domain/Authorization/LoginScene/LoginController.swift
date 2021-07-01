@@ -19,7 +19,7 @@ struct LoginRoutingPoints {
 	let confirmEmail: ConfrimEmailController.Endpoint
 }
 
-final class LoginController: UIHostingController<LoginView>, RoutableController {
+final class LoginController: UIHostingController<LoginScene>, RoutableController {
 	typealias Endpoint = Provider<LoginController>
 	
 	private let store: Store<LoginState, LoginAction>
@@ -44,7 +44,7 @@ final class LoginController: UIHostingController<LoginView>, RoutableController 
 		self.store = store
 		self.viewStore = .init(store)
 		self.routingPoints = routingPoints
-		super.init(rootView: LoginView(store: store))
+		super.init(rootView: LoginScene(store: store))
 	}
 	
 	override func viewDidLoad() {
