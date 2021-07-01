@@ -34,6 +34,9 @@ struct DictionariesScene: View {
                                     Button { viewStore.send(.changeDetail(.addGroup)) } label: {
                                         Label(Localizable.add, systemImage: "plus.app")
                                     }
+                                    .padding(.all, .spacing(.ultraSmall))
+                                    .contentShape(RoundedRectangle(cornerRadius: .corner(.small), style: .continuous))
+                                    .hoverEffect()
                                 }
                             }
                         }
@@ -48,32 +51,24 @@ struct DictionariesScene: View {
 
                             Spacer()
                             
-                            Button { viewStore.send(.addWordOpened) } label: {
-                                Label(Localizable.add, systemImage: "plus.app")
-                            }
-                        }
-                        .padding([.horizontal, .top])
-                        
-                        IfLetStore(store.scope(state: \.lastUpdate)) { store in
-                            WithViewStore(store) { viewStore in
-                                HStack {
-                                    Spacer()
+                            IfLetStore(store.scope(state: \.lastUpdate)) { store in
+                                WithViewStore(store) { viewStore in
                                     Text(Localizable.lastUpdateTime)
                                     Text(viewStore.state)
                                         .padding(.spacing(.ultraSmall))
                                         .padding(.horizontal, .spacing(.ultraSmall))
                                         .bubbled()
                                 }
-                                .font(.caption)
-                                .padding(.horizontal)
-                                .padding(.top, .spacing(.ultraSmall))
                             }
+                            .font(.caption)
                         }
+                        .padding([.horizontal, .top])
                         
                         wordsList
                     }
                     .padding(.top, .spacing(.medium))
                 }
+                .fixFlickering()
 
                 if viewStore.state {
                     IndicatorView()
@@ -83,15 +78,15 @@ struct DictionariesScene: View {
             .addRefreshToScrollView { viewStore.send(.refreshList) }
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
-        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var groupsList: some View {
         WithViewStore(store) { viewStore in
             if viewStore.groups.isEmpty {
-                emptyPlaceholder(text: Localizable.emptyGroupsPlaceholder) {
+                ActionableEmptyPlaceholder(imageSystemName: "plus", text: Localizable.emptyGroupsPlaceholder) {
                     viewStore.send(.changeDetail(.addGroup))
                 }
+                .padding(.top, .spacing(.regular))
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
@@ -112,6 +107,11 @@ struct DictionariesScene: View {
     
     private var wordsList: some View {
         WithViewStore(store.scope(state: \.wordsList)) { viewStore in
+            HeaderActionButton(Localizable.addWordAction, systemImage: "plus") {
+                viewStore.send(.addWordOpened)
+            }
+            .padding([.top, .horizontal])
+            
             if viewStore.state.isEmpty {
                 Text(Localizable.emptyWordsPlaceholder)
                     .multilineTextAlignment(.center)
@@ -137,26 +137,6 @@ struct DictionariesScene: View {
                 .padding(.horizontal)
             }
         }
-    }
-    
-    private func emptyPlaceholder(text: String, addHandler: @escaping () -> Void) -> some View {
-        VStack {
-            Button(action: addHandler) {
-                Image(systemName: "plus")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
-            }
-            .buttonStyle(InaccentButtonStyle())
-            
-            Text(text)
-                .multilineTextAlignment(.center)
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
-        .fixedSize()
-        .frame(maxWidth: .infinity)
-        .padding(.top, .spacing(.regular))
     }
 }
 

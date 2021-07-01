@@ -48,7 +48,7 @@ final class SidebarViewController: UIViewController {
     
     private var dataSource: UICollectionViewDiffableDataSource<SidebarListSection, SidebarListItem>?
     
-    private let items: [SidebarListItem] = [.content(.init(id: .dictionaries)), .content(.init(id: .profile))]
+    private let items: [SidebarListItem] = TabItem.allCases.map { .content(.init(id: $0)) }
     
     private let accentColor: UIColor = Asset.Colors.greenDark.color
     private let store: Store<TabState, TabAction>

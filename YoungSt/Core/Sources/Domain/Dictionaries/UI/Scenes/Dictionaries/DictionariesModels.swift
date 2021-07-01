@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Utilities
 import Protocols
 import Coordinator
+import NetworkService
 
 struct DictionariesState: Equatable, Previwable {
     

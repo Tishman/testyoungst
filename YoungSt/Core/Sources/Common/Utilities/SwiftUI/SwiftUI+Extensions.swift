@@ -64,3 +64,18 @@ public extension Color {
         )
     }
 }
+
+public extension ScrollView {
+    private typealias PaddedContent = ModifiedContent<Content, _PaddingLayout>
+    
+    /// Fixes incorrect jumbing animation when using large titles and scrollView
+    /// https://stackoverflow.com/questions/64280447/scrollview-navigationview-animation-glitch-swiftui
+    func fixFlickering() -> some View {
+        GeometryReader { geo in
+            ScrollView<PaddedContent>(axes, showsIndicators: showsIndicators) {
+                content.padding(geo.safeAreaInsets) as! PaddedContent
+            }
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+}

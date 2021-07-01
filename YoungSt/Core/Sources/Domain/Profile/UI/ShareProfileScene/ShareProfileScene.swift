@@ -75,6 +75,6 @@ struct ShareProfileScene: View {
 
 struct ShareProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ShareProfileScene(store: .init(initialState: .init(userID: .init()), reducer: .empty, environment: ()))
+        ShareProfileScene(store: .init(initialState: .init(), reducer: .empty, environment: ()))
     }
 }

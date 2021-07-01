@@ -192,7 +192,6 @@
 				0C3492172592001900F729C4 /* Frameworks */,
 				0C3492182592001900F729C4 /* Resources */,
 				FD60520B266391DB006218BF /* Upload crashlytics symbols */,
-				0E1AC3DA26723CE500A439FE /* Swiftgen */,
 			);
 			buildRules = (
 			);

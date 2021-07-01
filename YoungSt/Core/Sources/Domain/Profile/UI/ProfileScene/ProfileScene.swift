@@ -16,18 +16,17 @@ struct ProfileScene: View {
     
     var body: some View {
         WithViewStore(store) { viewStore in
-            ZStack {
-                ScrollView {
-                    VStack {
-                        CurrentProfileView(store: store.scope(state: \.currentProfileState, action: ProfileAction.currentProfile))
-                            .frame(maxWidth: .infinity)
-                            .padding([.top, .horizontal])
-                        
-                        topControls
-                        tabContent
-                    }
+            ScrollView {
+                VStack {
+                    CurrentProfileView(store: store.scope(state: \.currentProfileState, action: ProfileAction.currentProfile))
+                        .frame(maxWidth: .infinity)
+                        .padding([.top, .horizontal])
+                    
+                    topControls
+                    tabContent
                 }
             }
+            .fixFlickering()
             .onAppear { viewStore.send(.viewAppeared) }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -37,63 +36,45 @@ struct ProfileScene: View {
                         }
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { viewStore.send(.changeDetail(.shareProfile)) } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
     }
     
     private var topControls: some View {
         WithViewStore(store) { viewStore in
             
-            Menu {
-                Button { viewStore.send(.profileTypeChanged(.student)) } label: {
-                    Text(Localizable.student)
-                }
-                Button { viewStore.send(.profileTypeChanged(.teacher)) } label: {
-                    Text(Localizable.teacher)
-                }
-            } label: {
-                HStack {
-                    Text(viewStore.profileType.title)
-                    Image(systemName: "chevron.down")
-                }
-                .font(.body)
-                .padding(.vertical, .spacing(.small))
-                .padding(.horizontal)
-                .bubbled()
-            }
-            
-            Picker("", selection: viewStore.binding(get: \.selectedTab.rawValue, send: { .changeSelectedTab($0) })) {
-                ForEach(viewStore.profileType.tabs) { tab in
-                    Text(tab.title)
-                        .tag(tab.rawValue)
+            HStack {
+                Text(Localizable.currentRole)
+                
+                Menu {
+                    Button { viewStore.send(.profileTypeChanged(.student)) } label: {
+                        Text(Localizable.student)
+                    }
+                    Button { viewStore.send(.profileTypeChanged(.teacher)) } label: {
+                        Text(Localizable.teacher)
+                    }
+                } label: {
+                    HStack {
+                        Text(viewStore.profileType.title)
+                        Image(systemName: "chevron.down")
+                    }
+                    .font(.body)
+                    .padding(.vertical, .spacing(.small))
+                    .padding(.horizontal)
+                    .bubbled()
                 }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal, .spacing(.big))
         }
     }
     
     private var tabContent: some View {
-        WithViewStore(store.scope(state: \.selectedTab)) { viewStore in
+        WithViewStore(store.scope(state: \.profileType)) { viewStore in
             switch viewStore.state {
-            case .settings:
-                SettingsView(store: store.scope(state: \.settingsState, action: ProfileAction.settings))
-                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
-                
-            case .teacher:
+            case .student:
                 TeacherInfoView(store: store.scope(state: \.teacherInfoState, action: ProfileAction.teacherInfo))
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-                
-            case .students:
+            case .teacher:
                 StudentsInfoView(store: store.scope(state: \.studentsInfoState, action: ProfileAction.studentsInfo))
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             }
         }
     }

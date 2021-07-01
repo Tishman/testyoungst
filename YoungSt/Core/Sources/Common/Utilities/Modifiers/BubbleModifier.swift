@@ -27,6 +27,7 @@ struct StrokedBubbleModifier: ViewModifier {
                     .foregroundColor(borderColor)
             )
             .clipShape(bubble)
+            .contentShape(bubble)
     }
 }
 
@@ -40,6 +41,7 @@ struct BubbleModifier: ViewModifier {
                 bubble
                     .foregroundColor(color)
             )
+            .contentShape(bubble)
     }
 }
 
@@ -56,6 +58,7 @@ struct GeometryEffectBubbleModifier: ViewModifier {
                     .foregroundColor(color)
                     .matchedGeometryEffect(id: id, in: namespace)
             )
+            .contentShape(bubble)
     }
 }
 

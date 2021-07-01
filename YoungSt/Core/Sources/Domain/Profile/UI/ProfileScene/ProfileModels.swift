@@ -14,25 +14,6 @@ import Coordinator
 
 struct ProfileState: Equatable, Previwable {
     
-    enum Tab: Int, Identifiable, Hashable {
-        case settings
-        case teacher
-        case students
-        
-        var title: String {
-            switch self {
-            case .settings:
-                return Localizable.settings
-            case .teacher:
-                return Localizable.teacher
-            case .students:
-                return Localizable.students
-            }
-        }
-        
-        var id: Self { self }
-    }
-    
     enum ProfileTypeState: Int, Identifiable, Hashable {
         case teacher
         case student
@@ -47,21 +28,13 @@ struct ProfileState: Equatable, Previwable {
                 return Localizable.student
             }
         }
-        
-        var tabs: [Tab] {
-            switch self {
-            case .student:
-                return [.settings, .teacher]
-            case .teacher:
-                return [.settings, .students]
-            }
-        }
     }
     
     enum Route: Equatable {
         case fillInfo
         case editProfile
-        case shareProfile(userID: UUID)
+        case searchTeacher
+        case searchStudents
         case openedStudent(userID: UUID)
     }
     
@@ -75,11 +48,9 @@ struct ProfileState: Equatable, Previwable {
     }
     
     var profileType: ProfileTypeState = .student
-    var selectedTab: Tab = .settings
     
-    var teacherInfoState: TeacherInfoState = .loading
+    var teacherInfoState: TeacherInfoState = .init()
     var studentsInfoState: StudentsInfoState = .init()
-    var settingsState = SettingsState()
     
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
 }
@@ -88,20 +59,15 @@ enum ProfileAction: Equatable {
     case viewAppeared
     case profileTypeChanged(ProfileState.ProfileTypeState)
     
-    case changeSelectedTab(Int)
-    case selectedTabShanged(ProfileState.Tab)
-    
     case currentProfile(CurrentProfileAction)
     case teacherInfo(TeacherInfoAction)
     case studentsInfo(StudentsInfoAction)
-    case settings(SettingsAction)
     
     
     enum DetailState: Equatable {
         case closed
         case editProfile
         case fillInfo
-        case shareProfile
         case openStudent(UUID)
     }
     
@@ -133,10 +99,5 @@ struct ProfileEnvironment {
     var studentsInfoEnv: StudentsInfoEnvironment {
         .init(bag: .autoId(childOf: bag),
               inviteService: inviteService)
-    }
-    
-    var settingsEnv: SettingsEnvironment {
-        .init(bag: .autoId(childOf: bag),
-              credentialsService: credentialsService)
     }
 }

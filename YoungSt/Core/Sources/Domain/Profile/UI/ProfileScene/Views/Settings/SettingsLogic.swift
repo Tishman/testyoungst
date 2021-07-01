@@ -17,7 +17,7 @@ let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvironment
     case .logoutPressed:
         state.alert = .init(title: TextState(Localizable.logoutAlertConfirmationTitle),
                             message: nil,
-                            primaryButton: .destructive(TextState(Localizable.logoutAlertConfirmationAction)),
+                            primaryButton: .destructive(TextState(Localizable.logoutAlertConfirmationAction), send: .logoutConfirmed),
                             secondaryButton: .cancel())
         
     case .logoutConfirmed:

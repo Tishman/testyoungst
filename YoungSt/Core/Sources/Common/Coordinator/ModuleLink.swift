@@ -15,6 +15,7 @@ public enum ModuleLink: Equatable {
     case profile(ProfileInput)
     case addWord(AddWordInput)
     case studentInvite(StudentInviteInput)
+    case settings(SettingsInput)
 }
 
 public struct StudentInviteInput: Equatable {
@@ -87,4 +88,8 @@ public struct ProfileInput: Hashable {
     public init(userID: UUID) {
         self.userID = userID
     }
+}
+
+public struct SettingsInput: Hashable {
+    public init() {}
 }

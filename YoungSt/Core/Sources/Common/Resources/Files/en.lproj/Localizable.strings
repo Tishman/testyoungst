@@ -99,6 +99,10 @@
 "cancelInvite" = "Cancel invite";
 "acceptInvite" = "Accept";
 "rejectInvite" = "Reject";
+"teacherEmptyPlaceholder" = "You don't have a teacher yet.\nFind one and he will help you to study better!";
+"studentsEmptyPlaceholder" = "You don't have students yet.\nFond one and help him study better!";
+"currentRole" = "Current role:";
+"askedYouBecomeStudent" = "Asked you to become student";
 
 // Fill info
 "fillInfoWelcome" = "Welcome!";
@@ -115,7 +119,7 @@
 "nickname" = "Login";
 
 // StudentInvite
-"youCantBecomeStudent" = "You already have a teacher.";
+"youCantBecomeStudent" = "You already have a teacher or invited someone.";
 "youCanSendRequestToBecomeStudent" = "You can send request to become student.\nGood luck in learning!";
 "didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
 "becomeStudent" = "Become student";
@@ -130,3 +134,12 @@
 "logoutButtonTitle" = "Logout";
 "logoutAlertConfirmationTitle" = "Are you sure you want to log out?";
 "logoutAlertConfirmationAction" = "Log out";
+
+// Teacher search
+"typeSometingInSearchField" = "Type something in search field";
+"searchTeachers" = "Search teachers";
+"toSearchTeacher" = "Find teacher";
+
+// Students search
+"searchStudents" = "Search students";
+"createInviteLink" = "Create invite link";

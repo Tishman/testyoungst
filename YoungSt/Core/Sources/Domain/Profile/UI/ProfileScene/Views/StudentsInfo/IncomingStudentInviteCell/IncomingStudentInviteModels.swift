@@ -30,8 +30,6 @@ enum IncomingStudentInviteAction: Equatable {
     
     case inviteAccepted(Result<EmptyResponse, EquatableError>)
     case inviteRejected(Result<EmptyResponse, EquatableError>)
-    
-    case studentInvintationUpdated(UUID)
 }
 
 struct IncomingStudentInviteEnvironment {

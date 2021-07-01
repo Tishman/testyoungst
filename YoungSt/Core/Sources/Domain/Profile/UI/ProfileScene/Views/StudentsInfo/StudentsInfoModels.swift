@@ -13,14 +13,23 @@ import NetworkService
 
 struct StudentsInfoState: Equatable {
     
-    var studentsInvites: IdentifiedArrayOf<IncomingStudentInviteState> = []
-    var students: [ProfileInfo] = []
+    var incomingInvites: IdentifiedArrayOf<IncomingStudentInviteState> = []
+    var outcomingInvites: IdentifiedArrayOf<OutcomingStudentInviteState> = []
+    var students: IdentifiedArrayOf<ProfileInfo> = []
     
     var isLoading = false
     var alert: AlertState<StudentsInfoAction>?
     
     var shouldShowLoader: Bool {
-        isLoading && studentsInvites.isEmpty && students.isEmpty
+        isLoading && incomingInvites.isEmpty && students.isEmpty
+    }
+    
+    var hasInvites: Bool {
+        !incomingInvites.isEmpty || !outcomingInvites.isEmpty
+    }
+    
+    var isEmpty: Bool {
+        !hasInvites && students.isEmpty
     }
 }
 
@@ -28,14 +37,19 @@ enum StudentsInfoAction: Equatable {
     case viewAppeared
     case updateList
     case alertClosed
-    
-    case studentOpened(UUID)
-    case removeStudentTriggered(UUID)
+    case searchStudentsOpened
     
     case studentRemove(Result<UUID, EquatableError>)
     case studentInfoUpdated(Result<Profile_GetStudentsResponse, EquatableError>)
     
     case incomingStudentInvite(id: UUID, action: IncomingStudentInviteAction)
+    case outcomingStudentInvite(id: UUID, action: OutcomingStudentInviteAction)
+    case student(id: UUID, action: StudentAction)
+    
+    enum StudentAction: Equatable {
+        case remove
+        case open
+    }
 }
 
 struct StudentsInfoEnvironment {
@@ -44,6 +58,11 @@ struct StudentsInfoEnvironment {
     let inviteService: InviteService
     
     var incomingStudentInviteEnv: IncomingStudentInviteEnvironment {
+        .init(bag: bag,
+              inviteService: inviteService)
+    }
+    
+    var outcomingStudentInviteEnv: OutcomingStudentInviteEnvironment {
         .init(bag: bag,
               inviteService: inviteService)
     }
