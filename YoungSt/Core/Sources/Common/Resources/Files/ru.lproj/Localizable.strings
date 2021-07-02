@@ -46,6 +46,7 @@
 "enterYourEmail" = "Введите ваш e-mail";
 "send" = "Отправить";
 "passwordChanged" = "Пароль изменен!";
+"createNewPasswordForLogin" = "Придумайте новый пароль для входа в систему";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

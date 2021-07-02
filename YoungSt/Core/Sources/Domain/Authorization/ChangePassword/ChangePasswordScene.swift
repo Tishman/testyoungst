@@ -20,8 +20,8 @@ struct ChangePasswordScene: View {
             ZStack {
                 TrackableScrollView(contentOffset: $contentOffset) {
                     VStack {
-                        HeaderDescriptionView(title: Localizable.enterCode,
-                                              subtitle: Localizable.codeEmailSended)
+                        HeaderDescriptionView(title: Localizable.newPassword,
+                                              subtitle: Localizable.createNewPasswordForLogin)
                             .padding(.top, .spacing(.big))
                         
                         WithViewStore(store) { viewStore in

@@ -58,6 +58,7 @@ struct ForgotPasswordScene: View {
 			)
 		}
 		.makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden, requiredOffset: .spacing(.header))
+        .alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
 	}
 }
 

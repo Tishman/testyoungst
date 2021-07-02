@@ -120,6 +120,8 @@ public enum Loc {
     public static let create = Loc.tr("Localizable", "create")
     /// Create invite link
     public static let createInviteLink = Loc.tr("Localizable", "createInviteLink")
+    /// Come up with a new password to log in
+    public static let createNewPasswordForLogin = Loc.tr("Localizable", "createNewPasswordForLogin")
     /// Current role:
     public static let currentRole = Loc.tr("Localizable", "currentRole")
     /// Delete
@@ -248,12 +250,12 @@ public enum Loc {
     public static let ru = Loc.tr("Localizable", "ru")
     /// Save
     public static let save = Loc.tr("Localizable", "save")
-    /// Send
-    public static let send = Loc.tr("Localizable", "send")
     /// Search students
     public static let searchStudents = Loc.tr("Localizable", "searchStudents")
     /// Search teachers
     public static let searchTeachers = Loc.tr("Localizable", "searchTeachers")
+    /// Send
+    public static let send = Loc.tr("Localizable", "send")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
     /// Settings

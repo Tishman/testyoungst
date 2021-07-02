@@ -46,6 +46,7 @@
 "enterYourEmail" = "Enter your e-mail";
 "send" = "Send";
 "passwordChanged" = "Password changed!";
+"createNewPasswordForLogin" = "Come up with a new password to log in";
 
 // AddWord
 "addWordTitle" = "Add word";

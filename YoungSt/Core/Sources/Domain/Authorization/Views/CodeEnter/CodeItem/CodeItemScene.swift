@@ -21,7 +21,9 @@ struct CodeItem: View {
                           forceFocused: viewStore.binding(get: \.forceFocused, send: CodeItemAction.forcedFocus),
                           isSecure: .constant(false),
                           charecterLimit: viewStore.binding(get: \.characterLimit, send: CodeItemAction.characterLimitUpdated),
-                          placeholder: nil)
+                          placeholder: nil,
+                          isCursorHidden: true,
+                          keyboardType: .decimalPad)
                 .frame(width: UIFloat(50), height: UIFloat(50))
                 .background(
                     circle
