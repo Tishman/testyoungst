@@ -27,12 +27,11 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
     var closePublisher: AnyPublisher<Bool, Never> { viewStore.publisher.isClosed.eraseToAnyPublisher() }
     
     var routePublisher: AnyPublisher<AddWordState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.routingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
     }
     
     private let routingPoints: AddWordRoutingPoints
@@ -51,6 +50,15 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
         
         observeRouting().store(in: &bag)
         observeClosing().store(in: &bag)
+    }
+    
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        if let navigationController = parent as? UINavigationController {
+            navigationController.navigationBar.backgroundColor = .clear
+            navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController.navigationBar.shadowImage = UIImage()
+        }
     }
     
     func handle(routing: AddWordState.Routing) {

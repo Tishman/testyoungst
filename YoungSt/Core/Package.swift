@@ -87,7 +87,6 @@ let package = Package(
         .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3"),
         .package(name: "Meshy", url: "https://github.com/Nekitosss/meshy.git", from: "0.0.4"),
-        .package(url: "https://github.com/SwiftGen/SwiftGen.git", from: "6.4.0")
     ],
     targets: [
         .target(name: CorePackage.dictionaries.rawValue,

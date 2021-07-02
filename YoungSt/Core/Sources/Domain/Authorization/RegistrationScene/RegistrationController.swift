@@ -28,13 +28,12 @@ final class RegistrationController: UIHostingController<RegistrationView>, Routa
 	private var bag = Set<AnyCancellable>()
 	
 	var routePublisher: AnyPublisher<RegistrationState.Routing?, Never> {
-		viewStore.publisher.routing
-			.handleEvents(receiveOutput: { [weak viewStore] point in
-				guard let viewStore = viewStore, point != nil else { return }
-				viewStore.send(.routingHandled)
-			})
-			.eraseToAnyPublisher()
+		viewStore.publisher.routing.eraseToAnyPublisher()
 	}
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
+    }
 	
 	init(env: RegistrationEnviroment, routingPoints: RegistrationRoutingPoints) {
 		let store = Store(initialState: RegistrationState(),

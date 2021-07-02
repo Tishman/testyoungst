@@ -40,10 +40,10 @@ final class GrpcConnector: NetworkConnector {
     
     private func instantiateConnection() -> ClientConnection {
         let group = PlatformSupport.makeEventLoopGroup(loopCount: 1, networkPreference: .best)
-        let connectionConfig = ClientConnection.Configuration(target: .hostAndPort(server.host, server.port),
-                                                              eventLoopGroup: group,
-                                                              tls: server.isSecure ? .init() : nil,
-                                                              connectionIdleTimeout: .seconds(10))
+        var connectionConfig = ClientConnection.Configuration.default(target: .hostAndPort(server.host, server.port),
+                                                                      eventLoopGroup: group)
+        connectionConfig.tls = server.isSecure ? .init() : nil
+        connectionConfig.connectionIdleTimeout = .seconds(10)
         return ClientConnection(configuration: connectionConfig)
     }
     

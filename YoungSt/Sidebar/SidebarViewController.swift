@@ -40,7 +40,9 @@ private enum SidebarListSection: Int, Hashable {
 final class SidebarViewController: UIViewController {
     private let collectionView: UICollectionView = {
         var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
+        #if !targetEnvironment(macCatalyst)
         config.backgroundColor = UIColor.secondarySystemBackground
+        #endif
         config.headerMode = .none
         let layout = UICollectionViewCompositionalLayout.list(using: config)
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -48,7 +50,7 @@ final class SidebarViewController: UIViewController {
     
     private var dataSource: UICollectionViewDiffableDataSource<SidebarListSection, SidebarListItem>?
     
-    private let items: [SidebarListItem] = [.content(.init(id: .dictionaries)), .content(.init(id: .profile))]
+    private let items: [SidebarListItem] = TabItem.allCases.map { .content(.init(id: $0)) }
     
     private let accentColor: UIColor = Asset.Colors.greenDark.color
     private let store: Store<TabState, TabAction>
@@ -79,11 +81,11 @@ final class SidebarViewController: UIViewController {
             })
             .store(in: &bag)
         
-//        #if targetEnvironment(macCatalyst)
-//        updateForMac()
-//        #else
+        #if targetEnvironment(macCatalyst)
+        updateForMac()
+        #else
         updateStyles()
-//        #endif
+        #endif
     }
     
     private func updateStyles() {
@@ -96,6 +98,7 @@ final class SidebarViewController: UIViewController {
     
     private func updateForMac() {
         view.backgroundColor = .clear
+        collectionView.backgroundColor = .clear
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     

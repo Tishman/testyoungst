@@ -25,6 +25,7 @@ struct CurrentProfileView: View {
                 case .infoRequired:
                     VStack(spacing: .spacing(.small)) {
                         Text(Localizable.shouldFinishInfoProviding)
+                            .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.center)
                             .font(.callout)
                         Button { viewStore.send(.editInfoOpened) } label: {

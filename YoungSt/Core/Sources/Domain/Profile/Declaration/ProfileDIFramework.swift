@@ -9,14 +9,20 @@ import Foundation
 import DITranquillity
 import UIKit
 import Coordinator
+import Protocols
 
 public final class ProfileDIFramework: DIFramework {
     
     public static func load(container: DIContainer) {
         container.register(ShareProfileEnvironment.init)
-        container.register {
-            ShareProfileController(userID: arg($0), env: $1)
-        }
+        container.register(ShareProfileController.init(env:))
+        
+        container.register(SearchStudentEnvironment.init)
+        container.register(SearchStudentController.init(env:routingPoints:))
+        container.register(SearchStudentRoutingPoints.init)
+        
+        container.register(SearchTeacherEnvironment.init)
+        container.register(SearchTeacherController.init(env:))
         
         container.register(EditProfileEnvironment.init)
         container.register { EditProfileController(env: $0) }
@@ -26,6 +32,11 @@ public final class ProfileDIFramework: DIFramework {
         container.register {
             StudentInviteController(input: arg($0), env: $1)
         }
+        
+        container.register(SettingsEnvironment.init)
+        container.register { env in { (input: SettingsInput) in
+            SettingsController(env: env).erased
+        }}
         
         // Fod module link
         container.register { env in { input in
@@ -51,6 +62,10 @@ public final class ProfileDIFramework: DIFramework {
         
         container.register(InviteServiceImpl.init)
             .as(check: InviteService.self) {$0}
+        
+        container.register(ProfileEventPublisherImpl.init)
+            .as(check: ProfileEventPublisher.self) {$0}
+            .lifetime(.perContainer(.weak))
     }
     
 }

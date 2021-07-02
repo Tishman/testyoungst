@@ -21,11 +21,10 @@ let incomingStudentInviteReducer = Reducer<IncomingStudentInviteState, IncomingS
     switch action {
     case .acceptInvite:
         state.loading = .accept
-        let request = Profile_AcceptStudentInviteRequest.with {
-            $0.studentID = state.id.uuidString
+        let request = Profile_AcceptInviteRequest.with {
+            $0.inviteID = state.id.uuidString
         }
-        return env.inviteService.acceptStudentInvite(request: request)
-            .map(toEmpty)
+        return env.inviteService.acceptInvite(request: request)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
@@ -34,11 +33,10 @@ let incomingStudentInviteReducer = Reducer<IncomingStudentInviteState, IncomingS
         
     case .rejectInvite:
         state.loading = .reject
-        let request = Profile_RejectStudentInviteRequest.with {
-            $0.studentID = state.id.uuidString
+        let request = Profile_RejectInviteRequest.with {
+            $0.inviteID = state.id.uuidString
         }
-        return env.inviteService.rejectStudentInvite(request: request)
-            .map(toEmpty)
+        return env.inviteService.rejectInvite(request: request)
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
@@ -47,9 +45,6 @@ let incomingStudentInviteReducer = Reducer<IncomingStudentInviteState, IncomingS
         
     case .inviteAccepted, .inviteRejected:
         state.loading = nil
-        
-    case .studentInvintationUpdated:
-        break
     }
     return .none
 }

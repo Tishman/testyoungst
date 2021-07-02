@@ -11,6 +11,7 @@ import Resources
 enum TabItem: Int, CaseIterable, Hashable {
     case dictionaries
     case profile
+    case settings
     
     var title: String {
         switch self {
@@ -18,6 +19,8 @@ enum TabItem: Int, CaseIterable, Hashable {
             return Localizable.dictionaries
         case .profile:
             return Localizable.profile
+        case .settings:
+            return Localizable.settings
         }
     }
     
@@ -27,6 +30,8 @@ enum TabItem: Int, CaseIterable, Hashable {
             return "rectangle.stack"
         case .profile:
             return "person.circle"
+        case .settings:
+            return "gear"
         }
     }
     var accentImageName: String {
@@ -35,6 +40,8 @@ enum TabItem: Int, CaseIterable, Hashable {
             return "rectangle.stack.fill"
         case .profile:
             return "person.circle.fill"
+        case .settings:
+            return "gear"
         }
     }
 }

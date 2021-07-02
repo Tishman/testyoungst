@@ -26,7 +26,7 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
     switch action {
     case .viewAppeared:
         let groupID = state.id
-        let groupChangedObserver = env.dictionaryEventPublisher.dictionaryEventPublisher
+        let groupChangedObserver = env.dictionaryEventPublisher.publisher
             .filter { $0 == .wordListUpdated(.id(groupID)) }
             .map(toVoid)
             .eraseToEffect()

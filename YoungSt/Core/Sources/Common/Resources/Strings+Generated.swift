@@ -100,6 +100,8 @@ public enum Loc {
     public static let addWordTitle = Loc.tr("Localizable", "addWordTitle")
     /// Everything is correct
     public static let allCorrect = Loc.tr("Localizable", "allCorrect")
+    /// Asked you to become student
+    public static let askedYouBecomeStudent = Loc.tr("Localizable", "askedYouBecomeStudent")
     /// Become student
     public static let becomeStudent = Loc.tr("Localizable", "becomeStudent")
     /// Cancel
@@ -116,6 +118,10 @@ public enum Loc {
     public static let copy = Loc.tr("Localizable", "copy")
     /// Create
     public static let create = Loc.tr("Localizable", "create")
+    /// Create invite link
+    public static let createInviteLink = Loc.tr("Localizable", "createInviteLink")
+    /// Current role:
+    public static let currentRole = Loc.tr("Localizable", "currentRole")
     /// Delete
     public static let delete = Loc.tr("Localizable", "delete")
     /// Vocabularies
@@ -244,6 +250,10 @@ public enum Loc {
     public static let save = Loc.tr("Localizable", "save")
     /// Send
     public static let send = Loc.tr("Localizable", "send")
+    /// Search students
+    public static let searchStudents = Loc.tr("Localizable", "searchStudents")
+    /// Search teachers
+    public static let searchTeachers = Loc.tr("Localizable", "searchTeachers")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
     /// Settings
@@ -264,12 +274,20 @@ public enum Loc {
     public static let student = Loc.tr("Localizable", "student")
     /// Students
     public static let students = Loc.tr("Localizable", "students")
+    /// You don't have students yet.\nFond one and help him study better!
+    public static let studentsEmptyPlaceholder = Loc.tr("Localizable", "studentsEmptyPlaceholder")
     /// Teacher
     public static let teacher = Loc.tr("Localizable", "teacher")
+    /// You don't have a teacher yet.\nFind one and he will help you to study better!
+    public static let teacherEmptyPlaceholder = Loc.tr("Localizable", "teacherEmptyPlaceholder")
     /// Teacher have not accept your invintation yet
     public static let teacherNotAcceptedInviteYet = Loc.tr("Localizable", "teacherNotAcceptedInviteYet")
+    /// Find teacher
+    public static let toSearchTeacher = Loc.tr("Localizable", "toSearchTeacher")
     /// Translation
     public static let translation = Loc.tr("Localizable", "translation")
+    /// Type something in search field
+    public static let typeSometingInSearchField = Loc.tr("Localizable", "typeSometingInSearchField")
     /// Type text here
     public static let typeText = Loc.tr("Localizable", "typeText")
     /// Unknown error
@@ -298,7 +316,7 @@ public enum Loc {
     public static let words = Loc.tr("Localizable", "words")
     /// You can send request to become student.\nGood luck in learning!
     public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
-    /// You already have a teacher.
+    /// You already have a teacher or invited someone.
     public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")
     /// You definitely should add something here
     public static let youShouldAddWordDescription = Loc.tr("Localizable", "youShouldAddWordDescription")

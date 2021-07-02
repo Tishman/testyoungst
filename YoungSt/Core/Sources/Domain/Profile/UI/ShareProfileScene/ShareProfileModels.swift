@@ -11,10 +11,9 @@ import Resources
 import Utilities
 import Coordinator
 import NetworkService
+import Protocols
 
 struct ShareProfileState: Equatable, ClosableState {
-    let userID: UUID
-    
     var url: String = ""
     var isLoading = false
     var alert: AlertState<ShareProfileAction>?

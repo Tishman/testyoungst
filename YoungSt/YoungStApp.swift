@@ -14,9 +14,13 @@ import Coordinator
 import Authorization
 import Utilities
 import Resources
+import Protocols
 
 @main
 struct YoungStApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     private let container: DIContainer
     private let coordinator: Coordinator
     private let deeplinkService: DeeplinkService
@@ -32,8 +36,8 @@ struct YoungStApp: App {
         self.store = .init(initialState: .init(),
                            reducer: appReducer,
                            environment: container.resolve())
+        appDelegate.appStore = ViewStore(store)
         
-        container.initializeSingletonObjects()
         configureAppearance()
     }
     
@@ -51,10 +55,10 @@ struct YoungStApp: App {
     }
     
     private func handle(deeplink: URL) {
-        guard let deeplink = deeplinkService.transform(deeplinkURL: deeplink) else {
-            return
+        deeplinkService.handle(remoteLink: deeplink) { url in
+            guard let url = url, let deeplink = deeplinkService.transform(deeplinkURL: url) else { return }
+            ViewStore(store).send(.handleDeeplink(deeplink))
         }
-        ViewStore(store).send(.handleDeeplink(deeplink))
     }
 }
 

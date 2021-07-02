@@ -11,7 +11,7 @@ import Combine
 
 final class DictionaryEventPublisherImpl: DictionaryEventPublisher {
     
-    var dictionaryEventPublisher: AnyPublisher<DictionaryEvent, Never> {
+    var publisher: AnyPublisher<DictionaryEvent, Never> {
         dictionaryEventSubject.eraseToAnyPublisher()
     }
     

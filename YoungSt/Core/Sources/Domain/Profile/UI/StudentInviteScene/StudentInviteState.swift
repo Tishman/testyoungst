@@ -11,6 +11,7 @@ import Utilities
 import Resources
 import NetworkService
 import Coordinator
+import Protocols
 
 struct StudentInviteState: Equatable, Previwable, ClosableState {
     

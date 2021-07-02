@@ -9,6 +9,16 @@ import Foundation
 import SwiftUI
 import Utilities
 
+extension ProfileInfoView {
+    init(profileInfo: ProfileInfo, subtitle: String, showChevron: Bool) {
+        self.init(avatarSource: .init(profileInfo: profileInfo),
+                  displayName: profileInfo.primaryField,
+                  secondaryDisplayName: profileInfo.secondaryField,
+                  subtitle: subtitle.isEmpty ? profileInfo.tertiaryField : subtitle,
+                  showChevron: showChevron)
+    }
+}
+
 struct ProfileInfoView: View {
     
     let avatarSource: ProfileAvatarSource
@@ -20,11 +30,11 @@ struct ProfileInfoView: View {
     private let chevronSize = UIFloat(16)
     
     var body: some View {
-        HStack(spacing: .spacing(.medium)) {
+        HStack(alignment: .top, spacing: .spacing(.medium)) {
             ProfileAvatarView(source: avatarSource, size: .medium)
             
             VStack(alignment: .leading, spacing: .spacing(.medium)) {
-                VStack(alignment: .leading, spacing: .spacing(.small)) {
+                VStack(alignment: .leading, spacing: .spacing(.ultraSmall)) {
                     Text(displayName)
                         .font(.title3)
                     Text(secondaryDisplayName)
@@ -45,6 +55,7 @@ struct ProfileInfoView: View {
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.secondary)
                     .frame(width: chevronSize, height: chevronSize)
+                    .frame(maxHeight: .infinity)
             }
         }
         .padding()

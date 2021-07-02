@@ -14,19 +14,13 @@ enum ProfileAvatarSource: Equatable {
     // TODO: Add remote url
     
     init(profileInfo: ProfileInfo) {
-        let title: String
-        if !profileInfo.firstName.isEmpty {
-            if !profileInfo.lastName.isEmpty {
-                title = "\(profileInfo.firstName.first!)\(profileInfo.lastName.first!)"
-            } else {
-                title = "\(profileInfo.firstName.first!)"
-            }
-        } else if !profileInfo.nickname.isEmpty {
-            title = "\(profileInfo.nickname.first!)"
-        } else if !profileInfo.email.isEmpty {
-            title = "\(profileInfo.email.first!)"
-        } else {
-            title = ""
+        var title: String = ""
+        let components = profileInfo.primaryField.split(maxSplits: 2, omittingEmptySubsequences: true, whereSeparator: { $0 == " " })
+        if !components.isEmpty {
+            title = "\(components[0].first!)"
+        }
+        if components.count > 1 {
+            title += "\(components[1].first!)"
         }
         
         self = .info(id: profileInfo.id, title: title.uppercased())

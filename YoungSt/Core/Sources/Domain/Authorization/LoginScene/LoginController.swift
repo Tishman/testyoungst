@@ -29,13 +29,12 @@ final class LoginController: UIHostingController<LoginScene>, RoutableController
 	private var bag = Set<AnyCancellable>()
 	
 	var routePublisher: AnyPublisher<LoginState.Routing?, Never> {
-		viewStore.publisher.routing
-			.handleEvents(receiveOutput: { [weak viewStore] point in
-				guard let viewStore = viewStore, point != nil else { return }
-				viewStore.send(.routingHandled)
-			})
-			.eraseToAnyPublisher()
+		viewStore.publisher.routing.eraseToAnyPublisher()
 	}
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
+    }
 	
 	init(env: LoginEnviroment, routingPoints: LoginRoutingPoints) {
 		let store = Store(initialState: LoginState(),

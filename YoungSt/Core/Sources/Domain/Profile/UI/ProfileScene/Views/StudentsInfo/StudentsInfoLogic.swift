@@ -13,25 +13,36 @@ import NetworkService
 
 let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, StudentsInfoEnvironment>.combine(
     incomingStudentInviteReducer
-        .forEach(state: \.studentsInvites, action: /StudentsInfoAction.incomingStudentInvite, environment: \.incomingStudentInviteEnv),
+        .forEach(state: \.incomingInvites, action: /StudentsInfoAction.incomingStudentInvite, environment: \.incomingStudentInviteEnv),
+    
+    outcomingStudentInviteReducer
+        .forEach(state: \.outcomingInvites, action: /StudentsInfoAction.outcomingStudentInvite, environment: \.outcomingStudentInviteEnv),
+    
     Reducer { state, action, env in
         
         enum Cancellable: Hashable {
+            case observeStudents
             case updateStudets
             case removeStudent(UUID)
         }
         
         switch action {
         case .viewAppeared:
-            return .init(value: .updateList)
+            let observeStudentEvents = env.profileEventPublisher.publisher
+                .filter { $0 == .studentsInfoUpdated }
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
+                .map { _ in StudentsInfoAction.updateList }
+                .cancellable(id: Cancellable.observeStudents, cancelInFlight: true, bag: env.bag)
+            
+            return .merge(.init(value: .updateList), observeStudentEvents)
             
         case .updateList:
             state.isLoading = true
             
-            let request = Profile_GetStudentsRequest()
-            return env.inviteService.getStudents(request: request)
+            return env.inviteService.getStudents()
                 .mapError(EquatableError.init)
-                .receive(on: DispatchQueue.main)
+                .receive(on: DispatchQueue.main.animation())
                 .catchToEffect()
                 .map(StudentsInfoAction.studentInfoUpdated)
                 .cancellable(id: Cancellable.updateStudets, bag: env.bag)
@@ -43,16 +54,31 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
             state.isLoading = false
             switch result {
             case let .success(studentsResponse):
-                let invites = studentsResponse.studentRequests.compactMap { student -> IncomingStudentInviteState? in
-                    guard let info = try? ProfileInfo(proto: student.profile) else { return nil }
-                    return IncomingStudentInviteState(id: info.id,
-                                                      title: info.displayName,
-                                                      loading: state.studentsInvites[id: info.id]?.loading)
+                let incomingInvites = studentsResponse.incomingStudentRequests.compactMap { request -> IncomingStudentInviteState? in
+                    guard let info = try? ProfileInfo(proto: request.student),
+                          let inviteID = try? UUID.from(string: request.invite.inviteID)
+                    else { return nil }
+                    return IncomingStudentInviteState(id: inviteID,
+                                                      title: info.primaryField,
+                                                      loading: state.incomingInvites[id: info.id]?.loading)
                 }
-                state.studentsInvites = .init(invites)
-                state.students = studentsResponse.currentStudents.compactMap {
+                
+                let outcomingInvites = studentsResponse.outcomingStudentRequests.compactMap { request -> OutcomingStudentInviteState? in
+                    guard let info = try? ProfileInfo(proto: request.student),
+                          let inviteID = try? UUID.from(string: request.invite.inviteID)
+                    else { return nil }
+                    return OutcomingStudentInviteState(id: inviteID,
+                                                       profile: info,
+                                                       isLoading: state.outcomingInvites[id: info.id]?.isLoading ?? false)
+                }
+                
+                let students = studentsResponse.currentStudents.compactMap {
                     try? ProfileInfo(proto: $0.profile)
                 }
+                
+                state.incomingInvites = .init(incomingInvites)
+                state.outcomingInvites = .init(outcomingInvites)
+                state.students = .init(students)
                 
             case let .failure(error):
                 state.alert = .init(title: TextState(error.description))
@@ -61,13 +87,10 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
         case let .incomingStudentInvite(id, action: .inviteAccepted),
              let .incomingStudentInvite(id, action: .inviteRejected):
 
-            state.studentsInvites.remove(id: id)
+            state.incomingInvites.remove(id: id)
             return .init(value: .updateList)
             
-        case .studentOpened:
-            break
-            
-        case let .removeStudentTriggered(studentID):
+        case let .student(studentID, .remove):
             let request = Profile_RemoveStudentRequest.with {
                 $0.studentID = studentID.uuidString
             }
@@ -78,6 +101,9 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
                 .catchToEffect()
                 .map(StudentsInfoAction.studentRemove)
                 .cancellable(id: Cancellable.removeStudent(studentID), bag: env.bag)
+            
+        case .student(_, .open):
+            break
             
         case let .studentRemove(result):
             switch result {
@@ -91,7 +117,7 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
                 state.alert = .init(title: TextState(error.description))
             }
             
-        case .incomingStudentInvite:
+        case .incomingStudentInvite, .outcomingStudentInvite, .searchStudentsOpened:
             break
         }
         

@@ -16,51 +16,82 @@ struct StudentsInfoView: View {
     let store: Store<StudentsInfoState, StudentsInfoAction>
     
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store.scope(state: \.shouldShowLoader)) { viewStore in
             LazyVStack(spacing: .spacing(.medium)) {
-                if viewStore.shouldShowLoader {
+                WithViewStore(store.scope(state: \.isEmpty)) { viewStore in
+                    if viewStore.state {
+                        ActionableEmptyPlaceholder(imageSystemName: "magnifyingglass",
+                                                   text: Localizable.studentsEmptyPlaceholder) {
+                            viewStore.send(.searchStudentsOpened)
+                        }
+                    }
+                }
+                
+                if viewStore.state {
                     IndicatorView()
                         .frame(maxWidth: .infinity)
                 }
                 
-                if !viewStore.studentsInvites.isEmpty {
-                    Text(Localizable.invites)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title3.bold())
-                        .padding(.horizontal)
-                    
-                    ForEachStore(store.scope(state: \.studentsInvites, action: StudentsInfoAction.incomingStudentInvite),
-                                 content: IncomingStudentInviteView.init)
-                }
-                
-                if !viewStore.students.isEmpty {
-                    Text(Localizable.students)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title3.bold())
-                        .padding(.horizontal)
-                    
-                    ForEach(viewStore.students) { profile in
-                        Button { viewStore.send(.studentOpened(profile.id)) } label: {
-                            ProfileInfoView(avatarSource: .init(profileInfo: profile),
-                                            displayName: profile.displayName,
-                                            secondaryDisplayName: profile.secondaryDisplayName,
-                                            subtitle: "",
-                                            showChevron: true)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .contextMenu {
-                            Button { viewStore.send(.removeStudentTriggered(profile.id)) } label: {
-                                Label(Localizable.removeStudent, systemImage: "trash")
-                            }
-                        }
-                    }
-                }
+                studentsView
+                invitesView
             }
             .onAppear { viewStore.send(.viewAppeared) }
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .frame(maxWidth: .infinity)
         .padding([.top, .horizontal])
+    }
+    
+    @ViewBuilder private var invitesView: some View {
+        WithViewStore(store.scope(state: \.hasInvites)) { viewStore in
+            if viewStore.state {
+                Text(Localizable.invites)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.title3.bold())
+                    .padding(.horizontal)
+            }
+        }
+        
+        ForEachStore(store.scope(state: \.incomingInvites, action: StudentsInfoAction.incomingStudentInvite),
+                     content: IncomingStudentInviteView.init)
+        
+        ForEachStore(store.scope(state: \.outcomingInvites, action: StudentsInfoAction.outcomingStudentInvite),
+                     content: OutcomingStudentInviteView.init)
+    }
+    
+    @ViewBuilder private var studentsView: some View {
+        WithViewStore(store.scope(state: \.students.isEmpty)) { viewStore in
+            if !viewStore.state {
+                Text(Localizable.students)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.title3.bold())
+                    .padding(.horizontal)
+            }
+        }
+        
+        WithViewStore(store.scope(state: \.isEmpty)) { viewStore in
+            if !viewStore.state {
+                HeaderActionButton(Localizable.searchStudents, systemImage: "magnifyingglass") {
+                    viewStore.send(.searchStudentsOpened)
+                }
+            }
+        }
+        
+        ForEachStore(store.scope(state: \.students, action: StudentsInfoAction.student)) { store in
+            WithViewStore(store) { viewStore in
+                Button { viewStore.send(.open) } label: {
+                    ProfileInfoView(profileInfo: viewStore.state,
+                                    subtitle: "",
+                                    showChevron: true)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .contextMenu {
+                    Button { viewStore.send(.remove) } label: {
+                        Label(Localizable.removeStudent, systemImage: "trash")
+                    }
+                }
+            }
+        }
     }
     
 }

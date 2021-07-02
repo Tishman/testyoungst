@@ -38,8 +38,7 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
         )
         
     case .profileUpdateRequested:
-        let request = Profile_GetOwnProfileInfoRequest()
-        return env.profileService.getOwnProfileInfo(request: request)
+        return env.profileService.getOwnProfileInfo()
             .mapError(EquatableError.init)
             .receive(on: DispatchQueue.main)
             .catchToEffect()
@@ -62,6 +61,11 @@ let currentProfileReducer = Reducer<CurrentProfileState, CurrentProfileAction, C
         
     case let .userInfoUpdated(userInfo):
         state.nickname = userInfo.nickname
+        
+        if let currentProfile = env.userProvider.currentProfile, !currentProfile.firstName.isEmpty {
+            state.infoState = .infoProvided(.init(firstName: currentProfile.firstName,
+                                                  lastName: currentProfile.lastName))
+        }
     
     case .editInfoOpened:
         break

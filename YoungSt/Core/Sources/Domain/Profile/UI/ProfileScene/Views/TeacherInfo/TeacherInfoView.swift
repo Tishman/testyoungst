@@ -16,35 +16,33 @@ struct TeacherInfoView: View {
     
     var body: some View {
         VStack {
-            WithViewStore(store) { viewStore in
-                Group {
-                    switch viewStore.state {
-                    case .loading:
-                        IndicatorView()
-                    case .empty:
-                        Text("You dont have teacher")
-                    case .error:
-                        Button { viewStore.send(.reload) } label: {
-                            Text(Localizable.update)
-                        }
-                        
-                    case let .exists(teacher):
-                        VStack {
-                            ProfileInfoView(avatarSource: .init(profileInfo: teacher.profile),
-                                            displayName: teacher.profile.displayName,
-                                            secondaryDisplayName: teacher.profile.secondaryDisplayName,
-                                            subtitle: teacher.inviteAccepted ? "" : Localizable.teacherNotAcceptedInviteYet,
-                                            showChevron: false)
-                            Button { viewStore.send(.removeTeacher) } label: {
-                                Text(teacher.inviteAccepted ? Localizable.removeTeacher : Localizable.cancelInvite)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        }
+            WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+                if viewStore.state {
+                    IndicatorView()
+                }
+            }
+            
+            WithViewStore(store.scope(state: \.uiState.isError)) { viewStore in
+                if viewStore.state {
+                    Button { viewStore.send(.reload) } label: {
+                        Text(Localizable.update)
                     }
                 }
-                .onAppear { viewStore.send(.viewAppeared) }
             }
+            
+            IfLetStore(store.scope(state: \.uiState.existedState, action: TeacherInfoAction.existed),
+                       then: ExistedTeacherView.init)
+            
+            IfLetStore(store.scope(state: \.uiState.invitesState, action: TeacherInfoAction.invites),
+                       then: InvitesTeacherView.init)
         }
+        .background(
+            WithViewStore(store.stateless) { viewStore in
+                Color.clear
+                    .onAppear { viewStore.send(.viewAppeared) }
+            }
+        )
+        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .padding()
         .buttonStyle(InaccentButtonStyle())
     }

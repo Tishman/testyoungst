@@ -16,7 +16,8 @@ import Coordinator
 struct ProfileControllerRoutingPoints {
     let editProfile: EditProfileController.Endpoint
     let fillInfo: FinishProfileUpdatingController.Endpoint
-    let shareProfile: ShareProfileController.Endpoint
+    let searchTeacher: SearchTeacherController.Endpoint
+    let searchStudent: SearchStudentController.Endpoint
 }
 
 final class ProfileController: UIHostingController<ProfileScene>, RoutableController {
@@ -24,12 +25,11 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
     typealias Endpoint = Provider1<ProfileController, ProfileInput>
     
     var routePublisher: AnyPublisher<ProfileState.Route?, Never> {
-        viewStore.publisher.route
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.changeDetail(.closed))
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.route.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.changeDetail(.closed))
     }
     
     private let store: Store<ProfileState, ProfileAction>
@@ -58,14 +58,21 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
         case .editProfile:
             let vc = routingPoints.editProfile.value
             present(controller: vc, preferredPresentation: .detail)
+            
         case .fillInfo:
             let vc = routingPoints.fillInfo.value
             present(controller: vc, preferredPresentation: .detail)
-        case let .shareProfile(userID):
-            let vc = routingPoints.shareProfile.value(userID)
-            present(controller: vc, preferredPresentation: .detail)
+            
         case let .openedStudent(userID):
 			let vc = coordinator.view(for: .dictionaries(.init(userID: userID)))
+            present(controller: vc, preferredPresentation: .detail)
+            
+        case .searchTeacher:
+            let vc = routingPoints.searchTeacher.value
+            present(controller: vc, preferredPresentation: .detail)
+            
+        case .searchStudents:
+            let vc = routingPoints.searchStudent.value
             present(controller: vc, preferredPresentation: .detail)
         }
     }

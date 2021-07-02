@@ -19,33 +19,25 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
     studentsInfoReducer
         .pullback(state: \.studentsInfoState, action: /ProfileAction.studentsInfo, environment: \.studentsInfoEnv),
     
-    settingsReducer
-        .pullback(state: \.settingsState, action: /ProfileAction.settings, environment: \.settingsEnv),
-    
     Reducer { state, action, env in
         
         let currentProfileTypeKey = "currentProfileTypeKey"
-        let currentProfileTabKey = "currentProfileTabKey"
         
         switch action {
         case .viewAppeared:
             state.profileType = env.storage[currentProfileTypeKey] ?? .student
-            state.selectedTab = env.storage[currentProfileTabKey] ?? .settings
+            
+        case .refresh:
+            switch state.profileType {
+            case .student:
+                return .init(value: .teacherInfo(.reload))
+            case .teacher:
+                return .init(value: .studentsInfo(.updateList))
+            }
             
         case let .profileTypeChanged(newProfileType):
             state.profileType = newProfileType
             env.storage[currentProfileTypeKey] = newProfileType
-            return .init(value: .changeSelectedTab(ProfileState.Tab.settings.rawValue))
-            
-        case let .changeSelectedTab(tabIndex):
-            let newTab = ProfileState.Tab(rawValue: tabIndex) ?? .settings
-            return .init(value: .selectedTabShanged(newTab))
-                .receive(on: DispatchQueue.main.animation(.easeOut(duration: 0.3)))
-                .eraseToEffect()
-            
-        case let .selectedTabShanged(newTab):
-            state.selectedTab = newTab
-            env.storage[currentProfileTabKey] = newTab
             
         case .changeDetail(.editProfile):
             state.route = .editProfile
@@ -53,22 +45,25 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .changeDetail(.fillInfo):
             state.route = .fillInfo
             
-        case .changeDetail(.shareProfile):
-            state.route = .shareProfile(userID: state.userID)
-            
         case let .changeDetail(.openStudent(id)):
             state.route = .openedStudent(userID: id)
             
         case .changeDetail(.closed):
             state.route = nil
             
-        case let .studentsInfo(.studentOpened(id)):
+        case let .studentsInfo(.student(id, .open)):
             return .init(value: .changeDetail(.openStudent(id)))
             
         case .currentProfile(.editInfoOpened):
             return .init(value: .changeDetail(.fillInfo))
             
-        case .currentProfile, .teacherInfo, .studentsInfo, .settings:
+        case .teacherInfo(.invites(.searchTeacherOpened)):
+            state.route = .searchTeacher
+            
+        case .studentsInfo(.searchStudentsOpened):
+            state.route = .searchStudents
+            
+        case .currentProfile, .teacherInfo, .studentsInfo:
             break
         }
         return .none

@@ -31,7 +31,16 @@ struct AddWordScene: View {
     
     @State private var contentOffset: CGFloat = 0
     @State private var dividerHidden: Bool = true
-    @State private var elementsAppeared: Bool = false
+    
+    @State private var elementsAppeared: Bool = {
+        #if targetEnvironment(macCatalyst)
+        // Disabling animationed transition for catalyst
+        return true
+        #else
+        return false
+        #endif
+    }()
+    
     private let addWordInputHeight: CGFloat = UIFloat(130)
     private let translateIndicatorHeight: CGFloat = UIFloat(14)
     
@@ -122,19 +131,19 @@ struct AddWordScene: View {
             ZStack(alignment: Alignment(horizontal: .trailing, vertical: .translationCenter)) {
                 VStack {
                     AddWordInputView(subtitle: Localizable.word,
-                                     lineLimit: 1,
+                                     lineLimit: 0,
                                      delegate: AddWordTextDelegate { viewStore.send(.translatePressed) },
                                      currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged),
                                      forceFocused: viewStore.binding(get: \.sourceFieldForceFocused, send: AddWordAction.sourceInputFocusChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
-                    
+
                     if let sourceError = viewStore.sourceError {
                         Text(sourceError)
                             .font(.caption)
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    
+
                     Divider()
                     
                     VStack(alignment: .leading, spacing: .spacing(.ultraSmall)) {
@@ -150,7 +159,7 @@ struct AddWordScene: View {
                         
                         TextField(Localizable.noTranslation,
                                   text: viewStore.binding(get: \.translationText, send: AddWordAction.translationChanged))
-                            .alignmentGuide(.translationCenter) { $0[VerticalAlignment.center] }
+                            .alignmentGuide(.translationCenter) { $0[.center] }
                             .foregroundColor(viewStore.translationText.isEmpty ? .secondary : .primary)
                             .font(.body)
                             // Padding to not overlap with translate button
@@ -169,11 +178,15 @@ struct AddWordScene: View {
                         .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
                         .padding([.trailing])
                         .padding([.vertical, .leading], .spacing(.small))
+                        .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
                 }
-                .alignmentGuide(.translationCenter) { $0[VerticalAlignment.center] }
+                .alignmentGuide(.translationCenter) { $0[.center] }
+                .buttonStyle(defaultButtonStyle)
             }
         }
     }
+    
+    
     
     private var descriptionInput: some View {
         WithViewStore(store.scope(state: \.descriptionText)) { viewStore in

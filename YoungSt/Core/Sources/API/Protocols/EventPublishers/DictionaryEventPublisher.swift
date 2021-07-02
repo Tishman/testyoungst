@@ -37,6 +37,6 @@ public enum DictionaryEvent: Equatable {
 
 public protocol DictionaryEventPublisher: AnyObject {
     
-    var dictionaryEventPublisher: AnyPublisher<DictionaryEvent, Never> { get }
+    var publisher: AnyPublisher<DictionaryEvent, Never> { get }
     
 }

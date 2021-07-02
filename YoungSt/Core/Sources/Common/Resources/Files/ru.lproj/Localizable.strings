@@ -104,6 +104,10 @@
 "cancelInvite" = "Отменить приглашение";
 "acceptInvite" = "Принять";
 "rejectInvite" = "Отклонить";
+"teacherEmptyPlaceholder" = "У вас пока нет учителя.\nОн поможет вам учиться ещё быстрее";
+"studentsEmptyPlaceholder" = "У вас пока нет учеников.\nПомогите кому-либо учиться ещё быстрее!";
+"currentRole" = "Вы в роли:";
+"askedYouBecomeStudent" = "Предложил вам стать учеником";
 
 // Fill info
 "fillInfoWelcome" = "Добро пожаловать!";
@@ -120,7 +124,7 @@
 "nickname" = "Логин";
 
 // StudentInvite
-"youCantBecomeStudent" = "У вас уже есть учитель.";
+"youCantBecomeStudent" = "У вас уже есть учитель или вы кого-то пригласили.";
 "youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником.\nУдачи в обучении!";
 "didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
 "becomeStudent" = "Стать учеником";
@@ -135,3 +139,12 @@
 "logoutButtonTitle" = "Выйти";
 "logoutAlertConfirmationTitle" = "Вы действительно хотите выйти?";
 "logoutAlertConfirmationAction" = "Выйти";
+
+// Teacher search
+"typeSometingInSearchField" = "Введите текст в поле поиска";
+"searchTeachers" = "Поиск учителей";
+"toSearchTeacher" = "Найти учителя";
+
+// Students search
+"searchStudents" = "Найти учеников";
+"createInviteLink" = "Создать приглашение";

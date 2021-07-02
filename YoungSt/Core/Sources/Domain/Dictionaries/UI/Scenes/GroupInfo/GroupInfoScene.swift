@@ -60,7 +60,7 @@ struct GroupInfoScene: View {
                     }
                     .padding([.top, .horizontal])
                 }
-                .addRefreshToScrollView { viewStore.send(.refreshList) }
+                .refreshable { viewStore.send(.refreshList) }
                 
                 WithViewStore(store.scope(state: \.isLoading)) { viewStore in
                     if viewStore.state {

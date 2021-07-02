@@ -12,7 +12,7 @@ import Utilities
 struct DictWordView: View {
     
     let state: DictWordState
-    private let minRowHeight: CGFloat = UIFloat(60)
+    static let minRowHeight: CGFloat = UIFloat(60)
     
     var body: some View {
         VStack(alignment: .leading, spacing: .spacing(.small)) {
@@ -20,6 +20,7 @@ struct DictWordView: View {
                 Text(state.info)
                     .font(.footnote)
                     .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             
             HStack {
@@ -35,7 +36,7 @@ struct DictWordView: View {
             .font(.body)
         }
         .padding()
-        .frame(maxWidth: .infinity, minHeight: minRowHeight, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: Self.minRowHeight, alignment: .leading)
         .bubbled()
     }
 }
