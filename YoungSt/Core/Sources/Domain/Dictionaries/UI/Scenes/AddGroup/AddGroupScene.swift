@@ -43,7 +43,7 @@ struct AddGroupScene: View {
                     }
                     
                     WithViewStore(store.stateless) { viewStore in
-                        Button { viewStore.send(.addWordOpened) } label: {
+                        Button { viewStore.send(.route(.addWord)) } label: {
                             HStack(spacing: .spacing(.big)) {
                                 Image(systemName: "plus.app.fill")
                                     .resizable()
@@ -84,7 +84,7 @@ struct AddGroupScene: View {
             }
             
             WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                Button { viewStore.send(.addGroupPressed) } label: {
+                Button { viewStore.send(.addGroupTriggered) } label: {
                     Text(Localizable.create)
                 }
                 .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state))
@@ -92,7 +92,7 @@ struct AddGroupScene: View {
             .padding(.bottom)
             .greedy(aligningContentTo: .bottom)
         }
-        .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertClosePressed)
+        .alert(store.scope(state: \.alertError), dismiss: AddGroupAction.alertCloseTriggered)
         .navigationTitle(Localizable.addGroupTitle)
         .navigationBarTitleDisplayMode(.inline)
         .accentColor(Asset.Colors.greenDark.color.swiftuiColor)

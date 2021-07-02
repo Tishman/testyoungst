@@ -59,7 +59,6 @@
 		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
 		FD60520426638F1A006218BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD60520D26639446006218BF /* AnalyticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
-		FD8412FE268EF7D7006DA086 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BuildTools; sourceTree = "<group>"; };
 		FDD32C1F2657BE97001DE446 /* YoungSt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YoungSt.entitlements; sourceTree = "<group>"; };
 		FDE99B2A2685C739003E9CC1 /* DeeplinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkService.swift; sourceTree = "<group>"; };
 		FDE99B2C2685CA69003E9CC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 		0C3492112592001900F729C4 = {
 			isa = PBXGroup;
 			children = (
-				FD8412FE268EF7D7006DA086 /* BuildTools */,
 				4783769825FB90A9000B11B7 /* Core */,
 				0C34921C2592001900F729C4 /* YoungSt */,
 				0C34921B2592001900F729C4 /* Products */,

@@ -109,7 +109,7 @@ let editProfileReducer = Reducer<EditProfileState, EditProfileAction, EditProfil
             state.alert = .init(title: TextState(error.description))
         }
         
-    case .alertClosed:
+    case .alertClosedTriggered:
         state.alert = nil
         
     case .closeSceneTriggered:
@@ -117,3 +117,4 @@ let editProfileReducer = Reducer<EditProfileState, EditProfileAction, EditProfil
     }
     return .none
 }
+.analytics()

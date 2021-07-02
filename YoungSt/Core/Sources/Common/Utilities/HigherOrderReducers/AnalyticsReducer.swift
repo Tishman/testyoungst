@@ -17,37 +17,51 @@ public protocol AnalyticsAction {
     var event: AnalyticsEvent? { get }
 }
 
-public enum AnalyticsEvent: ExpressibleByStringLiteral {
-    case plain(name: String)
-    case parametrized(name: String, parameters: [String: Any])
+public struct AnalyticsEvent: ExpressibleByStringLiteral {
+    
+    public var name: String
+    public var parameters: [String: Any]?
+    public var oneTimeEvent = false
     
     public init(stringLiteral value: StringLiteralType) {
-        self = .plain(name: value)
+        name = value
+    }
+    
+    public init(name: String, parameters: [String : Any]? = nil, oneTimeEvent: Bool = false) {
+        self.name = name
+        self.parameters = parameters
+        self.oneTimeEvent = oneTimeEvent
+    }
+    
+    public func route() -> AnalyticsEvent {
+        prefixed(with: "route")
     }
     
     public func prefixed(with prefix: String) -> AnalyticsEvent {
-        switch self {
-        case let .plain(name):
-            return .plain(name: prefix + "_" + name)
-        case let .parametrized(name, parameters):
-            return .parametrized(name: prefix + "_" + name, parameters: parameters)
-        }
+        var new = self
+        new.name = prefix + "_" + name
+        return new
+    }
+    
+    public func appending(parameters: [String: Any]) -> AnalyticsEvent {
+        var new = self
+        new.parameters = (new.parameters ?? [:]).merging(parameters) { $1 }
+        return new
     }
 }
 
 extension Reducer where Environment: AnalyticsEnvironment, Action: AnalyticsAction {
-    public func
-    analytics() -> Reducer<State, Action, Environment> {
-        .init { state, action, environment in
-            let event = action.event?.prefixed(with: "\(Action.self)")
-            switch event {
-            case let .plain(name):
-                environment.analyticsService.log(event: name, parameters: nil)
-            case let .parametrized(name, parameters):
-                environment.analyticsService.log(event: name, parameters: parameters)
-            case .none:
-                break
+    public func analytics() -> Reducer<State, Action, Environment> {
+        var oneTimeEvents: Set<String> = []
+        return .init { state, action, environment in
+            if let event = action.event?.prefixed(with: "\(Action.self)"),
+               !event.oneTimeEvent || !oneTimeEvents.contains(event.name) {
+                environment.analyticsService.log(event: event.name, parameters: event.parameters)
+                if event.oneTimeEvent {
+                    oneTimeEvents.insert(event.name)
+                }
             }
+            
             return self.run(&state, action, environment)
         }
     }

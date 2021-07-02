@@ -31,26 +31,41 @@ struct EditProfileState: Equatable, Previwable, ClosableState {
     static let preview: Self = .init(shouldFetchProfile: false, firstName: "Max", lastName: "Rakotanski", nickname: "mrakotanski")
 }
 
-enum EditProfileAction: Equatable {
+enum EditProfileAction: Equatable, AnalyticsAction {
     case viewAppeared
-    case updateProfileRequested
     
     case firstNameChanged(String)
     case lastNameChanged(String)
     case nicknameChanged(String)
     
     case editProfileTriggered
-    case alertClosed
+    case alertClosedTriggered
+    case closeSceneTriggered
     
+    case updateProfileRequested
     case profileFetched(Result<Profile_GetOwnProfileInfoResponse, EquatableError>)
     case profileEdited(Result<Profile_UpdateProfileResponse, EquatableError>)
     
-    case closeSceneTriggered
+    var event: AnalyticsEvent? {
+        switch self {
+        case .editProfileTriggered:
+            return "editProfileTriggered"
+        case .firstNameChanged:
+            return .init(name: "firstNameChanged", oneTimeEvent: true)
+        case .lastNameChanged:
+            return .init(name: "lastNameChanged", oneTimeEvent: true)
+        case .nicknameChanged:
+            return .init(name: "nicknameChanged", oneTimeEvent: true)
+        default:
+            return nil
+        }
+    }
 }
 
-struct EditProfileEnvironment {
+struct EditProfileEnvironment: AnalyticsEnvironment {
     let bag: CancellationBag
     
     let profileService: ProfileService
     let userProvider: UserProvider
+    let analyticsService: AnalyticService
 }

@@ -38,13 +38,13 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 dictChangedPublisher
             )
             
-        case .alertClosed:
+        case .alertCloseTriggered:
             state.alert = nil
             
         case let .deleteWordTriggered(id):
             state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
                                 primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertTriggered(id)),
-                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertCloseTriggered))
         
         case .updateItems:
             return .merge(

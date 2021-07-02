@@ -16,16 +16,26 @@ struct SettingsState: Equatable {
     
 }
 
-enum SettingsAction: Equatable {
+enum SettingsAction: Equatable, AnalyticsAction {
     
-    case logoutPressed
-    case logoutConfirmed
+    case logoutTriggered
+    case logoutConfirmTriggered
     
-    case alertClosed
+    case alertClosedTriggered
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .logoutConfirmTriggered:
+            return "logoutConfirmTriggered"
+        default:
+            return nil
+        }
+    }
 }
 
-struct SettingsEnvironment {
+struct SettingsEnvironment: AnalyticsEnvironment {
     let bag: CancellationBag
     
     let credentialsService: CredentialsService
+    let analyticsService: AnalyticService
 }

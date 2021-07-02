@@ -27,7 +27,7 @@ final class AddGroupController: UIHostingController<AddGroupScene>, ClosableCont
     }
     
     func resetRouting() {
-        viewStore.send(.rountingHandled)
+        viewStore.send(.route(.handled))
     }
     
     private let store: Store<AddGroupState, AddGroupAction>

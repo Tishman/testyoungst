@@ -31,7 +31,7 @@ struct ProfileScene: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     WithViewStore(store.scope(state: \.currentProfileState.isInfoProvided)) { viewStore in
                         if viewStore.state {
-                            Button { viewStore.send(.changeDetail(.editProfile)) } label: {
+                            Button { viewStore.send(.route(.editProfile)) } label: {
                                 Image(systemName: "pencil.circle")
                             }
                             .buttonStyle(defaultButtonStyle)
@@ -39,7 +39,7 @@ struct ProfileScene: View {
                     }
                 }
             }
-            .refreshable { viewStore.send(.refresh) }
+            .refreshable { viewStore.send(.refreshTriggered) }
         }
         .navigationBarTitleDisplayMode(.inline)
     }

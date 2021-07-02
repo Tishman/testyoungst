@@ -38,7 +38,7 @@ struct EditProfileScene: View {
             }
             .onAppear { viewStore.send(.viewAppeared) }
         }
-        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
         .navigationBarTitleDisplayMode(.inline)
     }
 }

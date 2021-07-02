@@ -17,7 +17,7 @@ struct SettingsScene: View {
         ScrollView {
             WithViewStore(store) { viewStore in
                 Button {
-                    viewStore.send(.logoutPressed)
+                    viewStore.send(.logoutTriggered)
                 } label: {
                     Text(Localizable.logoutButtonTitle)
                         .padding()
@@ -28,6 +28,6 @@ struct SettingsScene: View {
             }
         }
         .navigationTitle(Localizable.settings)
-        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
     }
 }

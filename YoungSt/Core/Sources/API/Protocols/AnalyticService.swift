@@ -12,11 +12,12 @@ public protocol AnalyticService: AnyObject {
 }
 
 public enum CommonEvent: String {
-    case refreshRequested
-    case alertClosed
+    case refreshTriggered
+    case alertClosedTriggered
+    case viewLoaded
 }
 
-public struct CommonParameter {
+public struct AnalyticParameter {
     public let key: String
     public let value: Any
     
@@ -25,10 +26,10 @@ public struct CommonParameter {
     }
 }
 
-extension CommonParameter {
-    static func result(_ result: Bool) -> CommonParameter { .init(key: "result", value: result) }
+public extension AnalyticParameter {
+    static func result(_ result: Bool) -> AnalyticParameter { .init(key: "result", value: result) }
     
-    static func result<Success, Failure: Error>(_ resultValue: Result<Success, Failure>) -> CommonParameter {
+    static func result<Success, Failure: Error>(_ resultValue: Result<Success, Failure>) -> AnalyticParameter {
         switch resultValue {
         case .success:
             return result(true)
@@ -36,4 +37,6 @@ extension CommonParameter {
             return result(false)
         }
     }
+    
+    static func editingMode(_ editingMode: Bool) -> AnalyticParameter { .init(key: "editing_mode", value: editingMode) }
 }

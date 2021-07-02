@@ -45,35 +45,64 @@ struct IdentifiedItem<T: Equatable>: Identifiable, Equatable {
     var item: T
 }
 
-enum AddGroupAction: Equatable {
+enum AddGroupAction: Equatable, AnalyticsAction {
     case titleChanged(String)
     case titleErrorChanged(String?)
     
-    case gotAddGroup(Result<Dictionary_AddGroupResponse, EquatableError>)
-    
-    case addGroupPressed
-    case alertClosePressed
-    case addWordOpened
-    case rountingHandled
-    case wordAdded(AddWordInput.AddLaterRequest)
-    
+    case addGroupTriggered
+    case alertCloseTriggered
     case wordAction(id: UUID, action: WordAction)
+    case closeSceneTriggered
     
+    case gotAddGroup(Result<Dictionary_AddGroupResponse, EquatableError>)
+    case wordAdded(AddWordInput.AddLaterRequest)
     case showAlert(String)
     
-    case closeSceneTriggered
+    case route(Routing)
+    
+    enum Routing: Equatable, AnalyticsAction {
+        case handled
+        
+        case addWord
+        case editWord(UUID)
+        
+        var event: AnalyticsEvent? {
+            switch self {
+            case .addWord:
+                return "addWord"
+            case .editWord:
+                return "editWord"
+            case .handled:
+                return nil
+            }
+        }
+    }
     
     enum WordAction: Equatable {
         case selected
         case removed
     }
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .addGroupTriggered:
+            return "addGroupTriggered"
+        case .titleChanged:
+            return .init(name: "titleChanged", oneTimeEvent: true)
+        case let .route(routing):
+            return routing.event?.route()
+        default:
+            return nil
+        }
+    }
 }
 
-struct AddGroupEnvironment {
+struct AddGroupEnvironment: AnalyticsEnvironment {
     let bag: CancellationBag
     let wordsService: WordsService
     let groupsService: GroupsService
     let userProvider: UserProvider
+    let analyticsService: AnalyticService
     
     let languageProvider: LanguagePairProvider
 }

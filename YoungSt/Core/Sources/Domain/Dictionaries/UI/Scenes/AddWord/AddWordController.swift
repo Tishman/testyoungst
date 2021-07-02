@@ -31,7 +31,7 @@ final class AddWordController: UIHostingController<AddWordScene>, RoutableContro
     }
     
     func resetRouting() {
-        viewStore.send(.routingHandled)
+        viewStore.send(.route(.handled))
     }
     
     private let routingPoints: AddWordRoutingPoints

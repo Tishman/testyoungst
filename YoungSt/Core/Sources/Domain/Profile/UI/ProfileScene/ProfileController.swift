@@ -29,7 +29,7 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
     }
     
     func resetRouting() {
-        viewStore.send(.changeDetail(.closed))
+        viewStore.send(.route(.handled))
     }
     
     private let store: Store<ProfileState, ProfileAction>

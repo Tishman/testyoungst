@@ -33,12 +33,12 @@ struct AddWordState: Equatable, Previwable, ClosableState {
     var isBootstrapping = true
     var sourceFieldForceFocused = false
     var leftToRight = true
-    var localTranslationDownloading = false
     
     var isClosed = false
     var isLoading = false
     var isTranslateLoading = false
     var isAddPending = false
+    var changeTranslationAnalyticHandled = false
     
     var sourceText = ""
     var sourceError: String?
@@ -107,37 +107,80 @@ extension AddWordInfo {
     }
 }
 
-enum AddWordAction: Equatable {
+enum AddWordAction: Equatable, AnalyticsAction {
+    case viewAppeared
+    
     case sourceInputFocusChanged(Bool)
     case sourceChanged(String)
     case sourceErrorChanged(String?)
     case translationChanged(String)
     case descriptionChanged(String)
+    
+    case removeSelectedGroupTriggered
+    case swapLanguagesTriggered
+    case alertCloseTriggered
+    case translateTriggered
+    case auditionTriggered
+    case addTriggered
+    case closeSceneTriggered
+    
     case gotTranslation(Result<String, EquatableError>)
     case gotWordAddition(Result<EmptyResponse, EquatableError>)
-    case translationDownloaded(Result<EmptyResponse, EquatableError>)
-    
     case selectedGroupChanged(DictGroupItem?)
-    case viewAppeared
-    case removeSelectedGroupPressed
-    case swapLanguagesPressed
-    case alertClosePressed
-    case translatePressed
-    case auditionPressed
-    case addPressed
-    case routingHandled
     
-    case groupsOpened
-    case closeSceneTriggered
+    case route(Routing)
+    
+    enum Routing: Equatable, AnalyticsAction {
+        case handled
+        
+        case selectGroup
+        
+        var event: AnalyticsEvent? {
+            switch self {
+            case .selectGroup:
+                return "selectGroup"
+            case .handled:
+                return nil
+            }
+        }
+    }
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .removeSelectedGroupTriggered:
+            return "removeSelectedGroupTriggered"
+        case .swapLanguagesTriggered:
+            return "swapLanguagesTriggered"
+        case .alertCloseTriggered:
+            return "alertCloseTriggered"
+        case .translateTriggered:
+            return "translateTriggered"
+        case .auditionTriggered:
+            return "auditionTriggered"
+        case .addTriggered:
+            return "addTriggered"
+        case let .route(routing):
+            return routing.event?.route()
+        case let .gotTranslation(result):
+            return .init(name: "gotTranslation", parameters: AnalyticParameter.result(result).toDict)
+        case let .selectedGroupChanged(item):
+            return item == nil ? nil : "selectedGroupChanged"
+        case .translationChanged:
+            return .init(name: "translationChanged", parameters: nil, oneTimeEvent: true)
+        default:
+            return nil
+        }
+    }
 }
 
-struct AddWordEnvironment {
+struct AddWordEnvironment: AnalyticsEnvironment {
     let bag: CancellationBag
     
     let translationService: TranslationService
     let wordService: WordsService
     let groupsService: GroupsService
     let auditionService: AuditionService
+    let analyticsService: AnalyticService
     
     var groupsListEnv: GroupsListEnvironment {
         .init(bag: .autoId(childOf: bag), groupsService: groupsService)

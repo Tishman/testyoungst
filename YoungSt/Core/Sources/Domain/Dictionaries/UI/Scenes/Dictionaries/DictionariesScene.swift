@@ -76,7 +76,7 @@ struct DictionariesScene: View {
             .onAppear { viewStore.send(.viewLoaded) }
             .refreshable { viewStore.send(.refreshTriggered) }
         }
-        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .alert(store.scope(state: \.alert), dismiss: .alertCloseTriggered)
         .navigationBarTitleDisplayMode(.inline)
     }
     

@@ -67,7 +67,7 @@ enum DictionariesAction: Equatable, AnalyticsAction {
     // UI events
     case refreshTriggered
     case viewLoaded
-    case alertClosed
+    case alertCloseTriggered
     case deleteWordTriggered(UUID)
     case deleteWordAlertTriggered(UUID)
     
@@ -113,17 +113,15 @@ enum DictionariesAction: Equatable, AnalyticsAction {
     var event: AnalyticsEvent? {
         switch self {
         case .refreshTriggered:
-            return "refreshTriggered"
-        case .viewLoaded:
-            return "viewLoaded"
-        case .alertClosed:
-            return "alertClosed"
+            return .init(name: CommonEvent.refreshTriggered.rawValue)
+        case .alertCloseTriggered:
+            return .init(name: CommonEvent.alertClosedTriggered.rawValue)
         case .deleteWordTriggered:
             return "deleteWordRequested"
         case .deleteWordAlertTriggered:
             return "deleteWordAlertPressed"
         case let .route(action):
-            return action.event?.prefixed(with: "route")
+            return action.event?.route()
         default:
             return nil
         }

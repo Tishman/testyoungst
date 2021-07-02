@@ -53,7 +53,7 @@ struct AddWordScene: View {
                             AddWordLanguageHeader(leftText: viewStore.currentSource.title,
                                                   rightText: viewStore.currentDestination.title,
                                                   buttonRotationFlag: viewStore.leftToRight) {
-                                viewStore.send(.swapLanguagesPressed)
+                                viewStore.send(.swapLanguagesTriggered)
                             }
                             .padding(.bottom, .spacing(.big))
                             
@@ -81,7 +81,7 @@ struct AddWordScene: View {
                         $0.keyboardDismissMode = .interactive
                     }
                     
-                    Button { viewStore.send(.addPressed) } label: {
+                    Button { viewStore.send(.addTriggered) } label: {
                         Text(Localizable.save)
                     }
                     .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
@@ -101,7 +101,7 @@ struct AddWordScene: View {
                 Color.clear.onAppear { viewStore.send(.viewAppeared) }
             }
         )
-        .alert(store.scope(state: \.alertError), dismiss: AddWordAction.alertClosePressed)
+        .alert(store.scope(state: \.alertError), dismiss: AddWordAction.alertCloseTriggered)
         .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -132,7 +132,7 @@ struct AddWordScene: View {
                 VStack {
                     AddWordInputView(subtitle: Localizable.word,
                                      lineLimit: 0,
-                                     delegate: AddWordTextDelegate { viewStore.send(.translatePressed) },
+                                     delegate: AddWordTextDelegate { viewStore.send(.translateTriggered) },
                                      currentText: viewStore.binding(get: \.sourceText, send: AddWordAction.sourceChanged),
                                      forceFocused: viewStore.binding(get: \.sourceFieldForceFocused, send: AddWordAction.sourceInputFocusChanged))
                         .frame(height: addWordInputHeight * 3 / 4)
@@ -171,7 +171,7 @@ struct AddWordScene: View {
                 .frame(maxWidth: .infinity)
                 .bubbled()
                 
-                Button { viewStore.send(.auditionPressed) } label: {
+                Button { viewStore.send(.auditionTriggered) } label: {
                     Image(systemName: "play.circle.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -206,7 +206,7 @@ struct AddWordScene: View {
         WithViewStore(store) { viewStore in
             HStack {
                 if viewStore.info.groupSelectionEnabled {
-                    Button { viewStore.send(.groupsOpened) } label: {
+                    Button { viewStore.send(.route(.selectGroup)) } label: {
                         Image(systemName: "rectangle.stack.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -219,9 +219,9 @@ struct AddWordScene: View {
                     HStack(spacing: 0) {
                         Text(group.title)
                             .font(.body)
-                        
+
                         if viewStore.info.groupSelectionEnabled {
-                            Button { viewStore.send(.removeSelectedGroupPressed) } label: {
+                            Button { viewStore.send(.removeSelectedGroupTriggered) } label: {
                                 CrossView()
                                     .frame(width: DefaultSize.smallButton, height: DefaultSize.smallButton)
                                     .padding(.spacing(.small))

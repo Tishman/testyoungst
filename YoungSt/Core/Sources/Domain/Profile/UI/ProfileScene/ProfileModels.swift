@@ -55,27 +55,53 @@ struct ProfileState: Equatable, Previwable {
     static var preview: Self = .init(userID: .init(), currentProfileState: .preview)
 }
 
-enum ProfileAction: Equatable {
+enum ProfileAction: Equatable, AnalyticsAction {
     case viewAppeared
-    case refresh
+    case refreshTriggered
     case profileTypeChanged(ProfileState.ProfileTypeState)
     
     case currentProfile(CurrentProfileAction)
     case teacherInfo(TeacherInfoAction)
     case studentsInfo(StudentsInfoAction)
     
-    
-    enum DetailState: Equatable {
-        case closed
+    enum Routing: Equatable, AnalyticsAction {
+        case handled
+        
         case editProfile
         case fillInfo
         case openStudent(UUID)
+        
+        var event: AnalyticsEvent? {
+            switch self {
+            case .editProfile:
+                return "editProfile"
+            case .fillInfo:
+                return "fillInfo"
+            case .openStudent:
+                return "openStudent"
+            case .handled:
+                return nil
+            }
+        }
     }
     
-    case changeDetail(DetailState)
+    case route(Routing)
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .refreshTriggered:
+            return .init(name: CommonEvent.refreshTriggered.rawValue)
+        case let .route(routing):
+            return routing.event?.route()
+        case let .profileTypeChanged(state):
+            return .init(name: "profileTypeChanged", parameters: ["profile_type": state])
+        default:
+            return nil
+        }
+    }
 }
 
-struct ProfileEnvironment {
+struct ProfileEnvironment: AnalyticsEnvironment {
     let bag: CancellationBag
     
     let profileService: ProfileService
@@ -85,6 +111,7 @@ struct ProfileEnvironment {
     let deeplinkService: DeeplinkService
     let credentialsService: CredentialsService
     let profileEventPublisher: ProfileEventPublisher
+    let analyticsService: AnalyticService
     
     var currentProfileEnv: CurrentProfileEnvironment {
         .init(bag: .autoId(childOf: bag),

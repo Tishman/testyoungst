@@ -27,7 +27,7 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         case .viewAppeared:
             state.profileType = env.storage[currentProfileTypeKey] ?? .student
             
-        case .refresh:
+        case .refreshTriggered:
             switch state.profileType {
             case .student:
                 return .init(value: .teacherInfo(.reload))
@@ -39,23 +39,23 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             state.profileType = newProfileType
             env.storage[currentProfileTypeKey] = newProfileType
             
-        case .changeDetail(.editProfile):
+        case .route(.editProfile):
             state.route = .editProfile
             
-        case .changeDetail(.fillInfo):
+        case .route(.fillInfo):
             state.route = .fillInfo
             
-        case let .changeDetail(.openStudent(id)):
+        case let .route(.openStudent(id)):
             state.route = .openedStudent(userID: id)
             
-        case .changeDetail(.closed):
+        case .route(.handled):
             state.route = nil
             
         case let .studentsInfo(.student(id, .open)):
-            return .init(value: .changeDetail(.openStudent(id)))
+            return .init(value: .route(.openStudent(id)))
             
         case .currentProfile(.editInfoOpened):
-            return .init(value: .changeDetail(.fillInfo))
+            return .init(value: .route(.fillInfo))
             
         case .teacherInfo(.invites(.searchTeacherOpened)):
             state.route = .searchTeacher
@@ -68,4 +68,5 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
         }
         return .none
     }
+    .analytics()
 )
