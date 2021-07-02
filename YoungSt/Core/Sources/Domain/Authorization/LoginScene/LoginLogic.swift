@@ -20,19 +20,26 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         state.passwordFieldForceFocused = isFocused
     
 	case let .emailChanged(value):
-		state.email = value
+        state.email.status = .default
+        state.email.value = value
 		
 	case let .passwordChanged(value):
-		state.password = value
+        state.password.status = .default
+        state.password.value = value
 		
 	case .loginTapped:
-		guard !state.email.isEmpty && !state.password.isEmpty else {
-			return .init(value: .failedValidtion(Localizable.fillAllFields))
+        guard !state.email.value.isEmpty else {
+            state.email.status = .error(Localizable.requiredField)
+            return .none
 		}
+        guard !state.password.value.isEmpty else {
+            state.password.status = .error(Localizable.requiredField)
+            return .none
+        }
 		state.isLoading = true
 		let requestData = Authorization_LoginRequest.with {
-			$0.email = state.email
-			$0.password = state.password
+            $0.email = state.email.value
+            $0.password = state.password.value
 		}
 		
 		return enviroment.service.login(request: requestData)
@@ -45,14 +52,11 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		
 	case let .handleLogin(.failure(.errVerificationNotConfirmedRegID(uuid))):
 		state.isLoading = false
-        state.routing = .confirmEmail(userId: uuid, email: state.email, password: state.password)
+        state.routing = .confirmEmail(userId: uuid, email: state.email.value, password: state.password.value)
 		
 	case let .handleLogin(.failure(error)):
 		state.isLoading = false
 		state.alertState = .init(title: TextState(error.localizedDescription))
-		
-	case let .failedValidtion(value):
-		state.alertState = .init(title: TextState(value))
 		
 	case .alertClosed:
 		state.alertState = nil

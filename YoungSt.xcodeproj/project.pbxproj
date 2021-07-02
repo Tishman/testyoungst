@@ -59,6 +59,7 @@
 		FD4337D4263EA50F00FA6DCE /* AppLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogic.swift; sourceTree = "<group>"; };
 		FD60520426638F1A006218BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD60520D26639446006218BF /* AnalyticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
+		FD8412FE268EF7D7006DA086 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BuildTools; sourceTree = "<group>"; };
 		FDD32C1F2657BE97001DE446 /* YoungSt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YoungSt.entitlements; sourceTree = "<group>"; };
 		FDE99B2A2685C739003E9CC1 /* DeeplinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkService.swift; sourceTree = "<group>"; };
 		FDE99B2C2685CA69003E9CC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@
 		0C3492112592001900F729C4 = {
 			isa = PBXGroup;
 			children = (
+				FD8412FE268EF7D7006DA086 /* BuildTools */,
 				4783769825FB90A9000B11B7 /* Core */,
 				0C34921C2592001900F729C4 /* YoungSt */,
 				0C34921B2592001900F729C4 /* Products */,
@@ -206,12 +208,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C3492292592001C00F729C4 /* Build configuration list for PBXNativeTarget "YoungSt" */;
 			buildPhases = (
-				5B752972D637EDB4A6BE46CC /* [CP] Check Pods Manifest.lock */,
+				B1B3A46D267798D58B45F5E9 /* [CP] Check Pods Manifest.lock */,
 				0C3492162592001900F729C4 /* Sources */,
 				0C3492172592001900F729C4 /* Frameworks */,
 				0C3492182592001900F729C4 /* Resources */,
-				1E9620E268DA5B857C7EE9C7 /* [CP] Embed Pods Frameworks */,
 				FD04A64F268C83FE0019AF3D /* Crashlytics */,
+				62FFFCB3A816F949FDBE6F89 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -289,7 +291,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1E9620E268DA5B857C7EE9C7 /* [CP] Embed Pods Frameworks */ = {
+		62FFFCB3A816F949FDBE6F89 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -306,7 +308,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YoungSt/Pods-YoungSt-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5B752972D637EDB4A6BE46CC /* [CP] Check Pods Manifest.lock */ = {
+		B1B3A46D267798D58B45F5E9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

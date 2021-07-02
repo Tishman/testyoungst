@@ -18,7 +18,6 @@ struct ConfrimEmailInput {
 }
 
 struct ConfrimEmailState: Equatable, ClosableState {
-	var code = ""
 	let userId: UUID
     let email: String
     let passsword: String
@@ -26,17 +25,16 @@ struct ConfrimEmailState: Equatable, ClosableState {
 	var alert: AlertState<ConfrimEmailAction>?
 	var isClosed = false
 	var isLoading = false
-    var codeFieldForceFocused = false
+    var codeEnter: CodeEnterState = .init(codeCount: 6)
 }
 
 enum ConfrimEmailAction: Equatable {
-	case didCodeStartEnter(String)
 	case failedValidation(String)
 	case didConfrimButtonTapped
 	case handleConfrimation(Result<Bool, EquatableError>)
 	case handleLogin(Result<Authorization_LoginResponse, LoginError>)
 	case alertOkButtonTapped
-    case codeInputFocusChanged(Bool)
+    case codeEnter(CodeEnterAction)
 }
 
 struct ConfrimEmailEnviroment {

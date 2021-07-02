@@ -43,23 +43,23 @@ struct RegistrationView: View {
                             VStack(spacing: .spacing(.big)) {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
                                               forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
-                                              status: .constant(.default), placeholder: Localizable.emailPlaceholder)
+                                              status: .default, placeholder: Localizable.emailPlaceholder)
                                 
                                 AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
                                               forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
-                                              status: .constant(.default),
+                                              status: .default,
                                               placeholder: Localizable.usernamePlaceholder)
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
-                                                status: .constant(.default),
                                                 isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordButtonTapped),
+                                                status: .default,
                                                 placeholder: Localizable.passwordPlaceholder)
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
-                                                status: .constant(.default),
                                                 isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                                status: .default,
                                                 placeholder: Localizable.confrimPasswordPlaceholder)
                             }
                         }

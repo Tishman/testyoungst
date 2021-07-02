@@ -12,10 +12,10 @@ import ComposableArchitecture
 import Coordinator
 
 struct ForgotPasswordState: Equatable, ClosableState {
-	var email: Field<String> = .init(value: "", status: .default)
-	var code: Field<String> = .init(value: "", status: .default)
-	var password: Field<String> = .init(value: "", status: .default)
-	var confrimPassword: Field<String> = .init(value: "", status: .default)
+	var email: StatusField<String> = .init(value: "", status: .default)
+	var code: StatusField<String> = .init(value: "", status: .default)
+	var password: StatusField<String> = .init(value: "", status: .default)
+	var confrimPassword: StatusField<String> = .init(value: "", status: .default)
 	var isPasswordSecure = true
 	var isConfirmSecure = true
 	var isResetPasswordInit = false
@@ -26,17 +26,6 @@ struct ForgotPasswordState: Equatable, ClosableState {
     var codeFieldForceFocused: Bool = false
     var passwordFieldForceFocused: Bool = false
     var confirmPasswordFieldForceFocused: Bool = false
-}
-
-extension ForgotPasswordState {
-	struct Field<T: Equatable>: Equatable {
-		var value: T
-		var status: TextEditStatus
-		
-		static func == (lhs: ForgotPasswordState.Field<T>, rhs: ForgotPasswordState.Field<T>) -> Bool {
-			return lhs.value == rhs.value && lhs.status == rhs.status
-		}
-	}
 }
 
 enum ForgotPasswordAction: Equatable {
