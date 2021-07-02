@@ -103,7 +103,7 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 }
 
 struct ForgotPasswordLogic {
-	static func isFieldNotEmpty(field: inout ForgotPasswordState.Field<String>) -> Bool {
+	static func isFieldNotEmpty(field: inout StatusField<String>) -> Bool {
 		guard !field.value.isEmpty else {
 			field.status = .error(Localizable.requiredField)
 			return false
@@ -112,7 +112,7 @@ struct ForgotPasswordLogic {
 		return true
 	}
 	
-	static func validateCode(code: inout ForgotPasswordState.Field<String>) -> Bool {
+	static func validateCode(code: inout StatusField<String>) -> Bool {
 		guard code.value.count == 6 else {
 			code.status = .error(Localizable.incorrectCode)
 			return false
@@ -121,8 +121,8 @@ struct ForgotPasswordLogic {
 		return true
 	}
 	
-	static func validatePasswordConfrimation(password: ForgotPasswordState.Field<String>,
-											 confrim: inout ForgotPasswordState.Field<String>) -> Bool {
+	static func validatePasswordConfrimation(password: StatusField<String>,
+											 confrim: inout StatusField<String>) -> Bool {
 		guard password.value == confrim.value else {
 			confrim.status = .error(Localizable.passwordMismatch)
 			return false
@@ -131,7 +131,7 @@ struct ForgotPasswordLogic {
 		return true
 	}
 	
-	static func validateEmail(email: inout ForgotPasswordState.Field<String>) -> Bool {
+	static func validateEmail(email: inout StatusField<String>) -> Bool {
 		guard EmailValidator.isValidEmail(email: email.value) else {
 			email.status = .error(Localizable.incorrectEmail)
 			return false

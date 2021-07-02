@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Resources
 import Utilities
 
-struct LoginView: View {
+struct LoginScene: View {
     let store: Store<LoginState, LoginAction>
     
     @State private var contentOffset: CGFloat = 0
@@ -26,15 +26,15 @@ struct LoginView: View {
                         
                         WithViewStore(store) { viewStore in
                             VStack(spacing: .spacing(.ultraBig)) {
-                                AuthTextInput(text: viewStore.binding(get: \.email, send: LoginAction.emailChanged),
+                                AuthTextInput(text: viewStore.binding(get: \.email.value, send: LoginAction.emailChanged),
                                               forceFocused: viewStore.binding(get: \.loginFieldForceFocused, send: LoginAction.loginInputFocusChanged),
-                                              status: .constant(.default),
+                                              status: viewStore.email.status,
                                               placeholder: Localizable.emailPlaceholder)
                                 
-                                AuthSecureInput(text: viewStore.binding(get: \.password, send: LoginAction.passwordChanged),
+                                AuthSecureInput(text: viewStore.binding(get: \.password.value, send: LoginAction.passwordChanged),
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: LoginAction.passwordInputFocusChanged),
-                                                status: .constant(.default),
                                                 isSecure: viewStore.binding(get: \.isSecure, send: LoginAction.showPasswordButtonTapped),
+                                                status: viewStore.password.status,
                                                 placeholder: Localizable.passwordPlaceholder)
 
 								Button(action: { viewStore.send(.forgotPasswordTapped) }, label: {
@@ -78,6 +78,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(store: .init(initialState: .init(), reducer: .empty, environment: ()))
+        LoginScene(store: .init(initialState: .init(), reducer: .empty, environment: ()))
     }
 }

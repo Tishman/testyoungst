@@ -12,7 +12,7 @@ import Resources
 struct AuthTextInput: View {
     @Binding var text: String
     @Binding var forceFocused: Bool
-    @Binding var status: TextEditStatus
+    let status: TextEditStatus
     let charecterLimit: Int = 255
     let placeholder: String
     
@@ -21,7 +21,7 @@ struct AuthTextInput: View {
             TextFieldView(text: $text,
                           forceFocused: $forceFocused,
                           isSecure: .constant(false),
-                          charecterLimit: charecterLimit,
+                          charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder)
             if !text.isEmpty {
                 Button(action: { text = "" }) {
@@ -38,7 +38,7 @@ struct AuthTextField_Previews: PreviewProvider {
     static var previews: some View {
         AuthTextInput(text: .constant(""),
                       forceFocused: .constant(false),
-                      status: .constant(.default),
+                      status: .default,
                       placeholder: "Test")
     }
 }

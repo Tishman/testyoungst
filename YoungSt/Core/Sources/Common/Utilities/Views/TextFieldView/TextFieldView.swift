@@ -10,27 +10,29 @@ import SwiftUI
 import UIKit
 import Resources
 
-public struct TextFieldView: UIViewRepresentable {
+public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     @Binding private var text: String
     @Binding private var forceFocused: Bool
     @Binding private var isSecure: Bool
+    @Binding private var charecterLimit: Int
     private let placeholder: String?
-    private let charecterLimit: Int
+    @Environment (\.multilineTextAlignment) private var alignment
     
     public init(text: Binding<String>,
                 forceFocused: Binding<Bool>,
                 isSecure: Binding<Bool>,
-                charecterLimit: Int,
+                charecterLimit: Binding<Int>,
                 placeholder: String?) {
         self._text = text
         self._forceFocused = forceFocused
         self.placeholder = placeholder
-        self.charecterLimit = charecterLimit
+        self._charecterLimit = charecterLimit
         self._isSecure = isSecure
     }
     
     public func makeUIView(context: Context) -> UIViewType {
-        let textField = UITextField(frame: .zero)
+        let textField = YoungstTextField(frame: .zero)
+        textField.youngstDelegate = self
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         context.coordinator.initalSetup(textField: textField)
         textField.placeholder = placeholder
@@ -41,9 +43,13 @@ public struct TextFieldView: UIViewRepresentable {
         if uiView.text != text {
             uiView.text = text
         }
-        
+        // TODO: Remove binding
         uiView.isSecureTextEntry = isSecure
-
+        
+        uiView.tintColor = .clear
+        
+        uiView.textAlignment = alignment.nsTextAligment
+        
         if forceFocused {
             uiView.becomeFirstResponder()
         }
@@ -51,6 +57,10 @@ public struct TextFieldView: UIViewRepresentable {
     
     public func makeCoordinator() -> Coordinator {
         .init(view: self)
+    }
+    
+    func deleteBackward() {
+        text = ""
     }
     
     public final class Coordinator: NSObject, UITextFieldDelegate {

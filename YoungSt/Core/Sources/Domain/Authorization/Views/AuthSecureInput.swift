@@ -12,8 +12,8 @@ import Resources
 struct AuthSecureInput: View {
     @Binding var text: String
     @Binding var forceFocused: Bool
-    @Binding var status: TextEditStatus
     @Binding var isSecure: Bool
+    let status: TextEditStatus
     let charecterLimit: Int = 255
     let placeholder: String
     
@@ -22,7 +22,7 @@ struct AuthSecureInput: View {
             TextFieldView(text: $text,
                           forceFocused: $forceFocused,
                           isSecure: $isSecure,
-                          charecterLimit: charecterLimit,
+                          charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder)
             if isSecure {
                 Button(action: { isSecure.toggle() }) {
@@ -42,8 +42,8 @@ struct AuthSecureInput_Previews: PreviewProvider {
     static var previews: some View {
         AuthSecureInput(text: .constant(""),
                         forceFocused: .constant(false),
-                        status: .constant(.default),
                         isSecure: .constant(true),
+                        status: .default,
                         placeholder: "Preview")
     }
 }
