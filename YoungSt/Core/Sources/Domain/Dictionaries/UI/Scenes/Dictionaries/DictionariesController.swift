@@ -35,7 +35,7 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
     }
     
     func resetRouting() {
-        viewStore.send(.changeDetail(.closed))
+        viewStore.send(.route(.handled))
     }
     
     init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {

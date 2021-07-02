@@ -14,7 +14,6 @@ import Protocols
 
 let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, DictionariesEnvironment>.combine(
     Reducer { state, action, env in
-        
         enum Cancellable: Hashable {
             case getUserLists
             case getUserWords
@@ -24,16 +23,39 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
         }
         
         switch action {
-        case .refreshList:
+        case .refreshTriggered:
+            return .init(value: .updateItems)
+            
+        case .viewLoaded:
+            let dictChangedPublisher = env.dictionaryEventPublisher.publisher
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
+                .map { _ in DictionariesAction.silentUpdateItems }
+                .cancellable(id: Cancellable.dictObserving, bag: env.bag)
+            
             return .merge(
-                .init(value: .silentRefreshList),
+                .init(value: .updateItems),
+                dictChangedPublisher
+            )
+            
+        case .alertClosed:
+            state.alert = nil
+            
+        case let .deleteWordTriggered(id):
+            state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
+                                primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertTriggered(id)),
+                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
+        
+        case .updateItems:
+            return .merge(
+                .init(value: .silentUpdateItems),
                 Effect(value: .showLoader(true))
                     .delay(for: .milliseconds(700), scheduler: RunLoop.main)
                     .eraseToEffect()
                     .cancellable(id: Cancellable.showLoader, cancelInFlight: true, bag: env.bag)
                 )
             
-        case .silentRefreshList:
+        case .silentUpdateItems:
             let wordsRequest = Dictionary_GetUserWordsRequest.with {
                 $0.userID = state.userID.uuidString
                 $0.groupID = ""
@@ -52,18 +74,6 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 .map(DictionariesAction.itemsUpdated)
                 .cancellable(id: Cancellable.getUserLists, bag: env.bag)
             
-        case .viewLoaded:
-            let dictChangedPublisher = env.dictionaryEventPublisher.publisher
-                .receive(on: DispatchQueue.main)
-                .eraseToEffect()
-                .map { _ in DictionariesAction.silentRefreshList }
-                .cancellable(id: Cancellable.dictObserving, bag: env.bag)
-            
-            return .merge(
-                .init(value: .refreshList),
-                dictChangedPublisher
-            )
-            
         case let .itemsUpdated(response):
             switch response {
             case let .success(result):
@@ -81,30 +91,22 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
         case let .showLoader(isLoading):
             state.isLoading = isLoading
             
-        case .alertClosed:
-            state.alert = nil
-            
         case let .showAlert(errorText):
             state.alert = .init(title: TextState(errorText))
             
-        case let .deleteWordRequested(item):
-            state.alert = .init(title: TextState(Localizable.shouldDeleteWord),
-                                primaryButton: .destructive(TextState(Localizable.delete), send: .deleteWordAlertPressed(item)),
-                                secondaryButton: .cancel(TextState(Localizable.cancel), send: .alertClosed))
-            
-        case let .deleteWordAlertPressed(item):
-            return .init(value: .deleteWordTriggered(item))
+        case let .deleteWordAlertTriggered(id):
+            return .init(value: .deleteWordSubmitted(id))
                 .receive(on: DispatchQueue.main.animation())
                 .eraseToEffect()
             
-        case let .deleteWordTriggered(item):
-            state.deletingWords.insert(item.id)
-            return env.wordsService.removeWord(request: item.id)
+        case let .deleteWordSubmitted(id):
+            state.deletingWords.insert(id)
+            return env.wordsService.removeWord(request: id)
                 .mapError(EquatableError.init)
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
-                .map { .wordDeleted(.init(deletingID: item.id, result: $0)) }
-                .cancellable(id: Cancellable.deleteWord(item.id), bag: env.bag)
+                .map { .wordDeleted(.init(deletingID: id, result: $0)) }
+                .cancellable(id: Cancellable.deleteWord(id), bag: env.bag)
             
         case let .wordDeleted(response):
             switch response.result {
@@ -140,7 +142,8 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                 break
             }
             
-        case let .wordSelected(item):
+        case let .route(.word(id)):
+            guard let item = state.words.first(where: { $0.id == id }) else { break }
             let group = state.groups.first(where: { $0.id == item.groupID })
             state.routing = .addWord(
                 .init(semantic: .addToServer,
@@ -149,18 +152,18 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
                       model: .init(word: item, group: group))
             )
             
-        case let .changeDetail(.group(id)):
+        case let .route(.group(id)):
             guard let groupItem = state.groups.first(where: { $0.id == id })
             else { break }
             state.routing = .groupInfo(userID: state.userID, info: .item(groupItem))
             
-        case .changeDetail(.addGroup):
+        case .route(.addGroup):
             state.routing = .addGroup(userID: state.userID)
             
-        case .changeDetail(.closed):
+        case .route(.handled):
             state.routing = nil
             
-        case .addWordOpened:
+        case .route(.addWord):
             state.routing = .addWord(
                 .init(semantic: .addToServer,
                       userID: state.userID,
@@ -169,6 +172,7 @@ let dictionariesReducer = Reducer<DictionariesState, DictionariesAction, Diction
         }
         return .none
     }
+    .analytics()
 )
 
 struct DictionariesLogic {

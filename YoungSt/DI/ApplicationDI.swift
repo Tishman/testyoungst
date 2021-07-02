@@ -19,7 +19,8 @@ import Utilities
 final class ApplicationDI: DIFramework {
     
     static func load(container: DIContainer) {
-        container.register(AnalyticService.init)
+        container.register(AnalyticServiceImpl.init)
+            .as(check: AnalyticService.self) {$0}
             .lifetime(.single)
         
         container.register {

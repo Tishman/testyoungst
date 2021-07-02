@@ -48,7 +48,7 @@ struct DictionariesState: Equatable, Previwable {
                                                   words: [DictWordItem.preview])
 }
 
-enum DictionariesAction: Equatable {
+enum DictionariesAction: Equatable, AnalyticsAction {
     struct UpdateItemsResult: Equatable {
         let groups: [DictGroupItem]
         let words: [DictWordItem]
@@ -64,35 +64,73 @@ enum DictionariesAction: Equatable {
         let removedID: UUID?
     }
     
-    case refreshList
-    case silentRefreshList
+    // UI events
+    case refreshTriggered
     case viewLoaded
+    case alertClosed
+    case deleteWordTriggered(UUID)
+    case deleteWordAlertTriggered(UUID)
+    
+    // Route events
+    case route(Routing)
+    
+    // Logic events
+    case updateItems
+    case silentUpdateItems
     case itemsUpdated(Result<UpdateItemsResult, EquatableError>)
     case wordsUpdated(UpdateWordsResult)
-    case alertClosed
-    case addWordOpened
     case showAlert(String)
-    case wordSelected(DictWordItem)
     case showLoader(Bool)
     
-    case deleteWordRequested(DictWordItem)
-    case deleteWordAlertPressed(DictWordItem)
-    
     // this case exists only for animation purposes
-    case deleteWordTriggered(DictWordItem)
-    
+    case deleteWordSubmitted(UUID)
     case wordDeleted(DeleteWordResult)
     
-    case changeDetail(DetailState)
-    
-    enum DetailState: Equatable {
-        case closed
+    enum Routing: Equatable, AnalyticsAction {
+        case handled
+        
+        case word(UUID)
+        case addWord
         case group(UUID)
         case addGroup
+        
+        var event: AnalyticsEvent? {
+            switch self {
+            case .word:
+                return "word"
+            case .addWord:
+                return "addWord"
+            case .group:
+                return "group"
+            case .addGroup:
+                return "addGroup"
+            case .handled:
+                return nil
+            }
+        }
+    }
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .refreshTriggered:
+            return "refreshTriggered"
+        case .viewLoaded:
+            return "viewLoaded"
+        case .alertClosed:
+            return "alertClosed"
+        case .deleteWordTriggered:
+            return "deleteWordRequested"
+        case .deleteWordAlertTriggered:
+            return "deleteWordAlertPressed"
+        case let .route(action):
+            return action.event?.prefixed(with: "route")
+        default:
+            return nil
+        }
     }
 }
 
-struct DictionariesEnvironment {
+struct DictionariesEnvironment: AnalyticsEnvironment {
     
     let bag: CancellationBag
     let wordsService: WordsService
@@ -101,6 +139,7 @@ struct DictionariesEnvironment {
     let userProvider: UserProvider
     let languageProvider: LanguagePairProvider
     let dictionaryEventPublisher: DictionaryEventPublisher
+    let analyticsService: AnalyticService
     
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()

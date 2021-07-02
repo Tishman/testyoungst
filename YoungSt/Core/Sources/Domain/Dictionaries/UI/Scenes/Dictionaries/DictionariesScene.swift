@@ -31,7 +31,7 @@ struct DictionariesScene: View {
                             
                             WithViewStore(store.scope(state: \.groups.isEmpty)) { viewStore in
                                 if !viewStore.state {
-                                    Button { viewStore.send(.changeDetail(.addGroup)) } label: {
+                                    Button { viewStore.send(.route(.addGroup)) } label: {
                                         Label(Localizable.add, systemImage: "plus.app")
                                     }
                                     .padding(.all, .spacing(.ultraSmall))
@@ -74,7 +74,7 @@ struct DictionariesScene: View {
                 }
             }
             .onAppear { viewStore.send(.viewLoaded) }
-            .refreshable { viewStore.send(.refreshList) }
+            .refreshable { viewStore.send(.refreshTriggered) }
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationBarTitleDisplayMode(.inline)
@@ -84,14 +84,14 @@ struct DictionariesScene: View {
         WithViewStore(store) { viewStore in
             if viewStore.groups.isEmpty {
                 ActionableEmptyPlaceholder(imageSystemName: "plus", text: Localizable.emptyGroupsPlaceholder) {
-                    viewStore.send(.changeDetail(.addGroup))
+                    viewStore.send(.route(.addGroup))
                 }
                 .padding(.top, .spacing(.regular))
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
                         ForEach(viewStore.groups) { element in
-                            Button { viewStore.send(.changeDetail(.group(element.id))) } label: {
+                            Button { viewStore.send(.route(.group(element.id))) } label: {
                                 DictGroupView(id: element.id, size: .small, state: element.state)
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -108,7 +108,7 @@ struct DictionariesScene: View {
     private var wordsList: some View {
         WithViewStore(store.scope(state: \.wordsList)) { viewStore in
             HeaderActionButton(Localizable.addWordAction, systemImage: "plus") {
-                viewStore.send(.addWordOpened)
+                viewStore.send(.route(.addWord))
             }
             .padding([.top, .horizontal])
             
@@ -124,12 +124,12 @@ struct DictionariesScene: View {
             } else {
                 LazyVStack {
                     ForEach(viewStore.state) { item in
-                        Button { viewStore.send(.wordSelected(item)) } label: {
+                        Button { viewStore.send(.route(.word(item.id))) } label: {
                             DictWordView(state: item.state)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .onDelete(tag: item.id, selection: $swappedWord) {
-                            viewStore.send(.deleteWordRequested(item))
+                            viewStore.send(.deleteWordTriggered(item.id))
                             return false
                         }
                     }
