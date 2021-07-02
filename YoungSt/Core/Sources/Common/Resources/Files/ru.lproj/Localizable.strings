@@ -41,6 +41,11 @@
 "save" = "Сохранить";
 "create" = "Создать";
 "welcomeMessage" = "Мы рады тебя видеть, друг!";
+"codeEmailSended" = "На ваш e-mail было отправлео письмо с 6-ти значным кодом. Чтобы восстановить пароль введите код из письма";
+"newPassword" = "Новый пароль";
+"enterYourEmail" = "Введите ваш e-mail";
+"send" = "Отправить";
+"passwordChanged" = "Пароль изменен!";
 
 // AddWord
 "addWordTitle" = "Добавление слова";

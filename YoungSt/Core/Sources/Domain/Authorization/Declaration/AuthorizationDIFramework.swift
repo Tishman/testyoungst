@@ -31,9 +31,21 @@ public final class AuthorizationDIFramework: DIFramework {
 		}
 		
 		container.register(ForgotPasswordEnviroment.init)
-		container.register {
-			ForgotPasswordController(env: $0)
-		}
+        container.register(ForgotPasswordRoutingPoints.init)
+        container.register {
+            ForgotPasswordController.init(env: $0, routingPoints: $1)
+        }
+        
+        container.register(VerificationEnviroment.init)
+        container.register(VerificationRoutingPoints.init)
+        container.register {
+            VerificationController(email: arg($0), env: $1, routingPoints: $2)
+        }
+        
+        container.register(ChangePasswordEnviroment.init)
+        container.register {
+            ChangePasswordController(input: arg($0), env: $1)
+        }
 		
 		container.register(ConfrimEmailEnviroment.init)
 		container.register {

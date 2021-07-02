@@ -15,71 +15,17 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 	switch action {
     case let .emailInputFocusChanged(isFocused):
         state.emailFieldForceFocused = isFocused
-        
-    case let .codeInputFocusChanged(isFocused):
-        state.emailFieldForceFocused = isFocused
-        
-    case let .passwordInputFocusChanged(isFocused):
-        state.passwordFieldForceFocused = isFocused
-        
-    case let .confirmPasswordInputFocusChanged(isFocused):
-        state.confirmPasswordFieldForceFocused = isFocused
     
 	case let .didEmailEditing(value):
 		state.email.value = value
 		state.email.status = .default
 		
-	case let .didCodeEditing(value):
-		state.code.value = value
-		state.code.status = .default
-		
-	case let .didPasswordEditing(value):
-		state.password.value = value
-		state.password.status = .default
-		
-	case let .didConrimPasswordEditing(value):
-		state.confrimPassword.value = value
-		state.confrimPassword.status = .default
-		
-	case .passwordButtonTapped:
-		state.isPasswordSecure.toggle()
-		
-	case .confrimPasswordButtonTapped:
-		state.isConfirmSecure.toggle()
-		
-	case .didChangePasswordButtonTapped:
-		guard ForgotPasswordLogic.isFieldNotEmpty(field: &state.email) &&
-				ForgotPasswordLogic.isFieldNotEmpty(field: &state.code) &&
-				ForgotPasswordLogic.isFieldNotEmpty(field: &state.password) &&
-				ForgotPasswordLogic.isFieldNotEmpty(field: &state.confrimPassword) &&
-				ForgotPasswordLogic.validateEmail(email: &state.email) &&
-				ForgotPasswordLogic.validateCode(code: &state.code) &&
-				ForgotPasswordLogic.validatePasswordConfrimation(password: state.password, confrim: &state.confrimPassword) else { break }
-		
-		let dataRequest = Authorization_ResetPasswordRequest.with {
-			$0.code = state.code.value
-			$0.email = state.email.value
-			$0.newPassword = state.password.value
-		}
-		
-		return enviroment.authorizationService.resetPassword(request: dataRequest)
-			.receive(on: DispatchQueue.main)
-			.catchToEffect()
-			.map(ForgotPasswordAction.handleResetPassword)
-		
 	case .handleInitResetPassword(.success):
-		state.isResetPasswordInit = true
-		
+        state.isLoading = false
+        state.routing = .verification(email: state.email.value)
+        
 	case let .handleInitResetPassword(.failure(error)):
-		state.alert = .init(title: TextState(Localizable.incorrectDataTitle),
-							message: TextState(error.localizedDescription),
-							dismissButton: .cancel(TextState(Localizable.ok)))
-		
-	case .handleResetPassword(.success):
-		state.isPasswordChanged = true
-		state.isClosed = true
-		
-	case let .handleResetPassword(.failure(error)):
+        state.isLoading = false
 		state.alert = .init(title: TextState(Localizable.incorrectDataTitle),
 							message: TextState(error.localizedDescription),
 							dismissButton: .cancel(TextState(Localizable.ok)))
@@ -89,7 +35,7 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		
 	case .didSendCodeButtonTapped:
 		guard ForgotPasswordLogic.validateEmail(email: &state.email) else { break }
-		state.email.status = .success(Localizable.allCorrect)
+        state.isLoading = true
 		let requestData = Authorization_InitResetPasswordRequest.with {
 			$0.email = state.email.value
 		}
@@ -98,6 +44,9 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 			.receive(on: DispatchQueue.main)
 			.catchToEffect()
 			.map(ForgotPasswordAction.handleInitResetPassword)
+        
+    case .routingHandled:
+        state.routing = nil
 	}
 	return .none
 }
@@ -109,25 +58,6 @@ struct ForgotPasswordLogic {
 			return false
 		}
 		field.status = .success(Localizable.allCorrect)
-		return true
-	}
-	
-	static func validateCode(code: inout StatusField<String>) -> Bool {
-		guard code.value.count == 6 else {
-			code.status = .error(Localizable.incorrectCode)
-			return false
-		}
-		code.status = .success(Localizable.allCorrect)
-		return true
-	}
-	
-	static func validatePasswordConfrimation(password: StatusField<String>,
-											 confrim: inout StatusField<String>) -> Bool {
-		guard password.value == confrim.value else {
-			confrim.status = .error(Localizable.passwordMismatch)
-			return false
-		}
-		confrim.status = .success(Localizable.allCorrect)
 		return true
 	}
 	
