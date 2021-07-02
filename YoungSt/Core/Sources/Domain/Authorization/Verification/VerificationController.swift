@@ -28,12 +28,11 @@ final class VerificationController: UIHostingController<VerificationScene>, Rout
     private var bag = Set<AnyCancellable>()
     
     var routePublisher: AnyPublisher<VerificationState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.routingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
     }
     
     init(email: String, env: VerificationEnviroment, routingPoints: VerificationRoutingPoints) {

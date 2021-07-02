@@ -34,20 +34,19 @@ final class ForgotPasswordController: UIHostingController<ForgotPasswordScene>, 
 		self.viewStore = .init(store)
         self.routingPoints = routingPoints
         super.init(rootView: ForgotPasswordScene(store: store))
+        observeRouting().store(in: &bag)
 	}
     
     var routePublisher: AnyPublisher<ForgotPasswordState.Routing?, Never> {
-        viewStore.publisher.routing
-            .handleEvents(receiveOutput: { [weak viewStore] point in
-                guard let viewStore = viewStore, point != nil else { return }
-                viewStore.send(.routingHandled)
-            })
-            .eraseToAnyPublisher()
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
     }
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-        observeRouting().store(in: &bag)
 	}
     
     func handle(routing: ForgotPasswordState.Routing) {
