@@ -15,7 +15,6 @@ struct HeaderDescriptionView: View {
     var body: some View {
         VStack(alignment: .center) {
             Text(title)
-				.foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
                 .font(.title)
                 .bold()
             

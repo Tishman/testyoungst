@@ -14,30 +14,44 @@ import SwiftLazy
 import Coordinator
 import Utilities
 
-final class ForgotPasswordController: UIHostingController<ForgotPasswordScene>, ClosableController {
-	typealias Endpoint = Provider<ForgotPasswordController>
-	
-	var closePublisher: AnyPublisher<Bool, Never> {
-		viewStore.publisher.isClosed.eraseToAnyPublisher()
-	}
+struct  ForgotPasswordRoutingPoints {
+    let verification: VerificationController.Endpoint
+}
+
+final class ForgotPasswordController: UIHostingController<ForgotPasswordScene>, RoutableController {
+	typealias Endpoint = Provider1<ForgotPasswordController, ForgotPasswordInput>
 	
 	private let store: Store<ForgotPasswordState, ForgotPasswordAction>
 	private let viewStore: ViewStore<ForgotPasswordState, ForgotPasswordAction>
+    private let routingPoints: ForgotPasswordRoutingPoints
 	private var bag = Set<AnyCancellable>()
 	
-	init(env: ForgotPasswordEnviroment) {
-		let store = Store(initialState: ForgotPasswordState(),
+    init(input: ForgotPasswordInput, env: ForgotPasswordEnviroment, routingPoints: ForgotPasswordRoutingPoints) {
+        let store = Store(initialState: ForgotPasswordState(email: .init(value: input.email, status: .default)),
 						  reducer: forgotPasswordReducer,
 						  environment: env)
 		self.store = store
 		self.viewStore = .init(store)
-		super.init(rootView: ForgotPasswordScene(store: store))
+        self.routingPoints = routingPoints
+        super.init(rootView: ForgotPasswordScene(store: store))
+        observeRouting().store(in: &bag)
 	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		observeClosing().store(in: &bag)
-	}
+    
+    var routePublisher: AnyPublisher<ForgotPasswordState.Routing?, Never> {
+        viewStore.publisher.routing.eraseToAnyPublisher()
+    }
+    
+    func resetRouting() {
+        viewStore.send(.routingHandled)
+    }
+    
+    func handle(routing: ForgotPasswordState.Routing) {
+        switch routing {
+        case let .verification(email: email):
+            let vc = routingPoints.verification.value(email)
+            present(controller: vc, preferredPresentation: .pushInCurrent)
+        }
+    }
 	
 	@objc required dynamic init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

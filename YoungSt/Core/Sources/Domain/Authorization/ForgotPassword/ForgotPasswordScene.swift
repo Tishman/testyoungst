@@ -28,52 +28,28 @@ struct ForgotPasswordScene: View {
 				TrackableScrollView(contentOffset: $contentOffset) {
 					VStack {
 						HeaderDescriptionView(title: Localizable.forgotPasswordTitle, subtitle: Localizable.forgotPasswordSubtitle)
-						
+                            .padding(.top, .spacing(.big))
+                        
 						WithViewStore(store) { viewStore in
                             AuthTextInput(text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
                                           forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: ForgotPasswordAction.emailInputFocusChanged),
                                           status: .default,
-                                          placeholder: Localizable.emailPlaceholder)
-                            
-							if viewStore.isResetPasswordInit {
-                                AuthTextInput(text: viewStore.binding(get: \.code.value, send: ForgotPasswordAction.didCodeEditing),
-                                              forceFocused: viewStore.binding(get: \.codeFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
-                                              status: .default,
-                                              placeholder: Localizable.enterCode)
-                                
-                                AuthSecureInput(text: viewStore.binding(get: \.password.value, send: ForgotPasswordAction.didPasswordEditing),
-                                                forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: ForgotPasswordAction.passwordInputFocusChanged),
-                                                isSecure: viewStore.binding(get: \.isPasswordSecure, send: ForgotPasswordAction.passwordButtonTapped),
-                                                status: .default,
-                                                placeholder: Localizable.passwordPlaceholder)
-                                
-                                AuthSecureInput(text: viewStore.binding(get: \.confrimPassword.value, send: ForgotPasswordAction.didConrimPasswordEditing),
-                                                forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: ForgotPasswordAction.confirmPasswordInputFocusChanged),
-                                                isSecure: viewStore.binding(get: \.isConfirmSecure, send: ForgotPasswordAction.confrimPasswordButtonTapped),
-                                                status: .default,
-                                                placeholder: Localizable.confrimPasswordPlaceholder)
-							}
+                                          placeholder: Localizable.enterYourEmail)
 						}
-						.padding(.top)
+                        .padding(.horizontal, .spacing(.ultraBig))
+                        .padding(.top, .spacing(.extraSize))
 					}
-					.padding(.horizontal)
-					.padding(.top, .spacing(.header))
 				}
+                .introspectScrollView { $0.keyboardDismissMode = .interactive }
 				
-				WithViewStore(store) { viewStore in
-					VStack {
-						Button(Localizable.sendCode, action: { viewStore.send(.didSendCodeButtonTapped) })
-							.buttonStyle(RoundedButtonStyle(style: .empty))
-							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
-						Button(Localizable.resetPassword, action: { viewStore.send(.didChangePasswordButtonTapped) })
-							.buttonStyle(RoundedButtonStyle(style: .filled))
-							.foregroundColor(viewStore.isResetPasswordInit ? Color.white.opacity(0.4) : Asset.Colors.greenDark.color.swiftuiColor)
-							.disabled(!viewStore.isResetPasswordInit)
-							.alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
-					}
-					.greedy(aligningContentTo: .bottom)
-					.ignoresSafeArea(.keyboard, edges: .bottom)
+                WithViewStore(store) { viewStore in
+                    Button(action: { viewStore.send(.didSendCodeButtonTapped) }, label: {
+                        Text(Localizable.send)
+                    })
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
 				}
+                .padding(.bottom)
+                .greedy(aligningContentTo: .bottom)
 			}
 			.overlay(
 				TopHeaderView(width: globalProxy.size.width,
@@ -82,11 +58,12 @@ struct ForgotPasswordScene: View {
 			)
 		}
 		.makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden, requiredOffset: .spacing(.header))
+        .alert(store.scope(state: \.alert), dismiss: ForgotPasswordAction.alertOkButtonTapped)
 	}
 }
 
 struct ForgotPasswordScene_Previews: PreviewProvider {
     static var previews: some View {
-		ForgotPasswordScene(store: .init(initialState: .init(), reducer: .empty, environment: ()))
+        ForgotPasswordScene(store: .init(initialState: .init(email: .init(value: "", status: .default)), reducer: .empty, environment: ()))
     }
 }

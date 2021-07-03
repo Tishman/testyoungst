@@ -22,7 +22,9 @@ struct AuthTextInput: View {
                           forceFocused: $forceFocused,
                           isSecure: .constant(false),
                           charecterLimit: .constant(charecterLimit),
-                          placeholder: placeholder)
+                          placeholder: placeholder,
+                          isCursorHidden: false)
+                .fixedSize(horizontal: false, vertical: true)
             if !text.isEmpty {
                 Button(action: { text = "" }) {
                     Image(uiImage: Asset.Images.cross.image)

@@ -110,6 +110,8 @@ public enum Loc {
     public static let cancelInvite = Loc.tr("Localizable", "cancelInvite")
     /// Close
     public static let closeTitle = Loc.tr("Localizable", "closeTitle")
+    /// A letter with a 6-digit code has been sent to your e-mail. To recover your password, enter the code from the letter
+    public static let codeEmailSended = Loc.tr("Localizable", "codeEmailSended")
     /// Confrim password
     public static let confrimPasswordPlaceholder = Loc.tr("Localizable", "confrimPasswordPlaceholder")
     /// Copy
@@ -118,6 +120,8 @@ public enum Loc {
     public static let create = Loc.tr("Localizable", "create")
     /// Create invite link
     public static let createInviteLink = Loc.tr("Localizable", "createInviteLink")
+    /// Come up with a new password to log in
+    public static let createNewPasswordForLogin = Loc.tr("Localizable", "createNewPasswordForLogin")
     /// Current role:
     public static let currentRole = Loc.tr("Localizable", "currentRole")
     /// Delete
@@ -152,6 +156,8 @@ public enum Loc {
     public static let en = Loc.tr("Localizable", "en")
     /// Enter code
     public static let enterCode = Loc.tr("Localizable", "enterCode")
+    /// Enter your e-mail
+    public static let enterYourEmail = Loc.tr("Localizable", "enterYourEmail")
     /// Please fill all fields.
     public static let fillAllFields = Loc.tr("Localizable", "fillAllFields")
     /// You almost done. Fill info about you
@@ -198,6 +204,8 @@ public enum Loc {
     public static let logoutButtonTitle = Loc.tr("Localizable", "logoutButtonTitle")
     /// Name
     public static let name = Loc.tr("Localizable", "name")
+    /// New password
+    public static let newPassword = Loc.tr("Localizable", "newPassword")
     /// Login
     public static let nickname = Loc.tr("Localizable", "nickname")
     /// Login already in use. Choose another
@@ -208,6 +216,8 @@ public enum Loc {
     public static let ok = Loc.tr("Localizable", "ok")
     /// Result here
     public static let outputTranslationPlacholder = Loc.tr("Localizable", "outputTranslationPlacholder")
+    /// Password changed!
+    public static let passwordChanged = Loc.tr("Localizable", "passwordChanged")
     /// Password mismatch.
     public static let passwordConfrimation = Loc.tr("Localizable", "passwordConfrimation")
     /// Passwords mismatch
@@ -244,6 +254,8 @@ public enum Loc {
     public static let searchStudents = Loc.tr("Localizable", "searchStudents")
     /// Search teachers
     public static let searchTeachers = Loc.tr("Localizable", "searchTeachers")
+    /// Send
+    public static let send = Loc.tr("Localizable", "send")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
     /// Settings

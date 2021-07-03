@@ -11,39 +11,30 @@ import Utilities
 import ComposableArchitecture
 import Coordinator
 
+struct ForgotPasswordInput {
+    let email: String
+}
+
 struct ForgotPasswordState: Equatable, ClosableState {
-	var email: StatusField<String> = .init(value: "", status: .default)
-	var code: StatusField<String> = .init(value: "", status: .default)
-	var password: StatusField<String> = .init(value: "", status: .default)
-	var confrimPassword: StatusField<String> = .init(value: "", status: .default)
-	var isPasswordSecure = true
-	var isConfirmSecure = true
-	var isResetPasswordInit = false
-	var isPasswordChanged = false
+	var email: StatusField<String>
 	var isClosed = false
 	var alert: AlertState<ForgotPasswordAction>?
     var emailFieldForceFocused: Bool = false
-    var codeFieldForceFocused: Bool = false
-    var passwordFieldForceFocused: Bool = false
-    var confirmPasswordFieldForceFocused: Bool = false
+    var routing: Routing?
+    var isLoading: Bool = false
+    
+    enum Routing: Equatable {
+        case verification(email: String)
+    }
 }
 
 enum ForgotPasswordAction: Equatable {
 	case didEmailEditing(String)
-	case didCodeEditing(String)
-	case didPasswordEditing(String)
-	case didConrimPasswordEditing(String)
-	case passwordButtonTapped
-	case confrimPasswordButtonTapped
 	case didSendCodeButtonTapped
-	case didChangePasswordButtonTapped
 	case handleInitResetPassword(Result<EmptyResponse, EquatableError>)
-	case handleResetPassword(Result<EmptyResponse, EquatableError>)
 	case alertOkButtonTapped
     case emailInputFocusChanged(Bool)
-    case codeInputFocusChanged(Bool)
-    case passwordInputFocusChanged(Bool)
-    case confirmPasswordInputFocusChanged(Bool)
+    case routingHandled
 }
 
 struct ForgotPasswordEnviroment {

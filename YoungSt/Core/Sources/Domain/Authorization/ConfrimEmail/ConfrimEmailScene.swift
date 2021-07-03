@@ -46,6 +46,7 @@ struct ConfrimEmailScene: View {
 				Spacer()
 			}
 			.alert(store.scope(state: \.alert), dismiss: ConfrimEmailAction.alertOkButtonTapped)
+            .onAppear { viewStore.send(.viewDidAppear) }
 		}
 	}
 }
