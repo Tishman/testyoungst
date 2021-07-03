@@ -59,7 +59,7 @@ let studentsInfoReducer = Reducer<StudentsInfoState, StudentsInfoAction, Student
                           let inviteID = try? UUID.from(string: request.invite.inviteID)
                     else { return nil }
                     return IncomingStudentInviteState(id: inviteID,
-                                                      title: info.primaryField,
+                                                      student: info,
                                                       loading: state.incomingInvites[id: info.id]?.loading)
                 }
                 

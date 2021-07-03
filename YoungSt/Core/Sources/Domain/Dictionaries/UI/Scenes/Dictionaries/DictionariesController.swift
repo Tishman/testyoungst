@@ -39,7 +39,7 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
     }
     
     init(input: DictionariesInput, env: DictionariesEnvironment, routingPoints: DictionariesRoutingPoints) {
-		let store = Store(initialState: DictionariesState(userID: input.userID),
+        let store = Store(initialState: DictionariesState(userID: input.userID, title: input.title),
                           reducer: dictionariesReducer,
                           environment: env)
         self.store = store
@@ -47,6 +47,7 @@ final class DictionariesController: UIHostingController<DictionariesScene>, Rout
         self.routingPoints = routingPoints
         super.init(rootView: DictionariesScene(store: store))
         
+        navigationItem.title = viewStore.title
         observeRouting().store(in: &bag)
     }
     

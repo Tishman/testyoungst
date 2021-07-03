@@ -69,7 +69,6 @@ struct GroupInfoScene: View {
                 }
             }
             .onAppear { viewStore.send(.viewAppeared) }
-            .navigationTitle(viewStore.state ?? "")
         }
         .alert(store.scope(state: \.alert), dismiss: .alertClosed)
         .navigationBarTitleDisplayMode(.inline)

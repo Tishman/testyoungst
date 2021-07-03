@@ -92,6 +92,8 @@
 "teacher" = "Teacher";
 "students" = "Students";
 "invites" = "Invites";
+"incomingInvites" = "Incoming invites";
+"outcomingInvites" = "Outcoming invites";
 "student" = "Student";
 "removeTeacher" = "Remove teacher";
 "removeStudent" = "Remove student";
@@ -120,7 +122,7 @@
 
 // StudentInvite
 "youCantBecomeStudent" = "You already have a teacher or invited someone.";
-"youCanSendRequestToBecomeStudent" = "You can send request to become student.\nGood luck in learning!";
+"youCanSendRequestToBecomeStudent" = "You can become student.\nGood luck in learning!";
 "didSendRequestToBecomeStudent" = "Request sent. Wait for your teacher to accept it.";
 "becomeStudent" = "Become student";
 

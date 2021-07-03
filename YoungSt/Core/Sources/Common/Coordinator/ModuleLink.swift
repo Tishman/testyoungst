@@ -32,9 +32,11 @@ public struct WelcomeInput: Equatable {
 
 public struct DictionariesInput: Hashable {
     public let userID: UUID
+    public let title: String?
     
-    public init(userID: UUID) {
+    public init(userID: UUID, title: String?) {
         self.userID = userID
+        self.title = title
     }
 }
 

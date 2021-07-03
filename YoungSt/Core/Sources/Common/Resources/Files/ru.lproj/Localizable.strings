@@ -92,6 +92,8 @@
 "teacher" = "Учитель";
 "students" = "Ученики";
 "invites" = "Заявки";
+"incomingInvites" = "Входящие заявки";
+"outcomingInvites" = "Отправленные заявки";
 "student" = "Ученик";
 "removeTeacher" = "Удалить учителя";
 "removeStudent" = "Удалить студента";
@@ -120,7 +122,7 @@
 
 // StudentInvite
 "youCantBecomeStudent" = "У вас уже есть учитель или вы кого-то пригласили.";
-"youCanSendRequestToBecomeStudent" = "Вы можете отправить запрос, чтобы стать учеником.\nУдачи в обучении!";
+"youCanSendRequestToBecomeStudent" = "Вы можете стать учеником.\nУдачи в обучении!";
 "didSendRequestToBecomeStudent" = "Запрос успешно отправлен. Подождите, когда ваш учитель его пример.";
 "becomeStudent" = "Стать учеником";
 

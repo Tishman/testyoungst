@@ -9,6 +9,7 @@ import Foundation
 import ComposableArchitecture
 import NetworkService
 import Resources
+import Utilities
 
 let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, ConfrimEmailEnviroment>.combine(
     codeEnterReducer.pullback(state: \.codeEnter, action: /ConfrimEmailAction.codeEnter, environment: {_ in }),
@@ -57,7 +58,7 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
             
         case let .handleConfrimation(.failure(error)):
             state.isLoading = false
-            state.alert = .init(title: TextState(error.localizedDescription),
+            state.alert = .init(title: TextState(error.description),
                                 message: nil,
                                 dismissButton: .cancel(TextState(Localizable.ok)))
             

@@ -46,7 +46,8 @@ let profileReducer = Reducer<ProfileState, ProfileAction, ProfileEnvironment>.co
             state.route = .fillInfo
             
         case let .route(.openStudent(id)):
-            state.route = .openedStudent(userID: id)
+            guard let profile = state.studentsInfoState.students[id: id] else { break }
+            state.route = .openedStudent(userID: id, title: profile.primaryField)
             
         case .route(.handled):
             state.route = nil

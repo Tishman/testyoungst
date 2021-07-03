@@ -19,7 +19,7 @@ struct DictionariesScene: View {
     @State private var swappedWord: UUID?
     
     var body: some View {
-        WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+        WithViewStore(store.scope(state: \.title)) { viewStore in
             ZStack {
                 ScrollView {
                     VStack {
@@ -69,8 +69,10 @@ struct DictionariesScene: View {
                     .padding(.top, .spacing(.medium))
                 }
 
-                if viewStore.state {
-                    IndicatorView()
+                WithViewStore(store.scope(state: \.isLoading)) { viewStore in
+                    if viewStore.state {
+                        IndicatorView()
+                    }
                 }
             }
             .onAppear { viewStore.send(.viewLoaded) }

@@ -21,7 +21,7 @@ private extension VerticalAlignment {
     
     /// Aligning translate button with translation result.
     /// They are in different view hierarchy for proper paddings and custom button tap area
-    static let translationCenter = VerticalAlignment(TranslationCenterAlignment.self)
+    static let translationBottom = VerticalAlignment(TranslationCenterAlignment.self)
 }
 
 
@@ -128,7 +128,7 @@ struct AddWordScene: View {
     
     private var sourceInput: some View {
         WithViewStore(store) { viewStore in
-            ZStack(alignment: Alignment(horizontal: .trailing, vertical: .translationCenter)) {
+            ZStack(alignment: Alignment(horizontal: .trailing, vertical: .translationBottom)) {
                 VStack {
                     AddWordInputView(subtitle: Localizable.word,
                                      lineLimit: 0,
@@ -157,9 +157,16 @@ struct AddWordScene: View {
                         }
                         .frame(minHeight: translateIndicatorHeight)
                         
-                        TextField(Localizable.noTranslation,
-                                  text: viewStore.binding(get: \.translationText, send: AddWordAction.translationChanged))
-                            .alignmentGuide(.translationCenter) { $0[.center] }
+                        TextEditingView(text: viewStore.binding(get: \.translationText, send: AddWordAction.translationChanged),
+                                        forceFocused: .constant(false),
+                                        delegate: nil)
+                            .frame(height: UIFloat(60))
+                            .alignmentGuide(.translationBottom) { $0[.bottom] }
+                            .background(
+                                Text(viewStore.translationText.isEmpty ? Localizable.noTranslation : "")
+                                    .foregroundColor(.secondary)
+                                    .greedy(aligningContentTo: .topLeading)
+                            )
                             .foregroundColor(viewStore.translationText.isEmpty ? .secondary : .primary)
                             .font(.body)
                             // Padding to not overlap with translate button
@@ -176,11 +183,11 @@ struct AddWordScene: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: InaccentButtonStyle.defaultSize, height: InaccentButtonStyle.defaultSize)
+                        .alignmentGuide(.translationBottom) { $0[.bottom] }
                         .padding([.trailing])
                         .padding([.vertical, .leading], .spacing(.small))
                         .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
                 }
-                .alignmentGuide(.translationCenter) { $0[.center] }
                 .buttonStyle(defaultButtonStyle)
             }
         }

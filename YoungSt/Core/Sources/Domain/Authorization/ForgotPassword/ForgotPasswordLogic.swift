@@ -72,7 +72,7 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		
 	case let .handleInitResetPassword(.failure(error)):
 		state.alert = .init(title: TextState(Localizable.incorrectDataTitle),
-							message: TextState(error.localizedDescription),
+                            message: TextState(error.description),
 							dismissButton: .cancel(TextState(Localizable.ok)))
 		
 	case .handleResetPassword(.success):

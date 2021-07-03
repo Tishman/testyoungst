@@ -28,6 +28,7 @@ struct DictionariesState: Equatable, Previwable {
     var routing: Routing?
     
     let userID: UUID
+    let title: String?
     
     var rootGroupID: UUID?
     var groups: [DictGroupItem] = []
@@ -44,6 +45,7 @@ struct DictionariesState: Equatable, Previwable {
     var alert: AlertState<DictionariesAction>?
     
     static var preview: DictionariesState = .init(userID: .init(),
+                                                  title: nil,
                                                   groups: [DictGroupItem.preview],
                                                   words: [DictWordItem.preview])
 }

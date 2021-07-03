@@ -59,7 +59,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
         case let .success(translation):
             state.translationText = translation
         case let .failure(error):
-            state.alertError = .init(title: TextState(error.localizedDescription))
+            state.alertError = .init(title: TextState(error.description))
         }
         state.isTranslateLoading = false
         if state.isAddPending {
@@ -181,7 +181,7 @@ let addWordReducer = Reducer<AddWordState, AddWordAction, AddWordEnvironment> { 
         case .success:
             return .concatenate(.cancelAll(bag: env.bag), Effect(value: .closeSceneTriggered))
         case let .failure(error):
-            state.alertError = .init(title: TextState(error.localizedDescription))
+            state.alertError = .init(title: TextState(error.description))
         }
         state.isLoading = false
         

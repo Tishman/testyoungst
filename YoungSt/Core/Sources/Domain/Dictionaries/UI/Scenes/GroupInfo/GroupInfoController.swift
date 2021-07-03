@@ -43,6 +43,7 @@ final class GroupInfoController: UIHostingController<GroupInfoScene>, RoutableCo
         self.routingPoints = routingPoints
         super.init(rootView: GroupInfoScene(store: store))
         
+        navigationItem.title = viewStore.title
         observeRouting().store(in: &bag)
         observeClosing().store(in: &bag)
     }

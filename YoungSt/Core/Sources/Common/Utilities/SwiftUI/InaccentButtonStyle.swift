@@ -38,3 +38,17 @@ public struct PlainInaccentButtonStyle: ButtonStyle {
             .foregroundColor(configuration.isPressed ? accentColor.opacity(0.4) : accentColor)
     }
 }
+
+public struct TintedButtonStyle: ButtonStyle {
+    public init() {}
+    
+    private let accentColor = Asset.Colors.greenDark.color.swiftuiColor
+    
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.spacing(.medium))
+            .font(.body)
+            .foregroundColor(configuration.isPressed ? accentColor.opacity(0.4) : accentColor)
+            .bubbled(color: accentColor.opacity(0.1))
+    }
+}

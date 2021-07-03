@@ -13,7 +13,7 @@ import NetworkService
 
 struct IncomingStudentInviteState: Identifiable, Equatable, Previwable {
     let id: UUID
-    let title: String
+    let student: ProfileInfo
     var loading: Loading?
     
     enum Loading: Equatable {
@@ -21,7 +21,7 @@ struct IncomingStudentInviteState: Identifiable, Equatable, Previwable {
         case reject
     }
     
-    static let preview: Self = .init(id: .init(), title: "Max Rakotanski", loading: nil)
+    static let preview: Self = .init(id: .init(), student: .preview, loading: nil)
 }
 
 enum IncomingStudentInviteAction: Equatable {

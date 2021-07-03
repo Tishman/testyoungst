@@ -39,17 +39,19 @@ struct InviteInfoView: View {
                 
                 HStack {
                     Spacer()
-                    if let accept = accept {
-                        Button(action: accept) {
-                            Text(Localizable.acceptInvite)
-                        }
-                    }
                     
                     Button(action: reject) {
                         Text(Localizable.rejectInvite)
                     }
+                    .buttonStyle(PlainInaccentButtonStyle())
+                    
+                    if let accept = accept {
+                        Button(action: accept) {
+                            Text(Localizable.acceptInvite)
+                        }
+                        .buttonStyle(TintedButtonStyle())
+                    }
                 }
-                .buttonStyle(PlainInaccentButtonStyle())
             }
         }
         .padding()

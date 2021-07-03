@@ -46,6 +46,6 @@ final class DictionaryModuleDeclaration: DIPart, ModuleStoreProvider {
     }
     
     func createInitialModuleStore() -> Store<DictionariesState, DictionariesAction> {
-        .init(initialState: .init(userID: input.userID), reducer: dictionariesReducer, environment: environment)
+        .init(initialState: .init(userID: input.userID, title: input.title), reducer: dictionariesReducer, environment: environment)
     }
 }

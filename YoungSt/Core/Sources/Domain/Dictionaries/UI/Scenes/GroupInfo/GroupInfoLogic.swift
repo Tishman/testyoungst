@@ -27,8 +27,9 @@ let groupInfoReducer = Reducer<GroupInfoState, GroupInfoAction, GroupInfoEnviron
     case .viewAppeared:
         let groupID = state.id
         let groupChangedObserver = env.dictionaryEventPublisher.publisher
-            .filter { $0 == .wordListUpdated(.id(groupID)) }
+            .filter { $0 == .wordListUpdated(.any) }
             .map(toVoid)
+            .receive(on: DispatchQueue.main)
             .eraseToEffect()
             .map { GroupInfoAction.silentRefreshList }
             .cancellable(id: Cancellable.groupUpdatedObserver, cancelInFlight: true, bag: env.bag)

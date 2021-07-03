@@ -63,8 +63,8 @@ final class ProfileController: UIHostingController<ProfileScene>, RoutableContro
             let vc = routingPoints.fillInfo.value
             present(controller: vc, preferredPresentation: .detail)
             
-        case let .openedStudent(userID):
-			let vc = coordinator.view(for: .dictionaries(.init(userID: userID)))
+        case let .openedStudent(userID, title):
+            let vc = coordinator.view(for: .dictionaries(.init(userID: userID, title: title)))
             present(controller: vc, preferredPresentation: .detail)
             
         case .searchTeacher:

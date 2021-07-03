@@ -14,7 +14,7 @@ public protocol TextEditingDelegate {
 
 public struct TextEditingView: UIViewRepresentable {
     
-    public init(text: Binding<String>, forceFocused: Binding<Bool>, characterLimit: Int, delegate: TextEditingDelegate?) {
+    public init(text: Binding<String>, forceFocused: Binding<Bool>, characterLimit: Int = 255, delegate: TextEditingDelegate?) {
         self._text = text
         self._forceFocused = forceFocused
         self.characterLimit = characterLimit
@@ -41,7 +41,7 @@ public struct TextEditingView: UIViewRepresentable {
         if uiView.text != text {
             uiView.text = text
         }
-        context.coordinator.lineLimit = lineLimit ?? 100
+        context.coordinator.lineLimit = lineLimit ?? 0
         if forceFocused {
             uiView.becomeFirstResponder()
             DispatchQueue.main.async {
@@ -58,7 +58,7 @@ public struct TextEditingView: UIViewRepresentable {
         
         private let delegate: TextEditingDelegate?
         private let view: TextEditingView
-        var lineLimit = 1
+        var lineLimit = 0
         
         init(delegate: TextEditingDelegate?, view: TextEditingView) {
             self.delegate = delegate
@@ -92,7 +92,7 @@ public struct TextEditingView: UIViewRepresentable {
             }
             let substringToReplace = textView.text[rangeOfTextToReplace]
             let count = textView.text.count - substringToReplace.count + text.count
-            let charNotOverflowed = count <= view.characterLimit
+            let charNotOverflowed = count <= view.characterLimit || view.characterLimit == 0
             
             return newlineNotOverflowed && charNotOverflowed
         }

@@ -35,7 +35,7 @@ struct ProfileState: Equatable, Previwable {
         case editProfile
         case searchTeacher
         case searchStudents
-        case openedStudent(userID: UUID)
+        case openedStudent(userID: UUID, title: String)
     }
     
     let userID: UUID

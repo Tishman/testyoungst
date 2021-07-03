@@ -25,3 +25,9 @@ extension EquatableError: Error {
         return value.localizedDescription
     }
 }
+
+extension EquatableError: LocalizedError {
+    public var errorDescription: String? {
+        value.localizedDescription
+    }
+}

@@ -11,6 +11,7 @@ import Resources
 
 public enum BLError: String, LocalizedError, Equatable {
     case errUnknown
+    case errAccessDenied
     case errConnectionIssue
     case errInternal
     case errVerificationNotFoundUser
@@ -51,6 +52,8 @@ public enum BLError: String, LocalizedError, Equatable {
         switch self {
         case .errUnknown:
             return Loc.Errors.errUnknown
+        case .errAccessDenied:
+            return Loc.Errors.errAccessDenied
         case .errConnectionIssue:
             return Loc.Errors.errConnectionIssue
         case .errInternal:

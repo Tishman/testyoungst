@@ -10,7 +10,9 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Loc {
   public enum Errors {
-    /// You already have teacher
+    /// Access denied
+    public static let errAccessDenied = Loc.tr("Errors", "errAccessDenied")
+    /// Already have teacher
     public static let errAlreadyHaveTeacher = Loc.tr("Errors", "errAlreadyHaveTeacher")
     /// Could not establish internet connection. Check your network config
     public static let errConnectionIssue = Loc.tr("Errors", "errConnectionIssue")
@@ -164,6 +166,8 @@ public enum Loc {
     public static let forgotPasswordSubtitle = Loc.tr("Localizable", "forgotPasswordSubtitle")
     /// Forgot password?
     public static let forgotPasswordTitle = Loc.tr("Localizable", "forgotPasswordTitle")
+    /// Incoming invites
+    public static let incomingInvites = Loc.tr("Localizable", "incomingInvites")
     /// Incorrect code
     public static let incorrectCode = Loc.tr("Localizable", "incorrectCode")
     /// Incorrect data
@@ -206,6 +210,8 @@ public enum Loc {
     public static let noTranslation = Loc.tr("Localizable", "noTranslation")
     /// OK
     public static let ok = Loc.tr("Localizable", "ok")
+    /// Outcoming invites
+    public static let outcomingInvites = Loc.tr("Localizable", "outcomingInvites")
     /// Result here
     public static let outputTranslationPlacholder = Loc.tr("Localizable", "outputTranslationPlacholder")
     /// Password mismatch.

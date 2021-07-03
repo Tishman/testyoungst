@@ -16,25 +16,20 @@ struct IncomingStudentInviteView: View {
     
     var body: some View {
         WithViewStore(store) { viewStore in
-            VStack(alignment: .leading) {
-                Text(viewStore.title)
-                    .font(.title3)
-                
-                HStack {
-                    Spacer()
-                    
-                    Button { viewStore.send(.acceptInvite) } label: {
-                        Text(Localizable.acceptInvite)
+            InviteInfoView(avatarSource: .init(profileInfo: viewStore.student),
+                           displayName: viewStore.student.primaryField,
+                           secondaryDisplayName: viewStore.student.secondaryField,
+                           subtitle: "",
+                           accept: { viewStore.send(.acceptInvite) },
+                           reject: { viewStore.send(.rejectInvite) })
+                .disabled(viewStore.loading != nil)
+                .overlay(
+                    Group {
+                        if viewStore.loading != nil {
+                            IndicatorView()
+                        }
                     }
-                    
-                    Button { viewStore.send(.rejectInvite) } label: {
-                        Text(Localizable.rejectInvite)
-                    }
-                }
-                .buttonStyle(InaccentButtonStyle())
-            }
-            .padding()
-            .bubbled()
+                )
         }
     }
 }

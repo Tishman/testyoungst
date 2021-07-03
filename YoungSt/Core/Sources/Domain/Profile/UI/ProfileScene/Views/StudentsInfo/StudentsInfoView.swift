@@ -34,6 +34,8 @@ struct StudentsInfoView: View {
                 
                 studentsView
                 invitesView
+                
+                Spacer(minLength: .spacing(.ultraSmall))
             }
             .onAppear { viewStore.send(.viewAppeared) }
         }
@@ -43,20 +45,28 @@ struct StudentsInfoView: View {
     }
     
     @ViewBuilder private var invitesView: some View {
-        WithViewStore(store.scope(state: \.hasInvites)) { viewStore in
-            if viewStore.state {
-                Text(Localizable.invites)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.title3.bold())
-                    .padding(.horizontal)
+        WithViewStore(store.scope(state: \.incomingInvites.isEmpty)) { viewStore in
+            if !viewStore.state {
+                sectionHeader(title: Localizable.incomingInvites)
             }
         }
-        
         ForEachStore(store.scope(state: \.incomingInvites, action: StudentsInfoAction.incomingStudentInvite),
                      content: IncomingStudentInviteView.init)
         
+        WithViewStore(store.scope(state: \.outcomingInvites.isEmpty)) { viewStore in
+            if !viewStore.state {
+                sectionHeader(title: Localizable.outcomingInvites)
+            }
+        }
         ForEachStore(store.scope(state: \.outcomingInvites, action: StudentsInfoAction.outcomingStudentInvite),
                      content: OutcomingStudentInviteView.init)
+    }
+    
+    private func sectionHeader(title: String) -> some View {
+        Text(title)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.title3.bold())
+            .padding([.top, .horizontal])
     }
     
     @ViewBuilder private var studentsView: some View {
