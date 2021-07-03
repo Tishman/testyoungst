@@ -35,6 +35,7 @@ enum ConfrimEmailAction: Equatable {
 	case handleLogin(Result<Authorization_LoginResponse, LoginError>)
 	case alertOkButtonTapped
     case codeEnter(CodeEnterAction)
+    case viewDidAppear
 }
 
 struct ConfrimEmailEnviroment {

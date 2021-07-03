@@ -17,7 +17,6 @@ struct CodeEnterState: Equatable {
     init(codeCount: Int) {
         self.codeCount = codeCount
         codeItems = .init((0..<codeCount).map({ .init(id: $0)}))
-        codeItems[0].forceFocused = true
     }
 }
 

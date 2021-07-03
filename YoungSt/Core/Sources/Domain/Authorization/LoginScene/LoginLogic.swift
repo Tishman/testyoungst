@@ -62,7 +62,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		state.alertState = nil
 		
 	case .forgotPasswordTapped:
-		state.routing = .forgotPassword
+        state.routing = .forgotPassword(state.email.value)
 		
 	case .showPasswordButtonTapped:
 		state.isSecure.toggle()

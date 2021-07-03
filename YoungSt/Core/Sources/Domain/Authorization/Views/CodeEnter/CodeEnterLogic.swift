@@ -11,8 +11,8 @@ let codeEnterReducer = Reducer<CodeEnterState, CodeEnterAction, Void>.combine(
     codeItemReducer.forEach(state: \.codeItems, action: /CodeEnterAction.codeItem(id:action:), environment: {}),
     Reducer({ state, action, _ in
         switch action {
-        case let .codeItem(id: id, action: .forcedFocus):
-            state.codeItems[id].characterLimit = id == state.codeCount - 1 ? 1 : 2
+//        case let .codeItem(id: id, action: .forcedFocus):
+//            state.codeItems[id].characterLimit = id == state.codeCount - 1 ? 1 : 2
             
         case let .codeItem(id: id, action: .textUpdated(text)):
             switch (state.codeItems[id].text.isEmpty, text.isEmpty) {
@@ -36,13 +36,13 @@ let codeEnterReducer = Reducer<CodeEnterState, CodeEnterAction, Void>.combine(
             case (false, false):
                 var currentText = text
                 let nextId = id + 1
+                state.codeItems[id].text = String(currentText.popLast()!)
                 guard nextId < state.codeCount else { break }
                 state.codeItems[nextId].forceFocused = true
-                state.codeItems[nextId].text = String(currentText.removeLast())
             }
             
         default: break
         }
         return .none
     })
-).debug()
+)

@@ -15,6 +15,9 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
     codeEnterReducer.pullback(state: \.codeEnter, action: /ConfrimEmailAction.codeEnter, environment: {_ in }),
     Reducer { state, action, enviroment in
         switch action {
+        case .viewDidAppear:
+            state.codeEnter.codeItems[0].forceFocused = true
+        
         case .codeEnter:
             break
             

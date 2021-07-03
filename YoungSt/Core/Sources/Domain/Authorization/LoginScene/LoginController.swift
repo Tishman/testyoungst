@@ -53,8 +53,8 @@ final class LoginController: UIHostingController<LoginScene>, RoutableController
 	
 	func handle(routing: LoginState.Routing) {
 		switch routing {
-		case .forgotPassword:
-			let vc = routingPoints.forgotPassword.value
+		case let .forgotPassword(email):
+            let vc = routingPoints.forgotPassword.value(.init(email: email))
 			present(controller: vc, preferredPresentation: .pushInCurrent)
 		case let .confirmEmail(userId: userId, email: email, password: password):
             let vc = routingPoints.confirmEmail.value(.init(userId: userId, email: email, password: password))

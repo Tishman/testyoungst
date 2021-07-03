@@ -41,6 +41,12 @@
 "save" = "Save";
 "create" = "Create";
 "welcomeMessage" = "We glad to see you, friend!";
+"codeEmailSended" = "A letter with a 6-digit code has been sent to your e-mail. To recover your password, enter the code from the letter";
+"newPassword" = "New password";
+"enterYourEmail" = "Enter your e-mail";
+"send" = "Send";
+"passwordChanged" = "Password changed!";
+"createNewPasswordForLogin" = "Come up with a new password to log in";
 
 // AddWord
 "addWordTitle" = "Add word";

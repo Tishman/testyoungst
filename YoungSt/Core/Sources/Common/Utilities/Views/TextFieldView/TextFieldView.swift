@@ -16,18 +16,24 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     @Binding private var isSecure: Bool
     @Binding private var charecterLimit: Int
     private let placeholder: String?
+    private let isCursorHidden: Bool
+    private let keyboardType: YoungstKeyboardType
     @Environment (\.multilineTextAlignment) private var alignment
     
     public init(text: Binding<String>,
                 forceFocused: Binding<Bool>,
                 isSecure: Binding<Bool>,
                 charecterLimit: Binding<Int>,
-                placeholder: String?) {
+                placeholder: String?,
+                isCursorHidden: Bool,
+                keyboardType: YoungstKeyboardType = .default) {
         self._text = text
         self._forceFocused = forceFocused
         self.placeholder = placeholder
         self._charecterLimit = charecterLimit
         self._isSecure = isSecure
+        self.isCursorHidden = isCursorHidden
+        self.keyboardType = keyboardType
     }
     
     public func makeUIView(context: Context) -> UIViewType {
@@ -46,8 +52,6 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         // TODO: Remove binding
         uiView.isSecureTextEntry = isSecure
         
-        uiView.tintColor = .clear
-        
         uiView.textAlignment = alignment.nsTextAligment
         
         if forceFocused {
@@ -60,7 +64,9 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     }
     
     func deleteBackward() {
-        text = ""
+        if text.isEmpty {
+            text = ""
+        }
     }
     
     public final class Coordinator: NSObject, UITextFieldDelegate {
@@ -74,6 +80,11 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
             textField.delegate = self
             textField.font = .preferredFont(forTextStyle: .body)
             textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+            textField.keyboardType = view.keyboardType.uiKitType
+            
+            if view.isCursorHidden {
+                textField.tintColor = .clear
+            }
         }
         
         @objc private func textFieldDidChange(_ textField: UITextField) {
