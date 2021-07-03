@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>19</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
 		<string>https://link.youngst.app/link</string>

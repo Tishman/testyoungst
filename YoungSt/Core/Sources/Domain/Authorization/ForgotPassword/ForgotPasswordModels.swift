@@ -11,8 +11,12 @@ import Utilities
 import ComposableArchitecture
 import Coordinator
 
+struct ForgotPasswordInput {
+    let email: String
+}
+
 struct ForgotPasswordState: Equatable, ClosableState {
-	var email: StatusField<String> = .init(value: "", status: .default)
+	var email: StatusField<String>
 	var isClosed = false
 	var alert: AlertState<ForgotPasswordAction>?
     var emailFieldForceFocused: Bool = false

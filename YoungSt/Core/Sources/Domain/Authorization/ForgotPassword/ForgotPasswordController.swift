@@ -19,15 +19,15 @@ struct  ForgotPasswordRoutingPoints {
 }
 
 final class ForgotPasswordController: UIHostingController<ForgotPasswordScene>, RoutableController {
-	typealias Endpoint = Provider<ForgotPasswordController>
+	typealias Endpoint = Provider1<ForgotPasswordController, ForgotPasswordInput>
 	
 	private let store: Store<ForgotPasswordState, ForgotPasswordAction>
 	private let viewStore: ViewStore<ForgotPasswordState, ForgotPasswordAction>
     private let routingPoints: ForgotPasswordRoutingPoints
 	private var bag = Set<AnyCancellable>()
 	
-	init(env: ForgotPasswordEnviroment, routingPoints: ForgotPasswordRoutingPoints) {
-		let store = Store(initialState: ForgotPasswordState(),
+    init(input: ForgotPasswordInput, env: ForgotPasswordEnviroment, routingPoints: ForgotPasswordRoutingPoints) {
+        let store = Store(initialState: ForgotPasswordState(email: .init(value: input.email, status: .default)),
 						  reducer: forgotPasswordReducer,
 						  environment: env)
 		self.store = store
@@ -44,10 +44,6 @@ final class ForgotPasswordController: UIHostingController<ForgotPasswordScene>, 
     func resetRouting() {
         viewStore.send(.routingHandled)
     }
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-	}
     
     func handle(routing: ForgotPasswordState.Routing) {
         switch routing {

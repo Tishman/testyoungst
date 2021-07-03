@@ -13,7 +13,7 @@ import Utilities
 
 struct LoginState: Equatable {
     enum Routing: Equatable {
-        case forgotPassword
+        case forgotPassword(String)
         case confirmEmail(userId: UUID, email: String, password: String)
     }
     var email: StatusField<String> = .init(value: "", status: .default)

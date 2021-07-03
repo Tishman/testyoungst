@@ -33,7 +33,7 @@ public final class AuthorizationDIFramework: DIFramework {
 		container.register(ForgotPasswordEnviroment.init)
         container.register(ForgotPasswordRoutingPoints.init)
         container.register {
-            ForgotPasswordController.init(env: $0, routingPoints: $1)
+            ForgotPasswordController(input: arg($0), env: $1, routingPoints: $2)
         }
         
         container.register(VerificationEnviroment.init)

@@ -28,10 +28,6 @@ final class ChangePasswordController: UIHostingController<ChangePasswordScene>, 
         self.store = store
         self.viewStore = .init(store)
         super.init(rootView: ChangePasswordScene(store: store))
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         observeRouting().store(in: &bag)
     }
     

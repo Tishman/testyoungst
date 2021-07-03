@@ -37,6 +37,5 @@ struct CodeItem: View {
         }
         .multilineTextAlignment(.center)
         .clipShape(circle)
-        .allowsHitTesting(false)
     }
 }

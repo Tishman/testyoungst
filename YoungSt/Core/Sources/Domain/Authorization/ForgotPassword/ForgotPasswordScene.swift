@@ -64,6 +64,6 @@ struct ForgotPasswordScene: View {
 
 struct ForgotPasswordScene_Previews: PreviewProvider {
     static var previews: some View {
-		ForgotPasswordScene(store: .init(initialState: .init(), reducer: .empty, environment: ()))
+        ForgotPasswordScene(store: .init(initialState: .init(email: .init(value: "", status: .default)), reducer: .empty, environment: ()))
     }
 }
