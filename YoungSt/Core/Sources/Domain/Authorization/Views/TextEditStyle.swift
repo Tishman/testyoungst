@@ -16,6 +16,7 @@ struct InputFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         VStack(alignment: .leading) {
             content
+                .padding()
                 .bubbled(borderColor: getBorderStyle(focused, status),
                          foregroundColor: status.foregroundColor,
                          lineWidth: focused ? 3 : 1)

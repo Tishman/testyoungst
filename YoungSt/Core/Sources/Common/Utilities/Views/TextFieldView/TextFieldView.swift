@@ -64,7 +64,9 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     }
     
     func deleteBackward() {
-        text = ""
+        if text.isEmpty {
+            text = ""
+        }
     }
     
     public final class Coordinator: NSObject, UITextFieldDelegate {

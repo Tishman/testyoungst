@@ -12,7 +12,7 @@ struct CodeItemState: Equatable, Identifiable {
     let id: Int
     var text: String = ""
     var forceFocused: Bool = false
-    var characterLimit: Int = 1
+    var characterLimit: Int = 2
 }
 
 enum CodeItemAction: Equatable {
