@@ -8,6 +8,65 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>Icon-bold</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-bold</string>
+				</array>
+			</dict>
+			<key>Icon-boring</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-boring</string>
+				</array>
+			</dict>
+			<key>Icon-default</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-default</string>
+				</array>
+			</dict>
+			<key>Icon-nature</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-nature</string>
+				</array>
+			</dict>
+			<key>Icon-outlined</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-outlined</string>
+				</array>
+			</dict>
+			<key>Icon-social</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Icon-social</string>
+				</array>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>Icon-default</string>
+			</array>
+			<key>CFBundleIconName</key>
+			<string>Icon-default</string>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

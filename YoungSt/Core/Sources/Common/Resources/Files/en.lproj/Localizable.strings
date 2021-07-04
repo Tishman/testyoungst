@@ -142,6 +142,14 @@
 "logoutButtonTitle" = "Logout";
 "logoutAlertConfirmationTitle" = "Are you sure you want to log out?";
 "logoutAlertConfirmationAction" = "Log out";
+"general" = "General";
+"feedback" = "Feedback";
+"info" = "Info";
+"changeAppIcon" = "Change app icon";
+"requestSupport" = "Request support";
+"sendFeedbackViaMail" = "Send feedback via email";
+"rateApp" = "Rate app in AppStore";
+"appVersion" = "App version";
 
 // Teacher search
 "typeSometingInSearchField" = "Type something in search field";

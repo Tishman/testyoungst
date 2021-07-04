@@ -23,6 +23,23 @@ let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvironment
         
     case .logoutConfirmTriggered:
         env.credentialsService.clearCredentials()
+        
+    case .route(.mail):
+        var body = """
+        App info: \(SettingsScene.versionInfo)
+        """
+        env.userProvider.currentUserID.map {
+            body.append("User id: \($0.uuidString)\n")
+        }
+        
+        
+        let mail = SettingsState.Mail(recipient: "vyoungst@gmail.com",
+                                      subject: "Feedback",
+                                      body: body)
+        state.routing = .mail(mail)
+        
+    case .route(.handled):
+        state.routing = nil
     }
     
     return .none
