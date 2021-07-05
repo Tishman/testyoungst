@@ -75,8 +75,10 @@ public struct RoundedButtonStyle: ButtonStyle {
             HapticTapFeedback.shared.impactOccured()
         }
         .onReceive(KeyboardObserver.shared.keyboardVisibilityChangedPublisher) { notification in
-            withAnimation(.spring().speed(1.5)) {
-                keyboardVisible = notification.isKeyboardVisible
+            DispatchQueue.main.async {
+                withAnimation(.spring().speed(1.5)) {
+                    keyboardVisible = notification.isKeyboardVisible
+                }
             }
         }
     }

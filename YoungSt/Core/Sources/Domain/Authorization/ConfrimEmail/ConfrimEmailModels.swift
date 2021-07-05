@@ -10,6 +10,7 @@ import ComposableArchitecture
 import Coordinator
 import Utilities
 import NetworkService
+import Protocols
 
 struct ConfrimEmailInput {
     let userId: UUID
@@ -28,16 +29,36 @@ struct ConfrimEmailState: Equatable, ClosableState {
     var codeEnter: CodeEnterState = .init(codeCount: 6)
 }
 
-enum ConfrimEmailAction: Equatable {
+enum ConfrimEmailAction: Equatable, AnalyticsAction {
+    case viewAppeared
+    
 	case failedValidation(String)
-	case didConfrimButtonTapped
+    
+	case didConfrimTriggered
+    case alertClosedTriggered
+    
 	case handleConfrimation(Result<Bool, EquatableError>)
 	case handleLogin(Result<Authorization_LoginResponse, LoginError>)
-	case alertOkButtonTapped
+    
     case codeEnter(CodeEnterAction)
-    case viewDidAppear
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .didConfrimTriggered:
+            return "didConfrimTriggered"
+        case .alertClosedTriggered:
+            return "didConfrimTriggered"
+        case let .handleConfrimation(result):
+            return .init(name: "confirmResult", parameters: AnalyticParameter.result(result).toDict)
+        case let .handleLogin(result):
+            return .init(name: "loginResult", parameters: AnalyticParameter.result(result).toDict)
+        default:
+            return nil
+        }
+    }
 }
 
-struct ConfrimEmailEnviroment {
+struct ConfrimEmailEnviroment: AnalyticsEnvironment {
+    let analyticsService: AnalyticService
 	let authorizationService: AuthorizationService?
 }

@@ -44,23 +44,36 @@ struct RegistrationView: View {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
                                               forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
                                               status: .default, placeholder: Localizable.emailPlaceholder)
+                                    .introspectTextField { textField in
+                                        textField.textContentType = .emailAddress
+                                        textField.autocapitalizationType = .none
+                                    }
                                 
                                 AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
                                               forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
                                               status: .default,
                                               placeholder: Localizable.usernamePlaceholder)
+                                    .introspectTextField { textField in
+                                        textField.textContentType = .nickname
+                                    }
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
-                                                isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordButtonTapped),
+                                                isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordTriggered),
                                                 status: .default,
                                                 placeholder: Localizable.passwordPlaceholder)
+                                    .introspectTextField { textField in
+                                        textField.textContentType = .newPassword
+                                    }
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
-                                                isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordButtonTapped),
+                                                isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordTriggered),
                                                 status: .default,
                                                 placeholder: Localizable.confrimPasswordPlaceholder)
+                                    .introspectTextField { textField in
+                                        textField.textContentType = .newPassword
+                                    }
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))
@@ -68,9 +81,10 @@ struct RegistrationView: View {
                     }
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
+                .frame(maxWidth: WelcomeView.maxWidth)
                 
                 WithViewStore(store) { viewStore in
-                    Button(action: { viewStore.send(.registrationButtonTapped) }, label: {
+                    Button(action: { viewStore.send(.registrationTriggered) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
                     .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
@@ -85,7 +99,7 @@ struct RegistrationView: View {
             )
             .makeCustomBarManagement(offset: contentOffset, topHidden: $dividerHidden)
         }
-        .alert(store.scope(state: \.alert), dismiss: .alertClosed)
+        .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
     }
 }
 

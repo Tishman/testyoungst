@@ -44,6 +44,7 @@ struct ChangePasswordScene: View {
                     }
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
+                .frame(maxWidth: WelcomeView.maxWidth)
                 
                 WithViewStore(store) { viewStore in
                     Button(action: { viewStore.send(.changePasswordButtonTapped) }, label: {

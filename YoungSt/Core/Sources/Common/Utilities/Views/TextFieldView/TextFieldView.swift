@@ -37,7 +37,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     }
     
     public func makeUIView(context: Context) -> UIViewType {
-        let textField = YoungstTextField(frame: .zero)
+        let textField = YoungstTextField(textInset: isCursorHidden ? .zero : YoungstTextField.defaultInsets)
         textField.youngstDelegate = self
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         context.coordinator.initalSetup(textField: textField)
@@ -64,7 +64,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     }
     
     func deleteBackward() {
-        if text.isEmpty {
+        if !text.isEmpty {
             text = ""
         }
     }

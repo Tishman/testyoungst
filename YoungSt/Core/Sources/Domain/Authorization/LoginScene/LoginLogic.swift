@@ -27,7 +27,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         state.password.status = .default
         state.password.value = value
 		
-	case .loginTapped:
+	case .loginTriggered:
         guard !state.email.value.isEmpty else {
             state.email.status = .error(Localizable.requiredField)
             return .none
@@ -58,13 +58,13 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 		state.isLoading = false
 		state.alertState = .init(title: TextState(error.localizedDescription))
 		
-	case .alertClosed:
+	case .alertClosedTriggered:
 		state.alertState = nil
 		
-	case .forgotPasswordTapped:
+	case .forgotPasswordTriggered:
         state.routing = .forgotPassword(state.email.value)
 		
-	case .showPasswordButtonTapped:
+	case .showPasswordButtonTriggered:
 		state.isSecure.toggle()
 		
 	case .routingHandled:
@@ -72,3 +72,4 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
 	}
 	return .none
 }
+.analytics()

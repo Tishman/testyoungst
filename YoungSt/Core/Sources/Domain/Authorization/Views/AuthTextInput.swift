@@ -25,12 +25,12 @@ struct AuthTextInput: View {
                           placeholder: placeholder,
                           isCursorHidden: false)
                 .fixedSize(horizontal: false, vertical: true)
-            if !text.isEmpty {
-                Button(action: { text = "" }) {
-                    Image(uiImage: Asset.Images.cross.image)
-                }
-                .opacity(text.isEmpty ? 0 : 1)
+            
+            Button(action: { text = "" }) {
+                Image(uiImage: Asset.Images.cross.image)
             }
+            .opacity(text.isEmpty ? 0 : 1)
+            .padding(.trailing)
         }
         .inputField(focused: $forceFocused, status: status)
     }

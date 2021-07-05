@@ -21,41 +21,41 @@ extension WelcomeView {
 
 struct WelcomeView: View {
     let store: Store<WelcomeState, WelcomeAction>
+    static let maxWidth = UIFloat(550)
     
     var body: some View {
-        NavigationView {
-            WithViewStore(store) { viewStore in
-                VStack {
-                    HeaderDescriptionView(title: Constants.welcomeTitle,
-                                          subtitle: Constants.loginOrCreateAccountSubtitle)
-                        .padding(.top, .spacing(.big))
-                    Spacer()
-                    
-                    Image(uiImage: Asset.Images.welcome.image)
-                    
-                    Spacer()
-                    
-                    VStack(spacing: .spacing(.big)) {
-                        WithViewStore(store.stateless) { viewStore in
-							Button(action: { viewStore.send(.routingHandled(.login)) }, label: {
-                                Text(Constants.login)
-                            })
-                        }
-                        .buttonStyle(RoundedButtonStyle(style: .filled))
-                        
-                        WithViewStore(store.stateless) { viewStore in
-							Button(action: { viewStore.send(.routingHandled(.registration)) }, label: {
-                                Text(Constants.registration)
-                            })
-                        }
-                        .buttonStyle(RoundedButtonStyle(style: .empty))
-                        .padding(.bottom, .spacing(.ultraBig))
+        WithViewStore(store) { viewStore in
+            VStack {
+                HeaderDescriptionView(title: Constants.welcomeTitle,
+                                      subtitle: Constants.loginOrCreateAccountSubtitle)
+                    .padding(.top, .spacing(.big))
+                Spacer()
+                
+                Image(uiImage: Asset.Images.welcome.image)
+                
+                Spacer()
+                
+                VStack(spacing: .spacing(.big)) {
+                    WithViewStore(store.stateless) { viewStore in
+                        Button(action: { viewStore.send(.route(.login)) }, label: {
+                            Text(Constants.login)
+                        })
                     }
+                    .buttonStyle(RoundedButtonStyle(style: .filled))
+                    
+                    WithViewStore(store.stateless) { viewStore in
+                        Button(action: { viewStore.send(.route(.registration)) }, label: {
+                            Text(Constants.registration)
+                        })
+                    }
+                    .buttonStyle(RoundedButtonStyle(style: .empty))
+                    .padding(.bottom, .spacing(.ultraBig))
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .makeDefaultNavigationBarTransparent()
+            .frame(maxWidth: Self.maxWidth)
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .makeDefaultNavigationBarTransparent()
     }
 }
 

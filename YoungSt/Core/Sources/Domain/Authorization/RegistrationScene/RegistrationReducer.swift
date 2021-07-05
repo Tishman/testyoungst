@@ -24,10 +24,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
     case let .confirmPasswordInputFocusChanged(isFocused):
         state.confirmPasswordFieldForceFocused = isFocused
     
-	case .showPasswordButtonTapped:
+	case .showPasswordTriggered:
 		state.isPasswordSecure.toggle()
 		
-    case .showConfrimPasswordButtonTapped:
+    case .showConfrimPasswordTriggered:
 		state.isConfirmSecure.toggle()
 		
 	case let .didEmailChanged(value):
@@ -53,10 +53,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 	case let .failedValidtion(value):
 		state.alert = .init(title: TextState(value))
 		
-	case .alertClosed:
+	case .alertClosedTriggered:
 		state.alert = nil
 		
-	case .registrationButtonTapped:
+	case .registrationTriggered:
 		guard !state.email.isEmpty && !state.password.isEmpty && !state.nickname.isEmpty else {
 			return .init(value: .failedValidtion(Localizable.fillAllFields))
 		}
@@ -80,3 +80,4 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 	
 	return .none
 }
+.analytics()

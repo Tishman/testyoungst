@@ -7,21 +7,52 @@
 
 import Foundation
 import NetworkService
+import Utilities
+import Protocols
 
-enum RegistrationAction: Equatable {
+enum RegistrationAction: Equatable, AnalyticsAction {
     case didEmailChanged(String)
     case didNicknameChange(String)
     case didPasswordChanged(String)
     case didConfrimPasswordChanged(String)
-    case registrationButtonTapped
-    case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
-	case failedValidtion(String)
-	case alertClosed
-	case showPasswordButtonTapped
-    case showConfrimPasswordButtonTapped
-	case routingHandled
     case emailInputFocusChanged(Bool)
     case userNameInputFocusChanged(Bool)
     case passwordInputFocusChanged(Bool)
     case confirmPasswordInputFocusChanged(Bool)
+    
+    case registrationTriggered
+	case alertClosedTriggered
+	case showPasswordTriggered
+    case showConfrimPasswordTriggered
+    
+	case routingHandled
+    
+    case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
+    case failedValidtion(String)
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .didEmailChanged:
+            return .init(name: "didEmailChanged", oneTimeEvent: true)
+        case .didNicknameChange:
+            return .init(name: "didNicknameChange", oneTimeEvent: true)
+        case .didPasswordChanged:
+            return .init(name: "didPasswordChanged", oneTimeEvent: true)
+        case .didConfrimPasswordChanged:
+            return .init(name: "didConfrimPasswordChanged", oneTimeEvent: true)
+            
+        case .registrationTriggered:
+            return "registrationTriggered"
+        case .alertClosedTriggered:
+            return "alertClosedTriggered"
+        case .showPasswordTriggered:
+            return "showPasswordTriggered"
+        case .showConfrimPasswordTriggered:
+            return "showConfrimPasswordTriggered"
+        case let .didRecieveRegistartionResult(result):
+            return .init(name: "registartionResult", parameters: AnalyticParameter.result(result).toDict)
+        default:
+            return nil
+        }
+    }
 }

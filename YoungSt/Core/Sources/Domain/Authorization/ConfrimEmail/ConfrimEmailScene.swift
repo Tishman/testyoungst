@@ -38,15 +38,16 @@ struct ConfrimEmailScene: View {
 					.padding(.top, .spacing(.extraSize))
 					.padding(.horizontal, .spacing(.extraSize))
 				Spacer()
-				Button(action: { viewStore.send(.didConfrimButtonTapped) }, label: {
+				Button(action: { viewStore.send(.didConfrimTriggered) }, label: {
 					Text(Constants.Text.verify)
 				})
                 .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
 				.padding(.bottom, .spacing(.extraSize))
 				Spacer()
 			}
-			.alert(store.scope(state: \.alert), dismiss: ConfrimEmailAction.alertOkButtonTapped)
-            .onAppear { viewStore.send(.viewDidAppear) }
+            .frame(maxWidth: WelcomeView.maxWidth)
+            .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
+            .onAppear { viewStore.send(.viewAppeared) }
 		}
 	}
 }

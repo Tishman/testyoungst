@@ -10,7 +10,7 @@ import Foundation
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public enum Loc {
   public enum Errors {
-    /// Access denied
+    /// No acces for requested operation
     public static let errAccessDenied = Loc.tr("Errors", "errAccessDenied")
     /// Already have teacher
     public static let errAlreadyHaveTeacher = Loc.tr("Errors", "errAlreadyHaveTeacher")
@@ -322,7 +322,7 @@ public enum Loc {
     public static let wordDescription = Loc.tr("Localizable", "wordDescription")
     /// Words
     public static let words = Loc.tr("Localizable", "words")
-    /// You can send request to become student.\nGood luck in learning!
+    /// You can become student.\nGood luck in learning!
     public static let youCanSendRequestToBecomeStudent = Loc.tr("Localizable", "youCanSendRequestToBecomeStudent")
     /// You already have a teacher or invited someone.
     public static let youCantBecomeStudent = Loc.tr("Localizable", "youCantBecomeStudent")

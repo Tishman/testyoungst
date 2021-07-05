@@ -33,14 +33,19 @@ struct ForgotPasswordScene: View {
 						WithViewStore(store) { viewStore in
                             AuthTextInput(text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
                                           forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: ForgotPasswordAction.emailInputFocusChanged),
-                                          status: .default,
+                                          status: viewStore.email.status,
                                           placeholder: Localizable.enterYourEmail)
+                                .introspectTextField { textField in
+                                    textField.textContentType = .emailAddress
+                                    textField.autocapitalizationType = .none
+                                }
 						}
                         .padding(.horizontal, .spacing(.ultraBig))
                         .padding(.top, .spacing(.extraSize))
 					}
 				}
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
+                .frame(maxWidth: WelcomeView.maxWidth)
 				
                 WithViewStore(store) { viewStore in
                     Button(action: { viewStore.send(.didSendCodeButtonTapped) }, label: {

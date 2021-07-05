@@ -7,7 +7,10 @@
 
 import Foundation
 import NetworkService
+import Utilities
+import Protocols
 
-struct WelcomeEnviroment {
+struct WelcomeEnviroment: AnalyticsEnvironment {
+    let analyticsService: AnalyticService
     let authorizationService: AuthorizationService
 }

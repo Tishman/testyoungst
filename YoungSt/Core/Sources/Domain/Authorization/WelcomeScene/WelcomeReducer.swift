@@ -9,13 +9,14 @@ import Foundation
 import ComposableArchitecture
 
 let welcomeReducer = Reducer<WelcomeState, WelcomeAction, WelcomeEnviroment> { state, action, enviroment in
-        switch action {
-		case .routingHandled(.close):
-			state.routing = nil
-		case .routingHandled(.login):
-			state.routing = .login
-		case .routingHandled(.registration):
-			state.routing = .registration
-		}
-        return .none
+    switch action {
+    case .route(.handled):
+        state.routing = nil
+    case .route(.login):
+        state.routing = .login
+    case .route(.registration):
+        state.routing = .registration
+    }
+    return .none
 }
+.analytics()

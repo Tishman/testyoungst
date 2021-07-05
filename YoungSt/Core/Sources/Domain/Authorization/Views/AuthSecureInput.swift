@@ -25,15 +25,11 @@ struct AuthSecureInput: View {
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
                           isCursorHidden: false)
-            if isSecure {
-                Button(action: { isSecure.toggle() }) {
-                    Image(uiImage: Asset.Images.emptyEye.image)
-                }
-            } else {
-                Button(action: { isSecure.toggle() }) {
-                    Image(uiImage: Asset.Images.eye.image)
-                }
+            
+            Button(action: { isSecure.toggle() }) {
+                Image(uiImage: isSecure ? Asset.Images.emptyEye.image : Asset.Images.eye.image)
             }
+            .padding(.trailing)
         }
         .inputField(focused: $forceFocused, status: status)
     }

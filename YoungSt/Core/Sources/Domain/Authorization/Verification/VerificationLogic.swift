@@ -24,7 +24,8 @@ let verificationReducer = Reducer<VerificationState, VerificationAction, Verific
             
         case .sendCodeButtonTapped:
             guard state.codeEnter.text.count == state.codeEnter.codeCount else {
-                state.alert = .init(title: .init("Fill full code please"), message: nil, dismissButton: .cancel(TextState(Localizable.ok)))
+                state.alert = .init(title: TextState(Localizable.incorrectCode),
+                                    dismissButton: .cancel(TextState(Localizable.ok)))
                 break
             }
             state.isLoading = true
@@ -40,7 +41,11 @@ let verificationReducer = Reducer<VerificationState, VerificationAction, Verific
             
         case let .didRecieveVerificationResult(.success(isVerified)):
             state.isLoading = false
-            state.routing = .changePassword(email: state.email, code: state.codeEnter.text)
+            if isVerified {
+                state.routing = .changePassword(email: state.email, code: state.codeEnter.text)
+            } else {
+                state.alert = .init(title: TextState(Localizable.incorrectCode))
+            }
             
         case let .didRecieveVerificationResult(.failure(error)):
             state.isLoading = false

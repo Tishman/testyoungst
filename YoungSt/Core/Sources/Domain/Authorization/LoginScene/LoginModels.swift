@@ -10,6 +10,7 @@ import NetworkService
 import ComposableArchitecture
 import Coordinator
 import Utilities
+import Protocols
 
 struct LoginState: Equatable {
     enum Routing: Equatable {
@@ -28,19 +29,43 @@ struct LoginState: Equatable {
     var alertState: AlertState<LoginAction>?
 }
 
-enum LoginAction: Equatable {
+enum LoginAction: Equatable, AnalyticsAction {
     case emailChanged(String)
     case passwordChanged(String)
-    case loginTapped
-    case forgotPasswordTapped
-    case showPasswordButtonTapped
-    case handleLogin(Result<Authorization_LoginResponse, LoginError>)
-    case alertClosed
+    case loginTriggered
+    case forgotPasswordTriggered
+    case showPasswordButtonTriggered
+    case alertClosedTriggered
+    
     case routingHandled
     case loginInputFocusChanged(Bool)
     case passwordInputFocusChanged(Bool)
+    
+    case handleLogin(Result<Authorization_LoginResponse, LoginError>)
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case .emailChanged:
+            return .init(name: "emailChanged", oneTimeEvent: true)
+        case .passwordChanged:
+            return .init(name: "passwordChanged", oneTimeEvent: true)
+        case .loginTriggered:
+            return "loginTriggered"
+        case .forgotPasswordTriggered:
+            return "forgotPasswordTriggered"
+        case .showPasswordButtonTriggered:
+            return "showPasswordButtonTriggered"
+        case .alertClosedTriggered:
+            return "alertClosedTriggered"
+        case let .handleLogin(result):
+            return .init(name: "loginResult", parameters: AnalyticParameter.result(result).toDict)
+        default:
+            return nil
+        }
+    }
 }
 
-struct LoginEnviroment {
+struct LoginEnviroment: AnalyticsEnvironment {
+    let analyticsService: AnalyticService
     let service: AuthorizationService
 }

@@ -15,11 +15,8 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
     codeEnterReducer.pullback(state: \.codeEnter, action: /ConfrimEmailAction.codeEnter, environment: {_ in }),
     Reducer { state, action, enviroment in
         switch action {
-        case .viewDidAppear:
+        case .viewAppeared:
             state.codeEnter.codeItems[0].forceFocused = true
-        
-        case .codeEnter:
-            break
             
         case let .failedValidation(value):
             state.alert = .init(title: TextState(value),
@@ -65,7 +62,7 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
                                 message: nil,
                                 dismissButton: .cancel(TextState(Localizable.ok)))
             
-        case .didConfrimButtonTapped:
+        case .didConfrimTriggered:
             guard let service = enviroment.authorizationService else { return .none }
             guard !state.codeEnter.text.isEmpty else { return .init(value: .failedValidation(Localizable.fillAllFields)) }
             state.isLoading = true
@@ -79,11 +76,16 @@ let confrimEmailReducer = Reducer<ConfrimEmailState, ConfrimEmailAction, Confrim
                 .catchToEffect()
                 .map(ConfrimEmailAction.handleConfrimation)
             
-        case .alertOkButtonTapped:
+        case .alertClosedTriggered:
             state.alert = nil
             if state.isCodeVerified {
                 state.isClosed = true
             }
+            
+        case .codeEnter:
+            break
         }
         return .none
-    })
+    }
+    .analytics()
+)

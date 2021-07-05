@@ -34,7 +34,9 @@ let forgotPasswordReducer = Reducer<ForgotPasswordState, ForgotPasswordAction, F
 		state.alert = nil
 		
 	case .didSendCodeButtonTapped:
-		guard ForgotPasswordLogic.validateEmail(email: &state.email) else { break }
+		guard ForgotPasswordLogic.validateEmail(email: &state.email) else {
+            break
+        }
         state.isLoading = true
 		let requestData = Authorization_InitResetPasswordRequest.with {
 			$0.email = state.email.value
@@ -62,6 +64,7 @@ struct ForgotPasswordLogic {
 	}
 	
 	static func validateEmail(email: inout StatusField<String>) -> Bool {
+        email.value = email.value.trimmingCharacters(in: .whitespacesAndNewlines)
 		guard EmailValidator.isValidEmail(email: email.value) else {
 			email.status = .error(Localizable.incorrectEmail)
 			return false

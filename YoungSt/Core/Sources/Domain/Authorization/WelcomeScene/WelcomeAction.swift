@@ -6,13 +6,34 @@
 //
 
 import Foundation
+import Protocols
+import Utilities
 
-enum WelcomeAction: Equatable {
-	case routingHandled(RoutingState)
+enum WelcomeAction: Equatable, AnalyticsAction {
+	case route(Routing)
 	
-	enum RoutingState: Equatable {
+	enum Routing: Equatable, AnalyticsAction {
+        case handled
+        
 		case login
 		case registration
-		case close
+        
+        var event: AnalyticsEvent? {
+            switch self {
+            case .login:
+                return "login"
+            case .registration:
+                return "registration"
+            case .handled:
+                return nil
+            }
+        }
 	}
+    
+    var event: AnalyticsEvent? {
+        switch self {
+        case let .route(routing):
+            return routing.event?.route()
+        }
+    }
 }

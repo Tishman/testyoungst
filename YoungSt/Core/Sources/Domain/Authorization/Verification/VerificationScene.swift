@@ -32,6 +32,7 @@ struct VerificationScene: View {
                 viewStore.send(.viewDidAppear)
             }
         }
+        .frame(maxWidth: WelcomeView.maxWidth)
         .alert(store.scope(state: \.alert), dismiss: VerificationAction.alertOkButtonTapped)
     }
 }

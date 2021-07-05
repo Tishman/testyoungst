@@ -32,7 +32,7 @@ final class WelcomeViewController: UIHostingController<WelcomeView>, RoutableCon
 	}
     
     func resetRouting() {
-        viewStore.send(.routingHandled(.close))
+        viewStore.send(.route(.handled))
     }
 	
 	init(input: WelcomeInput, env: WelcomeEnviroment, routingPoints: WelcomeRoutingPoints) {
