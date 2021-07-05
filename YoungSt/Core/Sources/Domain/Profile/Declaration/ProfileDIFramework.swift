@@ -34,8 +34,8 @@ public final class ProfileDIFramework: DIFramework {
         }
         
         container.register(SettingsEnvironment.init)
-        container.register { env in { (input: SettingsInput) in
-            SettingsController(env: env).erased
+        container.register { env, mailSendingService in { (input: SettingsInput) in
+            SettingsController(env: env, mailSendingService: mailSendingService).erased
         }}
         
         // Fod module link
@@ -66,6 +66,9 @@ public final class ProfileDIFramework: DIFramework {
         container.register(ProfileEventPublisherImpl.init)
             .as(check: ProfileEventPublisher.self) {$0}
             .lifetime(.perContainer(.weak))
+        
+        container.register(MailSendingServiceImpl.init)
+            .as(check: MailSendingService.self) {$0}
     }
     
 }

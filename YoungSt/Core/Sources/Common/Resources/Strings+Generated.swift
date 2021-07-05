@@ -102,6 +102,8 @@ public enum Loc {
     public static let addWordTitle = Loc.tr("Localizable", "addWordTitle")
     /// Everything is correct
     public static let allCorrect = Loc.tr("Localizable", "allCorrect")
+    /// App version
+    public static let appVersion = Loc.tr("Localizable", "appVersion")
     /// Asked you to become student
     public static let askedYouBecomeStudent = Loc.tr("Localizable", "askedYouBecomeStudent")
     /// Become student
@@ -110,6 +112,8 @@ public enum Loc {
     public static let cancel = Loc.tr("Localizable", "cancel")
     /// Cancel invite
     public static let cancelInvite = Loc.tr("Localizable", "cancelInvite")
+    /// Change app icon
+    public static let changeAppIcon = Loc.tr("Localizable", "changeAppIcon")
     /// Close
     public static let closeTitle = Loc.tr("Localizable", "closeTitle")
     /// A letter with a 6-digit code has been sent to your e-mail. To recover your password, enter the code from the letter
@@ -160,6 +164,8 @@ public enum Loc {
     public static let enterCode = Loc.tr("Localizable", "enterCode")
     /// Enter your e-mail
     public static let enterYourEmail = Loc.tr("Localizable", "enterYourEmail")
+    /// Feedback
+    public static let feedback = Loc.tr("Localizable", "feedback")
     /// Please fill all fields.
     public static let fillAllFields = Loc.tr("Localizable", "fillAllFields")
     /// You almost done. Fill info about you
@@ -172,6 +178,8 @@ public enum Loc {
     public static let forgotPasswordSubtitle = Loc.tr("Localizable", "forgotPasswordSubtitle")
     /// Forgot password?
     public static let forgotPasswordTitle = Loc.tr("Localizable", "forgotPasswordTitle")
+    /// General
+    public static let general = Loc.tr("Localizable", "general")
     /// Incoming invites
     public static let incomingInvites = Loc.tr("Localizable", "incomingInvites")
     /// Incorrect code
@@ -182,6 +190,8 @@ public enum Loc {
     public static let incorrectEmail = Loc.tr("Localizable", "incorrectEmail")
     /// Incorrect password
     public static let incorrectPassword = Loc.tr("Localizable", "incorrectPassword")
+    /// Info
+    public static let info = Loc.tr("Localizable", "info")
     /// Enter word
     public static let inputTranslationPlacholder = Loc.tr("Localizable", "inputTranslationPlacholder")
     /// First name can't be empty
@@ -236,6 +246,8 @@ public enum Loc {
     public static let profile = Loc.tr("Localizable", "profile")
     /// Provide info
     public static let provideInfo = Loc.tr("Localizable", "provideInfo")
+    /// Rate app in AppStore
+    public static let rateApp = Loc.tr("Localizable", "rateApp")
     /// Recent
     public static let recent = Loc.tr("Localizable", "recent")
     /// Register to get started.
@@ -248,6 +260,8 @@ public enum Loc {
     public static let removeStudent = Loc.tr("Localizable", "removeStudent")
     /// Remove teacher
     public static let removeTeacher = Loc.tr("Localizable", "removeTeacher")
+    /// Request support in twitter
+    public static let requestSupport = Loc.tr("Localizable", "requestSupport")
     /// Required field
     public static let requiredField = Loc.tr("Localizable", "requiredField")
     /// Reset password
@@ -264,6 +278,8 @@ public enum Loc {
     public static let send = Loc.tr("Localizable", "send")
     /// Send code
     public static let sendCode = Loc.tr("Localizable", "sendCode")
+    /// Send feedback via email
+    public static let sendFeedbackViaMail = Loc.tr("Localizable", "sendFeedbackViaMail")
     /// Settings
     public static let settings = Loc.tr("Localizable", "settings")
     /// Share
