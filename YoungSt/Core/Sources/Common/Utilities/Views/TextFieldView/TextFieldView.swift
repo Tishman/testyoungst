@@ -16,7 +16,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     @Binding private var isSecure: Bool
     @Binding private var charecterLimit: Int
     private let placeholder: String?
-    private let isCursorHidden: Bool
+    private let isCodeInput: Bool
     private let keyboardType: YoungstKeyboardType
     @Environment (\.multilineTextAlignment) private var alignment
     
@@ -25,19 +25,19 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
                 isSecure: Binding<Bool>,
                 charecterLimit: Binding<Int>,
                 placeholder: String?,
-                isCursorHidden: Bool,
+                isCodeInput: Bool,
                 keyboardType: YoungstKeyboardType = .default) {
         self._text = text
         self._forceFocused = forceFocused
         self.placeholder = placeholder
         self._charecterLimit = charecterLimit
         self._isSecure = isSecure
-        self.isCursorHidden = isCursorHidden
+        self.isCodeInput = isCodeInput
         self.keyboardType = keyboardType
     }
     
     public func makeUIView(context: Context) -> UIViewType {
-        let textField = YoungstTextField(textInset: isCursorHidden ? .zero : YoungstTextField.defaultInsets)
+        let textField = YoungstTextField(textInset: isCodeInput ? .zero : YoungstTextField.defaultInsets)
         textField.youngstDelegate = self
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         context.coordinator.initalSetup(textField: textField)
@@ -64,7 +64,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     }
     
     func deleteBackward() {
-        if !text.isEmpty {
+        if isCodeInput {
             text = ""
         }
     }
@@ -82,7 +82,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
             textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
             textField.keyboardType = view.keyboardType.uiKitType
             
-            if view.isCursorHidden {
+            if view.isCodeInput {
                 textField.tintColor = .clear
             }
         }

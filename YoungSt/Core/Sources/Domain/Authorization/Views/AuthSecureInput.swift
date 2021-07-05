@@ -24,7 +24,7 @@ struct AuthSecureInput: View {
                           isSecure: $isSecure,
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
-                          isCursorHidden: false)
+                          isCodeInput: false)
             
             Button(action: { isSecure.toggle() }) {
                 Image(uiImage: isSecure ? Asset.Images.emptyEye.image : Asset.Images.eye.image)

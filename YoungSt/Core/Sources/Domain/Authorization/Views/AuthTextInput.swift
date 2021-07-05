@@ -23,7 +23,7 @@ struct AuthTextInput: View {
                           isSecure: .constant(false),
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
-                          isCursorHidden: false)
+                          isCodeInput: false)
                 .fixedSize(horizontal: false, vertical: true)
             
             Button(action: { text = "" }) {

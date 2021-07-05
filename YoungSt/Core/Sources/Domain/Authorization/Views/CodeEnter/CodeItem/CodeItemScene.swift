@@ -22,7 +22,7 @@ struct CodeItem: View {
                           isSecure: .constant(false),
                           charecterLimit: viewStore.binding(get: \.characterLimit, send: CodeItemAction.characterLimitUpdated),
                           placeholder: nil,
-                          isCursorHidden: true,
+                          isCodeInput: true,
                           keyboardType: .numberPad)
                 .frame(width: UIFloat(50), height: UIFloat(50))
                 .background(
