@@ -32,10 +32,9 @@ let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvironment
             body.append("User id: \($0.uuidString)\n")
         }
         
-        
-        let mail = SettingsState.Mail(recipient: "vyoungst@gmail.com",
-                                      subject: "Feedback",
-                                      body: body)
+        let mail = MailInfo(recipient: "vyoungst@gmail.com",
+                            subject: "Feedback",
+                            body: body)
         state.routing = .mail(mail)
         
     case .route(.handled):

@@ -16,13 +16,7 @@ struct SettingsState: Equatable {
     var routing: Routing?
     
     enum Routing: Equatable {
-        case mail(Mail)
-    }
-    
-    struct Mail: Equatable {
-        let recipient: String
-        let subject: String
-        let body: String
+        case mail(MailInfo)
     }
 }
 
