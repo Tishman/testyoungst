@@ -10,6 +10,13 @@ import NetworkService
 import Utilities
 import Protocols
 
+enum RegistrationField: Equatable {
+    case email
+    case nickname
+    case password
+    case confirmPassword
+}
+
 enum RegistrationAction: Equatable, AnalyticsAction {
     case didEmailChanged(String)
     case didNicknameChange(String)
@@ -24,11 +31,16 @@ enum RegistrationAction: Equatable, AnalyticsAction {
 	case alertClosedTriggered
 	case showPasswordTriggered
     case showConfrimPasswordTriggered
+    case fieldSubmitted(RegistrationField)
     
 	case routingHandled
     
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
     case failedValidtion(String)
+    case emailReturnKeyTriggered
+    case usernameReturnKeyTriggered
+    case passwordReturnKeyTriggered
+    case confirmPasswordReturnKeyTriggered
     
     var event: AnalyticsEvent? {
         switch self {

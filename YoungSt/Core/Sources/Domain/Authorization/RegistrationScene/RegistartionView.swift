@@ -43,37 +43,46 @@ struct RegistrationView: View {
                             VStack(spacing: .spacing(.big)) {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
                                               forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
-                                              status: .default, placeholder: Localizable.emailPlaceholder)
-                                    .introspectTextField { textField in
-                                        textField.textContentType = .emailAddress
-                                        textField.autocapitalizationType = .none
-                                    }
+                                              status: .default, placeholder: Localizable.emailPlaceholder) {
+                                    viewStore.send(.fieldSubmitted(.email))
+                                }
+                                .introspectTextField { textField in
+                                    textField.textContentType = .emailAddress
+                                    textField.autocapitalizationType = .none
+                                }
                                 
                                 AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
                                               forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
                                               status: .default,
-                                              placeholder: Localizable.usernamePlaceholder)
-                                    .introspectTextField { textField in
-                                        textField.textContentType = .nickname
-                                    }
+                                              placeholder: Localizable.usernamePlaceholder) {
+                                    viewStore.send(.fieldSubmitted(.nickname))
+
+                                }
+                                .introspectTextField { textField in
+                                    textField.textContentType = .nickname
+                                }
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.password, send: RegistrationAction.didPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordTriggered),
                                                 status: .default,
-                                                placeholder: Localizable.passwordPlaceholder)
-                                    .introspectTextField { textField in
-                                        textField.textContentType = .newPassword
-                                    }
+                                                placeholder: Localizable.passwordPlaceholder) {
+                                    viewStore.send(.fieldSubmitted(.password))
+                                }
+                                .introspectTextField { textField in
+                                    textField.textContentType = .newPassword
+                                }
                                 
-                                AuthSecureInput(text: viewStore.binding(get: \.confrimPassword, send: RegistrationAction.didConfrimPasswordChanged),
+                                AuthSecureInput(text: viewStore.binding(get: \.confirmPassword, send: RegistrationAction.didConfrimPasswordChanged),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordTriggered),
                                                 status: .default,
-                                                placeholder: Localizable.confrimPasswordPlaceholder)
-                                    .introspectTextField { textField in
-                                        textField.textContentType = .newPassword
-                                    }
+                                                placeholder: Localizable.confrimPasswordPlaceholder) {
+                                    viewStore.send(.fieldSubmitted(.confirmPassword))
+                                }
+                                .introspectTextField { textField in
+                                    textField.textContentType = .newPassword
+                                }
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))

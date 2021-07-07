@@ -12,7 +12,21 @@ import Utilities
 import Resources
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
+    func isNotEmptyInput() -> Bool {
+        !state.email.value.isEmpty && !state.password.value.isEmpty
+    }
+    
 	switch action {
+    case .fieldSubmitted(.email):
+        state.passwordFieldForceFocused = true
+        
+    case .fieldSubmitted(.password):
+        if isNotEmptyInput() {
+            return .init(value: .loginTriggered)
+        } else {
+            TextFieldView.hideKeyboard()
+        }
+    
     case let .loginInputFocusChanged(isFocused):
         state.loginFieldForceFocused = isFocused
         

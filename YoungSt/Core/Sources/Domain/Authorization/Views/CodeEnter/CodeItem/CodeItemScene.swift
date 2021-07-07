@@ -19,7 +19,7 @@ struct CodeItem: View {
         WithViewStore(store) { viewStore in
             TextFieldView(text: viewStore.binding(get: \.text, send: CodeItemAction.textUpdated),
                           forceFocused: viewStore.binding(get: \.forceFocused, send: CodeItemAction.forcedFocus),
-                          isSecure: .constant(false),
+                          isSecure: false,
                           charecterLimit: viewStore.binding(get: \.characterLimit, send: CodeItemAction.characterLimitUpdated),
                           placeholder: nil,
                           isCodeInput: true,

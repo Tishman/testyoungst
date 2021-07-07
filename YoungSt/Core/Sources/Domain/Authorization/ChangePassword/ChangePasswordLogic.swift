@@ -9,9 +9,24 @@ import Foundation
 import ComposableArchitecture
 import Resources
 import NetworkService
+import Utilities
 
 let changePasswordReducer = Reducer<ChangePasswordState, ChangePasswordAction, ChangePasswordEnviroment> { state, action, env in
+    func isNotEmptyInput() -> Bool {
+        !state.password.isEmpty && !state.confirmPassword.isEmpty
+    }
+    
     switch action {
+    case .fieldSubmitted(.password):
+        state.confirmPasswordFieldForceFocused = true
+        
+    case .fieldSubmitted(.confirmPassword):
+        if isNotEmptyInput() {
+            return .init(value: .changePasswordButtonTapped)
+        } else {
+            TextFieldView.hideKeyboard()
+        }
+        
     case .showPasswordButtonTapped:
         state.isPasswordSecure.toggle()
     

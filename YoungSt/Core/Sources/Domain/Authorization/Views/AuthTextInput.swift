@@ -15,15 +15,17 @@ struct AuthTextInput: View {
     let status: TextEditStatus
     let charecterLimit: Int = 255
     let placeholder: String
-    
+    var submitHandler: (() -> Void)?
+
     var body: some View {
         HStack(spacing: .spacing(.small)) {
             TextFieldView(text: $text,
                           forceFocused: $forceFocused,
-                          isSecure: .constant(false),
+                          isSecure: false,
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
-                          isCodeInput: false)
+                          isCodeInput: false,
+                          onSubmit: submitHandler ?? TextFieldView.hideKeyboard)
                 .fixedSize(horizontal: false, vertical: true)
             
             Button(action: { text = "" }) {
@@ -41,6 +43,7 @@ struct AuthTextField_Previews: PreviewProvider {
         AuthTextInput(text: .constant(""),
                       forceFocused: .constant(false),
                       status: .default,
-                      placeholder: "Test")
+                      placeholder: "Test",
+                      submitHandler: {})
     }
 }

@@ -10,6 +10,11 @@ import NetworkService
 import Utilities
 import ComposableArchitecture
 
+enum ChangePasswordField {
+    case password
+    case confirmPassword
+}
+
 struct ChangePasswordInput {
     let email: String
     let code: String
@@ -45,6 +50,7 @@ enum ChangePasswordAction: Equatable {
     case routingHandled
     case showPasswordButtonTapped
     case showConfirmPasswordButtonTapped
+    case fieldSubmitted(ChangePasswordField)
 }
 
 struct ChangePasswordEnviroment {

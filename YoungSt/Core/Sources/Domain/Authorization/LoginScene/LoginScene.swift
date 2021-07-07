@@ -29,7 +29,8 @@ struct LoginScene: View {
                                 AuthTextInput(text: viewStore.binding(get: \.email.value, send: LoginAction.emailChanged),
                                               forceFocused: viewStore.binding(get: \.loginFieldForceFocused, send: LoginAction.loginInputFocusChanged),
                                               status: viewStore.email.status,
-                                              placeholder: Localizable.emailPlaceholder)
+                                              placeholder: Localizable.emailPlaceholder,
+                                              submitHandler: { viewStore.send(.fieldSubmitted(.email)) })
                                     .introspectTextField { textField in
                                         textField.textContentType = .emailAddress
                                         textField.autocapitalizationType = .none
@@ -39,7 +40,8 @@ struct LoginScene: View {
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: LoginAction.passwordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isSecure, send: LoginAction.showPasswordButtonTriggered),
                                                 status: viewStore.password.status,
-                                                placeholder: Localizable.passwordPlaceholder)
+                                                placeholder: Localizable.passwordPlaceholder,
+                                                submitHandler: { viewStore.send(.fieldSubmitted(.password)) })
                                     .introspectTextField { textField in
                                         textField.textContentType = .password
                                     }

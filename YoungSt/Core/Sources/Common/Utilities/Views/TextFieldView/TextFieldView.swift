@@ -13,27 +13,35 @@ import Resources
 public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     @Binding private var text: String
     @Binding private var forceFocused: Bool
-    @Binding private var isSecure: Bool
+    private let isSecure: Bool
     @Binding private var charecterLimit: Int
     private let placeholder: String?
     private let isCodeInput: Bool
     private let keyboardType: YoungstKeyboardType
+    private let onSubmit: (() -> Void)
+
     @Environment (\.multilineTextAlignment) private var alignment
     
+    public static func hideKeyboard() {
+        UIApplication.shared.windows.forEach { $0.endEditing(true) }
+    }
+
     public init(text: Binding<String>,
                 forceFocused: Binding<Bool>,
-                isSecure: Binding<Bool>,
+                isSecure: Bool,
                 charecterLimit: Binding<Int>,
                 placeholder: String?,
                 isCodeInput: Bool,
-                keyboardType: YoungstKeyboardType = .default) {
+                keyboardType: YoungstKeyboardType = .default,
+                onSubmit: @escaping () -> Void = Self.hideKeyboard) {
         self._text = text
         self._forceFocused = forceFocused
         self.placeholder = placeholder
         self._charecterLimit = charecterLimit
-        self._isSecure = isSecure
+        self.isSecure = isSecure
         self.isCodeInput = isCodeInput
         self.keyboardType = keyboardType
+        self.onSubmit = onSubmit
     }
     
     public func makeUIView(context: Context) -> UIViewType {
@@ -53,14 +61,18 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         uiView.isSecureTextEntry = isSecure
         
         uiView.textAlignment = alignment.nsTextAligment
-        
+        context.coordinator.onSubmit = onSubmit
+
         if forceFocused {
             uiView.becomeFirstResponder()
+            DispatchQueue.main.async {
+                forceFocused = false
+            }
         }
     }
     
     public func makeCoordinator() -> Coordinator {
-        .init(view: self)
+        .init(view: self, onSubmit: onSubmit)
     }
     
     func deleteBackward() {
@@ -71,9 +83,11 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     
     public final class Coordinator: NSObject, UITextFieldDelegate {
         private let view: TextFieldView
-        
-        init(view: TextFieldView) {
+        var onSubmit: () -> Void
+
+        init(view: TextFieldView, onSubmit: @escaping (() -> Void)) {
             self.view = view
+            self.onSubmit = onSubmit
         }
         
         func initalSetup(textField: UITextField) {
@@ -90,19 +104,9 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         @objc private func textFieldDidChange(_ textField: UITextField) {
             view.text = textField.text ?? ""
         }
-        
-        public func textFieldDidBeginEditing(_ textField: UITextField) {
-            view.forceFocused = true
-        }
-        
-        public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-            view.forceFocused = false
-            textField.resignFirstResponder()
-            return true
-        }
-        
+
         public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
+            onSubmit()
             return true
         }
         
