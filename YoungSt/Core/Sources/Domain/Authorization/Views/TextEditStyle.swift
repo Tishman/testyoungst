@@ -76,13 +76,13 @@ struct TextEditStyle: TextFieldStyle {
 	
 	private func getBorderStyle(_ focused: Bool, _ status: TextEditStatus) -> Color {
 		switch (focused, status) {
-		case (true, .default):
-			return Asset.Colors.greenDark.color.swiftuiColor
-		case (true, .success):
+//		case (true, .default):
+//			return Asset.Colors.greenDark.color.swiftuiColor
+		case (_, .success):
 			return .green
-		case (true, .error):
+		case (_, .error):
 			return .red
-		case (false, _):
+		case (_, _):
 			return Asset.Colors.greenLightly.color.swiftuiColor
 		}
 	}

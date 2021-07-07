@@ -11,6 +11,14 @@ import NetworkService
 import Utilities
 import Resources
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
+    
+    func isNotEmptyInput() -> Bool {
+        !state.email.isEmpty
+            && !state.password.isEmpty
+            && !state.nickname.isEmpty
+            && !state.confirmPassword.isEmpty
+    }
+    
 	switch action {
     case let .emailInputFocusChanged(isFocused):
         state.emailFieldForceFocused = isFocused
@@ -23,6 +31,22 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
         
     case let .confirmPasswordInputFocusChanged(isFocused):
         state.confirmPasswordFieldForceFocused = isFocused
+        
+    case let .fieldSubmitted(field):
+        switch field {
+        case .email:
+            state.usernameFieldForceFocused = true
+        case .nickname:
+            state.passwordFieldForceFocused = true
+        case .password:
+            state.confirmPasswordFieldForceFocused = true
+        case .confirmPassword:
+            if isNotEmptyInput() {
+                return .init(value: .registrationTriggered)
+            } else {
+                TextFieldView.hideKeyboard()
+            }
+        }
     
 	case .showPasswordTriggered:
 		state.isPasswordSecure.toggle()
@@ -40,7 +64,7 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.password = value
 		
 	case let .didConfrimPasswordChanged(value):
-		state.confrimPassword = value
+		state.confirmPassword = value
 		
 	case let .didRecieveRegistartionResult(.success(value)):
         state.isLoading = false
@@ -57,10 +81,10 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 		state.alert = nil
 		
 	case .registrationTriggered:
-		guard !state.email.isEmpty && !state.password.isEmpty && !state.nickname.isEmpty else {
+		guard isNotEmptyInput() else {
 			return .init(value: .failedValidtion(Localizable.fillAllFields))
 		}
-		guard state.confrimPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
+		guard state.confirmPassword == state.password else { return .init(value: .failedValidtion(Localizable.passwordConfrimation)) }
         state.isLoading = true
 		
 		let requestData = Authorization_RegistrationRequest.with {
@@ -80,4 +104,5 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
 	
 	return .none
 }
+.debugActions()
 .analytics()
