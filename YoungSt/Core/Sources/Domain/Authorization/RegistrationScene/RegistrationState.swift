@@ -17,7 +17,7 @@ struct RegistrationState: Equatable {
     var email: String = ""
     var nickname: String = ""
     var password: String = ""
-    var confrimPassword: String = ""
+    var confirmPassword: String = ""
     var alert: AlertState<RegistrationAction>?
 	var isPasswordSecure = true
 	var isConfirmSecure = true

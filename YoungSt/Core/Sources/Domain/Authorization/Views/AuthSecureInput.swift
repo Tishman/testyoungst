@@ -16,17 +16,17 @@ struct AuthSecureInput: View {
     let status: TextEditStatus
     let charecterLimit: Int = 255
     let placeholder: String
-    let returnKey: () -> Void
-    
+    var submitHandler: (() -> Void)?
+
     var body: some View {
         HStack(spacing: .spacing(.small)) {
             TextFieldView(text: $text,
                           forceFocused: $forceFocused,
-                          isSecure: $isSecure,
+                          isSecure: isSecure,
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
                           isCodeInput: false,
-                          returnKey: { returnKey() })
+                          onSubmit: submitHandler ?? TextFieldView.hideKeyboard)
             
             Button(action: { isSecure.toggle() }) {
                 Image(uiImage: isSecure ? Asset.Images.emptyEye.image : Asset.Images.eye.image)
