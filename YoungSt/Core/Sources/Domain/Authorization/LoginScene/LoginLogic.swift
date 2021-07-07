@@ -13,6 +13,12 @@ import Resources
 
 let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, action, enviroment in
 	switch action {
+    case .emailReturnKeyTriggered:
+        state.passwordFieldForceFocused = true
+        
+    case .passwordReturnKeyTriggered:
+        break
+    
     case let .loginInputFocusChanged(isFocused):
         state.loginFieldForceFocused = isFocused
         

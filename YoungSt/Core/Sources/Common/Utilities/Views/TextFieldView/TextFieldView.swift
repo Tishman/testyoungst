@@ -18,6 +18,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
     private let placeholder: String?
     private let isCodeInput: Bool
     private let keyboardType: YoungstKeyboardType
+    private let returnKey: () -> Void
     @Environment (\.multilineTextAlignment) private var alignment
     
     public init(text: Binding<String>,
@@ -26,7 +27,8 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
                 charecterLimit: Binding<Int>,
                 placeholder: String?,
                 isCodeInput: Bool,
-                keyboardType: YoungstKeyboardType = .default) {
+                keyboardType: YoungstKeyboardType = .default,
+                returnKey: @escaping () -> Void) {
         self._text = text
         self._forceFocused = forceFocused
         self.placeholder = placeholder
@@ -34,6 +36,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         self._isSecure = isSecure
         self.isCodeInput = isCodeInput
         self.keyboardType = keyboardType
+        self.returnKey = returnKey
     }
     
     public func makeUIView(context: Context) -> UIViewType {
@@ -56,6 +59,9 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         
         if forceFocused {
             uiView.becomeFirstResponder()
+            DispatchQueue.main.async {
+                forceFocused = false
+            }
         }
     }
     
@@ -98,6 +104,7 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
             view.forceFocused = false
             textField.resignFirstResponder()
+            view.returnKey()
             return true
         }
         

@@ -23,7 +23,7 @@ struct CodeItem: View {
                           charecterLimit: viewStore.binding(get: \.characterLimit, send: CodeItemAction.characterLimitUpdated),
                           placeholder: nil,
                           isCodeInput: true,
-                          keyboardType: .numberPad)
+                          keyboardType: .numberPad, returnKey: {})
                 .frame(width: UIFloat(50), height: UIFloat(50))
                 .background(
                     circle

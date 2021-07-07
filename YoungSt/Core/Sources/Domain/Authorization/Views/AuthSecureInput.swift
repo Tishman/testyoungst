@@ -16,6 +16,7 @@ struct AuthSecureInput: View {
     let status: TextEditStatus
     let charecterLimit: Int = 255
     let placeholder: String
+    let returnKey: () -> Void
     
     var body: some View {
         HStack(spacing: .spacing(.small)) {
@@ -24,7 +25,8 @@ struct AuthSecureInput: View {
                           isSecure: $isSecure,
                           charecterLimit: .constant(charecterLimit),
                           placeholder: placeholder,
-                          isCodeInput: false)
+                          isCodeInput: false,
+                          returnKey: { returnKey() })
             
             Button(action: { isSecure.toggle() }) {
                 Image(uiImage: isSecure ? Asset.Images.emptyEye.image : Asset.Images.eye.image)
@@ -41,6 +43,7 @@ struct AuthSecureInput_Previews: PreviewProvider {
                         forceFocused: .constant(false),
                         isSecure: .constant(true),
                         status: .default,
-                        placeholder: "Preview")
+                        placeholder: "Preview",
+                        returnKey: {})
     }
 }

@@ -29,6 +29,10 @@ enum RegistrationAction: Equatable, AnalyticsAction {
     
     case didRecieveRegistartionResult(Result<UUID, RegistrationError>)
     case failedValidtion(String)
+    case emailReturnKeyTriggered
+    case usernameReturnKeyTriggered
+    case passwordReturnKeyTriggered
+    case confirmPasswordReturnKeyTriggered
     
     var event: AnalyticsEvent? {
         switch self {

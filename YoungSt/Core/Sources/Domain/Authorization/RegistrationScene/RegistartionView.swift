@@ -43,7 +43,8 @@ struct RegistrationView: View {
                             VStack(spacing: .spacing(.big)) {
                                 AuthTextInput(text: viewStore.binding(get: \.email, send: RegistrationAction.didEmailChanged),
                                               forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: RegistrationAction.emailInputFocusChanged),
-                                              status: .default, placeholder: Localizable.emailPlaceholder)
+                                              status: .default, placeholder: Localizable.emailPlaceholder,
+                                              returnKey: { viewStore.send(.emailReturnKeyTriggered) })
                                     .introspectTextField { textField in
                                         textField.textContentType = .emailAddress
                                         textField.autocapitalizationType = .none
@@ -52,7 +53,8 @@ struct RegistrationView: View {
                                 AuthTextInput(text: viewStore.binding(get: \.nickname, send: RegistrationAction.didNicknameChange),
                                               forceFocused: viewStore.binding(get: \.usernameFieldForceFocused, send: RegistrationAction.userNameInputFocusChanged),
                                               status: .default,
-                                              placeholder: Localizable.usernamePlaceholder)
+                                              placeholder: Localizable.usernamePlaceholder,
+                                              returnKey: { viewStore.send(.usernameReturnKeyTriggered )})
                                     .introspectTextField { textField in
                                         textField.textContentType = .nickname
                                     }
@@ -61,7 +63,8 @@ struct RegistrationView: View {
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: RegistrationAction.passwordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isPasswordSecure, send: RegistrationAction.showPasswordTriggered),
                                                 status: .default,
-                                                placeholder: Localizable.passwordPlaceholder)
+                                                placeholder: Localizable.passwordPlaceholder,
+                                                returnKey: { viewStore.send(.passwordReturnKeyTriggered) })
                                     .introspectTextField { textField in
                                         textField.textContentType = .newPassword
                                     }
@@ -70,7 +73,8 @@ struct RegistrationView: View {
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: RegistrationAction.confirmPasswordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isConfirmSecure, send: RegistrationAction.showConfrimPasswordTriggered),
                                                 status: .default,
-                                                placeholder: Localizable.confrimPasswordPlaceholder)
+                                                placeholder: Localizable.confrimPasswordPlaceholder,
+                                                returnKey: { viewStore.send(.confirmPasswordReturnKeyTriggered ) })
                                     .introspectTextField { textField in
                                         textField.textContentType = .newPassword
                                     }

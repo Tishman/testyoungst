@@ -30,13 +30,15 @@ struct ChangePasswordScene: View {
                                                 forceFocused: viewStore.binding(get: \.passwordFieldForceFocused, send: ChangePasswordAction.passwordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isPasswordSecure, send: ChangePasswordAction.showPasswordButtonTapped),
                                                 status: .default,
-                                                placeholder: Localizable.newPassword)
+                                                placeholder: Localizable.newPassword,
+                                                returnKey: { viewStore.send(.passwordReturnKeyTriggered) })
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.confirmPassword, send: ChangePasswordAction.confirmPasswordUpdated),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: ChangePasswordAction.confirmPasswordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isConfirmPasswordSecure, send: ChangePasswordAction.showConfirmPasswordButtonTapped),
                                                 status: .default,
-                                                placeholder: Localizable.confrimPasswordPlaceholder)
+                                                placeholder: Localizable.confrimPasswordPlaceholder,
+                                                returnKey: { viewStore.send(.confirmPasswordReturnKeyTriggered ) })
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))

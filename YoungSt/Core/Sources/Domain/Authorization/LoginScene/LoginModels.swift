@@ -40,6 +40,8 @@ enum LoginAction: Equatable, AnalyticsAction {
     case routingHandled
     case loginInputFocusChanged(Bool)
     case passwordInputFocusChanged(Bool)
+    case emailReturnKeyTriggered
+    case passwordReturnKeyTriggered
     
     case handleLogin(Result<Authorization_LoginResponse, LoginError>)
     

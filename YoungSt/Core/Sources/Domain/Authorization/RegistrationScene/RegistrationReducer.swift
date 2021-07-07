@@ -12,6 +12,18 @@ import Utilities
 import Resources
 let registrationReducer = Reducer<RegistrationState, RegistrationAction, RegistrationEnviroment> { state, action, enviroment in
 	switch action {
+    case .emailReturnKeyTriggered:
+        state.usernameFieldForceFocused = true
+        
+    case .usernameReturnKeyTriggered:
+        state.passwordFieldForceFocused = true
+        
+    case .passwordReturnKeyTriggered:
+        state.confirmPasswordFieldForceFocused = true
+        
+    case .confirmPasswordReturnKeyTriggered:
+        break
+    
     case let .emailInputFocusChanged(isFocused):
         state.emailFieldForceFocused = isFocused
         

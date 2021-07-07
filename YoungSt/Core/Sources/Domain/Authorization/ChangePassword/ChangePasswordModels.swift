@@ -45,6 +45,8 @@ enum ChangePasswordAction: Equatable {
     case routingHandled
     case showPasswordButtonTapped
     case showConfirmPasswordButtonTapped
+    case passwordReturnKeyTriggered
+    case confirmPasswordReturnKeyTriggered
 }
 
 struct ChangePasswordEnviroment {

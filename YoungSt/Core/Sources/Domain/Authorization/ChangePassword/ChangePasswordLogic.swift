@@ -12,6 +12,12 @@ import NetworkService
 
 let changePasswordReducer = Reducer<ChangePasswordState, ChangePasswordAction, ChangePasswordEnviroment> { state, action, env in
     switch action {
+    case .passwordReturnKeyTriggered:
+        state.confirmPasswordFieldForceFocused = true
+        
+    case .confirmPasswordReturnKeyTriggered:
+        break
+        
     case .showPasswordButtonTapped:
         state.isPasswordSecure.toggle()
     
