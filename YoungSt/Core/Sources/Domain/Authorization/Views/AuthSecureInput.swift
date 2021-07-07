@@ -44,6 +44,6 @@ struct AuthSecureInput_Previews: PreviewProvider {
                         isSecure: .constant(true),
                         status: .default,
                         placeholder: "Preview",
-                        returnKey: {})
+                        submitHandler: {})
     }
 }

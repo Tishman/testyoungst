@@ -31,14 +31,14 @@ struct ChangePasswordScene: View {
                                                 isSecure: viewStore.binding(get: \.isPasswordSecure, send: ChangePasswordAction.showPasswordButtonTapped),
                                                 status: .default,
                                                 placeholder: Localizable.newPassword,
-                                                returnKey: { viewStore.send(.passwordReturnKeyTriggered) })
+                                                submitHandler: { viewStore.send(.fieldSubmitted(.password)) })
                                 
                                 AuthSecureInput(text: viewStore.binding(get: \.confirmPassword, send: ChangePasswordAction.confirmPasswordUpdated),
                                                 forceFocused: viewStore.binding(get: \.confirmPasswordFieldForceFocused, send: ChangePasswordAction.confirmPasswordInputFocusChanged),
                                                 isSecure: viewStore.binding(get: \.isConfirmPasswordSecure, send: ChangePasswordAction.showConfirmPasswordButtonTapped),
                                                 status: .default,
                                                 placeholder: Localizable.confrimPasswordPlaceholder,
-                                                returnKey: { viewStore.send(.confirmPasswordReturnKeyTriggered ) })
+                                                submitHandler: { viewStore.send(.fieldSubmitted(.confirmPassword)) })
                             }
                         }
                         .padding(.horizontal, .spacing(.ultraBig))

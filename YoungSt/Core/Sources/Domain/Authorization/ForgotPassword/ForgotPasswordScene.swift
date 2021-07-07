@@ -34,8 +34,7 @@ struct ForgotPasswordScene: View {
                             AuthTextInput(text: viewStore.binding(get: \.email.value, send: ForgotPasswordAction.didEmailEditing),
                                           forceFocused: viewStore.binding(get: \.emailFieldForceFocused, send: ForgotPasswordAction.emailInputFocusChanged),
                                           status: viewStore.email.status,
-                                          placeholder: Localizable.enterYourEmail,
-                                          returnKey: {})
+                                          placeholder: Localizable.enterYourEmail)
                                 .introspectTextField { textField in
                                     textField.textContentType = .emailAddress
                                     textField.autocapitalizationType = .none

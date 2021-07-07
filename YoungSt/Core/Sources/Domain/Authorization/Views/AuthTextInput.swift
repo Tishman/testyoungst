@@ -44,6 +44,6 @@ struct AuthTextField_Previews: PreviewProvider {
                       forceFocused: .constant(false),
                       status: .default,
                       placeholder: "Test",
-                      returnKey: {})
+                      submitHandler: {})
     }
 }
