@@ -31,7 +31,7 @@ struct CodeItem: View {
                 )
                 .overlay(
                     circle
-                        .strokeBorder(lineWidth: viewStore.forceFocused ? 2 : 1)
+                        .strokeBorder(lineWidth: 1)
                         .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
                 )
         }

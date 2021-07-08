@@ -42,8 +42,6 @@ enum CorePackage: String, CaseIterable {
 }
 
 enum ExternalDependecy {
-    // Added for example
-    case grdb
     case grpc
     case diTranquillity
     case combineExpect
@@ -54,8 +52,6 @@ enum ExternalDependecy {
     
     var product: Target.Dependency {
         switch self {
-        case .grdb:
-            return .product(name: "GRDB", package: "GRDB")
         case .grpc:
             return .product(name: "GRPC", package: "grpc-swift")
         case .diTranquillity:

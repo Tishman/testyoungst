@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0C34921E2592001900F729C4 /* YoungStApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C34921D2592001900F729C4 /* YoungStApp.swift */; };
 		0C3492252592001C00F729C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3492242592001C00F729C4 /* Preview Assets.xcassets */; };
-		0C46219125938835006B1701 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 0C46219025938835006B1701 /* GRDB */; };
 		0CA5EDFF2592617E0006F066 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 0CA5EDFE2592617E0006F066 /* SwiftProtobuf */; };
 		1F193BF22BDCF9A1B5399B51 /* Pods_YoungSt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F6841CF5F8FE2CF4BDD26E /* Pods_YoungSt.framework */; };
 		477CD6AB25FBB58B00BB45B8 /* Resources in Frameworks */ = {isa = PBXBuildFile; productRef = 477CD6AA25FBB58B00BB45B8 /* Resources */; };
@@ -102,7 +101,6 @@
 				FD10AC4D25FE31FD001FFF11 /* Utilities in Frameworks */,
 				FD51C9B826440C8900047726 /* Translation in Frameworks */,
 				FD10AC5225FE3276001FFF11 /* DITranquillity in Frameworks */,
-				0C46219125938835006B1701 /* GRDB in Frameworks */,
 				FD10AC4B25FE31FD001FFF11 /* Protocols in Frameworks */,
 				FD5111362618ADC500A90101 /* Coordinator in Frameworks */,
 				47BF2A8C2618C52D008FDB1F /* Authorization in Frameworks */,
@@ -272,7 +270,6 @@
 			name = YoungSt;
 			packageProductDependencies = (
 				0CA5EDFE2592617E0006F066 /* SwiftProtobuf */,
-				0C46219025938835006B1701 /* GRDB */,
 				477CD6AA25FBB58B00BB45B8 /* Resources */,
 				FD10AC4425FE31FD001FFF11 /* Mocks */,
 				FD10AC4825FE31FD001FFF11 /* NetworkService */,
@@ -315,7 +312,6 @@
 			packageReferences = (
 				0C34922D2592008500F729C4 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
-				0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				FD10AC5025FE3276001FFF11 /* XCRemoteSwiftPackageReference "DITranquillity" */,
 			);
 			productRefGroup = 0C34921B2592001900F729C4 /* Products */;
@@ -564,7 +560,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
 				DEVELOPMENT_TEAM = TXT5Y2EP72;
@@ -600,7 +596,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "\"YoungSt/Preview Content\"";
 				DEVELOPMENT_TEAM = TXT5Y2EP72;
 				ENABLE_PREVIEWS = YES;
@@ -657,14 +653,6 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/groue/GRDB.swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
-			};
-		};
 		0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf.git";
@@ -684,11 +672,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C46219025938835006B1701 /* GRDB */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0C46218F25938835006B1701 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
-			productName = GRDB;
-		};
 		0CA5EDFE2592617E0006F066 /* SwiftProtobuf */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0CA5EDFD2592617D0006F066 /* XCRemoteSwiftPackageReference "swift-protobuf" */;

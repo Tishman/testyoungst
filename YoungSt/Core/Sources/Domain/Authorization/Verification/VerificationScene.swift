@@ -28,9 +28,7 @@ struct VerificationScene: View {
                 .padding(.bottom, .spacing(.extraSize))
                 Spacer()
             }
-            .onAppear {
-                viewStore.send(.viewDidAppear)
-            }
+            .onAppear { viewStore.send(.viewDidAppear) }
         }
         .frame(maxWidth: WelcomeView.maxWidth)
         .alert(store.scope(state: \.alert), dismiss: VerificationAction.alertOkButtonTapped)

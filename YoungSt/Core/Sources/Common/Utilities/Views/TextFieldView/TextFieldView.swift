@@ -64,8 +64,8 @@ public struct TextFieldView: UIViewRepresentable, YoungstTextFieldDelegate {
         context.coordinator.onSubmit = onSubmit
 
         if forceFocused {
-            uiView.becomeFirstResponder()
             DispatchQueue.main.async {
+                uiView.becomeFirstResponder()
                 forceFocused = false
             }
         }

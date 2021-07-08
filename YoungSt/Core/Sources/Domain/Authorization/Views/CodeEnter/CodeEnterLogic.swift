@@ -14,6 +14,10 @@ let codeEnterReducer = Reducer<CodeEnterState, CodeEnterAction, Void>.combine(
 //        case let .codeItem(id: id, action: .forcedFocus):
 //            state.codeItems[id].characterLimit = id == state.codeCount - 1 ? 1 : 2
             
+        case .tapTriggered:
+            let indexToFocus = state.codeItems.firstIndex(where: { $0.text.isEmpty }) ?? state.codeItems.count-1
+            state.codeItems[indexToFocus].forceFocused = true
+        
         case let .codeItem(id: id, action: .textUpdated(text)):
             switch (state.codeItems[id].text.isEmpty, text.isEmpty) {
             case (true, true):

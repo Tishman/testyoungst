@@ -22,4 +22,5 @@ struct CodeEnterState: Equatable {
 
 enum CodeEnterAction: Equatable {
     case codeItem(id: CodeItemState.ID, action: CodeItemAction)
+    case tapTriggered
 }
