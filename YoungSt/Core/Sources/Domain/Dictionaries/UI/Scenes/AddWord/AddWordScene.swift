@@ -233,6 +233,7 @@ struct AddWordScene: View {
                                     .frame(width: DefaultSize.smallButton, height: DefaultSize.smallButton)
                                     .padding(.spacing(.small))
                             }
+                            .buttonStyle(defaultButtonStyle)
                         }
                     }
                     .padding(viewStore.info.groupSelectionEnabled ? .leading : .all, .spacing(.medium))
