@@ -51,7 +51,7 @@ struct CustomIconSelectorView: View {
                             )
                         
                         Text(customIcon.title)
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
                     }
                 }
                 .padding(.vertical, .spacing(.ultraSmall))
