@@ -53,10 +53,9 @@ let registrationReducer = Reducer<RegistrationState, RegistrationAction, Registr
         case .password:
             state.confirmPasswordFieldForceFocused = true
         case .confirmPassword:
+            TextFieldView.hideKeyboard()
             if isNotEmptyInput() {
                 return .init(value: .registrationTriggered)
-            } else {
-                TextFieldView.hideKeyboard()
             }
         }
     

@@ -13,10 +13,9 @@ final class KeyboardObserver {
     
     static let shared = KeyboardObserver()
     
-    private var isKeyboardVisibleSubject = CurrentValueSubject<KeyboardNotification, Never>(.init(isKeyboardVisible: false))
+    private var isKeyboardVisibleSubject = PassthroughSubject<KeyboardNotification, Never>()
     
     struct KeyboardNotification {
-        
         let isKeyboardVisible: Bool
     }
     
@@ -25,19 +24,19 @@ final class KeyboardObserver {
         NotificationCenter.default.addObserver(self, selector: #selector(didHideKeyboard), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    var isKeyboardVisible: Bool {
-        isKeyboardVisibleSubject.value.isKeyboardVisible
-    }
+    var isKeyboardVisible: Bool = false
     
     var keyboardVisibilityChangedPublisher: AnyPublisher<KeyboardNotification, Never> {
         isKeyboardVisibleSubject.eraseToAnyPublisher()
     }
     
     @objc private func didShowKeyboard(notification: Notification) {
+        isKeyboardVisible = true
         isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: true))
     }
     
     @objc private func didHideKeyboard(notification: Notification) {
+        isKeyboardVisible = false
         isKeyboardVisibleSubject.send(KeyboardNotification(isKeyboardVisible: false))
     }
     

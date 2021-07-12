@@ -76,7 +76,7 @@ let package = Package(
     platforms: [.iOS(.v14), .macOS(.v11)],
     products: CorePackage.allCases.map(\.library),
     dependencies: [
-        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
+        .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.2.0"),
         .package(url: "https://github.com/ivlevAstef/DITranquillity.git", from: "4.1.7"),
         .package(url: "https://github.com/groue/CombineExpectations.git", from: "0.7.0"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.17.0"),

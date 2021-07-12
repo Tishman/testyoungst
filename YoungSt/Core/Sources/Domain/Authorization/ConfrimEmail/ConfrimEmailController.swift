@@ -32,11 +32,8 @@ final class ConfrimEmailController: UIHostingController<ConfrimEmailScene>, Clos
 		self.store = store
 		self.viewStore = .init(store)
 		super.init(rootView: ConfrimEmailScene(store: store))
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		observeClosing().store(in: &bag)
+        
+        observeClosing().store(in: &bag)
 	}
 	
 	@objc required dynamic init?(coder aDecoder: NSCoder) {

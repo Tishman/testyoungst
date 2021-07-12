@@ -44,11 +44,8 @@ final class LoginController: UIHostingController<LoginScene>, RoutableController
 		self.viewStore = .init(store)
 		self.routingPoints = routingPoints
 		super.init(rootView: LoginScene(store: store))
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		observeRouting().store(in: &bag)
+        
+        observeRouting().store(in: &bag)
 	}
 	
 	func handle(routing: LoginState.Routing) {

@@ -30,21 +30,30 @@ struct ConfrimEmailScene: View {
 	
 	var body: some View {
 		WithViewStore(store) { viewStore in
-			VStack {
-				Spacer()
-				HeaderDescriptionView(title: Constants.Text.verification,
-									  subtitle: Constants.Text.emailSendedToConfrim)
-                CodeEnterView(store: store.scope(state: \.codeEnter, action: ConfrimEmailAction.codeEnter))
-					.padding(.top, .spacing(.extraSize))
-					.padding(.horizontal, .spacing(.extraSize))
-				Spacer()
-				Button(action: { viewStore.send(.didConfrimTriggered) }, label: {
-					Text(Constants.Text.verify)
-				})
+            ZStack {
+                ScrollView {
+                    VStack {
+                        HeaderDescriptionView(title: Constants.Text.verification,
+                                              subtitle: Constants.Text.emailSendedToConfrim)
+                            .padding(.top, .spacing(.big))
+                        
+                        CodeEnterView(store: store.scope(state: \.codeEnter, action: ConfrimEmailAction.codeEnter))
+                            .padding(.top, .spacing(.extraSize))
+                            .padding(.horizontal, .spacing(.extraSize))
+                    }
+                }
+                .introspectScrollView {
+                    $0.keyboardDismissMode = .interactive
+                }
+                
+                Button { viewStore.send(.didConfrimTriggered) } label: {
+                    Text(Constants.Text.verify)
+                }
                 .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
-				.padding(.bottom, .spacing(.extraSize))
-				Spacer()
-			}
+                .padding(.horizontal)
+                .padding(.bottom)
+                .greedy(aligningContentTo: .bottom)
+            }
             .frame(maxWidth: WelcomeView.maxWidth)
             .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
             .onAppear { viewStore.send(.viewAppeared) }

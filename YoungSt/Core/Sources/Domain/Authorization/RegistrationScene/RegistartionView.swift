@@ -87,6 +87,8 @@ struct RegistrationView: View {
                         }
                         .padding(.horizontal, .spacing(.ultraBig))
                         .padding(.top, .spacing(.extraSize))
+                        .padding(.bottom, RoundedButtonStyle.minHeight)
+                        .padding(.bottom)
                     }
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
@@ -96,9 +98,10 @@ struct RegistrationView: View {
                     Button(action: { viewStore.send(.registrationTriggered) }, label: {
                         Text(Constants.registrationButtonTitle)
                     })
-                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading))
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.isLoading, observeKeyboard: false))
                     .padding(.bottom)
                     .greedy(aligningContentTo: .bottom)
+                    .ignoresSafeArea(.keyboard, edges: .all)
                 }
             }
             .overlay(

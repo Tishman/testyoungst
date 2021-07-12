@@ -55,25 +55,22 @@ struct LoginScene: View {
                         }
                         .padding(.horizontal, .spacing(.ultraBig))
                         .padding(.top, .spacing(.extraSize))
+                        .padding(.bottom, RoundedButtonStyle.minHeight)
+                        .padding(.bottom)
                     }
                 }
                 .introspectScrollView { $0.keyboardDismissMode = .interactive }
                 .frame(maxWidth: WelcomeView.maxWidth)
                 
                 WithViewStore(store.scope(state: \.isLoading)) { viewStore in
-                    if viewStore.state {
-                        IndicatorView()
-                    }
-                }
-                
-                WithViewStore(store.stateless) { viewStore in
                     Button(action: { viewStore.send(.loginTriggered) }, label: {
                         Text(Localizable.loginButtonTitle)
                     })
+                    .buttonStyle(RoundedButtonStyle(style: .filled, isLoading: viewStore.state, observeKeyboard: true))
                 }
-                .buttonStyle(RoundedButtonStyle(style: .filled))
                 .padding(.bottom)
                 .greedy(aligningContentTo: .bottom)
+                .ignoresSafeArea(.keyboard, edges: .all)
             }
             .overlay(
                 TopHeaderView(width: globalProxy.size.width,

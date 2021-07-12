@@ -21,10 +21,9 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         state.passwordFieldForceFocused = true
         
     case .fieldSubmitted(.password):
+        TextFieldView.hideKeyboard()
         if isNotEmptyInput() {
             return .init(value: .loginTriggered)
-        } else {
-            TextFieldView.hideKeyboard()
         }
     
     case let .loginInputFocusChanged(isFocused):
@@ -52,7 +51,7 @@ let loginReducer = Reducer<LoginState, LoginAction, LoginEnviroment> { state, ac
         }
 		state.isLoading = true
 		let requestData = Authorization_LoginRequest.with {
-            $0.email = state.email.value
+            $0.email = state.email.value.trimmingCharacters(in: .whitespacesAndNewlines)
             $0.password = state.password.value
 		}
 		

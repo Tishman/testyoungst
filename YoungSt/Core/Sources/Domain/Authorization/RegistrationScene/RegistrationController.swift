@@ -43,11 +43,8 @@ final class RegistrationController: UIHostingController<RegistrationView>, Routa
 		self.viewStore = .init(store)
 		self.routingPoints = routingPoints
 		super.init(rootView: RegistrationView(store: store))
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		observeRouting().store(in: &bag)
+        
+        observeRouting().store(in: &bag)
 	}
 	
 	func handle(routing: RegistrationState.Routing) {

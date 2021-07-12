@@ -7,15 +7,17 @@
 
 import SwiftUI
 import Resources
+import Combine
 
 public struct RoundedButtonStyle: ButtonStyle {
     
     public static let minHeight: CGFloat = UIFloat(64)
     private static let minHeightCompact = UIFloat(44)
     
-    public init(style: RoundedButtonStyle.StyleType, isLoading: Bool = false) {
+    public init(style: RoundedButtonStyle.StyleType, isLoading: Bool = false, observeKeyboard: Bool = true) {
         self.style = style
         self.isLoading = isLoading
+        self.observeKeyboard = observeKeyboard
         self._keyboardVisible = .init(initialValue: KeyboardObserver.shared.isKeyboardVisible)
     }
     
@@ -51,10 +53,11 @@ public struct RoundedButtonStyle: ButtonStyle {
         }
     }
     
-    let style: StyleType
-    let isLoading: Bool
+    private let style: StyleType
+    private let isLoading: Bool
+    private let observeKeyboard: Bool
     
-    @State private var keyboardVisible = false
+    @State private var keyboardVisible: Bool
     @Environment(\.isEnabled) private var isEnabled
     
     public func makeBody(configuration: Self.Configuration) -> some View {
@@ -68,17 +71,15 @@ public struct RoundedButtonStyle: ButtonStyle {
         .hoverEffectForIOS()
         .scaleEffect(configuration.isPressed ? 0.97 : 1)
         .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isLoading)
-        .frame(maxWidth: keyboardVisible ? .infinity : nil, alignment: .trailing)
         .padding(.horizontal)
+        .frame(maxWidth: keyboardVisible && observeKeyboard ? .infinity : nil, alignment: .trailing)
         .onChange(of: configuration.isPressed) { isPressed in
             guard isPressed else { return }
             HapticTapFeedback.shared.impactOccured()
         }
         .onReceive(KeyboardObserver.shared.keyboardVisibilityChangedPublisher) { notification in
-            DispatchQueue.main.async {
-                withAnimation(.spring().speed(1.5)) {
-                    keyboardVisible = notification.isKeyboardVisible
-                }
+            withAnimation(.spring().speed(1.5)) {
+                keyboardVisible = notification.isKeyboardVisible
             }
         }
     }
