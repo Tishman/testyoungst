@@ -29,7 +29,10 @@ struct AuthSecureInput: View {
                           onSubmit: submitHandler ?? TextFieldView.hideKeyboard)
             
             Button(action: { isSecure.toggle() }) {
-                Image(uiImage: isSecure ? Asset.Images.emptyEye.image : Asset.Images.eye.image)
+                Image(uiImage: Asset.Images.emptyEye.image)
+                    .renderingMode(.template)
+                    .foregroundColor(isSecure ? Asset.Colors.secondaryAccentContent.color.swiftuiColor : Asset.Colors.greenDark.color.swiftuiColor)
+                    
             }
             .padding(.trailing)
         }
