@@ -30,6 +30,8 @@ struct AuthTextInput: View {
             
             Button(action: { text = "" }) {
                 Image(uiImage: Asset.Images.cross.image)
+                    .renderingMode(.template)
+                    .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
             }
             .opacity(text.isEmpty ? 0 : 1)
             .padding(.trailing)
