@@ -66,7 +66,7 @@ struct DictionariesScene: View {
                         
                         wordsList
                     }
-                    .padding(.top, .spacing(.medium))
+                    .padding(.vertical, .spacing(.medium))
                 }
 
                 WithViewStore(store.scope(state: \.isLoading)) { viewStore in

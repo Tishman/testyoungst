@@ -101,9 +101,6 @@ final class AppViewController: UIViewController {
 													   store: .init(initialState: .init(userID: userID),
                                                                     reducer: tabReducer,
                                                                     environment: ()))
-        let alertController = UIAlertController(title: Localizable.welcomeMessage, message: nil, preferredStyle: .alert)
-        alertController.addAction(.init(title: Localizable.ok, style: .cancel, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
         ViewEmbedder.embed(child: container, to: self)
     }
     

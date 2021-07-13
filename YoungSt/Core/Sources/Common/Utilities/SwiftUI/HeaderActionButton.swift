@@ -10,6 +10,8 @@ import Resources
 
 public struct HeaderActionButton: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     public init(_ title: String, systemImage: String, action: @escaping () -> Void) {
         self.title = title
         self.systemImage = systemImage
@@ -29,7 +31,7 @@ public struct HeaderActionButton: View {
                 .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
         .buttonStyle(defaultButtonStyle)
-        .bubbled()
+        .bubbled(color: Asset.Colors.greenDark.color.swiftuiColor.opacity(colorScheme == .light ? 0.15 : 0.4))
         .hoverEffectForIOS()
     }
     

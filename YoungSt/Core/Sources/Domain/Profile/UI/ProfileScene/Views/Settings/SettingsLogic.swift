@@ -26,7 +26,12 @@ let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvironment
         
     case .route(.mail):
         var body = """
-        App info: \(SettingsScene.versionInfo)
+        Tell more about your problem:
+        
+        
+        
+        ———————————————
+        App info: \(SettingsScene.versionInfo)\n
         """
         env.userProvider.currentUserID.map {
             body.append("User id: \($0.uuidString)\n")

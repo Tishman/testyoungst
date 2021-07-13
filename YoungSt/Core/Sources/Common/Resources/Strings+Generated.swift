@@ -260,7 +260,7 @@ public enum Loc {
     public static let removeStudent = Loc.tr("Localizable", "removeStudent")
     /// Remove teacher
     public static let removeTeacher = Loc.tr("Localizable", "removeTeacher")
-    /// Request support in twitter
+    /// Request support
     public static let requestSupport = Loc.tr("Localizable", "requestSupport")
     /// Required field
     public static let requiredField = Loc.tr("Localizable", "requiredField")
@@ -328,8 +328,6 @@ public enum Loc {
     public static let verify = Loc.tr("Localizable", "verify")
     /// Welcome back
     public static let welcomeBackTitle = Loc.tr("Localizable", "welcomeBackTitle")
-    /// We glad to see you, friend!
-    public static let welcomeMessage = Loc.tr("Localizable", "welcomeMessage")
     /// Welcome
     public static let welcomeTitle = Loc.tr("Localizable", "welcomeTitle")
     /// Word
