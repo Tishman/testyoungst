@@ -27,7 +27,7 @@ enum VerificationAction: Equatable {
     case sendCodeButtonTapped
     case didRecieveVerificationResult(Result<Bool, EquatableError>)
     case alertOkButtonTapped
-    case viewDidAppear
+    case viewAppeared
 }
 
 struct VerificationEnviroment {

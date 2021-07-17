@@ -56,7 +56,12 @@ struct ConfrimEmailScene: View {
             }
             .frame(maxWidth: WelcomeView.maxWidth)
             .alert(store.scope(state: \.alert), dismiss: .alertClosedTriggered)
-            .onAppear { viewStore.send(.viewAppeared) }
+            .onAppear {
+                // TODO: Remove after migration to iOS 15 SwiftUI native focus
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    viewStore.send(.viewAppeared)
+                }
+            }
 		}
 	}
 }

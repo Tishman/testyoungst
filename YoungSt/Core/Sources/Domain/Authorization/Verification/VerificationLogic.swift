@@ -13,7 +13,7 @@ let verificationReducer = Reducer<VerificationState, VerificationAction, Verific
     codeEnterReducer.pullback(state: \.codeEnter, action: /VerificationAction.codeEnter, environment: { _ in }),
     Reducer({ state, action, env in
         switch action {
-        case .viewDidAppear:
+        case .viewAppeared:
             state.codeEnter.codeItems[0].forceFocused = true
             
         case .codeEnter:
