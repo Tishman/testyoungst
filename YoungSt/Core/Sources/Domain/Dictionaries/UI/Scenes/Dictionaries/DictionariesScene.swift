@@ -109,7 +109,7 @@ struct DictionariesScene: View {
     
     private var wordsList: some View {
         WithViewStore(store.scope(state: \.wordsList)) { viewStore in
-            HeaderActionButton(Localizable.addWordAction, systemImage: "plus") {
+            HeaderActionButton(Localizable.addWordAction, systemImage: "plus.app.fill", imageScale: .large) {
                 viewStore.send(.route(.addWord))
             }
             .padding([.top, .horizontal])

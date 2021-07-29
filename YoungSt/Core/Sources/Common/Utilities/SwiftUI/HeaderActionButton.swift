@@ -12,9 +12,10 @@ public struct HeaderActionButton: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    public init(_ title: String, systemImage: String, action: @escaping () -> Void) {
+    public init(_ title: String, systemImage: String, imageScale: Image.Scale = .medium, action: @escaping () -> Void) {
         self.title = title
         self.systemImage = systemImage
+        self.imageScale = imageScale
         self.action = action
     }
     
@@ -22,13 +23,17 @@ public struct HeaderActionButton: View {
     
     private let title: String
     private let systemImage: String
+    private let imageScale: Image.Scale
     private let action: () -> Void
     
     public var body: some View {
         Button(action: action) {
-            Label(title, systemImage: systemImage)
-                .frame(maxWidth: .infinity, minHeight: minRowHeight)
-                .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
+            Label(title: { Text(title) }) {
+                Image(systemName: systemImage)
+                    .imageScale(imageScale)
+            }
+            .frame(maxWidth: .infinity, minHeight: minRowHeight)
+            .foregroundColor(Asset.Colors.greenDark.color.swiftuiColor)
         }
         .buttonStyle(defaultButtonStyle)
         .bubbled(color: Asset.Colors.greenDark.color.swiftuiColor.opacity(colorScheme == .light ? 0.15 : 0.4))
